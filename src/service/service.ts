@@ -8,6 +8,10 @@ interface HTTPInstance {
   patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
 }
 
+type InterceptorFunction = (
+  config: RequestInit & { url: string; method: string }
+) => Promise<void> | void;
+
 class Service {
   public http: HTTPInstance;
 
@@ -15,12 +19,19 @@ class Service {
 
   private headers: Record<string, string>;
 
+  private requestInterceptors: InterceptorFunction[];
+
+  private responseInterceptors: InterceptorFunction[];
+
   constructor() {
     this.baseURL = `https://jsonplaceholder.typicode.com/`;
     this.headers = {
       csrf: 'token',
       Referer: this.baseURL
     };
+
+    this.requestInterceptors = [];
+    this.responseInterceptors = [];
 
     this.http = {
       get: this.get.bind(this),
@@ -33,30 +44,59 @@ class Service {
     };
   }
 
+  public addRequestInterceptor(interceptor: InterceptorFunction): void {
+    this.requestInterceptors.push(interceptor);
+  }
+
+  public addResponseInterceptor(interceptor: InterceptorFunction): void {
+    this.responseInterceptors.push(interceptor);
+  }
+
+  private async runInterceptors(
+    interceptors: InterceptorFunction[],
+    config: RequestInit & { url: string; method: string }
+  ): Promise<void> {
+    for (const interceptor of interceptors) {
+      await interceptor(config);
+    }
+  }
+
   private async request<T = unknown>(
     method: string,
     url: string,
     data?: unknown,
     config?: RequestInit
   ): Promise<T> {
+    const requestConfig: RequestInit & { url: string; method: string } = {
+      ...config,
+      method,
+      headers: {
+        ...this.headers,
+        'Content-Type': 'application/json',
+        ...config?.headers
+      },
+      credentials: 'include', // Ensure this is typed correctly
+      body: data ? JSON.stringify(data) : undefined,
+      url: this.baseURL + url
+    };
+
     try {
-      const response = await fetch(this.baseURL + url, {
-        method,
-        headers: {
-          ...this.headers,
-          'Content-Type': 'application/json',
-          ...config?.headers
-        },
-        credentials: 'include',
-        body: data ? JSON.stringify(data) : undefined,
-        ...config
-      });
+      await this.runInterceptors(this.requestInterceptors, requestConfig);
+
+      const { url, ...fetchConfig } = requestConfig;
+      const response = await fetch(url, fetchConfig);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const responseData: T = await response.json();
+
+      // Run response interceptors with a separate config object
+      await this.runInterceptors(this.responseInterceptors, {
+        ...requestConfig,
+        response: responseData
+      } as RequestInit & { url: string; method: string; response?: unknown });
 
       return responseData;
     } catch (error) {
