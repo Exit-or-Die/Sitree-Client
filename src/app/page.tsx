@@ -2,9 +2,18 @@
 
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.firstTime) {
+      router.push('/set-up');
+    }
+  }, [session]);
 
   if (session) {
     return (
@@ -26,12 +35,23 @@ export default function Home() {
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <p className="text-2xl mb-2">Not Signed In</p>
-      <button className="bg-blue-600 py-2 px-6 rounded-md mb-2" onClick={() => signIn('google')}>
+      <button
+        className="bg-blue-600 py-2 px-6 rounded-md mb-2"
+        onClick={() =>
+          signIn('google', {
+            callbackUrl: '/'
+          })
+        }
+      >
         Sign in with google
       </button>
       <button
         className="bg-none border-gray-300 border py-2 px-6 rounded-md mb-2"
-        onClick={() => signIn('github')}
+        onClick={() =>
+          signIn('github', {
+            callbackUrl: '/'
+          })
+        }
       >
         Sign in with github
       </button>
