@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 
-import { MainProvider } from '@/components/providers/MainProvider';
+import { ReactQueryProvider } from '@/components/providers/ReactQuery';
 import { MainLayout } from '@/components/templates/MainLayout';
 
 import { cn } from '@/lib/utils';
@@ -25,11 +25,11 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body className={cn(inter.variable, 'font-primary')} suppressHydrationWarning>
-        <MainProvider>
+        <ReactQueryProvider>
           <MainLayout>
             <main>{children}</main>
           </MainLayout>
-        </MainProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
