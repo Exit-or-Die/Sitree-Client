@@ -17,10 +17,10 @@ interface Comment {
 
 class SampleService extends Service {
   getPosts() {
-    return this.http.get<Post[]>(`/posts`);
+    return this.http.get<Post[]>(`posts`);
   }
   getComments() {
-    return this.http.get<Comment[]>(`/comments`);
+    return this.http.get<Comment[]>(`comments`);
   }
 }
 
