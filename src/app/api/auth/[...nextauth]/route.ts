@@ -20,19 +20,40 @@ const handler = NextAuth({
     async signIn({ user }) {
       const { email } = user;
 
+      // user = {
+      //   id: '106352626255878217290',
+      //   name: 'YoonKeun Koh',
+      //   email: 'bear04012@gmail.com',
+      //   image: 'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c'
+      // }
+
       try {
-        // const response = await axios.post('http://localhost:3000/api/auth/check-user', { email });
+        // const response = await axios.post('/api/auth/check-user', { email });
         // 유저가 첫 로그인인지 아닌지 어떻게 확인 할것인가?
         // 있으면 user 반환
-        // 없으면 signup api 호출
-        // 이후에 user 반환
-        const response = {
+
+        // 없으면 response not found with 에러코드 반환
+        // 더 나은 방법있으면 제시
+        // signup api 호출 await axios.post('/api/auth/sign-up', { email });
+        // success user 반환
+
+        // 이때 리스폰스에서 is_new 추가해서 user 반환
+        // 이걸 클라이언트에서 할지 서버에서 할지?
+
+        // success response
+        const successResponse = {
           user: {
             uid: '123',
-            firstTime: true
+            is_new: true
           }
         };
-        if (!response) {
+
+        //failure response
+        const failResponse = {
+          user: {}
+        };
+
+        if (true) {
           // If user does not exist, set a flag in the token
           user.firstTime = true;
         }
@@ -68,7 +89,6 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log('session');
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.firstTime = token.firstTime;

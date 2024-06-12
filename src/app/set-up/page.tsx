@@ -1,23 +1,25 @@
 'use client';
 
-import { useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 export default function Setup() {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
   const router = useRouter();
-  console.log(session);
+
+  const image = useMemo(() => {
+    if (imageFile) {
+      return URL.createObjectURL(imageFile);
+    }
+
+    return session?.user?.image;
+  }, [session, imageFile]);
 
   if (status === 'loading') return <p>Loading...</p>;
-
-  //   if (!session) {
-  //     signIn();
-
-  //     return null;
-  //   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,10 @@ export default function Setup() {
     }
   };
 
+  const handleChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <h1>Setup your profile</h1>
@@ -43,21 +49,19 @@ export default function Setup() {
             type="text"
             id="username"
             value={username}
+            placeholder={session?.user?.name}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
         <div>
           <label htmlFor="image">Profile Image URL:</label>
-          <input
-            type="text"
-            id="image"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            required
-          />
+          <input type="file" onChange={handleChange} />
+          {image && <Image src={image} width={500} height={500} alt="Profile Image" />}
         </div>
-        <button type="submit">Submit</button>
+        <button className="bg-blue-600 py-2 px-6 rounded-md mb-2" type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );
