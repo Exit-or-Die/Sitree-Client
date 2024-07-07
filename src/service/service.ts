@@ -1,3 +1,5 @@
+import { requestInterceptors, responseInterceptors, runInterceptors } from './interceptor';
+
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInit): Promise<T>;
   delete<T>(url: string, config?: RequestInit): Promise<T>;
@@ -65,7 +67,7 @@ class Service {
     method: string,
     url: string,
     data?: unknown,
-    config?: RequestInit
+    config: RequestInit = {}
   ): Promise<T> {
     const requestConfig: RequestInit & { url: string; method: string } = {
       ...config,
@@ -73,18 +75,18 @@ class Service {
       headers: {
         ...this.headers,
         'Content-Type': 'application/json',
-        ...config?.headers
+        ...config.headers
       },
-      credentials: 'include', // Ensure this is typed correctly
+      credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
       url: this.baseURL + url
     };
 
     try {
-      await this.runInterceptors(this.requestInterceptors, requestConfig);
+      await runInterceptors(requestInterceptors, requestConfig);
 
-      const { url, ...fetchConfig } = requestConfig;
-      const response = await fetch(url, fetchConfig);
+      const { url: requestUrl, ...fetchConfig } = requestConfig;
+      const response = await fetch(requestUrl, fetchConfig);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -92,8 +94,7 @@ class Service {
 
       const responseData: T = await response.json();
 
-      // Run response interceptors with a separate config object
-      await this.runInterceptors(this.responseInterceptors, {
+      await runInterceptors(responseInterceptors, {
         ...requestConfig,
         response: responseData
       } as RequestInit & { url: string; method: string; response?: unknown });
@@ -105,31 +106,31 @@ class Service {
     }
   }
 
-  private get<T>(url: string, config?: RequestInit): Promise<T> {
+  private get<T>(url: string, config: RequestInit = {}): Promise<T> {
     return this.request<T>('GET', url, undefined, config);
   }
 
-  private delete<T>(url: string, config?: RequestInit): Promise<T> {
+  private delete<T>(url: string, config: RequestInit = {}): Promise<T> {
     return this.request<T>('DELETE', url, undefined, config);
   }
 
-  private head<T>(url: string, config?: RequestInit): Promise<T> {
+  private head<T>(url: string, config: RequestInit = {}): Promise<T> {
     return this.request<T>('HEAD', url, undefined, config);
   }
 
-  private options<T>(url: string, config?: RequestInit): Promise<T> {
+  private options<T>(url: string, config: RequestInit = {}): Promise<T> {
     return this.request<T>('OPTIONS', url, undefined, config);
   }
 
-  private post<T>(url: string, data?: unknown, config?: RequestInit): Promise<T> {
+  private post<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
     return this.request<T>('POST', url, data, config);
   }
 
-  private put<T>(url: string, data?: unknown, config?: RequestInit): Promise<T> {
+  private put<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
     return this.request<T>('PUT', url, data, config);
   }
 
-  private patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T> {
+  private patch<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
     return this.request<T>('PATCH', url, data, config);
   }
 }
