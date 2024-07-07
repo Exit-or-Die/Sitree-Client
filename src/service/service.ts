@@ -10,6 +10,10 @@ interface HTTPInstance {
   patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
 }
 
+type InterceptorFunction = (
+  config: RequestInit & { url: string; method: string }
+) => Promise<void> | void;
+
 class Service {
   public http: HTTPInstance;
 
@@ -17,12 +21,19 @@ class Service {
 
   private headers: Record<string, string>;
 
+  private requestInterceptors: InterceptorFunction[];
+
+  private responseInterceptors: InterceptorFunction[];
+
   constructor() {
     this.baseURL = `https://jsonplaceholder.typicode.com/`;
     this.headers = {
       csrf: 'token',
       Referer: this.baseURL
     };
+
+    this.requestInterceptors = [];
+    this.responseInterceptors = [];
 
     this.http = {
       get: this.get.bind(this),
@@ -33,6 +44,23 @@ class Service {
       put: this.put.bind(this),
       patch: this.patch.bind(this)
     };
+  }
+
+  public addRequestInterceptor(interceptor: InterceptorFunction): void {
+    this.requestInterceptors.push(interceptor);
+  }
+
+  public addResponseInterceptor(interceptor: InterceptorFunction): void {
+    this.responseInterceptors.push(interceptor);
+  }
+
+  private async runInterceptors(
+    interceptors: InterceptorFunction[],
+    config: RequestInit & { url: string; method: string }
+  ): Promise<void> {
+    for (const interceptor of interceptors) {
+      await interceptor(config);
+    }
   }
 
   private async request<T = unknown>(
