@@ -10,6 +10,7 @@ export default function Setup() {
   const [username, setUsername] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const router = useRouter();
+  console.log(session);
 
   const image = useMemo(() => {
     if (imageFile) {
@@ -24,7 +25,7 @@ export default function Setup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      //   await axios.post('/api/auth/update-profile', {
+      //   const response = await axios.post('/member/sign-up', {
       //     email: session.user.email,
       //     username,
       //     image

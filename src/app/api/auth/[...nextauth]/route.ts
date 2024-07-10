@@ -18,7 +18,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user }) {
-      const { email } = user;
+      const { email, name, image, id } = user;
 
       // user = {
       //   id: '106352626255878217290',
@@ -28,23 +28,20 @@ const handler = NextAuth({
       // }
 
       try {
-        // const response = await axios.post('/api/auth/check-user', { email });
+        // const response = await axios.post('/member/sign-in', { email, name, image, id });
         // 유저가 첫 로그인인지 아닌지 어떻게 확인 할것인가?
         // 있으면 user 반환
-
-        // 없으면 response not found with 에러코드 반환
-        // 더 나은 방법있으면 제시
-        // signup api 호출 await axios.post('/api/auth/sign-up', { email });
-        // success user 반환
-
-        // 이때 리스폰스에서 is_new 추가해서 user 반환
-        // 이걸 클라이언트에서 할지 서버에서 할지?
 
         // success response
         const successResponse = {
           user: {
-            uid: '123',
-            is_new: true
+            auth_id: '123',
+            email: 'abc@abc.com',
+            nickname: 'yoon',
+            profile_img_url: 'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c',
+            is_new_member: false, //false or true
+            access_token: 'abc',
+            refresh_token: 'abc'
           }
         };
 
@@ -53,11 +50,19 @@ const handler = NextAuth({
           user: {}
         };
 
-        if (true) {
+
+
+        if (!successResponse.user.is_new_member) {
           // If user does not exist, set a flag in the token
-          user.firstTime = true;
+          user.isAuthenticated = true;
+          user.email = successResponse.user.email;
+          user.nickname = successResponse.user.nickname;
+          user.profileImg = successResponse.user.profile_img_url;
+          user.accessToken = successResponse.user.access_token;
+          user.refreshToken = successResponse.user.refresh_token;
+          return true;
         }
-        user.firstTime = true;
+        user.isAuthenticated = false;
 
         return true;
       } catch (error) {
@@ -67,20 +72,13 @@ const handler = NextAuth({
       }
     },
     async jwt({ token, user }) {
+      console.log('jwt: ',user)
       if (user) {
         try {
-          // const response = await axios.post('http://localhost:3000/api/auth/get-tokens', {
-          //   email: user.email
-          // });
-          token.firstTime = user.firstTime || false;
-          const response = {
-            data: {
-              accessToken: 'access',
-              refreshToken: 'refresh'
-            }
-          };
-          token.accessToken = response.data.accessToken;
-          token.refreshToken = response.data.refreshToken;
+          token.firstTime = user.isAuthenticated;
+
+          token.accessToken = user.accessToken;
+          token.refreshToken = user.refreshToken;
         } catch (error) {
           console.error('Error getting tokens:', error);
         }
@@ -88,7 +86,8 @@ const handler = NextAuth({
 
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
+      console.log('user: ', user)
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.firstTime = token.firstTime;
