@@ -10,7 +10,6 @@ export default function Setup() {
   const [username, setUsername] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const router = useRouter();
-  console.log(session);
 
   const image = useMemo(() => {
     if (imageFile) {

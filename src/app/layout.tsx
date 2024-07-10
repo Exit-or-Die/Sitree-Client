@@ -3,6 +3,10 @@ import '@/styles/globals.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import { ReactQueryProvider } from '@/components/providers/ReactQuery';
+import { MainLayout } from '@/components/templates/MainLayout';
+
+import { cn } from '@/lib/utils';
 import SessionWrapper from '@/components/SessionWrapper';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-primary' });
@@ -16,7 +20,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionWrapper>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={cn(inter.variable, 'font-primary')} suppressHydrationWarning>
+          <ReactQueryProvider>
+            <MainLayout>
+              <main>{children}</main>
+            </MainLayout>
+          </ReactQueryProvider>
+        </body>
       </html>
     </SessionWrapper>
   );
