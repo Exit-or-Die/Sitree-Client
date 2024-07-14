@@ -1,17 +1,18 @@
 import Service from '../service';
 
+export interface UserDetail {
+  authId: string;
+  email: string;
+  nickname: string;
+  profileImgUrl: string;
+  isNewMember: boolean;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+}
 interface AuthResponse {
   code: number;
   message: string;
-  value: {
-    authId: string;
-    email: string;
-    nickname: string;
-    profileImgUrl: string;
-    isNewMember?: boolean;
-    accessToken?: string;
-    refreshToken?: string;
-  };
+  value: UserDetail;
 }
 
 interface SignInData {

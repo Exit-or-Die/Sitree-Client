@@ -1,5 +1,6 @@
 'use client';
 
+import AuthService from '@/service/auth/AuthService';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -33,13 +34,23 @@ export default function Setup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!session) return;
+
+    const { detail } = session;
     try {
-      //   const response = await axios.post('/member/sign-up', {
-      //     email: session.user.email,
-      //     username,
-      //     image
-      //   });
-      router.push('/');
+      const response = await AuthService.signUp({
+        authId: detail.authId,
+        email: detail.email,
+        nickname: username || detail.nickname,
+        profileImgUrl: imageFile ? URL.createObjectURL(imageFile) : detail.profileImgUrl
+      });
+
+      if (response.code === 200) {
+        document.cookie = `accessToken=${response.value.accessToken}; path=/; secure; SameSite=Lax`;
+        router.push('/');
+      } else {
+        console.error('Error signing up:', response.message);
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -59,7 +70,7 @@ export default function Setup() {
             type="text"
             id="username"
             value={username}
-            placeholder={session?.user?.name}
+            placeholder={session?.detail.nickname}
             onChange={(e) => setUsername(e.target.value)}
             required
           />

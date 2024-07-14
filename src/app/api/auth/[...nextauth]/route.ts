@@ -1,3 +1,4 @@
+import AuthService, { UserDetail } from '@/service/auth/AuthService';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -18,47 +19,38 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user }) {
-      // const { email, name, image, id } = user;
+      const { email, name, image, id } = user;
 
-      // const requestUser = {
-      //   authId: id,
-      //   nickname: name,
-      //   email,
-      //   profileImgUrl: image
-      // }
+      const requestUser = {
+        authId: id,
+        nickname: name || 'user',
+        email: email || 'default@default.com',
+        profileImgUrl:
+          image || 'https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg'
+      };
 
       try {
-        // const response = await axios.post('/member/sign-in', { email, name, image, id });
-        // 유저가 첫 로그인인지 아닌지 어떻게 확인 할것인가?
-        // 있으면 user 반환
+        const userResponse = await AuthService.signIn(requestUser);
 
-        // const requestConfig: RequestInit & { url: string; method: string } = {
-        //   ...{},
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   credentials: 'include',
-        //   body: requestUser ? JSON.stringify(requestUser) : undefined,
-        //   url: 'https://api.si-tree.com/members/sign-in'
-        // };
+        if (userResponse.code !== 200) {
+          throw new Error(userResponse.message);
+        }
 
-        // const { url: requestUrl, ...fetchConfig } = requestConfig;
-        // const response = await fetch(requestUrl, fetchConfig);
+        const userData = userResponse.value;
 
         // user exists
-        const successResponse = {
-          user: {
-            authId: '123',
-            email: 'abc@abc.com',
-            nickname: 'yoon',
-            profileImgUrl:
-              'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c',
-            isNewMember: false, //false or true
-            accessToken: 'abc',
-            refreshToken: 'abc'
-          }
-        };
+        // const successResponse = {
+        //   user: {
+        //     authId: '123',
+        //     email: 'abc@abc.com',
+        //     nickname: 'yoon',
+        //     profileImgUrl:
+        //       'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c',
+        //     isNewMember: false, //false or true
+        //     accessToken: 'abc',
+        //     refreshToken: 'abc'
+        //   }
+        // };
 
         // user doesn't exist
         // const failResponse = {
@@ -73,9 +65,7 @@ const handler = NextAuth({
         //   }
         // }
 
-        const response = successResponse;
-
-        user.information = response.user;
+        user.information = userData;
 
         return true;
       } catch (error) {
@@ -92,7 +82,7 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.detail = token.detail;
+      session.detail = (token as unknown as { detail: UserDetail }).detail;
 
       return session;
     }
