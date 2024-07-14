@@ -3,13 +3,23 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function Setup() {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!session) return;
+
+    const { detail } = session;
+    if (detail.accessToken) {
+      document.cookie = `accessToken=${detail.accessToken}; path=/; secure; SameSite=Lax`;
+      router.push('/');
+    }
+  }, [session]);
 
   const image = useMemo(() => {
     if (imageFile) {
