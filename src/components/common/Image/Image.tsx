@@ -16,7 +16,7 @@ interface ImageProps {
  * width & height 없으면 fill
  */
 const CommonImage = (props: ImageProps) => {
-  const { src, alt = 'Loading', width, height, onClick = () => {} } = props;
+  const { src, alt = 'Common Image Component', width, height, onClick = () => {} } = props;
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoad = () => {
