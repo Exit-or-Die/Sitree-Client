@@ -4,7 +4,7 @@ interface ButtonProps {
   children: React.ReactNode;
 }
 
-const CommonButton = ({ children, ...props }: ButtonProps) => {
+const SButton = ({ children, ...props }: ButtonProps) => {
   const { className, onClick } = props;
 
   return (
@@ -17,4 +17,4 @@ const CommonButton = ({ children, ...props }: ButtonProps) => {
   );
 };
 
-export default CommonButton;
+export default SButton;

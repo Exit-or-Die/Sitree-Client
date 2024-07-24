@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CommonButton from './Button';
+import SButton from './Button';
 
-const meta: Meta<typeof CommonButton> = {
-  title: 'components/common/CommonButton',
-  component: CommonButton,
+const meta: Meta<typeof SButton> = {
+  title: 'components/common/SButton',
+  component: SButton,
   tags: ['common button'],
   args: {
-    children: 'CommonButton',
+    children: 'SButton',
     onClick: () => {
       console.log('click');
     },
@@ -17,6 +17,6 @@ const meta: Meta<typeof CommonButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof CommonButton>;
+type Story = StoryObj<typeof SButton>;
 
 export const Default: Story = {};

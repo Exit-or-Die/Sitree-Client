@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CommonImage from './Image';
+import SImage from './Image';
 
-const meta: Meta<typeof CommonImage> = {
-  title: 'components/common/CommonImage',
-  component: CommonImage,
+const meta: Meta<typeof SImage> = {
+  title: 'components/common/SImage',
+  component: SImage,
   tags: ['common image'],
   args: {
     src: '',
@@ -17,6 +17,6 @@ const meta: Meta<typeof CommonImage> = {
 
 export default meta;
 
-type Story = StoryObj<typeof CommonImage>;
+type Story = StoryObj<typeof SImage>;
 
 export const Default: Story = {};

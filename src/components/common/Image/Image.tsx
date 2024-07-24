@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import styles from './CommonImage.module.css';
+import styles from './SImage.module.css';
 
 interface ImageProps {
   src: string;
@@ -15,7 +15,7 @@ interface ImageProps {
  * parent position relative 추천
  * width & height 없으면 fill
  */
-const CommonImage = (props: ImageProps) => {
+const SImage = (props: ImageProps) => {
   const { src, alt = 'Common Image Component', width, height, onClick = () => {} } = props;
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,4 +40,4 @@ const CommonImage = (props: ImageProps) => {
   );
 };
 
-export default CommonImage;
+export default SImage;
