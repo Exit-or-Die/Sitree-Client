@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { UserDetail } from '@/service/auth/AuthService'
+import { UserDetail } from '@/service/auth/AuthService';
 
 declare module 'next-auth' {
   interface Session {
@@ -11,6 +11,6 @@ declare module 'next-auth' {
   }
 
   interface JWT {
-    detail: UserDetail
+    detail: UserDetail;
   }
 }
