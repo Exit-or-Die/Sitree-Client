@@ -3,7 +3,7 @@ import WithModal from '@/enhancers/WithModal';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 
-import Account from '@/components/account/account';
+import Account from '@/components/account/Account';
 
 export default function Home() {
   const { data: session } = useSession();
