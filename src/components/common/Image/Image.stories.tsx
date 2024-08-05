@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SImage from './Image';
+import SImage from '.';
 
 const meta: Meta<typeof SImage> = {
   title: 'components/common/SImage',
