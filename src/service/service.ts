@@ -26,13 +26,13 @@ class Service {
   private responseInterceptors: InterceptorFunction[];
 
   constructor() {
-    this.baseURL = `https://jsonplaceholder.typicode.com/`;
+    this.baseURL = `https://api.si-tree.com/`;
     this.headers = {
-      csrf: 'token',
+      // csrf: 'token',
       Referer: this.baseURL
     };
 
-    this.requestInterceptors = [];
+    this.requestInterceptors = []
     this.responseInterceptors = [];
 
     this.http = {
@@ -74,19 +74,26 @@ class Service {
       method,
       headers: {
         ...this.headers,
-        'Content-Type': 'application/json',
-        ...config.headers
+        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...config.headers,
       },
-      credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
       url: this.baseURL + url
     };
+    console.log(data ? JSON.stringify(data) : undefined)
 
     try {
       await runInterceptors(requestInterceptors, requestConfig);
 
       const { url: requestUrl, ...fetchConfig } = requestConfig;
+      console.log(fetchConfig);
       const response = await fetch(requestUrl, fetchConfig);
+      console.log('------------------------------------')
+      console.log(requestUrl);
+      console.log(fetchConfig);
+      console.log('------------------------------------')
+      console.log(await response.json());
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -123,6 +130,8 @@ class Service {
   }
 
   private post<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+    console.log(url);
+    console.log(data);
     return this.request<T>('POST', url, data, config);
   }
 

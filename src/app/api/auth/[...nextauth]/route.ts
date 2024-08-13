@@ -20,6 +20,16 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       const { email, name, image, id } = user;
+      // console.log(user)
+      // console.log(account);
+      const requestData = {
+        provider: account?.provider,
+        email,
+        oAuthToken: account?.access_token
+      }
+
+      await AuthService.signIn(requestData);
+
 
       // const requestUser = {
       //   authId: id,
