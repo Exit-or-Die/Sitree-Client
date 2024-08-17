@@ -7,10 +7,9 @@ const queryKeys = {
 
 const AuthQueryOptions = {
   signIn: (signInData: {
-    authId: string;
+    provider: string;
     email: string;
-    nickname: string;
-    profileImgUrl: string;
+    oAuthToken: string;
   }) => ({
     queryKey: queryKeys.signIn(),
     queryFn: () => AuthService.signIn(signInData)

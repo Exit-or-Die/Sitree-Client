@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (request.nextUrl.pathname.startsWith('/set-up') && !accessToken) {
+  if (request.nextUrl.pathname.startsWith('/onboarding') && !accessToken) {
     return NextResponse.next();
   }
 

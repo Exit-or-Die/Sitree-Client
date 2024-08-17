@@ -9,7 +9,7 @@ type Props = {
 
 const SignInButton = ({ authType, className }: Props) => {
   const handleSignIn = () => {
-    signIn(authType, { callbackUrl: '/set-up' });
+    signIn(authType, { callbackUrl: '/onboarding' });
   };
 
   return (

@@ -16,10 +16,9 @@ interface AuthResponse {
 }
 
 interface SignInData {
-  authId: string;
+  provider: string;
   email: string;
-  nickname: string;
-  profileImgUrl: string;
+  oAuthToken: string;
 }
 
 interface SignUpData {

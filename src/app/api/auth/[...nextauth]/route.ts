@@ -1,4 +1,6 @@
+import { getDehydratedQuery } from '@/hooks/react-query/react-query';
 import AuthService, { UserDetail } from '@/service/auth/AuthService';
+import AuthQueryOptions from '@/service/auth/queries';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -19,27 +21,25 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      const { email, name, image, id } = user;
-      // console.log(user)
-      // console.log(account);
-      const requestData = {
-        provider: account?.provider,
+      if (!account) return false;
+
+      const { email } = user;
+      const { provider, access_token: accessToken } = account;
+
+      if (!accessToken || !email) return false;
+
+      const body = {
+        provider: provider.toUpperCase(),
         email,
-        oAuthToken: account?.access_token
+        oAuthToken: accessToken
       }
 
-      await AuthService.signIn(requestData);
-
-
-      // const requestUser = {
-      //   authId: id,
-      //   nickname: name || 'user',
-      //   email: email || 'default@default.com',
-      //   profileImgUrl:
-      //     image || 'https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg'
-      // };
-
       try {
+        const response = await AuthService.signIn(body);
+
+        if (response.code === 400) {
+          throw new Error(response.message);
+        }
         // const userResponse = await AuthService.signIn(requestUser);
 
         // if (userResponse.code !== 200) {
@@ -76,7 +76,7 @@ const handler = NextAuth({
           }
         };
 
-        user.information = failResponse;
+        user.information = response.value;
 
         return true;
       } catch (error) {
