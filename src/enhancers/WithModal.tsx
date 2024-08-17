@@ -1,6 +1,6 @@
 import { isBrowser } from '@/utils/misc';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image'
 import ReactDOM from 'react-dom';
 
 type Props = {
@@ -46,12 +46,7 @@ const withModal = <P extends object>(Element: React.ComponentType<P>) =>
               }`}
               onClick={onClickClose}
             >
-               <Image
-                src="/close.svg"
-                width={24}
-                height={24}
-                alt="close button"
-              />  
+              <Image src="/close.svg" width={24} height={24} alt="close button" />
             </div>
             <Element {...props} />
           </div>

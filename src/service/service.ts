@@ -32,7 +32,7 @@ class Service {
       Referer: this.baseURL
     };
 
-    this.requestInterceptors = []
+    this.requestInterceptors = [];
     this.responseInterceptors = [];
 
     this.http = {
@@ -75,7 +75,7 @@ class Service {
       headers: {
         ...this.headers,
         'Content-Type': 'application/json',
-        ...config.headers,
+        ...config.headers
       },
       body: data ? JSON.stringify(data) : undefined,
       url: this.baseURL + url

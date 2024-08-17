@@ -6,11 +6,7 @@ const queryKeys = {
 };
 
 const AuthQueryOptions = {
-  signIn: (signInData: {
-    provider: string;
-    email: string;
-    oAuthToken: string;
-  }) => ({
+  signIn: (signInData: { provider: string; email: string; oAuthToken: string }) => ({
     queryKey: queryKeys.signIn(),
     queryFn: () => AuthService.signIn(signInData)
   }),
