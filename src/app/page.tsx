@@ -1,16 +1,12 @@
 'use client';
 import WithModal from '@/enhancers/WithModal';
-import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 
-import Account from '@/components/account/Account';
-import AuthService from '@/service/auth/AuthService';
+import Account from '@/components/account/account';
 
 export default function Home() {
-  const { data: session } = useSession();
   const AccountWithModal = WithModal(Account);
   const [toggleLogin, setToggleLogin] = useState(false);
-  console.log(session);
 
   const onClickCloseModal = () => {
     setToggleLogin(false);

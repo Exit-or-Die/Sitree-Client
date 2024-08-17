@@ -1,6 +1,4 @@
-import { getDehydratedQuery } from '@/hooks/react-query/react-query';
 import AuthService, { UserDetail } from '@/service/auth/AuthService';
-import AuthQueryOptions from '@/service/auth/queries';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -32,7 +30,7 @@ const handler = NextAuth({
         provider: provider.toUpperCase(),
         email,
         oAuthToken: accessToken
-      }
+      };
 
       try {
         const response = await AuthService.signIn(body);
@@ -40,41 +38,6 @@ const handler = NextAuth({
         if (response.code === 400) {
           throw new Error(response.message);
         }
-        // const userResponse = await AuthService.signIn(requestUser);
-
-        // if (userResponse.code !== 200) {
-        //   throw new Error(userResponse.message);
-        // }
-
-        // const userData = userResponse.value;
-
-        // user exists
-        // const successResponse = {
-        //   user: {
-        //     authId: '123',
-        //     email: 'abc@abc.com',
-        //     nickname: 'yoon',
-        //     profileImgUrl:
-        //       'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c',
-        //     isNewMember: false, //false or true
-        //     accessToken: 'abc',
-        //     refreshToken: 'abc'
-        //   }
-        // };
-
-        // user doesn't exist
-        const failResponse = {
-          user: {
-            authId: '106352626255878217290',
-            email: 'bear04012@gmail.com',
-            nickname: 'YoonKeun Koh',
-            profileImgUrl:
-              'https://lh3.googleusercontent.com/a/ACg8ocKiS_mAYqkeWQ3OkqJ7ZA9CzuCEMhUld5EGF7OyQQjMOn-h7rfP=s96-c',
-            isNewMember: true,
-            accessToken: null,
-            refreshToken: null
-          }
-        };
 
         user.information = response.value;
 

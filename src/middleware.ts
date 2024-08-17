@@ -5,7 +5,6 @@ export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
 
-  const loginUrl = new URL('/login', request.url);
   const homeUrl = new URL('/', request.url);
 
   const authPaths = ['/api/auth', '/api/auth/signin', '/api/auth/callback'];
