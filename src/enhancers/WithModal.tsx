@@ -10,15 +10,17 @@ type Props = {
   hideClose?: boolean;
 };
 
-const withModal = <P extends object>(Element: React.ComponentType<P>) =>
-  function ModalContainer(props: P & Props) {
+const withModal =
+  <P extends object>(Element: React.ComponentType<P>) =>
+  (props: P & Props) => {
+    const { isVisible, onClickClose, hideClose, disableClose } = props;
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
       setIsClient(true);
 
       const handleClose = () => {
-        if (!props.isVisible) return;
-        props.onClickClose();
+        if (!isVisible) return;
+        onClickClose();
       };
 
       window.addEventListener('keyup', handleClose);
@@ -26,9 +28,7 @@ const withModal = <P extends object>(Element: React.ComponentType<P>) =>
       return () => {
         window.removeEventListener('keyup', handleClose);
       };
-    }, [props.isVisible, props.onClickClose]);
-
-    const { isVisible, onClickClose, hideClose, disableClose } = props;
+    }, [isVisible, onClickClose]);
 
     if (!isVisible) return null;
 

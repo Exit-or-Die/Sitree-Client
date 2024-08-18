@@ -13,6 +13,7 @@ const SignInButton = ({ authType, className }: Props) => {
   };
 
   return (
+    // TBD: Tailwind css must be updated
     <div
       className={`${className} text-black w-[193px] h-[56px] border rounded-[50px] flex justify-center items-center font-medium text-[16px] leading-[20px] text-[#414752] cursor-pointer`}
       onClick={handleSignIn}

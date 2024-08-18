@@ -18,16 +18,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (request.nextUrl.pathname.startsWith('/onboarding') && !accessToken) {
-    return NextResponse.next();
-  }
-
-  // if (!request.nextUrl.pathname.startsWith('/login') && !accessToken) {
-  //   return NextResponse.redirect(loginUrl);
-  // }
-
-  if (request.nextUrl.pathname.startsWith('/login') && accessToken) {
-    return NextResponse.redirect(homeUrl);
+  if (request.nextUrl.pathname.startsWith('/onboarding')) {
+    return !accessToken ? NextResponse.next() : NextResponse.redirect(homeUrl);
   }
 
   return NextResponse.next();

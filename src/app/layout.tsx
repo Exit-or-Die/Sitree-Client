@@ -32,4 +32,5 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     </SessionWrapper>
   );
 };
+
 export default RootLayout;

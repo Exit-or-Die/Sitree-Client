@@ -2,10 +2,10 @@
 import WithModal from '@/enhancers/WithModal';
 import React, { useState } from 'react';
 
-import Account from '@/components/account/account';
+import SignInModal from '@/components/account/SignInModal';
 
 export default function Home() {
-  const AccountWithModal = WithModal(Account);
+  const SignWithModal = WithModal(SignInModal);
   const [toggleLogin, setToggleLogin] = useState(false);
 
   const onClickCloseModal = () => {
@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
-      <AccountWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
+      <SignWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
       <button
         className="bg-blue-600 py-2 px-6 rounded-md mb-2"
         onClick={() => setToggleLogin(true)}

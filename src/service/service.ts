@@ -26,9 +26,9 @@ class Service {
   private responseInterceptors: InterceptorFunction[];
 
   constructor() {
-    this.baseURL = `https://api.si-tree.com/`;
+    this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
-      // csrf: 'token',
+      csrf: 'token',
       Referer: this.baseURL
     };
 
@@ -77,6 +77,7 @@ class Service {
         'Content-Type': 'application/json',
         ...config.headers
       },
+      credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
       url: this.baseURL + url
     };

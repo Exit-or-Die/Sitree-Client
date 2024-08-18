@@ -43,5 +43,3 @@ export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
 }
 
 export const Hydrate = HydrationBoundary;
-
-export default {};

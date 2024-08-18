@@ -1,26 +1,29 @@
 'use client';
 
 import AuthService from '@/service/auth/AuthService';
+import { setCookie } from '@/utils/cookie';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useState, useMemo, useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 
-export default function Setup() {
+const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const router = useRouter();
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  useEffect(() => {
+  const handleRedirect = useCallback(() => {
     if (!session) return;
 
-    const { detail } = session;
-    if (detail.accessToken) {
-      document.cookie = `accessToken=${detail.accessToken}; path=/; secure; SameSite=Lax`;
-      router.push('/');
+    if (session.detail.accessToken) {
+      setCookie('accessToken', session.detail.accessToken);
+      redirect('/');
     }
   }, [session]);
+
+  useEffect(() => {
+    handleRedirect();
+  }, [handleRedirect]);
 
   const image = useMemo(() => {
     if (imageFile) {
@@ -29,8 +32,6 @@ export default function Setup() {
 
     return session?.user?.image;
   }, [session, imageFile]);
-
-  if (status === 'loading') return <p>Loading...</p>;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +47,9 @@ export default function Setup() {
       });
 
       if (response.code === 200) {
+        // TBD: after onboarding markup is decided
         document.cookie = `accessToken=${response.value.accessToken}; path=/; secure; SameSite=Lax`;
-        router.push('/');
+        redirect('/');
       } else {
         console.error('Error signing up:', response.message);
       }
@@ -56,9 +58,14 @@ export default function Setup() {
     }
   };
 
-  const handleChange = (e) => {
-    setImageFile(e.target.files[0]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImageFile(e.target.files[0]);
+    }
   };
+
+  // TBD: after loading component is implemented
+  if (status === 'loading') return <p>Loading...</p>;
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
@@ -86,4 +93,6 @@ export default function Setup() {
       </form>
     </div>
   );
-}
+};
+
+export default Onboarding;
