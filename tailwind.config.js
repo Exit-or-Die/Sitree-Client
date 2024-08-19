@@ -33,35 +33,35 @@ module.exports = {
         }
       },
       fontSize: {
-        'text-xsmall': '0.75rem',
-        'text-small': '0.875rem',
-        'text-base': '1rem',
-        'text-large': '1.25rem',
-        'text-xlarge': '1.5rem',
-        'text-2xlarge': '2rem',
-        'text-3xlarge': '2.25rem',
-        'text-4xlarge': '3rem'
+        xsmall: '0.75rem',
+        small: '0.875rem',
+        base: '1rem',
+        large: '1.25rem',
+        xlarge: '1.5rem',
+        '2xlarge': '2rem',
+        '3xlarge': '2.25rem',
+        '4xlarge': '3rem'
       },
       fontWeight: {
-        'font-rg': 300,
-        'font-md': 400,
-        'font-sb': 500,
-        'font-bd': 600
+        rg: 300,
+        md: 400,
+        sb: 500,
+        bd: 600
       },
       lineHeight: {
-        'leading-3': '0.75rem',
-        'leading-4': '1rem',
-        'leading-5': '1.25rem',
-        'leading-6': '1.5rem',
-        'leading-7': '1.75rem',
-        'leading-8': '2rem',
-        'leading-9': '2.25rem',
-        'leading-10': '2.5rem',
-        'leading-none': '1rem',
-        'leading-tight': '1.28rem',
-        'leading-snug': '1.32rem',
-        'leading-normal': '1.5rem',
-        'leading-loose': '2rem'
+        3: '0.75rem',
+        4: '1rem',
+        5: '1.25rem',
+        6: '1.5rem',
+        7: '1.75rem',
+        8: '2rem',
+        9: '2.25rem',
+        10: '2.5rem',
+        none: '1rem',
+        tight: '1.28rem',
+        snug: '1.32rem',
+        normal: '1.5rem',
+        loose: '2rem'
       },
       letterSpacing: {
         'spacing-none': '0%',
@@ -69,15 +69,15 @@ module.exports = {
         'spacing-tight': '-2%'
       },
       borderRadius: {
-        'rounded-none': '0rem',
-        'rounded-2xsmall': '0.125rem',
-        'rounded-xsmall': '0.25rem',
-        'rounded-small': '0.375rem',
-        'rounded-base': '0.5rem',
-        'rounded-large': '0.75rem',
-        'rounded-xlarge': '1rem',
-        'rounded-2xlarge': '1.25rem',
-        'rounded-full': '50%'
+        none: '0rem',
+        '2xsmall': '0.125rem',
+        xsmall: '0.25rem',
+        small: '0.375rem',
+        base: '0.5rem',
+        large: '0.75rem',
+        xlarge: '1rem',
+        '2xlarge': '1.25rem',
+        full: '50%'
       },
       borderWidth: {
         'border-1': '0.0625rem',
