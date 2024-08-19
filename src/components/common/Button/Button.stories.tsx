@@ -7,10 +7,8 @@ const meta: Meta<typeof SButton> = {
   component: SButton,
   tags: ['common button'],
   args: {
-    children: 'SButton',
-    onClick: () => {
-      console.log('click');
-    },
+    children: '버튼 테스트',
+    onClick: () => {},
     className: ''
   }
 };

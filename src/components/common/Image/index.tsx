@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import styles from './SImage.module.css';
-
 interface ImageProps {
   src: string;
   alt?: string;
@@ -24,7 +22,7 @@ const SImage = (props: ImageProps) => {
   };
 
   return (
-    <div className={styles.imageContainer}>
+    <div>
       {isLoading && <div>Skeleton!</div>}
       <Image
         src={src}
@@ -34,7 +32,6 @@ const SImage = (props: ImageProps) => {
         height={height}
         onLoad={handleLoad}
         onClick={onClick}
-        className={isLoading ? styles.hidden : ''}
       />
     </div>
   );
