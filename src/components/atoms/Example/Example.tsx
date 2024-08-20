@@ -7,5 +7,6 @@ type ExampleProps = {
 export const Example = ({ children }: ExampleProps) => (
   <div>
     <h1>{children}</h1>
+    <div>test</div>
   </div>
 );
