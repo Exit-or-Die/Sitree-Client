@@ -1,6 +1,6 @@
 import { RequestConfigWithResponse } from '..';
 
-export const handleResponseByCode = async (config: RequestConfigWithResponse): Promise<void> => {
+export const handleResponseByCode = (config: RequestConfigWithResponse) => {
   const { response } = config;
 
   // response가 undefined인지 확인
