@@ -35,10 +35,6 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        if (response.code === 400) {
-          throw new Error(response.message);
-        }
-
         user.information = response.value;
 
         return true;
