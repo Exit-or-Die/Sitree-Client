@@ -1,7 +1,5 @@
 import { RequestConfigWithResponse } from '..';
 
-import { ApiResponse } from '@/service/service';
-
 export const handleResponseByCode = <T>(config: RequestConfigWithResponse<T>): void => {
   const { response } = config;
 
