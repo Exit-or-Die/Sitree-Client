@@ -9,6 +9,7 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/styles/*": ["./src/styles/*"],
       "@/service/*": ["./src/service/*"],
+      "@/enhancers/*": ["./src/enhancers/*"],
       "@/utils/*": ["./src/utils/*"],
       "@/mocks/*": ["./__mocks__/*"],
       "@/tests/*": ["./.jest/*"]

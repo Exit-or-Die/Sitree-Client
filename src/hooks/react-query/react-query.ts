@@ -4,8 +4,7 @@ import {
   QueryClient,
   dehydrate,
   QueryState,
-  QueryKey,
-  useQueryClient
+  QueryKey
 } from '@tanstack/react-query';
 import { cache } from 'react';
 
@@ -44,5 +43,3 @@ export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
 }
 
 export const Hydrate = HydrationBoundary;
-
-export default {};
