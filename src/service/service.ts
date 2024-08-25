@@ -1,4 +1,10 @@
-import { requestInterceptors, responseInterceptors, runInterceptors } from './interceptor';
+import {
+  requestInterceptors,
+  responseInterceptors,
+  runInterceptors,
+  RequestConfigWithResponse,
+  InterceptorFunction
+} from './interceptor';
 
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInit): Promise<T>;
@@ -10,9 +16,11 @@ interface HTTPInstance {
   patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
 }
 
-type InterceptorFunction = (
-  config: RequestInit & { url: string; method: string }
-) => Promise<void> | void;
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  value: T;
+}
 
 class Service {
   public http: HTTPInstance;
@@ -21,19 +29,12 @@ class Service {
 
   private headers: Record<string, string>;
 
-  private requestInterceptors: InterceptorFunction[];
-
-  private responseInterceptors: InterceptorFunction[];
-
   constructor() {
-    this.baseURL = `https://jsonplaceholder.typicode.com/`;
+    this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
       csrf: 'token',
       Referer: this.baseURL
     };
-
-    this.requestInterceptors = [];
-    this.responseInterceptors = [];
 
     this.http = {
       get: this.get.bind(this),
@@ -47,20 +48,11 @@ class Service {
   }
 
   public addRequestInterceptor(interceptor: InterceptorFunction): void {
-    this.requestInterceptors.push(interceptor);
+    requestInterceptors.push(interceptor);
   }
 
   public addResponseInterceptor(interceptor: InterceptorFunction): void {
-    this.responseInterceptors.push(interceptor);
-  }
-
-  private async runInterceptors(
-    interceptors: InterceptorFunction[],
-    config: RequestInit & { url: string; method: string }
-  ): Promise<void> {
-    for (const interceptor of interceptors) {
-      await interceptor(config);
-    }
+    responseInterceptors.push(interceptor);
   }
 
   private async request<T = unknown>(
@@ -69,7 +61,7 @@ class Service {
     data?: unknown,
     config: RequestInit = {}
   ): Promise<T> {
-    const requestConfig: RequestInit & { url: string; method: string } = {
+    const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
       headers: {
@@ -92,14 +84,17 @@ class Service {
         throw new Error('Network response was not ok');
       }
 
-      const responseData: T = await response.json();
+      const responseData: ApiResponse<T> = await response.json();
+      requestConfig.response = responseData;
 
-      await runInterceptors(responseInterceptors, {
-        ...requestConfig,
-        response: responseData
-      } as RequestInit & { url: string; method: string; response?: unknown });
+      await runInterceptors(responseInterceptors, requestConfig);
 
-      return responseData;
+      // response가 undefined인지 확인 후 반환
+      if (!requestConfig.response) {
+        throw new Error('API Error: Response is undefined after processing');
+      }
+
+      return requestConfig.response.value;
     } catch (error) {
       console.error('Error:', error);
       throw error;
