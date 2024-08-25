@@ -16,6 +16,12 @@ interface HTTPInstance {
   patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
 }
 
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  value: T;
+}
+
 class Service {
   public http: HTTPInstance;
 
@@ -55,7 +61,7 @@ class Service {
     data?: unknown,
     config: RequestInit = {}
   ): Promise<T> {
-    const requestConfig: RequestConfigWithResponse = {
+    const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
       headers: {
@@ -78,7 +84,7 @@ class Service {
         throw new Error('Network response was not ok');
       }
 
-      const responseData = await response.json();
+      const responseData: ApiResponse<T> = await response.json();
       requestConfig.response = responseData;
 
       await runInterceptors(responseInterceptors, requestConfig);
@@ -88,7 +94,7 @@ class Service {
         throw new Error('API Error: Response is undefined after processing');
       }
 
-      return requestConfig.response as T;
+      return requestConfig.response.value;
     } catch (error) {
       console.error('Error:', error);
       throw error;

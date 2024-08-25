@@ -1,6 +1,8 @@
 import { RequestConfigWithResponse } from '..';
 
-export const handleResponseByCode = (config: RequestConfigWithResponse) => {
+import { ApiResponse } from '@/service/service';
+
+export const handleResponseByCode = <T>(config: RequestConfigWithResponse<T>): void => {
   const { response } = config;
 
   // response가 undefined인지 확인
@@ -8,13 +10,8 @@ export const handleResponseByCode = (config: RequestConfigWithResponse) => {
     throw new Error('API Error: Response is undefined');
   }
 
-  const responseT = response as { code: number; value: unknown };
-
   // code 값에 따라 처리
-  if (responseT.code !== 0) {
-    throw new Error(`API Error: ${responseT.code}`);
+  if (response.code !== 0) {
+    throw new Error(`API Error: ${response.code}`);
   }
-
-  // response.value를 config.response에 할당
-  config.response = responseT.value;
 };
