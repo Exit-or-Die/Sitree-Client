@@ -11,6 +11,7 @@ const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  console.log(session);
 
   const handleRedirect = useCallback(() => {
     if (!session) return;

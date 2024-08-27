@@ -9,12 +9,6 @@ export interface UserDetail {
   accessToken?: string | null;
   refreshToken?: string | null;
 }
-interface AuthResponse {
-  code: number;
-  message: string;
-  value: UserDetail;
-}
-
 interface SignInData {
   provider: string;
   email: string;
@@ -30,11 +24,11 @@ interface SignUpData {
 
 class AuthService extends Service {
   signIn(data: SignInData) {
-    return this.http.post<AuthResponse>('members/sign-in', data);
+    return this.http.post<UserDetail>('members/sign-in', data);
   }
 
   signUp(data: SignUpData) {
-    return this.http.post<AuthResponse>('members/sign-up', data);
+    return this.http.post<UserDetail>('members/sign-up', data);
   }
 }
 
