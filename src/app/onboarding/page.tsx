@@ -70,6 +70,7 @@ const Onboarding = () => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
+      {/* <div className="w-[580px] h-[736px] bg-[#FFF] border-1 "></div> */}
       <h1>Setup your profile</h1>
       <form onSubmit={handleSubmit}>
         <div>
