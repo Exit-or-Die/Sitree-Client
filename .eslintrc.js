@@ -48,6 +48,12 @@ module.exports = {
     'newline-before-return': 2,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 0,
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto'
+      }
+    ],
     'import-helpers/order-imports': [
       2,
       {
