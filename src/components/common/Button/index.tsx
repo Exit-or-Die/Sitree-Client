@@ -1,3 +1,5 @@
+'use client';
+
 interface ButtonProps {
   className?: string;
   onClick?: () => void;
