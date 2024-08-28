@@ -8,7 +8,16 @@ import {
 } from '@tanstack/react-query';
 import { cache } from 'react';
 
-export const getQueryClient = cache(() => new QueryClient());
+export const getQueryClient = cache(
+  () =>
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 60 * 1000
+        }
+      }
+    })
+);
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 

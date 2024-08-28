@@ -2,7 +2,7 @@ import ProjectService from './ProjectService';
 import { ProjectRegisterRequest } from './request';
 
 const queryKeys = {
-  retrieveProjectDetail: (projectDetail: string) => ['retrieveDetail', projectDetail] as const
+  retrieveProjectDetail: (projectId: string) => ['retrieveDetail', projectId] as const
 };
 
 const ProjectQueryOptions = {
