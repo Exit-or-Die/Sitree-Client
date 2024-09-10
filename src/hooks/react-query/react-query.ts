@@ -51,4 +51,17 @@ export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
   >[];
 }
 
+export async function getDehydratedQueryData<Q extends QueryProps>({ queryKey, queryFn }: Q) {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({ queryKey, queryFn });
+
+  const data = queryClient.getQueryData(queryKey);
+
+  if (!data) {
+    throw new Error(`No data found for queryKey: ${JSON.stringify(queryKey)}`);
+  }
+
+  return data as UnwrapPromise<ReturnType<Q['queryFn']>>;
+}
+
 export const Hydrate = HydrationBoundary;

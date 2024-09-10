@@ -3,6 +3,7 @@ import ProjectQueryOptions from '@/service/project/queries';
 import { redirect } from 'next/navigation';
 
 import SInput from '@/components/common/Input';
+import ProjectRegisterForm from '@/components/project/register/ProjectRegisterForm';
 
 interface ProjectDetailPageProps {
   params: {
@@ -21,15 +22,10 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     redirect('/404');
   }
 
-  const projectDetail = query.state.data;
-
   return (
-    <div>
+    <div className="p-20">
       <Hydrate state={{ queries: [query] }}>
-        <div>
-          <h1>Project ID: {projectId}</h1>
-          <SInput placeholder="프로젝트 이름을 입력해주세요" className="text-slate-80" />
-        </div>
+        <ProjectRegisterForm />
       </Hydrate>
     </div>
   );
