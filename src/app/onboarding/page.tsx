@@ -4,15 +4,16 @@ import { useSignUp } from '@/hooks/auth/useAuth';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 
 const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
-  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null); // null means no verification yet
+  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null);
   const [affiliation, setAffiliation] = useState('');
   const [link, setLink] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { mutate: signUp } = useSignUp();
 
@@ -48,7 +49,7 @@ const Onboarding = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       setImageFile(e.target.files[0]);
     }
   };
@@ -58,6 +59,12 @@ const Onboarding = () => {
       setIsUsernameValid(true);
     } else {
       setIsUsernameValid(false);
+    }
+  };
+
+  const handleFileSelect = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -181,11 +188,20 @@ const Onboarding = () => {
                 )}
               </div>
               <div className="flex flex-col">
-                <div className="flex cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95">
+                <div
+                  className="flex cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95"
+                  onClick={handleFileSelect}
+                >
                   <div className="mr-[4px] text-small">파일 선택</div>
                   <Image src="/select.svg" width={16} height={16} alt="select icon" />
                 </div>
-                <input id="file-upload" type="file" onChange={handleChange} className="hidden" />
+                <input
+                  ref={fileInputRef}
+                  id="file-upload"
+                  type="file"
+                  onChange={handleChange}
+                  className="hidden"
+                />
                 <div className="mt-2 text-xsmall text-slate-50">png 또는 jpg를 첨부해 주세요</div>
                 <div className="mt-1 text-xsmall text-slate-60 font-md">
                   최대 20mb, 권장 사이즈 80*80
