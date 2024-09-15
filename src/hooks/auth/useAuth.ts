@@ -6,7 +6,6 @@ export const useSignUp = () => {
   const mutation = useMutation({
     mutationFn: (credentials) => AuthService.signUp(credentials),
     onSuccess: (data) => {
-      // On success, set the token and redirect
       if (!data.accessToken) return;
       setCookie('accessToken', data.accessToken);
     },
