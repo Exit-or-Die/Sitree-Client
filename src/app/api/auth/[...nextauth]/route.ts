@@ -35,7 +35,7 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        user.information = response;
+        user.information = { ...response, oAuthToken: accessToken, provider };
 
         return true;
       } catch (error) {

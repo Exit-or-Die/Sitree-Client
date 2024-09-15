@@ -2,8 +2,10 @@ import Service from '../service';
 
 export interface UserDetail {
   authId: string;
+  provider: string;
   email: string;
   nickname: string;
+  oAuthToken: string;
   profileImgUrl: string;
   isNewMember: boolean;
   accessToken?: string | null;

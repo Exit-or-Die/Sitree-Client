@@ -1,31 +1,20 @@
 'use client';
 
-import AuthService from '@/service/auth/AuthService';
-import { setCookie } from '@/utils/cookie';
+import { useSignUp } from '@/hooks/auth/useAuth';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useMemo } from 'react';
 
 const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
+  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null); // null means no verification yet
   const [affiliation, setAffiliation] = useState('');
   const [link, setLink] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-
-  const handleRedirect = useCallback(() => {
-    if (!session) return;
-
-    if (session.detail.accessToken) {
-      setCookie('accessToken', session.detail.accessToken);
-      redirect('/');
-    }
-  }, [session]);
-
-  useEffect(() => {
-    handleRedirect();
-  }, [handleRedirect]);
+  const router = useRouter();
+  const { mutate: signUp } = useSignUp();
 
   const image = useMemo(() => {
     if (imageFile) {
@@ -37,33 +26,38 @@ const Onboarding = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!session) return;
+    if (!session || !isUsernameValid) return;
 
     const { detail } = session;
-    try {
-      const response = await AuthService.signUp({
-        authId: detail.authId,
-        email: detail.email,
-        nickname: username || detail.nickname,
-        affiliation,
-        link,
-        profileImgUrl: imageFile ? URL.createObjectURL(imageFile) : detail.profileImgUrl
-      });
 
-      if (response.code === 200) {
-        document.cookie = `accessToken=${response.value.accessToken}; path=/; secure; SameSite=Lax`;
-        redirect('/');
-      } else {
-        console.error('Error signing up:', response.message);
+    const credentials = {
+      provider: detail.provider.toUpperCase(),
+      oAuthToken: detail.oAuthToken,
+      email: detail.email,
+      nickname: username || detail.nickname,
+      profileImgUrl: imageFile ? URL.createObjectURL(imageFile) : session?.user?.image,
+      thirdPartyProfileUrl: link,
+      belonging: affiliation
+    };
+
+    signUp(credentials, {
+      onSuccess: () => {
+        router.push('/');
       }
-    } catch (error) {
-      console.error('Error updating profile:', error);
-    }
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImageFile(e.target.files[0]);
+    }
+  };
+
+  const handleUsernameVerify = () => {
+    if (username === 'validName') {
+      setIsUsernameValid(true);
+    } else {
+      setIsUsernameValid(false);
     }
   };
 
@@ -79,9 +73,9 @@ const Onboarding = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <div className="block text-small font-md mb-2 text-slate-30">
-              닉네임
-              <span className="inline-block align-middle ml-1">
+            <div className="flex text-small font-md mb-2 text-slate-30">
+              <div>닉네임</div>
+              <div className="ml-1 pt-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="6"
@@ -91,25 +85,46 @@ const Onboarding = () => {
                 >
                   <circle cx="3" cy="3" r="3" fill="#08C767" />
                 </svg>
-              </span>
+              </div>
             </div>
-            <div className="mb-6 flex items-center">
+            <div className="mb-2 flex items-center relative">
               <input
                 type="text"
                 id="username"
                 value={username}
                 placeholder="닉네임을 입력해 주세요"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setIsUsernameValid(null);
+                }}
                 required
-                className="h-[40px] flex-grow p-3 border border-slate-300 rounded-base mr-[6px]"
+                className={`h-[40px] flex-grow p-3 border border-slate-300 rounded-base ${isUsernameValid === false && 'bg-[#FFF2F2] border-0'}`}
               />
-              <button
-                type="button"
-                className="h-[40px] px-4 py-2 border border-slate-300 rounded-large text-slate-500"
-              >
-                중복 확인
-              </button>
+
+              {isUsernameValid ? (
+                <Image
+                  src="/check.svg"
+                  className="absolute right-3"
+                  width={20}
+                  height={20}
+                  alt="select icon"
+                />
+              ) : (
+                <button
+                  type="button"
+                  className="h-[40px] px-4 py-2 border border-slate-300 rounded-large text-slate-500 ml-[6px]"
+                  onClick={handleUsernameVerify}
+                >
+                  중복 확인
+                </button>
+              )}
             </div>
+            {isUsernameValid === true && (
+              <p className="text-small text-tree-40">사용할수 있는 닉네임입니다</p>
+            )}
+            {isUsernameValid === false && (
+              <p className="text-small text-[#F6424E]">사용 할수 없는 닉네임입니다</p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -166,12 +181,10 @@ const Onboarding = () => {
                 )}
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer inline-flex items-center px-4 py-2 border border-slate-80 rounded-small text-slate-50 hover:bg-slate-95"
-                >
-                  <span>파일 선택</span>
-                </label>
+                <div className="flex cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95">
+                  <div className="mr-[4px] text-small">파일 선택</div>
+                  <Image src="/select.svg" width={16} height={16} alt="select icon" />
+                </div>
                 <input id="file-upload" type="file" onChange={handleChange} className="hidden" />
                 <div className="mt-2 text-xsmall text-slate-50">png 또는 jpg를 첨부해 주세요</div>
                 <div className="mt-1 text-xsmall text-slate-60 font-md">
@@ -180,9 +193,15 @@ const Onboarding = () => {
               </div>
             </div>
           </div>
+
           <button
             type="submit"
-            className="flex mt-[75px] text-white-100 text-large rounded-xlarge border-icon px-[24px] py-[20px] w-full justify-center items-center bg-gradient-to-r from-tree-50 to-[#00CAA5]"
+            disabled={!isUsernameValid}
+            className={`flex mt-[75px] h-[64px] text-white-100 text-large rounded-xlarge border-icon px-[24px] py-[20px] w-full justify-center items-center ${
+              !isUsernameValid
+                ? 'bg-slate-70 cursor-not-allowed'
+                : 'bg-gradient-to-r from-tree-50 to-[#00CAA5]'
+            }`}
           >
             사이트리 시작
           </button>
