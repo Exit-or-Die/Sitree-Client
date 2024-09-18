@@ -26,9 +26,12 @@ const ProjectRegisterForm = ({ defaultValues = {}, onSubmit }: ProjectRegisterFo
         shortDescription: defaultValues.head?.shortDescription || '',
         healthCheckUrl: defaultValues.head?.healthCheckUrl || ''
       },
+      tagList: defaultValues.tagList || [],
       overview: {
+        images: defaultValues.overview?.images || [],
         clientUrl: {
-          liveWebDomain: defaultValues.overview?.clientUrl.liveWebDomain || ''
+          liveWebDomain: defaultValues.overview?.clientUrl.liveWebDomain || '',
+          downloadMethods: defaultValues.overview?.clientUrl.downloadMethods || {}
         },
         detailDescription: defaultValues.overview?.detailDescription || ''
       },
@@ -39,7 +42,7 @@ const ProjectRegisterForm = ({ defaultValues = {}, onSubmit }: ProjectRegisterFo
 
   return (
     <div className="flex justify-center">
-      <div className="w-[576px] md:w-[564px] lg:w-[860px] xl:w-[860px] 2xl:w-[860px] border border-red">
+      <div className="p-10 w-[956px] border border-red">
         <form onSubmit={handleSubmit((data) => console.log('data', data))}>
           <ProjectRegisterHead register={register} />
           <ProjectRegisterOverview register={register} />

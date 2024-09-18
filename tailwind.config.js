@@ -112,7 +112,10 @@ module.exports = {
       },
       spacing: {
         1: '0.25rem',
+        1.5: '0.375rem',
+        2: '0.5rem',
         4: '1rem',
+        5: '1.25rem',
         6: '1.5rem',
         8: '2rem',
         10: '2.5rem',
@@ -128,6 +131,11 @@ module.exports = {
         72: '18rem',
         80: '20rem',
         96: '24rem'
+      },
+      screens: {
+        sm: '1080px',
+        md: '1440px',
+        lg: '1920px'
       }
     }
   },
