@@ -24,6 +24,10 @@ interface SignUpData {
   profileImgUrl: string;
 }
 
+interface ValidateUsername {
+  exist: boolean;
+}
+
 class AuthService extends Service {
   signIn(data: SignInData) {
     return this.http.post<UserDetail>('members/sign-in', data);
@@ -31,6 +35,10 @@ class AuthService extends Service {
 
   signUp(data: SignUpData) {
     return this.http.post<UserDetail>('members/sign-up', data);
+  }
+
+  validateUsername(nickname: string) {
+    return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
   }
 }
 
