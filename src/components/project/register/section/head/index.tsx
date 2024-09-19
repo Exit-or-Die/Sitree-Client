@@ -1,4 +1,5 @@
 import SInput from '@/components/common/Input';
+import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 interface ProjectRegisterHeadProps {
   register: any;
@@ -18,12 +19,12 @@ const ProjectRegisterHead = ({ register }: ProjectRegisterHeadProps) => {
     },
     {
       title: '한 줄 소개',
-      component: <SInput placeholder="한 줄 소개를 작성해주세요" />,
+      component: <SInput placeholder="한 줄 소개를 작성해주세요" className="w-20" />,
       required: true
     },
     {
       title: '프로젝트 태그',
-      component: <SInput />,
+      component: <ProjectTagSelect />,
       required: true
     }
   ];
