@@ -1,23 +1,26 @@
+import { Nullable } from '@/utils/common';
 import React from 'react';
 
+import SButton from '@/components/common/Button';
+
 type Props = {
-  isUsernameValid: boolean | null;
+  isUsernameValid: Nullable<boolean>;
   className?: string;
 };
 
 const OnboardingButtonField = ({ isUsernameValid, className }: Props) => {
   return (
-    <button
+    <SButton
       type="submit"
-      disabled={!isUsernameValid}
-      className={`flex mt-[75px] h-[64px] text-white-100 text-large rounded-xlarge border-icon px-[24px] py-[20px] w-full justify-center items-center ${className} ${
+      className={`mt-[75px] h-[64px] text-white-100 text-large border-icon px-[24px] py-[20px] w-full justify-center items-center ${className} ${
         !isUsernameValid
           ? 'bg-slate-70 cursor-not-allowed'
           : 'bg-gradient-to-r from-tree-50 to-[#00CAA5]'
       }`}
+      disabled={!isUsernameValid}
     >
       사이트리 시작
-    </button>
+    </SButton>
   );
 };
 

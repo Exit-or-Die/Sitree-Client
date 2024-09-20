@@ -1,8 +1,11 @@
-import Image from 'next/image';
+import { Maybe } from '@/utils/common';
 import React, { useRef } from 'react';
 
+import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
+
 type Props = {
-  image: string | null | undefined;
+  image: Maybe<string>;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
@@ -22,7 +25,7 @@ const OnboardingImageField = ({ image, handleChange }: Props) => {
       <div className="flex items-center">
         <div className="w-20 h-20 mr-4 rounded-full bg-slate-98 flex items-center justify-center overflow-hidden">
           {image ? (
-            <Image
+            <SImage
               src={image}
               alt="Profile Image"
               width={80}
@@ -47,13 +50,13 @@ const OnboardingImageField = ({ image, handleChange }: Props) => {
           )}
         </div>
         <div className="flex flex-col">
-          <div
-            className="flex cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95"
+          <SButton
+            className="cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95"
             onClick={handleFileSelect}
           >
             <div className="mr-[4px] text-small">파일 선택</div>
-            <Image src="/select.svg" width={16} height={16} alt="select icon" />
-          </div>
+            <SImage src="/select.svg" width={16} height={16} alt="select icon" />
+          </SButton>
           <input
             ref={fileInputRef}
             id="file-upload"

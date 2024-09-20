@@ -1,3 +1,5 @@
+import { Nullable } from '@/utils/common';
+
 import Service from '../service';
 
 export interface UserDetail {
@@ -8,8 +10,8 @@ export interface UserDetail {
   oAuthToken: string;
   profileImgUrl: string;
   isNewMember: boolean;
-  accessToken?: string | null;
-  refreshToken?: string | null;
+  accessToken?: Nullable<string>;
+  refreshToken?: Nullable<string>;
 }
 interface SignInData {
   provider: string;

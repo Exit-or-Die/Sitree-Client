@@ -1,7 +1,8 @@
 'use client';
 
-import { useSignUp } from '@/hooks/auth/useAuth';
-import AuthService from '@/service/auth/AuthService';
+import { useSignUp } from '@/service/auth/queries';
+import AuthQueryOptions from '@/service/auth/queries';
+import { Nullable } from '@/utils/common';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -14,15 +15,15 @@ import OnboardingInputField from '@/components/account/OnboardingInputField';
 const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
-  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null);
+  const [isUsernameValid, setIsUsernameValid] = useState<Nullable<boolean>>(null);
   const [affiliation, setAffiliation] = useState('');
   const [link, setLink] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<Nullable<File>>(null);
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('사용 할수 없는 닉네임입니다');
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
-    mutationFn: (nickname: string) => AuthService.validateUsername(nickname),
+    mutationFn: (nickname: string) => AuthQueryOptions.validateUsername(nickname).queryFn(),
     onSuccess: (data) => {
       if (!data.exist) {
         setIsUsernameValid(true);

@@ -1,3 +1,6 @@
+import { setCookie } from '@/utils/cookie';
+import { useMutation } from '@tanstack/react-query';
+
 import AuthService from './AuthService';
 
 const queryKeys = {
@@ -25,6 +28,21 @@ const AuthQueryOptions = {
     queryFn: () => AuthService.validateUsername(nickname),
     enabled: !!nickname
   })
+};
+
+export const useSignUp = () => {
+  const mutation = useMutation({
+    mutationFn: (credentials) => AuthQueryOptions.signUp(credentials).queryFn(),
+    onSuccess: (data) => {
+      if (!data.accessToken) return;
+      setCookie('accessToken', data.accessToken);
+    },
+    onError: (error) => {
+      console.error('Signup failed:', error);
+    }
+  });
+
+  return mutation;
 };
 
 export default AuthQueryOptions;

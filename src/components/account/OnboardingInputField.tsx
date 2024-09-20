@@ -1,5 +1,9 @@
-import Image from 'next/image';
+import { Nullable } from '@/utils/common';
 import React from 'react';
+
+import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
+import SInput from '@/components/common/Input';
 
 type Props = {
   label: string;
@@ -9,7 +13,7 @@ type Props = {
   className?: string;
   showValidationButton?: boolean;
   onValidationClick?: () => void;
-  isValid?: boolean | null;
+  isValid?: Nullable<boolean>;
   successMessage?: string;
   errorMessage?: string;
   showIcon?: boolean;
@@ -47,34 +51,32 @@ const OnboardingInputField = ({
         )}
       </div>
       <div className="mb-2 flex items-center relative">
-        <input
+        <SInput
           type="text"
-          id={label}
-          value={value}
-          placeholder={placeholder}
-          onChange={setValue}
-          className={`h-[40px] flex-grow p-3 border border-slate-300 rounded-base ${className} ${
+          className={`flex-grow h-[40px] p-3 border border-slate-300 rounded-base ${className} ${
             isValid === false && 'bg-[#FFF2F2] border-0'
           }`}
+          placeholder={placeholder}
+          value={value}
+          onChange={setValue}
         />
         {showValidationButton &&
           onValidationClick &&
           (isValid ? (
-            <Image
+            <SImage
               src="/check.svg"
-              className="absolute right-3"
+              className="absolute right-3 top-3"
               width={20}
               height={20}
               alt="select icon"
             />
           ) : (
-            <button
-              type="button"
+            <SButton
               className="h-[40px] px-4 py-2 border border-slate-300 rounded-large text-slate-500 ml-[6px]"
               onClick={onValidationClick}
             >
               중복 확인
-            </button>
+            </SButton>
           ))}
       </div>
       {isValid === true && successMessage && (
