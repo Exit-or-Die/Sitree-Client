@@ -7,6 +7,7 @@ interface ImageProps {
   width?: number;
   height?: number;
   onClick?: () => void;
+  className?: string;
 }
 
 /**
@@ -14,7 +15,14 @@ interface ImageProps {
  * width & height 없으면 fill
  */
 const SImage = (props: ImageProps) => {
-  const { src, alt = 'Common Image Component', width, height, onClick = () => {} } = props;
+  const {
+    src,
+    alt = 'Common Image Component',
+    width,
+    height,
+    onClick = () => {},
+    className
+  } = props;
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoad = () => {
@@ -25,6 +33,8 @@ const SImage = (props: ImageProps) => {
     <div>
       {isLoading && <div>Skeleton!</div>}
       <Image
+        // TBD whether internal css should be added
+        className={className}
         src={src}
         alt={alt}
         fill={!width && !height}
