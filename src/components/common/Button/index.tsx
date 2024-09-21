@@ -10,11 +10,11 @@ interface ButtonProps {
 }
 
 const STYLE_BY_SIZE = {
-  sm: 'rounded-base px-2 py-1.5 text-[13px] font-md',
-  md: 'rounded-[10px] px-3 py-2 text-small font-md',
-  lg: 'rounded-large px-4 py-3 text-[15px] font-md',
+  sm: 'rounded-base px-2 py-1.5 text-[1.3rem] font-md',
+  md: 'rounded-[1rem] px-3 py-2 text-small font-md',
+  lg: 'rounded-large px-4 py-3 text-[1.5rem] font-md',
   xl: 'rounded-large px-4 py-4 text-base font-bd',
-  '2xl': 'rounded-[14px] px-5 py-5 text-base font-bd'
+  '2xl': 'rounded-[1.4rem] px-5 py-5 text-base font-bd'
 };
 
 const SButton = ({
