@@ -69,10 +69,10 @@ module.exports = {
         '4xlarge': '4.8rem'
       },
       fontWeight: {
-        rg: 480,
-        md: 640,
-        sb: 800,
-        bd: 960
+        rg: 300,
+        md: 400,
+        sb: 500,
+        bd: 600
       },
       lineHeight: {
         3: '1.2rem',
