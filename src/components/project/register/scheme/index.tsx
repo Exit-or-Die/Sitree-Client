@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const headSchema = z.object({
-  thumbnailImageUrl: z.string().url().optional(),
-  title: z.string().min(1, 'Title is required'),
+  thumbnailImageUrl: z.string().optional(),
+  title: z.string().optional(),
   shortDescription: z.string().optional(),
-  healthCheckUrl: z.string().url().optional()
+  healthCheckUrl: z.string().optional()
 });
 
 export const tagListSchema = z.array(
@@ -21,7 +21,7 @@ export const overviewSchema = z.object({
     })
   ),
   clientUrl: z.object({
-    liveWebDomain: z.string().min(1, 'Live web domain is required')
+    liveWebDomain: z.string().optional()
   }),
   detailDescription: z.string().optional()
 });
@@ -52,7 +52,7 @@ export const techviewListSchema = z
 export const participantListSchema = z
   .array(
     z.object({
-      memberNo: z.number().int(),
+      memberNo: z.number().int().optional(),
       position: z.string().optional()
     })
   )

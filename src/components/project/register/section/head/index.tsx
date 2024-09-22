@@ -1,25 +1,44 @@
+import { ProjectDetailResponse } from '@/service/project/response';
+import { UseFormRegister } from 'react-hook-form';
+
 import SInput from '@/components/common/Input';
+import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 interface ProjectRegisterHeadProps {
-  register: any;
+  register: UseFormRegister<ProjectDetailResponse>;
 }
 
 const ProjectRegisterHead = ({ register }: ProjectRegisterHeadProps) => {
   const InputList = [
     {
       title: '프로젝트 이름',
-      component: <SInput placeholder="프로젝트 이름을 입력해주세요" />,
+      component: (
+        <SInput register={register} name="head.title" placeholder="프로젝트 이름을 입력해주세요" />
+      ),
       required: true
     },
     {
       title: 'Health Check API',
-      component: <SInput placeholder="ex: https://sitree-api.com/healthcheck" />,
+      component: (
+        <SInput
+          register={register}
+          name="head.healthCheckUrl"
+          placeholder="ex: https://sitree-api.com/healthcheck"
+        />
+      ),
       required: true
     },
     {
       title: '한 줄 소개',
-      component: <SInput placeholder="한 줄 소개를 작성해주세요" className="w-20" />,
+      component: (
+        <SInput
+          register={register}
+          name="head.shortDescription"
+          placeholder="한 줄 소개를 작성해주세요"
+          className="w-20"
+        />
+      ),
       required: true
     },
     {
@@ -37,7 +56,7 @@ const ProjectRegisterHead = ({ register }: ProjectRegisterHeadProps) => {
           {InputList.map((input, index) => (
             <div key={index} className="mb-6">
               <label className="block text-small text-gray-700 flex items-center mb-1.5">
-                <span>{input.title}</span>
+                <span className="text-[1.4rem]">{input.title}</span>
                 {input.required && (
                   <span className="ml-1 mb-1 w-1.5 h-1.5 bg-tree-50 rounded-full"></span>
                 )}
@@ -46,7 +65,9 @@ const ProjectRegisterHead = ({ register }: ProjectRegisterHeadProps) => {
             </div>
           ))}
         </div>
-        <div className="w-[312px]">image upload</div>
+        <div>
+          <ProjectIconUpload />
+        </div>
       </div>
     </div>
   );

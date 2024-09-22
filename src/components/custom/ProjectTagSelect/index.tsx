@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import SButton from '@/components/common/Button';
 
 const tags = [
   '스포츠',
@@ -38,7 +40,12 @@ const tags = [
   '플랫폼'
 ];
 
-const ProjectTagSelect = () => {
+interface ProjectTagSelectProps {
+  useDelete?: boolean;
+  onChange?: (tag: any) => void;
+}
+
+const ProjectTagSelect = ({ useDelete = true, onChange = () => {} }: ProjectTagSelectProps) => {
   const [search, setSearch] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -58,45 +65,51 @@ const ProjectTagSelect = () => {
     (tag) => tag.toLowerCase().includes(search.toLowerCase()) && !selectedTags.includes(tag)
   );
 
+  useEffect(() => {
+    onChange(selectedTags);
+  }, [selectedTags, onChange]);
+
   return (
     <div className="relative w-full ">
       <div
-        className="w-full border border-green-500 rounded-lg p-2 flex flex-wrap items-center gap-2 cursor-pointer"
-        onClick={() => setIsDropdownOpen(true)}
+        className="w-full border border-tree-50 rounded-lg px-4 py-2 flex flex-wrap items-center gap-[0.4rem] cursor-pointer"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {selectedTags.length > 0 ? (
           selectedTags.map((tag) => (
-            <div
+            <SButton
               key={tag}
-              className="bg-green-500 text-white px-4 py-2 rounded-full text-sm flex items-center"
+              size="md"
+              className="bg-tree-50 text-white-100 rounded-[99.9rem] gap-[0.4rem]"
             >
               {tag}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation(); // 클릭 이벤트가 부모에게 전달되지 않도록 처리
-                  handleRemoveTag(tag);
-                }}
-                className="ml-2 bg-white text-green-500 rounded-full w-4 h-4 flex justify-center items-center"
-              >
-                X
-              </button>
-            </div>
+              {useDelete && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // 클릭 이벤트가 부모에게 전달되지 않도록 처리
+                    handleRemoveTag(tag);
+                  }}
+                >
+                  X
+                </button>
+              )}
+            </SButton>
           ))
         ) : (
           <span className="text-gray-400">태그를 입력하세요</span>
         )}
       </div>
       {isDropdownOpen && filteredTags.length > 0 && (
-        <div className="absolute z-10 bg-white border border-gray-300 rounded-lg w-full mt-2 overflow-y-auto">
+        <div className="absolute z-10 bg-white-100 border border-gray-300 rounded-lg w-full mt-2 overflow-y-auto">
           <div className="flex flex-wrap p-2 gap-2">
             {filteredTags.map((tag) => (
-              <button
+              <SButton
                 key={tag}
                 onClick={() => handleSelectTag(tag)}
-                className="px-4 py-2 rounded-full text-sm bg-gray-100 text-gray-700 border"
+                className="rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] text-slate-50 border-slate-90"
               >
                 {tag}
-              </button>
+              </SButton>
             ))}
           </div>
         </div>

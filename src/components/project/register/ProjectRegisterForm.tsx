@@ -1,7 +1,10 @@
 'use client';
 import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+
+import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
 
 import { projectSchema } from './scheme';
 import {
@@ -10,19 +13,19 @@ import {
   ProjectRegisterParticipantList,
   ProjectRegisterTechViewList
 } from './section';
-
 interface ProjectRegisterFormProps {
   defaultValues?: ProjectDetailResponse;
   onSubmit?: (data: unknown) => void;
 }
 
 const ProjectRegisterForm = ({ defaultValues = {}, onSubmit }: ProjectRegisterFormProps) => {
-  const { register, handleSubmit, setValue, formState } = useForm({
+  const { register, handleSubmit, setValue, formState, watch } = useForm({
     resolver: zodResolver(projectSchema),
+    mode: 'onChange',
     defaultValues: {
       head: {
-        thumbnailImageUrl: defaultValues.head?.thumbnailImageUrl || '',
         title: defaultValues.head?.title || '',
+        thumbnailImageUrl: defaultValues.head?.thumbnailImageUrl || '',
         shortDescription: defaultValues.head?.shortDescription || '',
         healthCheckUrl: defaultValues.head?.healthCheckUrl || ''
       },
@@ -40,10 +43,17 @@ const ProjectRegisterForm = ({ defaultValues = {}, onSubmit }: ProjectRegisterFo
     }
   });
 
+  const formWatch = watch(['head.title', 'head.shortDescription', 'tagList']);
+
+  useEffect(() => {
+    console.log('formWatch', formWatch);
+  }, [formWatch]);
+
   return (
     <div className="flex justify-center">
       <div className="p-10 w-[956px] border border-red">
-        <form onSubmit={handleSubmit((data) => console.log('data', data))}>
+        <form onSubmit={handleSubmit((data) => console.log('저장된 데이터:', data))}>
+          <input placeholder="123123" onChange={(e) => console.log(e.target.value)} />
           <ProjectRegisterHead register={register} />
           <ProjectRegisterOverview register={register} />
           <ProjectRegisterTechViewList register={register} />
@@ -51,7 +61,9 @@ const ProjectRegisterForm = ({ defaultValues = {}, onSubmit }: ProjectRegisterFo
           <button type="submit">Submit</button>
         </form>
       </div>
-      <div className="w-80 border border-black-100"></div>
+      <div className="w-80 border border-black-100">
+        <ProjectUploadProgress />
+      </div>
     </div>
   );
 };
