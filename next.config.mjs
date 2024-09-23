@@ -4,6 +4,7 @@ import './src/lib/env/env.mjs';
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: ['picsum.photos'],
     remotePatterns: [
       {
         protocol: 'https',

@@ -25,7 +25,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   return (
     <div className="p-10">
       <Hydrate state={{ queries: [query] }}>
-        <ProjectRegisterForm />
+        <ProjectRegisterForm projectId={projectId} />
       </Hydrate>
     </div>
   );

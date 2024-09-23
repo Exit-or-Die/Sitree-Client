@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 html {
-  font-size: 62.5%; /* 1rem = 10px (기본 16px * 0.625 = 10px) */
+    font-size: 62.5%; /* 1rem = 10px (기본 16px * 0.625 = 10px) */
 }
