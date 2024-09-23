@@ -20,7 +20,7 @@ module.exports = {
           40: '#566070',
           30: '#414752',
           20: '#2F333D',
-          10: '#16181D',
+          10: '#16181D'
         },
         tree: {
           97: '#F0FCF2',
@@ -37,7 +37,7 @@ module.exports = {
           'tint-80': 'rgba(8, 199, 103, 0.8)',
           'tint-50': 'rgba(8, 199, 103, 0.5)',
           'tint-24': 'rgba(8, 199, 103, 0.24)',
-          'tint-12': 'rgba(8, 199, 103, 0.12)',
+          'tint-12': 'rgba(8, 199, 103, 0.12)'
         },
         black: {
           100: '#000000',
@@ -46,7 +46,7 @@ module.exports = {
           40: 'rgba(0, 0, 0, 0.4)',
           20: 'rgba(0, 0, 0, 0.2)',
           12: 'rgba(0, 0, 0, 0.12)',
-          8: 'rgba(0, 0, 0, 0.08)',
+          8: 'rgba(0, 0, 0, 0.08)'
         },
         white: {
           100: '#FFFFFF',
@@ -55,18 +55,18 @@ module.exports = {
           40: 'rgba(255, 255, 255, 0.4)',
           20: 'rgba(255, 255, 255, 0.2)',
           12: 'rgba(255, 255, 255, 0.12)',
-          8: 'rgba(255, 255, 255, 0.08)',
-        },
+          8: 'rgba(255, 255, 255, 0.08)'
+        }
       },
       fontSize: {
-        xsmall: '0.75rem',
-        small: '0.875rem',
-        base: '1rem',
-        large: '1.25rem',
-        xlarge: '1.5rem',
-        '2xlarge': '2rem',
-        '3xlarge': '2.25rem',
-        '4xlarge': '3rem'
+        xsmall: '1.2rem',
+        small: '1.4rem',
+        base: '1.6rem',
+        large: '2rem',
+        xlarge: '2.4rem',
+        '2xlarge': '3.2rem',
+        '3xlarge': '3.6rem',
+        '4xlarge': '4.8rem'
       },
       fontWeight: {
         rg: 300,
@@ -75,19 +75,19 @@ module.exports = {
         bd: 600
       },
       lineHeight: {
-        3: '0.75rem',
-        4: '1rem',
-        5: '1.25rem',
-        6: '1.5rem',
-        7: '1.75rem',
-        8: '2rem',
-        9: '2.25rem',
-        10: '2.5rem',
-        none: '1rem',
-        tight: '1.28rem',
-        snug: '1.32rem',
-        normal: '1.5rem',
-        loose: '2rem'
+        3: '1.2rem',
+        4: '1.6rem',
+        5: '2rem',
+        6: '2.4rem',
+        7: '2.8rem',
+        8: '3.2rem',
+        9: '3.6rem',
+        10: '4rem',
+        none: '1.6rem',
+        tight: '2rem',
+        snug: '2.12rem',
+        normal: '2.4rem',
+        loose: '3.2rem'
       },
       letterSpacing: {
         'spacing-none': '0%',
@@ -96,18 +96,46 @@ module.exports = {
       },
       borderRadius: {
         none: '0rem',
-        '2xsmall': '0.125rem',
-        xsmall: '0.25rem',
-        small: '0.375rem',
-        base: '0.5rem',
-        large: '0.75rem',
-        xlarge: '1rem',
-        '2xlarge': '1.25rem',
-        full: '50%'
+        '2xsmall': '0.2rem',
+        xsmall: '0.4rem',
+        small: '0.6rem',
+        base: '0.8rem',
+        large: '1.2rem',
+        xlarge: '1.6rem',
+        '2xlarge': '2rem',
+        full: '80%'
       },
       borderWidth: {
-        'border-1': '0.0625rem',
-        'border-icon': '0.075rem'
+        'border-1': '0.1rem',
+        'border-icon': '0.12rem'
+      },
+      spacing: {
+        1: '0.4rem',
+        1.5: '0.6rem',
+        2: '0.8rem',
+        3: '1.2rem',
+        4: '1.6rem',
+        5: '2rem',
+        6: '2.4rem',
+        8: '3.2rem',
+        10: '4rem',
+        12: '4.8rem',
+        16: '6.4rem',
+        20: '8rem',
+        24: '9.6rem',
+        32: '12.8rem',
+        40: '16rem',
+        48: '19.2rem',
+        60: '24rem',
+        64: '25.6rem',
+        72: '28.8rem',
+        80: '32rem',
+        96: '38.4rem'
+      },
+      screens: {
+        sm: '1080px',
+        md: '1440px',
+        lg: '1920px'
       }
     }
   },

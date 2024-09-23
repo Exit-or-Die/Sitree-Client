@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 
 interface TextareaProps {
@@ -27,7 +29,7 @@ const STextarea = ({
   return (
     <div className="relative bg-white rounded-lg">
       <textarea
-        className={`px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tree-300 resize-none w-full h-60 ${className}`}
+        className={`px-4 py-2 border border-slate-300 text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-tree-300 resize-none w-full h-60 ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
