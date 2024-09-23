@@ -8,6 +8,7 @@ interface ImageProps {
   height?: number;
   className?: string;
   onClick?: () => void;
+  className?: string;
 }
 
 /**
@@ -33,7 +34,7 @@ const SImage = (props: ImageProps) => {
     <div>
       {isLoading && <div>Skeleton!</div>}
       <Image
-        className={`${className}`}
+        className={className}
         src={src}
         alt={alt}
         fill={!width && !height}
