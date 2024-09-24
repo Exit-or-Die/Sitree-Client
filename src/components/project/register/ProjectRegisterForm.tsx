@@ -54,8 +54,8 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
 
   return (
     <div className="flex justify-center">
-      <div className="p-10 w-[956px] border border-red">
-        <FormProvider {...formMethods}>
+      <FormProvider {...formMethods}>
+        <div className="p-10 w-[956px] border border-red">
           <form onSubmit={formMethods.handleSubmit((data) => console.log('저장된 데이터:', data))}>
             <ProjectRegisterHead register={formMethods.register} />
             <ProjectRegisterOverview register={formMethods.register} />
@@ -63,11 +63,11 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
             <ProjectRegisterParticipantList register={formMethods.register} />
             <button type="submit">Submit</button>
           </form>
-        </FormProvider>
-      </div>
-      <div className="w-80 border border-black-100">
-        <ProjectUploadProgress data={formMethods.getValues()} />
-      </div>
+        </div>
+        <div className="w-80 border border-black-100">
+          <ProjectUploadProgress />
+        </div>
+      </FormProvider>
     </div>
   );
 };
