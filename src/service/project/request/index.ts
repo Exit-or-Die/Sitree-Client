@@ -35,6 +35,7 @@ export interface ClientUrl {
 
 export interface DownloadMethods {
   IOS: string;
+  AOS: string;
   WINDOWS: string;
 }
 

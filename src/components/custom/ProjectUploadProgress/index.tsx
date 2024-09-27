@@ -1,20 +1,24 @@
 import { ProjectRegisterRequest } from '@/service/project/request';
+import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useState, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 const ProjectUploadProgress = () => {
   const { control } = useFormContext();
   const [progress, setProgress] = useState<number>(0);
-  const data = useWatch({ control }) as ProjectRegisterRequest;
+
+  const { head, tagList, overview, techviewList, participantList } = useWatch({
+    control
+  }) as ProjectRegisterRequest;
 
   const sectionItems = useMemo(() => {
     // 기본 정보 섹션에서 체크할 필드들
     const headFields = [
-      data?.head?.title?.length > 0,
-      data?.head?.healthCheckUrl,
-      data?.head?.shortDescription,
-      data?.head?.thumbnailImageUrl,
-      data?.tagList?.length > 0
+      head.title,
+      head.healthCheckUrl,
+      head.shortDescription,
+      head.thumbnailImageUrl,
+      tagList.length > 0
     ];
 
     // 채워진 필드의 개수 계산
@@ -30,31 +34,44 @@ const ProjectUploadProgress = () => {
       },
       {
         name: '프로젝트 소개',
-        completed: Boolean(data?.overview?.detailDescription),
-        completionRate: data?.overview?.detailDescription ? 1 : 0
+        completed: extractContentFromHtml(overview.detailDescription).length > 0,
+        completionRate: extractContentFromHtml(overview.detailDescription).length > 0 ? 1 : 0
       },
       {
         name: '기술 뷰',
-        completed: Boolean(data?.techviewList?.length > 0),
-        completionRate: data?.techviewList?.length > 0 ? 1 : 0
+        completed: Boolean(techviewList.length > 0),
+        completionRate: techviewList.length > 0 ? 1 : 0
       },
       {
         name: '참여자 목록',
-        completed: Boolean(data?.participantList?.length > 0),
-        completionRate: data?.participantList?.length > 0 ? 1 : 0
+        completed: Boolean(participantList.length > 0),
+        completionRate: participantList.length > 0 ? 1 : 0
       }
     ];
-  }, [data]);
+  }, [head, tagList, overview, techviewList, participantList]);
 
   // 각 섹션의 진행률을 기반으로 전체 progress 계산
   useEffect(() => {
+    const totalSections = sectionItems.length;
     const totalCompletionRate = sectionItems.reduce(
       (total, item) => total + item.completionRate,
       0
     );
-    const totalSections = sectionItems.length;
     setProgress((totalCompletionRate / totalSections) * 100); // 각 섹션의 완료율을 반영한 전체 진행률
   }, [sectionItems]);
+
+  useEffect(() => {
+    console.log('head444', JSON.stringify(head));
+  }, [head]);
+  useEffect(() => {
+    console.log('overview444', JSON.stringify(overview));
+  }, [overview]);
+  useEffect(() => {
+    console.log('techviewList444', JSON.stringify(techviewList));
+  }, [techviewList]);
+  useEffect(() => {
+    console.log('participantList444', JSON.stringify(participantList));
+  }, [participantList]);
 
   const getProgressBarColor = () => {
     return progress === 100 ? 'bg-green-500' : 'bg-gray-300';

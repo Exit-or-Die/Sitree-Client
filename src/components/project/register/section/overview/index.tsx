@@ -1,17 +1,30 @@
+import { ProjectDetailResponse } from '@/service/project/response';
+import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
+import { UseFormRegister, useFormContext } from 'react-hook-form';
+
+const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: false });
+
 interface ProjectRegisterOverviewProps {
-  register: any;
+  register: UseFormRegister<ProjectDetailResponse>;
 }
 
-const ProjectRegisterOverview = ({ register }: ProjectRegisterOverviewProps) => {
+const ProjectRegisterOverview = () => {
+  const { register, setValue, watch } = useFormContext<ProjectDetailResponse>();
+
+  // Set the initial value from the form state
+  const detailDescription = watch('overview.detailDescription');
+
+  const handleChangeDescription = (value: string) => {
+    setValue('overview.detailDescription', value, { shouldValidate: true });
+  };
+
   return (
     <div className="mt-10 border-t border-slate-300">
-      <div className="flex items-start self-stretch gap-1.5 mb-2">
-        <p className="text-slate-10 font-lb text-large">서비스 링크</p>
-        <span className="mt-1.5 w-1.5 h-1.5 bg-tree-50 rounded-full"></span>
+      <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
+      <div>
+        <SEditor initialValue={detailDescription || ''} onChange={handleChangeDescription} />
       </div>
-      <p className="text-slate-50 font-md text-small mb-5">
-        라이브 도메인, 다운로드 링크 중 최소 한 가지 이상을 입력해 주세요.
-      </p>
     </div>
   );
 };

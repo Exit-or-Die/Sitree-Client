@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
+import { UseFormRegister } from 'react-hook-form';
+import { ProjectDetailResponse } from '@/service/project/response';
+
+interface ProjectRegisterParticipantProps {
+  register: UseFormRegister<ProjectDetailResponse>;
+}
 
 interface TeamMember {
   image: string;
@@ -8,7 +14,7 @@ interface TeamMember {
   description: string;
 }
 
-const ProjectRegisterParticipantList: React.FC = () => {
+const ProjectRegisterParticipantList = ({register}:ProjectRegisterParticipantProps) => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
     { image: '/path/to/image1.jpg', name: '헤더덕', description: '수도승' },
     { image: '/path/to/image2.jpg', name: '家守 きりこ', description: '로ㅋㅋ' },
@@ -34,8 +40,6 @@ const ProjectRegisterParticipantList: React.FC = () => {
   };
 
   const addTeamMember = () => {
-    // Logic for adding a new team member (for now, just log it)
-    console.log('팀원 추가');
   };
 
   return (

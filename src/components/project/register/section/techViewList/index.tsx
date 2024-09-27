@@ -1,10 +1,14 @@
+import { ProjectDetailResponse } from '@/service/project/response';
 import React, { useState } from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
 interface Skill {
   name: string;
   github: string;
   stack: string;
   includeArchitecture: boolean;
+  architectureDescription?: string;
+  architectureImage?: File | null;
 }
 
 const SkillForm: React.FC<{
@@ -19,6 +23,12 @@ const SkillForm: React.FC<{
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateSkill(index, { ...skill, includeArchitecture: e.target.checked });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      updateSkill(index, { ...skill, architectureImage: e.target.files[0] });
+    }
   };
 
   return (
@@ -69,11 +79,44 @@ const SkillForm: React.FC<{
         />
         <label className="ml-2 block text-sm text-gray-900">아키텍처 소개 포함</label>
       </div>
+
+      {skill.includeArchitecture && (
+        <>
+          <div className="mt-4">
+            <label className="block text-sm font-medium">아키텍처 설명</label>
+            <textarea
+              placeholder="개발 아키텍처를 설명해 주세요."
+              name="architectureDescription"
+              value={skill.architectureDescription || ''}
+              onChange={handleChange}
+              rows={4}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            ></textarea>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium">아키텍처 이미지</label>
+            <input
+              type="file"
+              accept=".png,.jpg,.jpeg"
+              onChange={handleFileChange}
+              className="mt-1 block w-full"
+            />
+            {skill.architectureImage && (
+              <p className="text-sm text-gray-600 mt-2">{skill.architectureImage.name} 선택됨</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-const ProjectRegisterTechViewList: React.FC = () => {
+interface ProjectRegisterTechViewListProps {
+  register: UseFormRegister<ProjectDetailResponse>;
+}
+
+const ProjectRegisterTechViewList = ({register}:ProjectRegisterTechViewListProps) => {
   const [skills, setSkills] = useState<Skill[]>([
     { name: '', github: '', stack: '', includeArchitecture: false }
   ]);
@@ -85,16 +128,15 @@ const ProjectRegisterTechViewList: React.FC = () => {
   };
 
   const addSkill = () => {
-    if (!canAddSkill()) return; // Prevent adding if validation fails
+    if (!canAddSkill()) return;
     setSkills([...skills, { name: '', github: '', stack: '', includeArchitecture: false }]);
-    setCurrentIndex(skills.length); // Move to the newly added skill
+    setCurrentIndex(skills.length);
   };
 
   const goToSkill = (index: number) => {
     setCurrentIndex(index);
   };
 
-  // Validation logic: check if all required fields are filled
   const canAddSkill = () => {
     const currentSkill = skills[currentIndex];
 
@@ -107,7 +149,6 @@ const ProjectRegisterTechViewList: React.FC = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      {/* Title and Controls (Pagination + Add Skill) */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">프로젝트 기술</h1>
 
@@ -128,7 +169,7 @@ const ProjectRegisterTechViewList: React.FC = () => {
 
           <button
             onClick={addSkill}
-            disabled={!canAddSkill()} // Disable if validation fails
+            disabled={!canAddSkill()}
             className={`px-4 py-2 rounded-md ${
               canAddSkill()
                 ? 'bg-green-100 text-green-700'
@@ -140,7 +181,6 @@ const ProjectRegisterTechViewList: React.FC = () => {
         </div>
       </div>
 
-      {/* Current Skill Form */}
       <SkillForm skill={skills[currentIndex]} index={currentIndex} updateSkill={updateSkill} />
     </div>
   );

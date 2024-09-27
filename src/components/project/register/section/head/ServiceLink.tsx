@@ -31,7 +31,7 @@ const ProjectHeadServiceLink = ({ register }: ProjectRegisterHeadProps) => {
           </label>
           <SInput
             register={register}
-            name="overview.clientUrl.downloadMethods"
+            name="overview.clientUrl.downloadMethods.IOS"
             placeholder="ex: https://sitree.com"
           />
         </div>

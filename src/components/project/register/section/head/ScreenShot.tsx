@@ -13,7 +13,6 @@ const TOTAL_SCREENSHOT_ITEMS = 8;
 const ProjectHeadScreenshot = ({ register }: ProjectRegisterHeadProps) => {
   const { getValues } = useFormContext();
   const [screenShotList, setScreenShotList] = useState<Array<Image>>(getValues('overview.images')); // 스크린샷 리스트를 빈 배열로 초기화
-  console.log(screenShotList);
   const remainingSlots = TOTAL_SCREENSHOT_ITEMS - screenShotList.length;
   const placeholders = new Array(remainingSlots).fill('Placeholder');
 
