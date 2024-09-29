@@ -9,7 +9,7 @@ interface InputProps<T extends FieldValues> {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
-  register?: UseFormRegister<T>; // 적절한 제네릭 설정
+  register?: UseFormRegister<T>;
   name?: string;
 }
 
@@ -34,7 +34,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       <input
         type={type}
         ref={registerRef || ref}
-        className={`w-full px-4 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-tree-300 ${className}`}
+        className={`w-full p-3 border border-slate-300 rounded-base bg-white focus:outline-none focus:ring-2 focus:ring-tree-300 ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={handleChange}

@@ -60,19 +60,6 @@ const ProjectUploadProgress = () => {
     setProgress((totalCompletionRate / totalSections) * 100); // 각 섹션의 완료율을 반영한 전체 진행률
   }, [sectionItems]);
 
-  useEffect(() => {
-    console.log('head444', JSON.stringify(head));
-  }, [head]);
-  useEffect(() => {
-    console.log('overview444', JSON.stringify(overview));
-  }, [overview]);
-  useEffect(() => {
-    console.log('techviewList444', JSON.stringify(techviewList));
-  }, [techviewList]);
-  useEffect(() => {
-    console.log('participantList444', JSON.stringify(participantList));
-  }, [participantList]);
-
   const getProgressBarColor = () => {
     return progress === 100 ? 'bg-green-500' : 'bg-gray-300';
   };

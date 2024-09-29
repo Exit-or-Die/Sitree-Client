@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
 
 const tags = [
   '스포츠',
@@ -40,24 +42,31 @@ const tags = [
   '플랫폼'
 ];
 
-interface ProjectTagSelectProps {
+interface ProjectTagSelectProps<T extends FieldValues> {
   useDelete?: boolean;
   onChange?: (tag: any) => void;
+  register?: UseFormRegister<T>;
+  name?: string;
 }
 
-const ProjectTagSelect = ({ useDelete = true, onChange = () => {} }: ProjectTagSelectProps) => {
+const ProjectTagSelect = <T extends FieldValues>({
+  useDelete = true,
+  onChange = () => {},
+  register,
+  name
+}: ProjectTagSelectProps<T>) => {
   const [search, setSearch] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSelectTag = (tag) => {
+  const handleSelectTag = (tag: string) => {
     if (!selectedTags.includes(tag)) {
       setSelectedTags([...selectedTags, tag]);
       setSearch(''); // 태그 선택 후 검색 필드를 비움
     }
   };
 
-  const handleRemoveTag = (tag) => {
+  const handleRemoveTag = (tag: string) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
 
@@ -70,34 +79,44 @@ const ProjectTagSelect = ({ useDelete = true, onChange = () => {} }: ProjectTagS
   }, [selectedTags, onChange]);
 
   return (
-    <div className="relative w-full ">
+    <div className="relative w-full">
       <div
-        className="w-full border border-tree-50 rounded-lg px-4 py-2 flex flex-wrap items-center gap-[0.4rem] cursor-pointer"
+        className="w-full border border-tree-50 rounded-[1rem] flex flex-wrap items-center justify-between pr-3 cursor-pointer"
+        {...(register && name ? register(name) : {})}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {selectedTags.length > 0 ? (
-          selectedTags.map((tag) => (
-            <SButton
-              key={tag}
-              size="md"
-              className="bg-tree-50 text-white-100 rounded-[99.9rem] gap-[0.4rem]"
-            >
-              {tag}
-              {useDelete && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // 클릭 이벤트가 부모에게 전달되지 않도록 처리
-                    handleRemoveTag(tag);
-                  }}
+          <div className="flex flex-wrap gap-2 px-2 py-1.5">
+            {selectedTags.map((tag) => (
+              <div key={tag}>
+                <SButton
+                  size="md"
+                  className="bg-tree-50 text-white-100 rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] px-[0.8rem]"
                 >
-                  X
-                </button>
-              )}
-            </SButton>
-          ))
+                  {tag}
+                  {useDelete && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // 클릭 이벤트가 부모에게 전달되지 않도록 처리
+                        handleRemoveTag(tag);
+                      }}
+                    >
+                      X
+                    </button>
+                  )}
+                </SButton>
+              </div>
+            ))}
+          </div>
         ) : (
-          <span className="text-gray-400">태그를 입력하세요</span>
+          <span className="text-gray-400 p-3 text-small">태그를 입력하세요</span>
         )}
+        <SImage
+          src="/arrow.svg"
+          width={16}
+          height={16}
+          className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}
+        />
       </div>
       {isDropdownOpen && filteredTags.length > 0 && (
         <div className="absolute z-10 bg-white-100 border border-gray-300 rounded-lg w-full mt-2 overflow-y-auto">

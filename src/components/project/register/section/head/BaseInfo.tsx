@@ -14,7 +14,12 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
     {
       title: '프로젝트 이름',
       component: (
-        <SInput register={register} name="head.title" placeholder="프로젝트 이름을 입력해주세요" />
+        <SInput
+          register={register}
+          name="head.title"
+          placeholder="프로젝트 이름을 입력해주세요"
+          className="text-small rounded-base"
+        />
       ),
       required: true
     },
@@ -25,6 +30,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
           register={register}
           name="head.healthCheckUrl"
           placeholder="ex: https://sitree-api.com/healthcheck"
+          className="text-small rounded-base"
         />
       ),
       required: true
@@ -36,14 +42,14 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
           register={register}
           name="head.shortDescription"
           placeholder="한 줄 소개를 작성해주세요"
-          className="w-20"
+          className="text-small rounded-base"
         />
       ),
       required: true
     },
     {
       title: '프로젝트 태그',
-      component: <ProjectTagSelect />,
+      component: <ProjectTagSelect register={register} name="tagList" />,
       required: true
     }
   ];
