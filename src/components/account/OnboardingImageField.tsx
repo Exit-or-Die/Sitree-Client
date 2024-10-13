@@ -1,8 +1,9 @@
 import { Maybe } from '@/utils/common';
-import React, { useRef } from 'react';
+import React from 'react';
 
-import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+
+import UploadFileButton from '../common/Button/UploadFileButton';
 
 type Props = {
   image: Maybe<string>;
@@ -11,14 +12,6 @@ type Props = {
 };
 
 const OnboardingImageField = ({ image, handleChange }: Props) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileSelect = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
   return (
     <div className="mb-6">
       <div className="block text-small font-md mb-2 text-slate-30">프로필 이미지</div>
@@ -50,20 +43,7 @@ const OnboardingImageField = ({ image, handleChange }: Props) => {
           )}
         </div>
         <div className="flex flex-col">
-          <SButton
-            className="cursor-pointer w-[90px] h-[30px] justify-center items-center border border-slate-90 rounded-small text-slate-50 hover:bg-slate-95"
-            onClick={handleFileSelect}
-          >
-            <div className="mr-[4px] text-small">파일 선택</div>
-            <SImage src="/select.svg" width={16} height={16} alt="select icon" />
-          </SButton>
-          <input
-            ref={fileInputRef}
-            id="file-upload"
-            type="file"
-            onChange={handleChange}
-            className="hidden"
-          />
+          <UploadFileButton handleChange={handleChange} />
           <div className="mt-2 text-xsmall text-slate-50">png 또는 jpg를 첨부해 주세요</div>
           <div className="mt-1 text-xsmall text-slate-60 font-md">최대 20mb, 권장 사이즈 80*80</div>
         </div>

@@ -53,7 +53,7 @@ const OnboardingInputField = ({
       <div className="mb-2 flex items-center relative">
         <SInput
           type="text"
-          className={`flex-grow h-[40px] p-3 border border-slate-300 rounded-base ${className} ${
+          className={`flex-grow h-[40px] p-3 border border-slate-300 rounded-base text-small ${className} ${
             isValid === false && 'bg-[#FFF2F2] border-0'
           }`}
           placeholder={placeholder}

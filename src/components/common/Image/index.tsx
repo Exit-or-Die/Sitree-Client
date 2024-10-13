@@ -8,7 +8,6 @@ interface ImageProps {
   height?: number;
   className?: string;
   onClick?: () => void;
-  className?: string;
 }
 
 /**
