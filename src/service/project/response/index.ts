@@ -7,6 +7,7 @@ export interface ProjectDetailResponse {
   tagList: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
+  architectureList: Array<Architecture>;
   participantList: Array<Participant>;
 }
 
@@ -33,23 +34,24 @@ export interface Image {
 }
 
 export interface ClientUrl {
-  liveWebDomain: string;
-  downloadMethods: DownloadMethods;
-}
-
-export interface DownloadMethods {
+  WEB: string;
   IOS: string;
-  AOS: string;
   WINDOWS: string;
+  AOS: string;
+  MAC_OS: string;
 }
 
 export interface TechView {
-  techArea: string;
+  techTitle: string;
   gitRepositoryUrl: string;
-  techStackTypes: Array<string>;
-  architectureImage: Image;
-  architectureDescription: string;
-  focusedPoints: Array<FocusedPoint>;
+  techTagList: Array<string>;
+  description: string;
+}
+
+export interface Architecture {
+  architectureType: string;
+  architectureDesc: string;
+  architectureImage: string;
 }
 
 export interface FocusedPoint {

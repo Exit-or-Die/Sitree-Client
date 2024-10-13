@@ -3,6 +3,8 @@ import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useState, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import SImage from '@/components/common/Image';
+
 const ProjectUploadProgress = () => {
   const { control } = useFormContext();
   const [progress, setProgress] = useState<number>(0);
@@ -61,60 +63,47 @@ const ProjectUploadProgress = () => {
   }, [sectionItems]);
 
   const getProgressBarColor = () => {
-    return progress === 100 ? 'bg-green-500' : 'bg-gray-300';
+    return 'bg-tree-50';
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-64">
-      <div className="mb-4">
+    <div className="border rounded-2xlarge">
+      <div className="flex flex-col gap-2 p-6">
         <p className="text-gray-500 mb-1">완성도</p>
-        <div className="flex sectionItems-center">
-          <p className="font-bold text-2xl">{Math.round(progress)}%</p>
-          <div className="w-full h-2 ml-4 bg-gray-200 rounded-full">
+        <div className="flex items-center">
+          <p className="font-lb text-large w-[7.2rem]">{Math.round(progress)}%</p>
+          <div className="w-full h-2 ml-4 bg-gray-200 rounded-[999px]">
             <div
-              className={`h-full rounded-full ${getProgressBarColor()}`}
+              className={`h-full rounded-[999px] ${getProgressBarColor()}`}
               style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
       </div>
-      <ul className="space-y-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="304"
+        height="2"
+        viewBox="0 0 304 2"
+        fill="none"
+      >
+        <path d="M304 1H0" stroke="#F2F4F8" />
+      </svg>
+      <ul className="p-4 gap-1">
         {sectionItems.map((item, index) => (
-          <li key={index} className="flex items-center justify-between">
-            <span>{item.name}</span>
-            <span className={item.completed ? 'text-green-500' : 'text-gray-400'}>
-              {item.completed ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              )}
-            </span>
+          <li key={index} className="flex items-center justify-between p-3 h-[52px]">
+            <p className="text-[1.5rem] leading-[2.2rem] tracking-[-0.15px]">{item.name}</p>
+            <div
+              className={`h-5 w-5 p-[3px] rounded-full ${
+                item.completed ? 'bg-tree-50' : 'bg-slate-98'
+              }`}
+            >
+              <SImage
+                src={item.completed ? '/check/white.svg' : '/check/gray.svg'}
+                width={14}
+                height={14}
+              />
+            </div>
           </li>
         ))}
       </ul>
