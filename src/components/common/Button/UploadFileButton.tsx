@@ -28,7 +28,7 @@ const UploadFileButton = ({ handleChange }: Props) => {
           <SImage src="/select.svg" width={16} height={16} alt="select icon" />
         </SButton>
       </div>
-      <SInput refValue={fileInputRef} type="file" onChange={handleChange} className="hidden" />
+      <SInput ref={fileInputRef} type="file" onChange={handleChange} className="hidden" />
     </>
   );
 };
