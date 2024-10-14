@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldValues, UseFormRegister, Path } from 'react-hook-form'; // Path 추가
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -44,9 +44,9 @@ const tags = [
 
 interface ProjectTagSelectProps<T extends FieldValues> {
   useDelete?: boolean;
-  onChange?: (tag: any) => void;
+  onChange?: (tag: unknown) => void;
   register?: UseFormRegister<T>;
-  name?: string;
+  name?: Path<T>; // name의 타입을 Path<T>로 수정
 }
 
 const ProjectTagSelect = <T extends FieldValues>({
@@ -55,14 +55,12 @@ const ProjectTagSelect = <T extends FieldValues>({
   register,
   name
 }: ProjectTagSelectProps<T>) => {
-  const [search, setSearch] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelectTag = (tag: string) => {
     if (!selectedTags.includes(tag)) {
       setSelectedTags([...selectedTags, tag]);
-      setSearch(''); // 태그 선택 후 검색 필드를 비움
     }
   };
 
@@ -70,9 +68,7 @@ const ProjectTagSelect = <T extends FieldValues>({
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
 
-  const filteredTags = tags.filter(
-    (tag) => tag.toLowerCase().includes(search.toLowerCase()) && !selectedTags.includes(tag)
-  );
+  const filteredTags = tags.filter((tag) => !selectedTags.includes(tag));
 
   useEffect(() => {
     onChange(selectedTags);
@@ -81,7 +77,7 @@ const ProjectTagSelect = <T extends FieldValues>({
   return (
     <div className="relative w-full">
       <div
-        className="w-full border border-tree-50 rounded-[1rem] flex flex-wrap items-center justify-between pr-3 cursor-pointer"
+        className="w-full border border-tree-50 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer"
         {...(register && name ? register(name) : {})}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
@@ -97,11 +93,11 @@ const ProjectTagSelect = <T extends FieldValues>({
                   {useDelete && (
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // 클릭 이벤트가 부모에게 전달되지 않도록 처리
+                        e.stopPropagation();
                         handleRemoveTag(tag);
                       }}
                     >
-                      X
+                      <SImage src="/close-white.svg" width={14} height={14} />
                     </button>
                   )}
                 </SButton>
@@ -111,12 +107,14 @@ const ProjectTagSelect = <T extends FieldValues>({
         ) : (
           <span className="text-gray-400 p-3 text-small">태그를 입력하세요</span>
         )}
-        <SImage
-          src="/arrow.svg"
-          width={16}
-          height={16}
-          className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}
-        />
+        <div className="w-4 h-4 flex-shrink-0">
+          <SImage
+            src="/arrow.svg"
+            width={16}
+            height={16}
+            className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}
+          />
+        </div>
       </div>
       {isDropdownOpen && filteredTags.length > 0 && (
         <div className="absolute z-10 bg-white-100 border border-gray-300 rounded-lg w-full mt-2 overflow-y-auto">

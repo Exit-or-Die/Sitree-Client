@@ -1,10 +1,8 @@
 'use client';
-import ProjectService from '@/service/project/ProjectService';
 import ProjectQueryOptions from '@/service/project/queries';
 import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
@@ -42,18 +40,22 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
       overview: {
         images: defaultValues.overview?.images || [],
         clientUrl: {
-          liveWebDomain: defaultValues.overview?.clientUrl.liveWebDomain || '',
-          downloadMethods: defaultValues.overview?.clientUrl.downloadMethods || {}
+          WEB: defaultValues.overview.clientUrl.WEB,
+          IOS: defaultValues.overview.clientUrl.IOS,
+          WINDOWS: defaultValues.overview.clientUrl.WINDOWS,
+          AOS: defaultValues.overview.clientUrl.AOS,
+          MAC_OS: defaultValues.overview.clientUrl.MAC_OS
         },
         detailDescription: defaultValues.overview?.detailDescription || ''
       },
       techviewList: defaultValues.techviewList || [],
+      architectureList: defaultValues.architectureList || [],
       participantList: defaultValues.participantList || []
     }
   });
 
   return (
-    <div className="flex justify-center gap-5">
+    <div className="flex justify-center gap-5 bg-slate-300">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
           <form onSubmit={formMethods.handleSubmit((data) => console.log('저장된 데이터:', data))}>

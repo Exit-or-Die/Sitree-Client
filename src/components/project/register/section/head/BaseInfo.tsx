@@ -18,7 +18,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
           register={register}
           name="head.title"
           placeholder="프로젝트 이름을 입력해주세요"
-          className="text-small rounded-base"
+          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: true
@@ -30,7 +30,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
           register={register}
           name="head.healthCheckUrl"
           placeholder="ex: https://sitree-api.com/healthcheck"
-          className="text-small rounded-base"
+          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: true
@@ -42,7 +42,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
           register={register}
           name="head.shortDescription"
           placeholder="한 줄 소개를 작성해주세요"
-          className="text-small rounded-base"
+          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: true
@@ -59,7 +59,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
       <div className="w-full ">
         {InputList.map((input, index) => (
           <div key={index} className="mb-6">
-            <label className="block text-small text-gray-700 flex items-center mb-1.5">
+            <label className="block text-small font-md leading-5 tracking-[-0.14px] text-gray-700 flex items-center mb-1.5">
               <span className="text-[1.4rem]">{input.title}</span>
               {input.required && (
                 <span className="ml-1 mb-1 w-1.5 h-1.5 bg-tree-50 rounded-full"></span>

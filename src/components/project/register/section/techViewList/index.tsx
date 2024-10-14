@@ -2,7 +2,7 @@ import { ProjectDetailResponse } from '@/service/project/response';
 import React, { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
-import TechViewForm from './TechView';
+import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
   name: string;

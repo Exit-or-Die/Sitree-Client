@@ -9,7 +9,7 @@ const ProjectUploadProgress = () => {
   const { control } = useFormContext();
   const [progress, setProgress] = useState<number>(0);
 
-  const { head, tagList, overview, techviewList, participantList } = useWatch({
+  const { head, tagList, overview, techviewList, architectureList, participantList } = useWatch({
     control
   }) as ProjectRegisterRequest;
 
@@ -40,9 +40,14 @@ const ProjectUploadProgress = () => {
         completionRate: extractContentFromHtml(overview.detailDescription).length > 0 ? 1 : 0
       },
       {
-        name: '기술 뷰',
+        name: '프로젝트 기술',
         completed: Boolean(techviewList.length > 0),
         completionRate: techviewList.length > 0 ? 1 : 0
+      },
+      {
+        name: '기술 아키텍쳐',
+        completed: !!architectureList.length,
+        completionRate: architectureList.length > 0 ? 1 : 0
       },
       {
         name: '참여자 목록',
@@ -50,7 +55,7 @@ const ProjectUploadProgress = () => {
         completionRate: participantList.length > 0 ? 1 : 0
       }
     ];
-  }, [head, tagList, overview, techviewList, participantList]);
+  }, [head, tagList, overview, techviewList, architectureList, participantList]);
 
   // 각 섹션의 진행률을 기반으로 전체 progress 계산
   useEffect(() => {
@@ -67,7 +72,7 @@ const ProjectUploadProgress = () => {
   };
 
   return (
-    <div className="border rounded-2xlarge">
+    <div className="border rounded-2xlarge bg-white-100">
       <div className="flex flex-col gap-2 p-6">
         <p className="text-gray-500 mb-1">완성도</p>
         <div className="flex items-center">

@@ -21,7 +21,11 @@ export const overviewSchema = z.object({
     })
   ),
   clientUrl: z.object({
-    liveWebDomain: z.string().optional()
+    WEB: z.string().optional(),
+    IOS: z.string().optional(),
+    WINDOWS: z.string().optional(),
+    AOS: z.string().optional(),
+    MAC_OS: z.string().optional()
   }),
   detailDescription: z.string().optional()
 });
@@ -29,39 +33,35 @@ export const overviewSchema = z.object({
 export const techviewListSchema = z
   .array(
     z.object({
-      techArea: z.string().min(1, 'Tech area is required'),
+      techTitle: z.string().min(1, 'Tech area is required'),
       gitRepositoryUrl: z.string().url().optional(),
-      techStackTypes: z.array(z.string()).optional(),
-      architectureImage: z.object({
-        imageUrl: z.string().url().optional(),
-        imageType: z.enum(['REPRESENT', 'BACKGROUND', 'ARCHITECTURE'])
-      }),
-      architectureDescription: z.string().optional(),
-      focusedPoints: z
-        .array(
-          z.object({
-            memberNo: z.number().int(),
-            focusedOn: z.string()
-          })
-        )
-        .optional()
+      techTagList: z.array(z.string()).optional(),
+      description: z.string().optional()
     })
   )
   .optional();
 
-export const participantListSchema = z
-  .array(
-    z.object({
-      memberNo: z.number().int().optional(),
-      position: z.string().optional()
-    })
-  )
-  .optional();
+export const archithectureListSchema = z.array(
+  z.object({
+    architectureType: z.string().optional(),
+    architectureDesc: z.string().optional(),
+    architectureImage: z.string().optional()
+  })
+);
+
+export const participantListSchema = z.array(
+  z.object({
+    memberNo: z.number().int().optional(),
+    position: z.string().optional(),
+    isLeader: z.boolean().optional()
+  })
+);
 
 export const projectSchema = z.object({
   head: headSchema,
   tagList: tagListSchema,
   overview: overviewSchema,
   techviewList: techviewListSchema,
+  archithectureList: archithectureListSchema,
   participantList: participantListSchema
 });
