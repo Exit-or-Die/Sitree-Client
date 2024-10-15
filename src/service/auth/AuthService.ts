@@ -1,4 +1,4 @@
-import { Nullable } from 'types/common';
+import { Maybe, Nullable } from 'types/common';
 
 import Service from '../service';
 
@@ -13,17 +13,20 @@ export interface UserDetail {
   accessToken?: Nullable<string>;
   refreshToken?: Nullable<string>;
 }
-interface SignInData {
+export interface SignInData {
   provider: string;
   email: string;
   oAuthToken: string;
 }
 
-interface SignUpData {
-  authId: string;
+export interface SignUpData {
+  provider: string;
+  oAuthToken: string;
   email: string;
   nickname: string;
-  profileImgUrl: string;
+  profileImgUrl: Maybe<string>;
+  thirdPartyProfileUrl?: string;
+  belonging?: string;
 }
 
 interface ValidateUsername {

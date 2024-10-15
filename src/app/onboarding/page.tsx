@@ -24,7 +24,7 @@ const Onboarding = () => {
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
-    mutationFn: (nickname: string) => AuthQueryOptions.validateUsername(nickname).queryFn(),
+    mutationFn: () => AuthQueryOptions.validateUsername(username).mutateFn(),
     onSuccess: (data) => {
       if (!data.exist) {
         setIsUsernameValid(true);
@@ -79,7 +79,7 @@ const Onboarding = () => {
 
   const handleUsernameVerify = () => {
     if (username) {
-      validateUsername(username);
+      validateUsername();
     }
   };
 

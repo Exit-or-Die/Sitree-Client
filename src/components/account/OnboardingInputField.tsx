@@ -37,17 +37,13 @@ const OnboardingInputField = ({
       <div className="flex text-small font-md mb-2 text-slate-30">
         <div>{label}</div>
         {showIcon && (
-          <div className="ml-1 pt-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="6"
-              height="6"
-              viewBox="0 0 6 6"
-              fill="none"
-            >
-              <circle cx="3" cy="3" r="3" fill="#08C767" />
-            </svg>
-          </div>
+          <SImage
+            src="/circle.svg"
+            alt="required section"
+            width={6}
+            height={6}
+            className="ml-1 pt-1"
+          />
         )}
       </div>
       <div className="mb-2 flex items-center relative">

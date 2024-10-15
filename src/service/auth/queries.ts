@@ -1,7 +1,7 @@
 import { setCookie } from '@/utils/cookie';
 import { useMutation } from '@tanstack/react-query';
 
-import AuthService from './AuthService';
+import AuthService, { SignInData, SignUpData } from './AuthService';
 
 const queryKeys = {
   signIn: () => ['auth', 'signin'] as const,
@@ -10,29 +10,24 @@ const queryKeys = {
 };
 
 const AuthQueryOptions = {
-  signIn: (signInData: { provider: string; email: string; oAuthToken: string }) => ({
-    queryKey: queryKeys.signIn(),
-    queryFn: () => AuthService.signIn(signInData)
+  signIn: (signInData: SignInData) => ({
+    mutateKey: queryKeys.signIn(),
+    mutateFn: () => AuthService.signIn(signInData)
   }),
-  signUp: (signUpData: {
-    authId: string;
-    email: string;
-    nickname: string;
-    profileImgUrl: string;
-  }) => ({
-    queryKey: queryKeys.signUp(),
-    queryFn: () => AuthService.signUp(signUpData)
+  signUp: (signUpData: SignUpData) => ({
+    mutateKey: queryKeys.signUp(),
+    mutateFn: () => AuthService.signUp(signUpData)
   }),
   validateUsername: (nickname: string) => ({
-    queryKey: queryKeys.validateUsername(nickname),
-    queryFn: () => AuthService.validateUsername(nickname),
+    mutateKey: queryKeys.validateUsername(nickname),
+    mutateFn: () => AuthService.validateUsername(nickname),
     enabled: !!nickname
   })
 };
 
 export const useSignUp = () => {
-  const mutation = useMutation({
-    mutationFn: (credentials) => AuthQueryOptions.signUp(credentials).queryFn(),
+  return useMutation({
+    mutationFn: (credentials: SignUpData) => AuthQueryOptions.signUp(credentials).mutateFn(),
     onSuccess: (data) => {
       if (!data.accessToken) return;
       setCookie('accessToken', data.accessToken);
@@ -41,8 +36,6 @@ export const useSignUp = () => {
       console.error('Signup failed:', error);
     }
   });
-
-  return mutation;
 };
 
 export default AuthQueryOptions;
