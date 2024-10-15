@@ -6,9 +6,10 @@ import SInput from '../Input';
 
 type Props = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  accept?: string;
 };
 
-const UploadFileButton = ({ handleChange }: Props) => {
+const UploadFileButton = ({ handleChange, accept = 'image/png, image/jpeg' }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleFileSelect = () => {
     if (fileInputRef.current) {
@@ -28,7 +29,13 @@ const UploadFileButton = ({ handleChange }: Props) => {
           <SImage src="/select.svg" width={16} height={16} alt="select icon" />
         </SButton>
       </div>
-      <SInput ref={fileInputRef} type="file" onChange={handleChange} className="hidden" />
+      <SInput
+        ref={fileInputRef}
+        type="file"
+        onChange={handleChange}
+        className="hidden"
+        accept={accept}
+      />
     </>
   );
 };

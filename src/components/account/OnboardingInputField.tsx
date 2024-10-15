@@ -1,5 +1,5 @@
-import { Nullable } from '@/utils/common';
 import React from 'react';
+import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -53,7 +53,7 @@ const OnboardingInputField = ({
       <div className="mb-2 flex items-center relative">
         <SInput
           type="text"
-          className={`flex-grow h-[40px] p-3 border border-slate-300 rounded-base text-small ${className} ${
+          className={`flex-grow h-[44px] p-3 border border-slate-300 rounded-base text-small ${className} ${
             isValid === false && 'bg-[#FFF2F2] border-0'
           }`}
           placeholder={placeholder}
@@ -72,7 +72,7 @@ const OnboardingInputField = ({
             />
           ) : (
             <SButton
-              className="h-[40px] px-4 py-2 border border-slate-300 rounded-large text-slate-500 ml-[6px]"
+              className="h-[44px] border border-slate-300 rounded-large text-slate-500 ml-[6px] text-[14px] whitespace-nowrap"
               onClick={onValidationClick}
             >
               중복 확인

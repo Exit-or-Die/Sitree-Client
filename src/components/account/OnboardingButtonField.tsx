@@ -1,5 +1,5 @@
-import { Nullable } from '@/utils/common';
 import React from 'react';
+import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 

@@ -1,4 +1,4 @@
-import { Nullable } from '@/utils/common';
+import { Nullable } from 'types/common';
 
 import Service from '../service';
 

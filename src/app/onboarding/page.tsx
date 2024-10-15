@@ -1,12 +1,13 @@
 'use client';
 
+import { ERROR_MESSAGES } from '@/constants/error';
 import { useSignUp } from '@/service/auth/queries';
 import AuthQueryOptions from '@/service/auth/queries';
-import { Nullable } from '@/utils/common';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, useMemo } from 'react';
+import { Nullable } from 'types/common';
 
 import OnboardingButtonField from '@/components/account/OnboardingButtonField';
 import OnboardingImageField from '@/components/account/OnboardingImageField';
@@ -20,7 +21,7 @@ const Onboarding = () => {
   const [link, setLink] = useState('');
   const [imageFile, setImageFile] = useState<Nullable<File>>(null);
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState('사용 할수 없는 닉네임입니다');
+  const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
     mutationFn: (nickname: string) => AuthQueryOptions.validateUsername(nickname).queryFn(),
@@ -31,11 +32,11 @@ const Onboarding = () => {
         return;
       }
       setIsUsernameValid(false);
-      setErrorMessage('중복된 닉네임 입니다');
+      setErrorMessage(ERROR_MESSAGES.USERNAME_DUPLICATE);
     },
     onError: () => {
       setIsUsernameValid(false);
-      setErrorMessage('사용 할수 없는 닉네임입니다');
+      setErrorMessage(ERROR_MESSAGES.USERNAME_INVALID);
     }
   });
 
@@ -76,7 +77,7 @@ const Onboarding = () => {
     }
   };
 
-  const handleUsernameVerify = async () => {
+  const handleUsernameVerify = () => {
     if (username) {
       validateUsername(username);
     }
@@ -86,7 +87,7 @@ const Onboarding = () => {
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-slate-100">
-      <div className="bg-white p-8 rounded-xlarge shadow-lg w-[500px] bg-white-100 border border-slate-90">
+      <div className="bg-white p-8 rounded-xlarge shadow-lg w-[580px] bg-white-100 border border-slate-90">
         <h1 className="text-xlarge font-bd mb-[8px]">사이트리에 오신 것을 환영해요!</h1>
         <p className="text-small font-md mb-8 text-slate-50">
           간단한 프로필 정보를 입력하고 사이트리를 입력해 주세요
@@ -104,7 +105,7 @@ const Onboarding = () => {
             showValidationButton={true}
             onValidationClick={handleUsernameVerify}
             isValid={isUsernameValid}
-            successMessage="사용할수 있는 닉네임입니다"
+            successMessage="사용할 수 있는 닉네임입니다"
             errorMessage={errorMessage}
             showIcon={true}
           />

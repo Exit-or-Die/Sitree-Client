@@ -1,5 +1,5 @@
-import { Maybe } from '@/utils/common';
 import React from 'react';
+import { Maybe } from 'types/common';
 
 import SImage from '@/components/common/Image';
 
