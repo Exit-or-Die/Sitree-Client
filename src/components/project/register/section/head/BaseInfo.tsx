@@ -1,15 +1,13 @@
-import { ProjectDetailResponse } from '@/service/project/response';
-import { UseFormRegister } from 'react-hook-form';
+import { ProjectRegisterRequest, Tag } from '@/service/project/request';
+import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
 import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
-interface ProjectRegisterHeadProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
+const ProjectHeadBaseInfo = () => {
+  const { register, setValue } = useFormContext<ProjectRegisterRequest>();
 
-const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
   const InputList = [
     {
       title: '프로젝트 이름',
@@ -49,7 +47,7 @@ const ProjectHeadBaseInfo = ({ register }: ProjectRegisterHeadProps) => {
     },
     {
       title: '프로젝트 태그',
-      component: <ProjectTagSelect register={register} name="tagList" />,
+      component: <ProjectTagSelect<Tag> onChange={(tags: Tag[]) => setValue('tagList', tags)} />,
       required: true
     }
   ];

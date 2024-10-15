@@ -14,6 +14,7 @@ import {
   ProjectRegisterParticipantList,
   ProjectRegisterTechViewList
 } from './section';
+import ProjectRegisterArchitectureList from './section/architectureList';
 interface ProjectRegisterFormProps {
   projectId: string;
   onSubmit?: (data: unknown) => void;
@@ -25,6 +26,7 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
     queryKey,
     queryFn
   });
+  const onInvalid = (errors) => console.error(errors);
 
   const formMethods = useForm({
     resolver: zodResolver(projectSchema),
@@ -49,7 +51,7 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
         detailDescription: defaultValues.overview?.detailDescription || ''
       },
       techviewList: defaultValues.techviewList || [],
-      architectureList: defaultValues.architectureList || [],
+      architectureList: [],
       participantList: defaultValues.participantList || []
     }
   });
@@ -58,10 +60,15 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
     <div className="flex justify-center gap-5 bg-slate-300">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
-          <form onSubmit={formMethods.handleSubmit((data) => console.log('저장된 데이터:', data))}>
+          <form
+            onSubmit={formMethods.handleSubmit((data) => {
+              console.log(data);
+            }, onInvalid)}
+          >
             <ProjectRegisterHead register={formMethods.register} />
-            <ProjectRegisterOverview register={formMethods.register} />
+            <ProjectRegisterOverview />
             <ProjectRegisterTechViewList register={formMethods.register} />
+            <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList register={formMethods.register} />
             <button type="submit">Submit</button>
           </form>

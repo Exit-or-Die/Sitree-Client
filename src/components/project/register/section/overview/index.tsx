@@ -1,16 +1,15 @@
 import { ProjectDetailResponse } from '@/service/project/response';
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
 import { UseFormRegister, useFormContext } from 'react-hook-form';
 
 const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: false });
 
-interface ProjectRegisterOverviewProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
+// interface ProjectRegisterOverviewProps {
+//   register: UseFormRegister<ProjectDetailResponse>;
+// }
 
 const ProjectRegisterOverview = () => {
-  const { register, setValue, watch } = useFormContext<ProjectDetailResponse>();
+  const { setValue, watch } = useFormContext<ProjectDetailResponse>();
 
   // Set the initial value from the form state
   const detailDescription = watch('overview.detailDescription');

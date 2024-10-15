@@ -30,24 +30,24 @@ export const overviewSchema = z.object({
   detailDescription: z.string().optional()
 });
 
-export const techviewListSchema = z
+export const techviewListSchema = z.array(
+  z.object({
+    techTitle: z.string().min(1, 'Tech area is required').optional(),
+    gitRepositoryUrl: z.string().optional(),
+    techTagList: z.array(z.string()).optional(),
+    description: z.string().optional()
+  })
+);
+
+export const archithectureListSchema = z
   .array(
     z.object({
-      techTitle: z.string().min(1, 'Tech area is required'),
-      gitRepositoryUrl: z.string().url().optional(),
-      techTagList: z.array(z.string()).optional(),
-      description: z.string().optional()
+      architectureType: z.string().optional(),
+      architectureDesc: z.string().optional(),
+      architectureImage: z.string().optional()
     })
   )
   .optional();
-
-export const archithectureListSchema = z.array(
-  z.object({
-    architectureType: z.string().optional(),
-    architectureDesc: z.string().optional(),
-    architectureImage: z.string().optional()
-  })
-);
 
 export const participantListSchema = z.array(
   z.object({

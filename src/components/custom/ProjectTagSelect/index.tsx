@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FieldValues, UseFormRegister, Path } from 'react-hook-form'; // Path 추가
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-const tags = [
+const EXAMPLE_TAGS = [
   '스포츠',
   '헬스케어',
   '지도',
@@ -42,29 +41,27 @@ const tags = [
   '플랫폼'
 ];
 
-interface ProjectTagSelectProps<T extends FieldValues> {
+interface ProjectTagSelectProps<T = string> {
   useDelete?: boolean;
-  onChange?: (tag: unknown) => void;
-  register?: UseFormRegister<T>;
-  name?: Path<T>; // name의 타입을 Path<T>로 수정
+  onChange?: (tags: T[]) => void;
+  tags?: T[];
 }
 
-const ProjectTagSelect = <T extends FieldValues>({
+const ProjectTagSelect = <T,>({
   useDelete = true,
   onChange = () => {},
-  register,
-  name
+  tags = EXAMPLE_TAGS as T[]
 }: ProjectTagSelectProps<T>) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<T[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSelectTag = (tag: string) => {
+  const handleSelectTag = (tag: T) => {
     if (!selectedTags.includes(tag)) {
       setSelectedTags([...selectedTags, tag]);
     }
   };
 
-  const handleRemoveTag = (tag: string) => {
+  const handleRemoveTag = (tag: T) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
 
@@ -78,27 +75,26 @@ const ProjectTagSelect = <T extends FieldValues>({
     <div className="relative w-full">
       <div
         className="w-full border border-tree-50 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer"
-        {...(register && name ? register(name) : {})}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {selectedTags.length > 0 ? (
           <div className="flex flex-wrap gap-2 px-2 py-1.5">
             {selectedTags.map((tag) => (
-              <div key={tag}>
+              <div key={String(tag)}>
                 <SButton
                   size="md"
                   className="bg-tree-50 text-white-100 rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] px-[0.8rem]"
                 >
-                  {tag}
+                  {String(tag)}
                   {useDelete && (
-                    <button
+                    <span
                       onClick={(e) => {
                         e.stopPropagation();
                         handleRemoveTag(tag);
                       }}
                     >
                       <SImage src="/close-white.svg" width={14} height={14} />
-                    </button>
+                    </span>
                   )}
                 </SButton>
               </div>
@@ -121,11 +117,11 @@ const ProjectTagSelect = <T extends FieldValues>({
           <div className="flex flex-wrap p-2 gap-2">
             {filteredTags.map((tag) => (
               <SButton
-                key={tag}
+                key={String(tag)}
                 onClick={() => handleSelectTag(tag)}
                 className="rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] text-slate-50 border-slate-90"
               >
-                {tag}
+                {String(tag)}
               </SButton>
             ))}
           </div>
