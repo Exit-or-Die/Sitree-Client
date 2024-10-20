@@ -1,6 +1,9 @@
+import { ClientUrl } from '@/service/project/request';
 import { ProjectDetailResponse } from '@/service/project/response';
+import { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
+import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
 
 interface ProjectRegisterHeadProps {
@@ -8,34 +11,49 @@ interface ProjectRegisterHeadProps {
 }
 
 const ProjectHeadServiceLink = ({ register }: ProjectRegisterHeadProps) => {
+  const [serviceLinks, setServiceLinks] = useState<ClientUrl>({
+    WEB: '123',
+    IOS: '',
+    WINDOWS: '',
+    AOS: '',
+    MAC_OS: ''
+  });
+
+  const availableKeys = Object.keys(serviceLinks).filter(
+    (key) => serviceLinks[key as keyof ClientUrl] === ''
+  );
+
   return (
-    <div>
-      <p className="mb-6 text-slate-10 font-lb text-xlarge">서비스 링크</p>
-      <p className="mb-6 text-slate-10 font-lb text-base">
-        라이브 도메인, 다운로드 링크 중 최소 한 가지 이상을 입력해 주세요.
-      </p>
-      <div className="flex gap-8">
-        <div className="w-1/2">
-          <label className="block text-small text-gray-700 flex items-center mb-1.5">
-            <span className="text-[1.4rem]">라이브 도메인</span>
-          </label>
-          <SInput
-            register={register}
-            name="overview.clientUrl.liveWebDomain"
-            placeholder="ex: https://sitree.com"
-          />
-        </div>
-        <div className="w-1/2">
-          <label className="block text-small text-gray-700 flex items-center mb-1.5">
-            <span className="text-[1.4rem]">다운로드 링크</span>
-          </label>
-          <SInput
-            register={register}
-            name="overview.clientUrl.downloadMethods.IOS"
-            placeholder="ex: https://sitree.com"
-          />
-        </div>
+    <div className="p-10 flex flex-col gap-5">
+      <p className="text-large font-lb">서비스 링크</p>
+      <div>
+        {Object.entries(serviceLinks).map(([key, value], index) => {
+          if (value.length > 0) {
+            return (
+              <div key={`service_link_${index}`} className="flex gap-1.5">
+                <select defaultValue={key}>
+                  {availableKeys.map((availableKey) => (
+                    <option key={availableKey} value={availableKey}>
+                      {availableKey}
+                    </option>
+                  ))}
+                </select>
+                <SInput
+                  placeholder="링크를 입력해주세요"
+                  value={value}
+                  onChange={(e) => setServiceLinks({ ...serviceLinks, [key]: e.target.value })}
+                />
+              </div>
+            );
+          }
+
+          return null;
+        })}
       </div>
+      <SButton size="lg" className="text-small bg-tree-93 leading-5 text-tree-30 gap-1.5">
+        <p>+</p>
+        <p>링크 추가</p>
+      </SButton>
     </div>
   );
 };

@@ -53,7 +53,7 @@ const ProjectHeadBaseInfo = () => {
   ];
 
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 p-10">
       <div className="w-full ">
         {InputList.map((input, index) => (
           <div key={index} className="mb-6">

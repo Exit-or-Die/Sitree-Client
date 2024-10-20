@@ -31,7 +31,7 @@ const SImage = (props: ImageProps) => {
 
   return (
     <div>
-      {isLoading && <div>Skeleton!</div>}
+      {/* {isLoading && <div>Skeleton!</div>} */}
       <Image
         // TBD whether internal css should be added
         className={className}
