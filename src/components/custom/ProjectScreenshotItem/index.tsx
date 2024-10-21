@@ -14,7 +14,7 @@ const ProjectScreenshotItem = ({
   className
 }: ProjectScreenshotItemProps) => {
   return (
-    <div>
+    <div className="border rounded-large">
       {isRepresentative && <div>대표 이미지</div>}
       <SImage
         src={'https://picsum.photos/600/400'}

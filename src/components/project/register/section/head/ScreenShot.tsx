@@ -23,21 +23,20 @@ const ProjectHeadScreenshot = ({ register }: ProjectRegisterHeadProps) => {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {screenShotList.map((screenShot, index) => (
-          <div key={index} className="p-4 border border-gray-300 rounded">
-            <ProjectScreenshotItem
-              src={screenShot.imageUrl}
-              alt={`Screenshot ${index + 1}`}
-              className="w-full h-auto"
-            />
-          </div>
+          <ProjectScreenshotItem
+            key={`screenshot-${index}`}
+            src={screenShot.imageUrl}
+            alt={`Screenshot ${index + 1}`}
+            className="w-full h-auto"
+          />
         ))}
         {placeholders.map((_, index) => (
-          <div
+          <ProjectScreenshotItem
             key={`placeholder-${index}`}
             className="p-4 border border-dashed border-gray-300 rounded"
           >
             Placeholder
-          </div>
+          </ProjectScreenshotItem>
         ))}
       </div>
     </div>
