@@ -1,7 +1,7 @@
 import SImage from '@/components/common/Image';
 
 interface ProjectScreenshotItemProps {
-  src: string;
+  src?: string;
   alt?: string;
   className?: string;
   isRepresentative?: boolean;
@@ -14,15 +14,19 @@ const ProjectScreenshotItem = ({
   className
 }: ProjectScreenshotItemProps) => {
   return (
-    <div className="border rounded-large">
-      {isRepresentative && <div>대표 이미지</div>}
+    <div className="relative flex items-center justify-center rounded-large bg-slate-98 w-[20.4rem] h-[16rem] overflow-hidden">
       <SImage
-        src={'https://picsum.photos/600/400'}
-        width={20}
-        height={20}
+        src={src || '/blankImage.svg'}
+        width={src ? undefined : 40}
+        height={src ? undefined : 40}
         alt={alt}
         className={className}
       />
+      {isRepresentative && (
+        <div className="absolute text-white-100 bg-black-40 px-2 py-1 rounded-small top-2 left-2">
+          대표 이미지
+        </div>
+      )}
     </div>
   );
 };

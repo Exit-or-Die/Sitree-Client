@@ -64,6 +64,7 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
             onSubmit={formMethods.handleSubmit((data) => {
               console.log(data);
             }, onInvalid)}
+            className="flex flex-col gap-10"
           >
             <ProjectRegisterHead register={formMethods.register} />
             <ProjectRegisterOverview />

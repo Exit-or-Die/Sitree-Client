@@ -2,6 +2,8 @@ import { ProjectDetailResponse } from '@/service/project/response';
 import React, { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
+import SButton from '@/components/common/Button';
+
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
@@ -49,10 +51,9 @@ const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListPr
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="bg-white-100 rounded-2xlarge p-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">프로젝트 기술</h1>
-
+        <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
         <div className="flex items-center space-x-4">
           <div className="flex space-x-2">
             {skills.map((_, index) => (
@@ -67,18 +68,19 @@ const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListPr
               </button>
             ))}
           </div>
-
-          <button
-            onClick={addSkill}
+          <SButton
+            size="md"
             disabled={!canAddSkill()}
-            className={`px-4 py-2 rounded-md ${
+            className={`${
               canAddSkill()
                 ? 'bg-green-100 text-green-700'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
+            onClick={addSkill}
           >
-            + 기술 추가
-          </button>
+            <p>+</p>
+            <p className="leading-5 tracking-[-1%]">링크 추가</p>
+          </SButton>
         </div>
       </div>
       <TechViewForm skill={skills[currentIndex]} index={currentIndex} updateSkill={updateSkill} />
