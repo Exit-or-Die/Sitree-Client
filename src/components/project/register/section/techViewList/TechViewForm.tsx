@@ -1,4 +1,8 @@
+import SInput from '@/components/common/Input';
+import STextarea from '@/components/common/Textarea';
+
 import { TechViewProps } from '.';
+import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const TechViewForm: React.FC<{
   skill: TechViewProps;
@@ -17,42 +21,52 @@ const TechViewForm: React.FC<{
   };
 
   return (
-    <div className="p-12 rounded-base shadow-lg bg-white mb-16">
-      <div className="grid grid-cols-2 gap-8">
-        <div>
-          <label className="block text-small font-md text-slate-50">기술 이름</label>
-          <input
+    <div className="flex flex-col gap-5">
+      <div className="flex gap-5">
+        <div className="w-full">
+          <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+            기술 이름
+          </label>
+          <SInput
             type="text"
             placeholder="이름 입력"
             name="name"
             value={skill.name}
             onChange={handleChange}
-            className="mt-1.5 block w-full rounded-base border-slate-90 shadow-sm focus:border-tree-60 focus:ring focus:ring-tree-tint-50 focus:ring-opacity-50"
+            className="mt-1.5"
           />
         </div>
-        <div>
-          <label className="block text-small font-md text-slate-50">GitHub 링크</label>
-          <input
+        <div className="w-full">
+          <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+            기술 이름
+          </label>
+          <SInput
             type="text"
             placeholder="링크 입력"
             name="github"
             value={skill.github}
             onChange={handleChange}
-            className="mt-1.5 block w-full rounded-base border-slate-90 shadow-sm focus:border-tree-60 focus:ring focus:ring-tree-tint-50 focus:ring-opacity-50"
+            className="mt-1.5"
           />
         </div>
       </div>
-
-      <div className="mt-8">
-        <label className="block text-small font-md text-slate-50">기술 설명</label>
-        <textarea
+      <div>
+        <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+          기술 설명
+        </label>
+        <STextarea
           placeholder="프로젝트를 진행하면서 활용한 기술 스택을 소개해 주세요"
           name="stack"
           value={skill.stack}
           onChange={handleChange}
-          rows={4}
           className="mt-1.5 block w-full rounded-base border-slate-90 shadow-sm focus:border-tree-60 focus:ring focus:ring-tree-tint-50 focus:ring-opacity-50"
-        ></textarea>
+        />
+      </div>
+      <div>
+        <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mb-1.5">
+          기술 태그
+        </label>
+        <ProjectTagSelect />
       </div>
     </div>
   );

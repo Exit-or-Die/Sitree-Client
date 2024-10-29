@@ -20,7 +20,7 @@ interface ProjectRegisterTechViewListProps {
 }
 
 const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListProps) => {
-  const [skills, setSkills] = useState<TechViewProps[]>([
+  const [skills, setSkills] = useState<Array<TechViewProps>>([
     { name: '', github: '', stack: '', includeArchitecture: false }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,16 +52,16 @@ const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListPr
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10">
-      <div className="flex justify-between items-center mb-6">
-        <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
+      <div className="flex justify-between items-center mb-5">
+        <p className="text-slate-10 font-lb text-xlarge">프로젝트 기술</p>
         <div className="flex items-center space-x-4">
-          <div className="flex space-x-2">
+          <div className="flex gap-1">
             {skills.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSkill(index)}
-                className={`px-3 py-1 rounded-full ${
-                  currentIndex === index ? 'bg-green-600 text-white' : 'bg-gray-200'
+                className={`w-[2.8rem] h-[2.8rem] rounded-base leading-5 text-small ${
+                  currentIndex === index ? 'bg-tree-50 text-white-100' : 'bg-slate-98 text-slate-50'
                 }`}
               >
                 {index + 1}
@@ -79,7 +79,7 @@ const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListPr
             onClick={addSkill}
           >
             <p>+</p>
-            <p className="leading-5 tracking-[-1%]">링크 추가</p>
+            <p className="leading-5 tracking-[-1%]">기술 추가</p>
           </SButton>
         </div>
       </div>
