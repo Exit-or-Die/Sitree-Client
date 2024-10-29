@@ -111,6 +111,7 @@ module.exports = {
         'border-icon': '0.12rem'
       },
       spacing: {
+        0.5: '0.2rem',
         1: '0.4rem',
         1.5: '0.6rem',
         2: '0.8rem',

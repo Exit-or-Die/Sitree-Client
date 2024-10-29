@@ -1,3 +1,4 @@
+import SEditor from '@/components/common/Editor';
 import React, { useState } from 'react';
 
 const tabs = [
@@ -27,59 +28,43 @@ const inputFields = [
 const ArchitectureComponent = () => {
   const [activeTab, setActiveTab] = useState(tabs[0].id); // 초기 탭 설정
 
-  const handleTabClick = (id) => {
+  const handleTabClick = (id: number) => {
     setActiveTab(id);
   };
 
   return (
-    <div className="container mx-auto p-6">
-      {/* Header Section */}
-      <div className="header">
-        <h1 className="text-4xl font-bold">개발 아키텍쳐</h1>
-        <ul className="flex space-x-4 mt-4 border-b-2">
-          {tabs.map((tab) => (
-            <li key={tab.id} className="cursor-pointer hover:text-blue-500">
-              <a
-                onClick={() => handleTabClick(tab.id)}
-                className={activeTab === tab.id ? 'font-bold' : ''}
-              >
-                {tab.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+    <div>
+      <div className="bg-white-100 rounded-t-2xlarge px-10 pt-10 pb-5">
+        <p className="text-xlarge font-lb tracking-[-0.48px]">개발 아키텍쳐</p>
       </div>
-
-      {/* Input Form Section */}
-      <div className="editor mt-6">
-        {inputFields.map(
-          (field, index) =>
-            activeTab === index + 1 && (
-              <div key={field.id}>
-                <label htmlFor={field.id} className="text-xl font-semibold">
-                  {field.label}
-                </label>
-                <textarea
-                  id={field.id}
-                  className="w-full h-64 border p-4"
-                  placeholder={field.placeholder}
-                ></textarea>
-              </div>
-            )
-        )}
-      </div>
-
-      {/* Image Upload Section */}
-      <div className="image-upload mt-6">
-        <label className="text-xl font-semibold">아키텍쳐 이미지</label>
-        <div className="border-2 border-dashed border-gray-400 p-4 mt-4 text-center">
-          <p className="text-gray-500">png 또는 jpg를 첨부해 주세요</p>
-          <p className="text-sm text-gray-400">최대 20mb, 권장 사이즈 1080x1080</p>
-          <button className="mt-4 px-6 py-2 bg-gray-200 rounded">파일 선택</button>
+      <ul className="bg-white-100 flex gap-3 pt-4 px-10 border-b-[1px] border-b-slate-90">
+        {tabs.map((tab) => (
+          <li
+            key={tab.id}
+            onClick={() => handleTabClick(tab.id)}
+            className={`px-0.5 cursor-pointer hover:text-tree-50 text-small pb-3 tracking-[-0.14px] leading-5 text-slate-50 ${
+              activeTab === tab.id ? 'font-bd text-tree-40 border-b-[1.6px] border-b-tree-50' : ''
+            }`}
+          >
+            {tab.label}
+          </li>
+        ))}
+      </ul>
+      <div className="bg-white-100 px-10 pt-5 pb-10 flex flex-col gap-5">
+        <div>
+          <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 설명</p>
+          <SEditor initialValue="아키텍쳐 설명" onChange={() => {}} />
+        </div>
+        <div>
+          <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 이미지</p>
+          <div className="bg-slate-98 rounded-large py-5 flex flex-col gap-2">
+            <span>
+              <p>png 또는 jpg를 첨부해 주세요</p>
+              <p>최대 20mb, 권장 사이즈 1080 * 1080</p>
+            </span>
+          </div>
         </div>
       </div>
-
-      {/* Reset Button */}
       <div className="mt-6 text-right">
         <button className="px-6 py-2 bg-red-500 text-white rounded">초기화</button>
       </div>
