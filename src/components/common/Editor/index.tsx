@@ -8,8 +8,9 @@ import { useRef, useEffect, useCallback } from 'react';
 // import { Viewer } from '@toast-ui/react-editor';
 
 interface EditorProps {
-  initialValue: string;
   onChange: (e: string) => void;
+  initialValue?: string;
+  placeholder?: string;
 }
 
 const DEFAULT_TOOLBAR = [
@@ -26,7 +27,7 @@ const DEFAULT_TOOLBAR = [
  * @description SSR 환경에서 사용시 dynamic import 사용
  * @example dynamic(() => import("./SEditor"), { ssr: false });
  */
-const SEditor = ({ initialValue, onChange }: EditorProps) => {
+const SEditor = ({ initialValue, onChange, placeholder }: EditorProps) => {
   const editorRef = useRef<Editor>(null);
 
   const handleChange = useCallback(() => {
@@ -41,7 +42,7 @@ const SEditor = ({ initialValue, onChange }: EditorProps) => {
 
     const instance = editorRef.current.getInstance();
 
-    instance.setHTML(initialValue);
+    instance.setHTML(initialValue ?? '');
   }, [initialValue]);
 
   return (
@@ -55,6 +56,7 @@ const SEditor = ({ initialValue, onChange }: EditorProps) => {
         theme={''} // '' & 'dark'
         usageStatistics={false}
         toolbarItems={DEFAULT_TOOLBAR}
+        placeholder={placeholder}
         onChange={handleChange}
       />
     </>

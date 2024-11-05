@@ -1,28 +1,15 @@
-import SEditor from '@/components/common/Editor';
 import React, { useState } from 'react';
+
+import SEditor from '@/components/common/Editor';
+import SImage from '@/components/common/Image';
 
 const tabs = [
   { id: 1, label: '프론트엔드' },
-  { id: 2, label: '작성중' },
-  { id: 3, label: '백엔드' },
-  { id: 4, label: '인프라' },
-  { id: 5, label: '데이터' },
-  { id: 6, label: 'AI' },
-  { id: 7, label: '기타' }
-];
-
-const inputFields = [
-  {
-    id: 'frontend',
-    label: '프론트엔드 설명',
-    placeholder: '프론트엔드에 대한 설명을 입력하세요...'
-  },
-  { id: 'inProgress', label: '작성중 설명', placeholder: '작성중에 대한 설명을 입력하세요...' },
-  { id: 'backend', label: '백엔드 설명', placeholder: '백엔드에 대한 설명을 입력하세요...' },
-  { id: 'infrastructure', label: '인프라 설명', placeholder: '인프라에 대한 설명을 입력하세요...' },
-  { id: 'data', label: '데이터 설명', placeholder: '데이터에 대한 설명을 입력하세요...' },
-  { id: 'ai', label: 'AI 설명', placeholder: 'AI에 대한 설명을 입력하세요...' },
-  { id: 'etc', label: '기타 설명', placeholder: '기타에 대한 설명을 입력하세요...' }
+  { id: 2, label: '백엔드' },
+  { id: 3, label: '인프라' },
+  { id: 4, label: '데이터' },
+  { id: 5, label: 'AI' },
+  { id: 6, label: '기타' }
 ];
 
 const ArchitectureComponent = () => {
@@ -50,23 +37,30 @@ const ArchitectureComponent = () => {
           </li>
         ))}
       </ul>
-      <div className="bg-white-100 px-10 pt-5 pb-10 flex flex-col gap-5">
+      <div className="bg-white-100 px-10 pt-5 pb-10 flex flex-col gap-5 rounded-b-2xlarge">
         <div>
           <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 설명</p>
-          <SEditor initialValue="아키텍쳐 설명" onChange={() => {}} />
+          <SEditor onChange={() => {}} placeholder="개발 아키텍쳐를 설명해 주세요" />
         </div>
         <div>
           <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 이미지</p>
-          <div className="bg-slate-98 rounded-large py-5 flex flex-col gap-2">
-            <span>
-              <p>png 또는 jpg를 첨부해 주세요</p>
-              <p>최대 20mb, 권장 사이즈 1080 * 1080</p>
-            </span>
+          <div className="bg-slate-98 rounded-large py-5 flex flex-col items-center gap-2 ">
+            <SImage src="/EmptyImage.svg" width={48} height={48} alt="project icon" />
+            <div className="flex flex-col justify-center items-center">
+              <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15rem]">
+                png 또는 jpg를 첨부해 주세요
+              </p>
+              <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
+            </div>
+            <div>파일 선택</div>
           </div>
         </div>
-      </div>
-      <div className="mt-6 text-right">
-        <button className="px-6 py-2 bg-red-500 text-white rounded">초기화</button>
+        <div className="ml-auto grow px-3 py-2">
+          <button className="flex gap-1 items-center">
+            <SImage src="/refresh.svg" width={16} height={16} alt="refresh" />
+            <p className="text-slate-80 text-small">초기화</p>
+          </button>
+        </div>
       </div>
     </div>
   );

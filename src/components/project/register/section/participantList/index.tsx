@@ -1,8 +1,8 @@
+import { ProjectDetailResponse } from '@/service/project/response';
 import React, { useState } from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
-import { UseFormRegister } from 'react-hook-form';
-import { ProjectDetailResponse } from '@/service/project/response';
 
 interface ProjectRegisterParticipantProps {
   register: UseFormRegister<ProjectDetailResponse>;
@@ -14,7 +14,9 @@ interface TeamMember {
   description: string;
 }
 
-const ProjectRegisterParticipantList = ({register}:ProjectRegisterParticipantProps) => {
+const TOTAL_MEMBER = 10;
+
+const ProjectRegisterParticipantList = ({ register }: ProjectRegisterParticipantProps) => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
     { image: '/path/to/image1.jpg', name: '헤더덕', description: '수도승' },
     { image: '/path/to/image2.jpg', name: '家守 きりこ', description: '로ㅋㅋ' },
@@ -27,20 +29,7 @@ const ProjectRegisterParticipantList = ({register}:ProjectRegisterParticipantPro
     { image: '/path/to/image5.jpg', name: '이혜린', description: 'Product Designer' }
   ]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const membersPerPage = 5;
-
-  // Pagination logic
-  const totalPages = Math.ceil(teamMembers.length / membersPerPage);
-  const startIndex = (currentPage - 1) * membersPerPage;
-  const currentMembers = teamMembers.slice(startIndex, startIndex + membersPerPage);
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const addTeamMember = () => {
-  };
+  const addTeamMember = () => {};
 
   return (
     <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-md">
@@ -49,7 +38,7 @@ const ProjectRegisterParticipantList = ({register}:ProjectRegisterParticipantPro
         <h1 className="text-2xl font-bold">팀원 소개</h1>
         <div className="flex items-center space-x-4">
           <span>
-            {currentPage} / {totalPages}
+            {teamMembers.length} / {TOTAL_MEMBER}
           </span>
           <button
             onClick={addTeamMember}
@@ -62,28 +51,13 @@ const ProjectRegisterParticipantList = ({register}:ProjectRegisterParticipantPro
 
       {/* Team Cards */}
       <div className="grid grid-cols-4  gap-6">
-        {currentMembers.map((member, index) => (
+        {teamMembers.map((member, index) => (
           <ProjectParticipantCard
             key={index}
             image={member.image}
             name={member.name}
             description={member.description}
           />
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="mt-6 flex justify-center">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => goToPage(index + 1)}
-            className={`mx-1 px-3 py-1 rounded-full ${
-              currentPage === index + 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
-            }`}
-          >
-            {index + 1}
-          </button>
         ))}
       </div>
     </div>
