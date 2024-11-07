@@ -1,12 +1,8 @@
-import { ProjectDetailResponse } from '@/service/project/response';
-import React, { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import withModal from '@/enhancers/WithModal';
+import React, { useEffect, useState } from 'react';
 
+import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
-
-interface ProjectRegisterParticipantProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
 
 interface TeamMember {
   image: string;
@@ -16,7 +12,26 @@ interface TeamMember {
 
 const TOTAL_MEMBER = 10;
 
-const ProjectRegisterParticipantList = ({ register }: ProjectRegisterParticipantProps) => {
+const ParticipantAddModal = () => {
+  return (
+    <div className="w-[56rem] h-[22.6rem] bg-white-100 flex flex-col gap-4 rounded-[2.4rem] p-6">
+      <p className="text-large font-lb leading-6 tracking-[-0.4px] text-left">팀원 등록</p>
+      <div className="flex gap-5 w-full">
+        <div className="text-left">
+          <p className="text-small leading-5 tracking-[-0.14px] py-1">팀원 ID</p>
+          <SInput className="text-small" />
+        </div>
+        <div className="text-left">
+          <p className="text-small leading-5 tracking-[-0.14px] py-1">포지션</p>
+          <SInput className="text-small" />
+        </div>
+      </div>
+      <div></div>
+    </div>
+  );
+};
+
+const ProjectRegisterParticipantList = () => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
     { image: '/path/to/image1.jpg', name: '헤더덕', description: '수도승' },
     { image: '/path/to/image2.jpg', name: '家守 きりこ', description: '로ㅋㅋ' },
@@ -29,20 +44,35 @@ const ProjectRegisterParticipantList = ({ register }: ProjectRegisterParticipant
     { image: '/path/to/image5.jpg', name: '이혜린', description: 'Product Designer' }
   ]);
 
-  const addTeamMember = () => {};
+  const [toggleModal, setToggleModal] = useState(true);
+
+  const AddWithModal = withModal(ParticipantAddModal);
+
+  const openAddModal = () => {
+    setToggleModal(true);
+  };
+
+  const closeAddModal = () => {
+    setToggleModal(false);
+  };
+
+  useEffect(() => {
+    console.log(toggleModal);
+  }, [closeAddModal, toggleModal]);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-md">
-      {/* Header */}
+    <div className="bg-white-100 rounded-2xlarge p-10">
+      <AddWithModal isVisible={toggleModal} onClickClose={closeAddModal} />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">팀원 소개</h1>
         <div className="flex items-center space-x-4">
-          <span>
-            {teamMembers.length} / {TOTAL_MEMBER}
+          <span className="text-small flex">
+            <p className="text-slate-50">{teamMembers.length}</p>
+            <p className="text-slate-70">&nbsp;/&nbsp;{TOTAL_MEMBER}</p>
           </span>
           <button
-            onClick={addTeamMember}
-            className="flex items-center bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+            onClick={openAddModal}
+            className="flex items-center border border-slate-90 text-slate-40 text-small px-3 py-2 rounded-[1rem]"
           >
             팀원 추가 +
           </button>
@@ -50,7 +80,7 @@ const ProjectRegisterParticipantList = ({ register }: ProjectRegisterParticipant
       </div>
 
       {/* Team Cards */}
-      <div className="grid grid-cols-4  gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {teamMembers.map((member, index) => (
           <ProjectParticipantCard
             key={index}

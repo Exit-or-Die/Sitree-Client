@@ -1,6 +1,4 @@
-import { ProjectDetailResponse } from '@/service/project/response';
 import React, { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 
@@ -15,11 +13,7 @@ export interface TechViewProps {
   architectureImage?: File | null;
 }
 
-interface ProjectRegisterTechViewListProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
-
-const ProjectRegisterTechViewList = ({ register }: ProjectRegisterTechViewListProps) => {
+const ProjectRegisterTechViewList = () => {
   const [skills, setSkills] = useState<Array<TechViewProps>>([
     { name: '', github: '', stack: '', includeArchitecture: false }
   ]);

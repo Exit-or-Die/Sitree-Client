@@ -21,7 +21,7 @@ const ArchitectureComponent = () => {
 
   return (
     <div>
-      <div className="bg-white-100 rounded-t-2xlarge px-10 pt-10 pb-5">
+      <div className="bg-white-100 rounded-t-2xlarge px-10 pt-10 pb-5 border-[1px]">
         <p className="text-xlarge font-lb tracking-[-0.48px]">개발 아키텍쳐</p>
       </div>
       <ul className="bg-white-100 flex gap-3 pt-4 px-10 border-b-[1px] border-b-slate-90">

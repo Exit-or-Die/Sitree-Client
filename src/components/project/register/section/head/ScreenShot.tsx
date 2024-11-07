@@ -1,16 +1,12 @@
-import { Image, ProjectDetailResponse } from '@/service/project/response';
+import { Image } from '@/service/project/response';
 import { useState } from 'react';
-import { useFormContext, UseFormRegister } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
 
-interface ProjectRegisterHeadProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
-
 const TOTAL_SCREENSHOT_ITEMS = 8;
 
-const ProjectHeadScreenshot = ({ register }: ProjectRegisterHeadProps) => {
+const ProjectHeadScreenshot = () => {
   const { getValues } = useFormContext();
   const [screenShotList, setScreenShotList] = useState<Array<Image>>(getValues('overview.images')); // 스크린샷 리스트를 빈 배열로 초기화
 

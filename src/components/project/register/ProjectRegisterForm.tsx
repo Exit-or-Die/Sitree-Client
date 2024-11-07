@@ -17,15 +17,16 @@ import {
 import ProjectRegisterArchitectureList from './section/architectureList';
 interface ProjectRegisterFormProps {
   projectId: string;
-  onSubmit?: (data: unknown) => void;
 }
 
-const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) => {
+const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectDetail(projectId);
   const { data: defaultValues = {} as ProjectDetailResponse } = useQuery({
     queryKey,
     queryFn
   });
+
+  // @ts-expect-error 테스트용 허용
   const onInvalid = (errors) => console.error(errors);
 
   const formMethods = useForm({
@@ -57,7 +58,7 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
   });
 
   return (
-    <div className="flex justify-center gap-5 bg-slate-300">
+    <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
           <form
@@ -66,11 +67,11 @@ const ProjectRegisterForm = ({ projectId, onSubmit }: ProjectRegisterFormProps) 
             }, onInvalid)}
             className="flex flex-col gap-10"
           >
-            <ProjectRegisterHead register={formMethods.register} />
+            <ProjectRegisterHead />
             <ProjectRegisterOverview />
-            <ProjectRegisterTechViewList register={formMethods.register} />
+            <ProjectRegisterTechViewList />
             <ProjectRegisterArchitectureList />
-            <ProjectRegisterParticipantList register={formMethods.register} />
+            <ProjectRegisterParticipantList />
             <button type="submit">Submit</button>
           </form>
         </div>

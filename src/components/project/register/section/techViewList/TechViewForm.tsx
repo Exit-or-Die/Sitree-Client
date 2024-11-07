@@ -1,8 +1,8 @@
 import SInput from '@/components/common/Input';
 import STextarea from '@/components/common/Textarea';
+import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 import { TechViewProps } from '.';
-import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const TechViewForm: React.FC<{
   skill: TechViewProps;

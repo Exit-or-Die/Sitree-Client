@@ -1,17 +1,11 @@
 import { ClientUrl } from '@/service/project/request';
-import { ProjectDetailResponse } from '@/service/project/response';
 import { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 
-interface ProjectRegisterHeadProps {
-  register: UseFormRegister<ProjectDetailResponse>;
-}
-
-const ProjectHeadServiceLink = ({ register }: ProjectRegisterHeadProps) => {
+const ProjectHeadServiceLink = () => {
   const [serviceLinks, setServiceLinks] = useState<ClientUrl>({
     WEB: '123',
     IOS: '',
