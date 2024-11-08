@@ -1,6 +1,7 @@
 import withModal from '@/enhancers/WithModal';
 import React, { useEffect, useState } from 'react';
 
+import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
 
@@ -10,23 +11,35 @@ interface TeamMember {
   description: string;
 }
 
+interface ParticipantModalProps {
+  onClose: () => void;
+  register: () => void;
+}
+
 const TOTAL_MEMBER = 10;
 
-const ParticipantAddModal = () => {
+const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
   return (
     <div className="w-[56rem] h-[22.6rem] bg-white-100 flex flex-col gap-4 rounded-[2.4rem] p-6">
       <p className="text-large font-lb leading-6 tracking-[-0.4px] text-left">팀원 등록</p>
-      <div className="flex gap-5 w-full">
-        <div className="text-left">
-          <p className="text-small leading-5 tracking-[-0.14px] py-1">팀원 ID</p>
+      <div className="flex gap-5">
+        <div className="text-left flex-1">
+          <p className="text-small leading-5 tracking-[-0.14px] py-1 mb-1.5">팀원 ID</p>
           <SInput className="text-small" />
         </div>
-        <div className="text-left">
-          <p className="text-small leading-5 tracking-[-0.14px] py-1">포지션</p>
+        <div className="text-left flex-1">
+          <p className="text-small leading-5 tracking-[-0.14px] py-1 mb-1.5">포지션</p>
           <SInput className="text-small" />
         </div>
       </div>
-      <div></div>
+      <div className="flex gap-2 ml-auto">
+        <SButton className="bg-slate-95 border-none" onClick={onClose}>
+          닫기
+        </SButton>
+        <SButton className="bg-tree-50 border-none text-white-100" onClick={register}>
+          등록
+        </SButton>
+      </div>
     </div>
   );
 };
@@ -44,7 +57,7 @@ const ProjectRegisterParticipantList = () => {
     { image: '/path/to/image5.jpg', name: '이혜린', description: 'Product Designer' }
   ]);
 
-  const [toggleModal, setToggleModal] = useState(true);
+  const [toggleModal, setToggleModal] = useState(false);
 
   const AddWithModal = withModal(ParticipantAddModal);
 
@@ -56,13 +69,15 @@ const ProjectRegisterParticipantList = () => {
     setToggleModal(false);
   };
 
-  useEffect(() => {
-    console.log(toggleModal);
-  }, [closeAddModal, toggleModal]);
-
   return (
-    <div className="bg-white-100 rounded-2xlarge p-10">
-      <AddWithModal isVisible={toggleModal} onClickClose={closeAddModal} />
+    <div className="bg-white-100 rounded-2xlarge p-10 border border-slate-90">
+      <AddWithModal
+        isVisible={toggleModal}
+        hideClose={true}
+        onClickClose={() => {}}
+        onClose={closeAddModal}
+        register={() => {}}
+      />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">팀원 소개</h1>
         <div className="flex items-center space-x-4">

@@ -1,5 +1,3 @@
-'use client';
-
 import { isBrowser } from '@/utils/misc';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';

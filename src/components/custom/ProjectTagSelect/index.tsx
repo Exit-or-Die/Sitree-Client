@@ -74,7 +74,7 @@ const ProjectTagSelect = <T,>({
   return (
     <div className="relative w-full">
       <div
-        className="w-full border border-tree-50 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer"
+        className={`w-full border border-slate-90 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer ${isDropdownOpen ? 'border-none outline-none ring-1 ring-tree-50' : ''}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {selectedTags.length > 0 ? (

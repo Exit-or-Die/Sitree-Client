@@ -45,7 +45,7 @@ const ProjectRegisterTechViewList = () => {
   };
 
   return (
-    <div className="bg-white-100 rounded-2xlarge p-10">
+    <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
       <div className="flex justify-between items-center mb-5">
         <p className="text-slate-10 font-lb text-xlarge">프로젝트 기술</p>
         <div className="flex items-center space-x-4">

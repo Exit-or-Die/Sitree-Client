@@ -15,7 +15,7 @@ const ProjectRegisterOverview = () => {
   };
 
   return (
-    <div className="bg-white-100 p-10 rounded-2xlarge">
+    <div className="bg-white-100 p-10 rounded-2xlarge border-[1px] border-slate-90">
       <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
       <div>
         <SEditor initialValue={detailDescription || ''} onChange={handleChangeDescription} />
