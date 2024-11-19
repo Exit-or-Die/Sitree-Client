@@ -6,11 +6,10 @@ import AuthQueryOptions from '@/service/auth/queries';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Nullable } from 'types/common';
 
 import OnboardingButtonField from '@/components/account/OnboardingButtonField';
-import OnboardingImageField from '@/components/account/OnboardingImageField';
 import OnboardingInputField from '@/components/account/OnboardingInputField';
 
 const Onboarding = () => {
@@ -19,7 +18,6 @@ const Onboarding = () => {
   const [isUsernameValid, setIsUsernameValid] = useState<Nullable<boolean>>(null);
   const [affiliation, setAffiliation] = useState('');
   const [link, setLink] = useState('');
-  const [imageFile, setImageFile] = useState<Nullable<File>>(null);
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
   const { mutate: signUp } = useSignUp();
@@ -40,14 +38,6 @@ const Onboarding = () => {
     }
   });
 
-  const image = useMemo(() => {
-    if (imageFile) {
-      return URL.createObjectURL(imageFile);
-    }
-
-    return session?.user?.image;
-  }, [session, imageFile]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session || !isUsernameValid) return;
@@ -59,7 +49,7 @@ const Onboarding = () => {
       oAuthToken: detail.oAuthToken,
       email: detail.email,
       nickname: username || detail.nickname,
-      profileImgUrl: imageFile ? URL.createObjectURL(imageFile) : session?.user?.image,
+      profileImgUrl: session.user?.image,
       thirdPartyProfileUrl: link,
       belonging: affiliation
     };
@@ -69,12 +59,6 @@ const Onboarding = () => {
         router.push('/');
       }
     });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
   };
 
   const handleUsernameVerify = () => {
@@ -123,8 +107,6 @@ const Onboarding = () => {
             setValue={(e) => setLink(e.target.value)}
             placeholder="GitHub, 블로그, 링크드인 등 대표 웹 주소를 입력해 주세요"
           />
-
-          <OnboardingImageField image={image} handleChange={handleChange} />
 
           <OnboardingButtonField isUsernameValid={isUsernameValid} />
         </form>
