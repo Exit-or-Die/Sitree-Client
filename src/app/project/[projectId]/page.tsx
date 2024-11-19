@@ -2,15 +2,13 @@ import { getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
 import ProjectQueryOptions from '@/service/project/queries';
 import { redirect } from 'next/navigation';
 
-import ProjectRegisterForm from '@/components/project/register/ProjectRegisterForm';
-
 interface ProjectDetailPageProps {
   params: {
     projectId: string;
   };
 }
 
-const ProjectRegisterPage = async ({ params }: ProjectDetailPageProps) => {
+const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const { projectId } = params;
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectDetail(projectId);
@@ -23,11 +21,9 @@ const ProjectRegisterPage = async ({ params }: ProjectDetailPageProps) => {
 
   return (
     <div className="p-10 bg-slate-95">
-      <Hydrate state={{ queries: [query] }}>
-        <ProjectRegisterForm projectId={projectId} />
-      </Hydrate>
+      <Hydrate state={{ queries: [query] }}></Hydrate>
     </div>
   );
 };
 
-export default ProjectRegisterPage;
+export default ProjectDetailPage;
