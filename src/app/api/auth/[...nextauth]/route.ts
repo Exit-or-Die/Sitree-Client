@@ -2,6 +2,7 @@ import AuthService, { UserDetail } from '@/service/auth/AuthService';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import { cookies } from 'next/headers';
 
 const handler = NextAuth({
   providers: [
@@ -19,6 +20,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
+      const cookieStore = cookies();
       if (!account) return false;
 
       const { email } = user;
@@ -35,7 +37,11 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        user.information = response.value;
+        if (!response.isNewMember && response.accessToken) {
+          cookieStore.set('accessToken', response.accessToken);
+        }
+
+        user.information = { ...response, oAuthToken: accessToken, provider };
 
         return true;
       } catch (error) {
