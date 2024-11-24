@@ -39,7 +39,7 @@ const withModal =
           onClick={onClickClose}
         />
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 cursor-pointer">
-          <div className="relative z-10 cursor-default overflow-y-auto shadow-lg rounded-lg bg-white">
+          <div className="relative z-10 cursor-default overflow-y-auto shadow-lg rounded-lg bg-white-100">
             <div
               className={`absolute right-0 top-0 p-6 text-black opacity-50 transition-opacity duration-150 cursor-pointer ${
                 hideClose || disableClose ? 'hidden' : 'hover:opacity-100'
