@@ -11,11 +11,15 @@ interface InputProps<T extends FieldValues> {
   type?: string;
   register?: UseFormRegister<T>;
   name?: string;
+  accept?: string;
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
-  ({ className = '', placeholder, value, onChange, name, register, type = 'text' }, ref) => {
+  (
+    { className = '', placeholder, value, onChange, name, register, type = 'text', accept },
+    ref
+  ) => {
     const {
       onChange: registerOnChange,
       ref: registerRef,
@@ -34,11 +38,11 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       <input
         type={type}
         ref={registerRef || ref}
-        name={name}
-        className={`w-full p-3 border border-slate-90 rounded-base bg-white focus:outline-none focus:ring-1 focus:ring-tree-50 ${className}`}
+        className={`w-full p-3 border border-slate-300 rounded-base bg-white focus:outline-none focus:ring-2 focus:ring-tree-300 ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
+        accept={accept}
         {...restRegister}
       />
     );

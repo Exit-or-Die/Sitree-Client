@@ -79,7 +79,6 @@ class Service {
 
       const { url: requestUrl, ...fetchConfig } = requestConfig;
       const response = await fetch(requestUrl, fetchConfig);
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
