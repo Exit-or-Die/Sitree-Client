@@ -9,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        pretendard: ["var(--font-pretendard)"],
-        montserrat: ["var(--font-montserrat)"],
+        pretendard: ['var(--font-pretendard)'],
+        montserrat: ['var(--font-montserrat)']
       },
       colors: {
         slate: {
