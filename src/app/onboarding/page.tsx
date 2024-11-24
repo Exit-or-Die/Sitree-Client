@@ -70,7 +70,7 @@ const Onboarding = () => {
   if (status === 'loading') return <p>Loading...</p>;
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-slate-100">
+    <div className="flex items-center justify-center w-full h-screen">
       <div className="bg-white p-8 rounded-xlarge shadow-lg w-[580px] bg-white-100 border border-slate-90">
         <h1 className="text-xlarge font-bd mb-[8px]">사이트리에 오신 것을 환영해요!</h1>
         <p className="text-small font-md mb-8 text-slate-50">
