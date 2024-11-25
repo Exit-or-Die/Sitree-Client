@@ -1,6 +1,7 @@
 'use client';
 
 import WithModal from '@/enhancers/WithModal';
+import { isLoggedIn } from '@/utils/misc';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -15,6 +16,8 @@ export const Header = () => {
   const SignWithModal = WithModal(SignInModal);
   const [toggleLogin, setToggleLogin] = useState(false);
   const { data: session } = useSession();
+  const nickname = session && session.detail && session.detail.nickname;
+  const name = session && session.user && session.user.name;
 
   const onClickCloseModal = () => {
     setToggleLogin(false);
@@ -39,7 +42,7 @@ export const Header = () => {
         </nav>
       </div>
 
-      {!session ? (
+      {!isLoggedIn ? (
         <SButton
           className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
           onClick={() => setToggleLogin(true)}
@@ -59,22 +62,24 @@ export const Header = () => {
             <SInput
               type="text"
               placeholder="사용자 검색"
-              className="bg-transparent text-slate-40 w-full placeholder-slate-60 border-none focus:ring-0"
+              className="bg-transparent text-slate-40 w-full placeholder-slate-60 border-none focus:!ring-0"
             />
           </div>
 
-          <SButton className="flex items-center px-4 w-[120px] h-[36px] text-sm font-medium text-tree-30 bg-tree-93 border-none hover:bg-green-200 rounded-base">
-            <SImage
-              src="/write.svg"
-              alt="write"
-              width={14}
-              height={14}
-              className="w-[18px] h-[18px] text-slate-60 mr-1"
-            />
-            새 프로덕트
-          </SButton>
+          <Link href="/project/register" className="flex items-center space-x-2">
+            <SButton className="flex items-center px-4 w-[120px] h-[36px] text-sm font-medium text-tree-30 bg-tree-93 border-none hover:bg-green-200 rounded-base">
+              <SImage
+                src="/write.svg"
+                alt="write"
+                width={14}
+                height={14}
+                className="w-[18px] h-[18px] text-slate-60 mr-1"
+              />
+              새 프로젝트
+            </SButton>
+          </Link>
 
-          <div className="flex items-center space-x-2">
+          <Link href="/profile" className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full bg-slate-95 flex items-center justify-center">
               <SImage
                 src="/defaultUser.svg"
@@ -84,8 +89,8 @@ export const Header = () => {
                 className="w-[18px] h-[18px]"
               />
             </div>
-            <span className="text-slate-40 text-small font-md">{session?.user?.name}</span>
-          </div>
+            <span className="text-slate-40 text-small font-md">{nickname || name}</span>
+          </Link>
         </div>
       )}
     </header>
