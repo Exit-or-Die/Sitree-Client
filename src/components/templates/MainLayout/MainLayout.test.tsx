@@ -1,3 +1,5 @@
+'use client';
+
 import { render, screen } from '@/tests/test-utils';
 import { SessionProvider } from 'next-auth/react';
 
