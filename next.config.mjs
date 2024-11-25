@@ -12,6 +12,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.remove.bg'
+      },
+      {
+        protocol: 'https',
+        hostname: '2.img-dpreview.com'
       }
     ]
   }

@@ -3,6 +3,8 @@ import WithModal from '@/enhancers/WithModal';
 import React, { useState } from 'react';
 
 import SignInModal from '@/components/account/SignInModal';
+import SitreePick from '@/components/sitreePick/SitreePick';
+import AffiliationRanking from '@/components/ranking/AffiliationRanking';
 
 export default function Home() {
   const SignWithModal = WithModal(SignInModal);
@@ -13,14 +15,21 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
-      <SignWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
-      <button
-        className="bg-blue-600 py-2 px-6 rounded-md mb-2"
-        onClick={() => setToggleLogin(true)}
-      >
-        Open Popup
-      </button>
+    <div className="w-full h-screen flex flex-col items-center">
+      <div className="flex">
+        <div className="flex-1">
+          <SitreePick />
+        </div>
+        <div>
+          <AffiliationRanking />
+        </div>
+      </div>
+
+      <div className="home-page__bottom-section">
+        yo
+        <div className="home-page__categories"></div>
+        <div className="home-page__projects"></div>
+      </div>
     </div>
   );
 }
