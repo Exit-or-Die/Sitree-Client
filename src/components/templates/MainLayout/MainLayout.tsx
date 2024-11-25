@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import { Header } from '@/components/header';
@@ -11,19 +10,12 @@ interface MainLayoutProps {
 }
 
 export const MainLayout = ({ children, className }: MainLayoutProps) => {
-  const wrapperStyles = cn('flex flex-col min-h-screen', className);
+  const wrapperStyles = cn('flex flex-col min-h-screen bg-slate-100', className);
 
   return (
     <div className={wrapperStyles}>
       <Header />
       <main className="flex-1">{children}</main>
-      <footer className="flex items-center justify-center p-4">
-        ©
-        <Link href="https://www.linkedin.com/in/mateusz-hadry%C5%9B/" className="pr-2">
-          Mateusz Hadryś
-        </Link>
-        Copyright {new Date().getFullYear()}
-      </footer>
     </div>
   );
 };

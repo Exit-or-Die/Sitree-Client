@@ -1,15 +1,29 @@
 import '@/styles/globals.css';
 
 import { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
+import localFont from 'next/font/local';
+
+const pretendard = localFont({
+  src: '../../assets/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard'
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['500'],
+  variable: '--font-montserrat'
+});
+
+export const cls = (...classnames: string[]) => {
+  return classnames.join(' ');
+};
 
 import { ReactQueryProvider } from '@/components/providers/ReactQuery';
 import SessionWrapper from '@/components/SessionWrapper';
 import { MainLayout } from '@/components/templates/MainLayout';
-
-import { cn } from '@/lib/utils';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-primary' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,8 +33,8 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionWrapper>
-      <html lang="en">
-        <body className={cn(inter.variable, 'font-primary')} suppressHydrationWarning>
+      <html lang="kr">
+        <body className={cls(pretendard.className, montserrat.variable)} suppressHydrationWarning>
           <div id="modal" />
           <ReactQueryProvider>
             <MainLayout>
