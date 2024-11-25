@@ -1,76 +1,93 @@
-import Image from 'next/image';
-import React from 'react';
+'use client';
+
+import WithModal from '@/enhancers/WithModal';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+
+import SignInModal from '@/components/account/SignInModal';
 
 import SButton from '../common/Button';
+import SImage from '../common/Image';
 import SInput from '../common/Input';
 
 export const Header = () => {
-  return (
-    <header className="flex items-center justify-between bg-white px-6 py-4 border-b border-gray-200 shadow-sm max-h-[56px]">
-      {/* Logo and Navigation */}
-      <div className="flex items-center space-x-8">
-        {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <Image src="/icon.svg" width={30} height={30} alt="Sitree Logo" />
-          <span className="text-xlarge font-sb text-slate-30">Sitree</span>
-        </div>
+  const SignWithModal = WithModal(SignInModal);
+  const [toggleLogin, setToggleLogin] = useState(false);
+  const { data: session } = useSession();
 
-        {/* Navigation Links */}
+  const onClickCloseModal = () => {
+    setToggleLogin(false);
+  };
+
+  return (
+    <header className="flex items-center justify-between bg-white px-48 py-4 max-h-[56px] bg-white-100">
+      <SignWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
+      <div className="flex items-center space-x-8">
+        <Link href="/" className="flex items-center space-x-2">
+          <SImage src="/icon.svg" width={30} height={30} alt="Sitree Logo" />
+          <span className="text-xlarge font-sb text-slate-30 font-montserrat">Sitree</span>
+        </Link>
+
         <nav className="flex space-x-6">
-          <a href="/rankings" className="text-gray-600 hover:text-gray-900">
+          <Link href="/rankings" className="text-slate-30 hover:text-gray-900 text-small font-md">
             소속 랭킹
-          </a>
-          <a href="/user-rankings" className="text-gray-600 hover:text-gray-900">
+          </Link>
+          <Link href="/rankings" className="text-slate-30 hover:text-gray-900 text-small font-md">
             유저 랭킹
-          </a>
+          </Link>
         </nav>
       </div>
 
-      {/* Right Section */}
-      <div className="flex items-center space-x-4">
-        {/* Search Input */}
-        <SInput
-          type="text"
-          placeholder="사용자 검색"
-          className="h-10 w-48 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-
-        {/* New Product Button */}
-        <SButton className="flex items-center px-4 py-2 text-sm font-medium text-green-600 bg-green-100 border border-green-300 rounded-lg hover:bg-green-200">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-5 h-5 mr-2"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          새 프로덕트
+      {!session ? (
+        <SButton
+          className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
+          onClick={() => setToggleLogin(true)}
+        >
+          로그인
         </SButton>
-
-        {/* User Profile */}
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 text-gray-700"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 19.125a9 9 0 0115 0"
-              />
-            </svg>
+      ) : (
+        <div className="flex items-center space-x-4">
+          <div className="relative flex items-center w-[200px] h-[36px] bg-slate-100 rounded-base text-small pl-3">
+            <SImage
+              src="/magnifyGlass.svg"
+              alt="magnify-glass"
+              width={14}
+              height={14}
+              className="w-[18px] h-[18px] text-slate-60"
+            />
+            <SInput
+              type="text"
+              placeholder="사용자 검색"
+              className="bg-transparent text-slate-40 w-full placeholder-slate-60 border-none focus:ring-0"
+            />
           </div>
-          <span className="text-gray-800 text-sm font-medium">이혜린</span>
+
+          <SButton className="flex items-center px-4 w-[120px] h-[36px] text-sm font-medium text-tree-30 bg-tree-93 border-none hover:bg-green-200 rounded-base">
+            <SImage
+              src="/write.svg"
+              alt="write"
+              width={14}
+              height={14}
+              className="w-[18px] h-[18px] text-slate-60 mr-1"
+            />
+            새 프로덕트
+          </SButton>
+
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-slate-95 flex items-center justify-center">
+              <SImage
+                src="/defaultUser.svg"
+                alt="default user"
+                width={14}
+                height={14}
+                className="w-[18px] h-[18px]"
+              />
+            </div>
+            <span className="text-slate-40 text-small font-md">{session?.user?.name}</span>
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };
