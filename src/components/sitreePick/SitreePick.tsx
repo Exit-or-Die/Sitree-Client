@@ -1,36 +1,51 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import Image from 'next/image';
 
 const mockProjects = [
   {
     id: 1,
     name: 'Project Name',
-    images: ['https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg', 'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'],
+    images: [
+      'https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg',
+      'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'
+    ]
   },
   {
     id: 2,
     name: 'STEPIT',
-    images: ['/path/to/image3.jpg', '/path/to/image4.jpg'],
+    images: [
+      'https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg',
+      'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'
+    ]
   },
   {
     id: 3,
     name: 'Trouble Painter',
-    images: ['/path/to/image5.jpg'],
+    images: [
+      'https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg',
+      'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'
+    ]
   },
   {
     id: 4,
     name: '일이삼사오육칠팔구십일...',
-    images: ['/path/to/image6.jpg', '/path/to/image7.jpg'],
+    images: [
+      'https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg',
+      'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'
+    ]
   },
   {
     id: 5,
     name: '개미는툰툰',
-    images: ['/path/to/image8.jpg'],
-  },
+    images: [
+      'https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg',
+      'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg'
+    ]
+  }
 ];
 
 const SitreePick = () => {
@@ -41,7 +56,6 @@ const SitreePick = () => {
       <h2 className="text-lg font-bold">사이트리 PICK</h2>
       <div className="flex shadow">
         <div className="w-1/3 space-y-4 shadow">
-        
           <ul className="space-y-4">
             {mockProjects.map((project, index) => (
               <li
@@ -53,7 +67,6 @@ const SitreePick = () => {
               >
                 <div className="text-gray-500 text-sm w-8">{index + 1}</div>
                 <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                  {/* Replace with actual image */}
                   {index === 1 ? (
                     <Image
                       src="/select.svg"
@@ -66,9 +79,7 @@ const SitreePick = () => {
                 </div>
                 <div className="ml-4 flex flex-col">
                   <span className="text-sm font-medium truncate">{project.name}</span>
-                  <span className="text-xs text-gray-400">
-                    ♥ 000 조회수 000
-                  </span>
+                  <span className="text-xs text-gray-400">♥ 000 조회수 000</span>
                 </div>
               </li>
             ))}
@@ -82,8 +93,7 @@ const SitreePick = () => {
                   <Image
                     src={image}
                     alt={`Project ${selectedProject.name} Image ${index + 1}`}
-                    width={150}
-                    height={150}
+                    layout="fill"
                     className="rounded-lg object-cover"
                   />
                 </SwiperSlide>
@@ -94,7 +104,6 @@ const SitreePick = () => {
           )}
         </div>
       </div>
-    
     </div>
   );
 };

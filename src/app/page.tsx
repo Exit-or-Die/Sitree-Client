@@ -1,19 +1,11 @@
 'use client';
-import WithModal from '@/enhancers/WithModal';
-import React, { useState } from 'react';
 
-import SignInModal from '@/components/account/SignInModal';
-import SitreePick from '@/components/sitreePick/SitreePick';
+import React from 'react';
+
 import AffiliationRanking from '@/components/ranking/AffiliationRanking';
+import SitreePick from '@/components/sitreePick/SitreePick';
 
 export default function Home() {
-  const SignWithModal = WithModal(SignInModal);
-  const [toggleLogin, setToggleLogin] = useState(false);
-
-  const onClickCloseModal = () => {
-    setToggleLogin(false);
-  };
-
   return (
     <div className="w-full h-screen flex flex-col items-center">
       <div className="flex">
