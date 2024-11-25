@@ -2,7 +2,7 @@
 
 import WithModal from '@/enhancers/WithModal';
 import { isLoggedIn } from '@/utils/misc';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -15,9 +15,9 @@ import SInput from '../common/Input';
 export const Header = () => {
   const SignWithModal = WithModal(SignInModal);
   const [toggleLogin, setToggleLogin] = useState(false);
-  const { data: session } = useSession();
-  const nickname = session && session.detail && session.detail.nickname;
-  const name = session && session.user && session.user.name;
+  // const { data: session } = useSession();
+  // const nickname = session && session.detail && session.detail.nickname;
+  // const name = session && session.user && session.user.name;
 
   const onClickCloseModal = () => {
     setToggleLogin(false);
@@ -89,7 +89,7 @@ export const Header = () => {
                 className="w-[18px] h-[18px]"
               />
             </div>
-            <span className="text-slate-40 text-small font-md">{nickname || name}</span>
+            <span className="text-slate-40 text-small font-md">gu</span>
           </Link>
         </div>
       )}

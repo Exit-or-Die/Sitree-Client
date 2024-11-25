@@ -30,7 +30,7 @@ class Service {
   private headers: Record<string, string>;
 
   constructor() {
-    this.baseURL = 'https://127.0.0.1/';
+    this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
       csrf: 'token',
       Referer: this.baseURL
