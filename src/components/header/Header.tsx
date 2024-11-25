@@ -1,14 +1,15 @@
 'use client';
 
+import WithModal from '@/enhancers/WithModal';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import WithModal from '@/enhancers/WithModal';
+
+import SignInModal from '@/components/account/SignInModal';
 
 import SButton from '../common/Button';
-import SInput from '../common/Input';
-import SignInModal from '@/components/account/SignInModal';
 import SImage from '../common/Image';
+import SInput from '../common/Input';
 
 export const Header = () => {
   const SignWithModal = WithModal(SignInModal);
@@ -38,14 +39,15 @@ export const Header = () => {
         </nav>
       </div>
 
-      {!session ? 
-        (<SButton 
+      {!session ? (
+        <SButton
           className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
           onClick={() => setToggleLogin(true)}
         >
           로그인
-        </SButton>) : 
-        (<div className="flex items-center space-x-4">
+        </SButton>
+      ) : (
+        <div className="flex items-center space-x-4">
           <div className="relative flex items-center w-[200px] h-[36px] bg-slate-100 rounded-base text-small pl-3">
             <SImage
               src="/magnifyGlass.svg"
@@ -60,7 +62,7 @@ export const Header = () => {
               className="bg-transparent text-slate-40 w-full placeholder-slate-60 border-none focus:ring-0"
             />
           </div>
-  
+
           <SButton className="flex items-center px-4 w-[120px] h-[36px] text-sm font-medium text-tree-30 bg-tree-93 border-none hover:bg-green-200 rounded-base">
             <SImage
               src="/write.svg"
@@ -71,7 +73,7 @@ export const Header = () => {
             />
             새 프로덕트
           </SButton>
-  
+
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full bg-slate-95 flex items-center justify-center">
               <SImage
@@ -84,8 +86,8 @@ export const Header = () => {
             </div>
             <span className="text-slate-40 text-small font-md">{session?.user?.name}</span>
           </div>
-        </div>)
-      }
+        </div>
+      )}
     </header>
   );
 };
