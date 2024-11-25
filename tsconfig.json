@@ -11,6 +11,7 @@
       "@/service/*": ["./src/service/*"],
       "@/enhancers/*": ["./src/enhancers/*"],
       "@/utils/*": ["./src/utils/*"],
+      "@/constants/*": ["./src/constants/*"],
       "@/mocks/*": ["./__mocks__/*"],
       "@/tests/*": ["./.jest/*"]
     },
