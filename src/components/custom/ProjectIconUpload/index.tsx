@@ -12,7 +12,7 @@ const ProjectIconUpload = () => {
           <SImage src="/EmptyImage.svg" width={48} height={48} alt="project icon" />
         </div>
         <div className="flex flex-col justify-center items-center">
-          <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15rem]">
+          <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">
             png 또는 jpg를 첨부해 주세요
           </p>
           <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>

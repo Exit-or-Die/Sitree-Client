@@ -39,15 +39,19 @@ const ArchitectureComponent = () => {
       </ul>
       <div className="bg-white-100 px-10 pt-5 pb-10 flex flex-col gap-5 rounded-b-2xlarge">
         <div>
-          <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 설명</p>
+          <p className="py-1 text-small leading-5 tracking-[-0.14px] text-slate-30">
+            아키텍쳐 설명
+          </p>
           <SEditor onChange={() => {}} placeholder="개발 아키텍쳐를 설명해 주세요" />
         </div>
         <div>
-          <p className="py-1 text-small leading-5 tracking-[-0.14px]">아키텍쳐 이미지</p>
+          <p className="py-1 text-small leading-5 tracking-[-0.14px] text-slate-30">
+            아키텍쳐 이미지
+          </p>
           <div className="bg-slate-98 rounded-large py-5 flex flex-col items-center gap-2 ">
             <SImage src="/EmptyImage.svg" width={48} height={48} alt="project icon" />
             <div className="flex flex-col justify-center items-center">
-              <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15rem]">
+              <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">
                 png 또는 jpg를 첨부해 주세요
               </p>
               <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>

@@ -47,7 +47,12 @@ const ProjectHeadBaseInfo = () => {
     },
     {
       title: '프로젝트 태그',
-      component: <ProjectTagSelect<Tag> onChange={(tags: Tag[]) => setValue('tagList', tags)} />,
+      component: (
+        <ProjectTagSelect<Tag>
+          onChange={(tags: Tag[]) => setValue('tagList', tags)}
+          displayKey="name"
+        />
+      ),
       required: true
     }
   ];

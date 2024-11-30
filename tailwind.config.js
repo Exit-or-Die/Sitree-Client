@@ -110,6 +110,9 @@ module.exports = {
         '2xlarge': '2rem',
         full: '80%'
       },
+      boxShadow: {
+        md: '0px 16px 28px 0px rgba(65, 71, 82, 0.12)'
+      },
       borderWidth: {
         'border-1': '0.1rem',
         'border-icon': '0.12rem'
