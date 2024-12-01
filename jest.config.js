@@ -1,6 +1,7 @@
 // You can learn more about each option below in the Jest docs: https://jestjs.io/docs/configuration.
 
 module.exports = {
+  globals: { fetch },
   roots: ['<rootDir>'],
   testEnvironment: 'jest-environment-jsdom',
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
@@ -55,6 +56,9 @@ module.exports = {
     '^@/lib(.*)$': '<rootDir>/src/lib$1',
     '^@/hooks(.*)$': '<rootDir>/hooks$1',
     '^@/mocks(.*)$': '<rootDir>/__mocks__$1',
-    '^@/tests(.*)$': '<rootDir>/.jest$1'
+    '^@/tests(.*)$': '<rootDir>/.jest$1',
+    '^@/enhancers/(.*)$': '<rootDir>/src/enhancers/$1',
+    '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@/constants/(.*)$': '<rootDir>/src/constants/$1'
   }
 };
