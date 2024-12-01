@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface DropdownProps {
   list: string[];
   searchCount: number;
   onSelect: (suggestion: string) => void;
+  closeDropdown: () => void;
 }
 
-const Dropdown = ({ list, searchCount, onSelect }: DropdownProps) => {
+const Dropdown = ({ list, searchCount, onSelect, closeDropdown }: DropdownProps) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [closeDropdown]);
+
   return (
-    <div className="absolute mt-1 w-full bg-white-100 border border-slate-90 rounded-large shadow-lg z-10">
+    <div
+      ref={dropdownRef}
+      className="absolute mt-1 w-full bg-white-100 border border-slate-90 rounded-large shadow-lg z-10"
+    >
       <div className="px-4 pt-4 pb-2 text-sm text-gray-500 border-gray-200 text-[12px]">
         검색 결과
         <span className="font-bold text-slate-30"> {searchCount}</span>건

@@ -21,6 +21,7 @@ const Onboarding = () => {
   const [link, setLink] = useState('');
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const allSuggestions = [
     '스마일게이트',
     '스마일라식',
@@ -77,15 +78,24 @@ const Onboarding = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setIsDropdownVisible(false);
+  };
+
   const handleAffiliationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setAffiliation(query);
 
-    const filtered = allSuggestions.filter((item) => {
-      return item.includes(query);
-    });
-    setFilteredSuggestions(filtered);
-    setSearchCount(filtered.length);
+    if (query) {
+      const filtered = allSuggestions.filter((item) => {
+        return item.includes(query);
+      });
+      setFilteredSuggestions(filtered);
+      setSearchCount(filtered.length);
+      setIsDropdownVisible(true);
+    } else {
+      closeDropdown();
+    }
   };
 
   if (status === 'loading') return <p>Loading...</p>;
@@ -121,11 +131,15 @@ const Onboarding = () => {
             setValue={handleAffiliationChange}
             placeholder="학교, 회사 등 현재 소속을 입력해 주세요"
             renderDropdown={() =>
-              affiliation && filteredSuggestions.length > 0 ? (
+              isDropdownVisible && filteredSuggestions.length > 0 ? (
                 <Dropdown
                   list={filteredSuggestions}
                   searchCount={searchCount}
-                  onSelect={(suggestion) => setAffiliation(suggestion)}
+                  onSelect={(suggestion) => {
+                    setAffiliation(suggestion);
+                    closeDropdown();
+                  }}
+                  closeDropdown={closeDropdown}
                 />
               ) : null
             }
