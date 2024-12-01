@@ -42,7 +42,7 @@ export const Header = () => {
         </nav>
       </div>
 
-      {!isLoggedIn ? (
+      {!isLoggedIn() ? (
         <SButton
           className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
           onClick={() => setToggleLogin(true)}

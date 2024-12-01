@@ -11,6 +11,7 @@ import { Nullable } from 'types/common';
 
 import OnboardingButtonField from '@/components/account/OnboardingButtonField';
 import OnboardingInputField from '@/components/account/OnboardingInputField';
+import Dropdown from '@/components/common/Dropdown';
 
 const Onboarding = () => {
   const { data: session, status } = useSession();
@@ -20,6 +21,16 @@ const Onboarding = () => {
   const [link, setLink] = useState('');
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
+  const allSuggestions = [
+    '스마일게이트',
+    '스마일라식',
+    '스마일페이',
+    '스캐터랩',
+    '스타벅스',
+    '스파오'
+  ];
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [searchCount, setSearchCount] = useState(312);
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
     mutationFn: () => AuthQueryOptions.validateUsername(username).mutateFn(),
@@ -49,7 +60,6 @@ const Onboarding = () => {
       oAuthToken: detail.oAuthToken,
       email: detail.email,
       nickname: username || detail.nickname,
-      profileImgUrl: session.user?.image,
       thirdPartyProfileUrl: link,
       belonging: affiliation
     };
@@ -65,6 +75,17 @@ const Onboarding = () => {
     if (username) {
       validateUsername();
     }
+  };
+
+  const handleAffiliationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setAffiliation(query);
+
+    const filtered = allSuggestions.filter((item) => {
+      return item.includes(query);
+    });
+    setFilteredSuggestions(filtered);
+    setSearchCount(filtered.length);
   };
 
   if (status === 'loading') return <p>Loading...</p>;
@@ -97,8 +118,17 @@ const Onboarding = () => {
           <OnboardingInputField
             label="소속"
             value={affiliation}
-            setValue={(e) => setAffiliation(e.target.value)}
+            setValue={handleAffiliationChange}
             placeholder="학교, 회사 등 현재 소속을 입력해 주세요"
+            renderDropdown={() =>
+              affiliation && filteredSuggestions.length > 0 ? (
+                <Dropdown
+                  list={filteredSuggestions}
+                  searchCount={searchCount}
+                  onSelect={(suggestion) => setAffiliation(suggestion)}
+                />
+              ) : null
+            }
           />
 
           <OnboardingInputField
