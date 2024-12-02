@@ -35,7 +35,7 @@ export const techviewListSchema = z.array(
     techTitle: z.string().min(1, 'Tech area is required').optional(),
     gitRepositoryUrl: z.string().optional(),
     techTagList: z.array(z.string()).optional(),
-    description: z.string().optional()
+    techDesc: z.string().optional()
   })
 );
 

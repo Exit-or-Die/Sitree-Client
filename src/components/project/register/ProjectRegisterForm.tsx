@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import SButton from '@/components/common/Button';
 import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
 
 import { projectSchema } from './scheme';
@@ -57,6 +58,8 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     }
   });
 
+  const isCompleted = false;
+
   return (
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
@@ -75,8 +78,14 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             <button type="submit">Submit</button>
           </form>
         </div>
-        <div className="w-[30.4rem] sticky top-5 self-start">
+        <div className="w-[30.4rem] sticky top-5 self-start space-y-2">
           <ProjectUploadProgress />
+          <SButton
+            size="xl"
+            className={`w-full leading-5 tracking-[-0.16px] justify-center ${isCompleted ? 'bg-tree-50 text-white-100' : 'bg-slate-90 text-slate-80'}`}
+          >
+            등록하기
+          </SButton>
         </div>
       </FormProvider>
     </div>

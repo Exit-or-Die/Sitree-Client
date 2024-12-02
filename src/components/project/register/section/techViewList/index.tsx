@@ -5,17 +5,15 @@ import SButton from '@/components/common/Button';
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
-  name: string;
-  github: string;
-  stack: string;
-  includeArchitecture: boolean;
-  architectureDescription?: string;
-  architectureImage?: File | null;
+  techTitle: string;
+  gitRepositoryUrl: string;
+  techTagList: string[];
+  techDesc: string;
 }
 
 const ProjectRegisterTechViewList = () => {
   const [skills, setSkills] = useState<Array<TechViewProps>>([
-    { name: '', github: '', stack: '', includeArchitecture: false }
+    { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -26,7 +24,7 @@ const ProjectRegisterTechViewList = () => {
 
   const addSkill = () => {
     if (!canAddSkill()) return;
-    setSkills([...skills, { name: '', github: '', stack: '', includeArchitecture: false }]);
+    setSkills([...skills, { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }]);
     setCurrentIndex(skills.length);
   };
 
@@ -38,9 +36,9 @@ const ProjectRegisterTechViewList = () => {
     const currentSkill = skills[currentIndex];
 
     return (
-      currentSkill.name.trim() !== '' &&
-      currentSkill.github.trim() !== '' &&
-      currentSkill.stack.trim() !== ''
+      currentSkill.techTitle.trim() !== '' &&
+      currentSkill.gitRepositoryUrl.trim() !== '' &&
+      currentSkill.techDesc.trim() !== ''
     );
   };
 

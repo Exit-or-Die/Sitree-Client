@@ -1,75 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import isEqual from '@/utils/isEqual';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-const EXAMPLE_TAGS = [
-  '스포츠',
-  '헬스케어',
-  '지도',
-  '여행',
-  '이동',
-  '자기계발',
-  '생산성',
-  '외국어',
-  '교육',
-  '게임',
-  'AI',
-  '금융',
-  '라이프스타일',
-  '소설',
-  '커뮤니티',
-  '아트',
-  '디자인',
-  '책',
-  '만화',
-  '데이트',
-  '육아',
-  '엔터테인먼트',
-  '이벤트',
-  '음식',
-  '인테리어',
-  '공간',
-  '부동산',
-  '의료',
-  '뉴스',
-  '음악',
-  '사진',
-  '영상',
-  '쇼핑',
-  '날씨',
-  '플랫폼'
-];
-
-interface ProjectTagSelectProps<T = string> {
+interface ProjectTagSelectProps<T = { [key: string]: unknown }> {
   useDelete?: boolean;
   onChange?: (tags: T[]) => void;
   tags?: T[];
+  displayKey?: keyof T;
 }
 
 const ProjectTagSelect = <T,>({
   useDelete = true,
   onChange = () => {},
-  tags = EXAMPLE_TAGS as T[]
+  tags = [],
+  displayKey
 }: ProjectTagSelectProps<T>) => {
   const [selectedTags, setSelectedTags] = useState<T[]>([]);
+  const [filteredTags, setFilteredTags] = useState<T[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelectTag = (tag: T) => {
     if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag]);
+      setSelectedTags((prevTags) => [...prevTags, tag]);
     }
   };
 
   const handleRemoveTag = (tag: T) => {
-    setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+    setSelectedTags((prevTags) => prevTags.filter((selectedTag) => selectedTag !== tag));
   };
 
-  const filteredTags = tags.filter((tag) => !selectedTags.includes(tag));
+  const getTagDisplay = useCallback(
+    (tag: T) => {
+      return displayKey ? String(tag[displayKey]) : String(tag);
+    },
+    [displayKey]
+  );
 
   useEffect(() => {
     onChange(selectedTags);
-  }, [selectedTags, onChange]);
+    setFilteredTags(tags.filter((tag) => !selectedTags.some((selected) => isEqual(selected, tag))));
+  }, [selectedTags]);
 
   return (
     <div className="relative w-full">
@@ -80,12 +52,12 @@ const ProjectTagSelect = <T,>({
         {selectedTags.length > 0 ? (
           <div className="flex flex-wrap gap-2 px-2 py-1.5">
             {selectedTags.map((tag) => (
-              <div key={String(tag)}>
+              <div key={getTagDisplay(tag)}>
                 <SButton
                   size="md"
                   className="bg-tree-50 text-white-100 rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] px-[0.8rem]"
                 >
-                  {String(tag)}
+                  {getTagDisplay(tag)}
                   {useDelete && (
                     <span
                       onClick={(e) => {
@@ -117,11 +89,11 @@ const ProjectTagSelect = <T,>({
           <div className="flex flex-wrap p-2 gap-2">
             {filteredTags.map((tag) => (
               <SButton
-                key={String(tag)}
+                key={getTagDisplay(tag)}
                 onClick={() => handleSelectTag(tag)}
                 className="rounded-[99.9rem] gap-[0.4rem] py-[0.6rem] text-slate-50 border-slate-90"
               >
-                {String(tag)}
+                {getTagDisplay(tag)}
               </SButton>
             ))}
           </div>
