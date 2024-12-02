@@ -1,3 +1,11 @@
-.toastui-editor-contents p {
-  font-size: 16px;
+.toastui-editor-contents {
+  font-size: 1.3rem;
+}
+
+.toastui-editor-main-container {
+  font-size: 1.3rem;
+}
+
+.ProseMirror {
+  font-size: 1.4rem;
 }

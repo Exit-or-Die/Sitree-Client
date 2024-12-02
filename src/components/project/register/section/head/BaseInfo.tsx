@@ -51,6 +51,7 @@ const ProjectHeadBaseInfo = () => {
         <ProjectTagSelect<Tag>
           onChange={(tags: Tag[]) => setValue('tagList', tags)}
           displayKey="name"
+          tags={[{ name: 'abc' }, { name: 'aaa' }]}
         />
       ),
       required: true

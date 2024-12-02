@@ -75,13 +75,15 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             <ProjectRegisterTechViewList />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList />
-            <button type="submit">Submit</button>
           </form>
         </div>
         <div className="w-[30.4rem] sticky top-5 self-start space-y-2">
           <ProjectUploadProgress />
           <SButton
             size="xl"
+            onClick={formMethods.handleSubmit((data) => {
+              console.log(data);
+            }, onInvalid)}
             className={`w-full leading-5 tracking-[-0.16px] justify-center ${isCompleted ? 'bg-tree-50 text-white-100' : 'bg-slate-90 text-slate-80'}`}
           >
             등록하기
