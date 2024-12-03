@@ -1,13 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 
-interface DropdownProps {
-  list: string[];
+interface DropdownProps<T extends { name: string }> {
+  list: T[];
   searchCount: number;
-  onSelect: (suggestion: string) => void;
+  onSelect: (item: string) => void;
   closeDropdown: () => void;
 }
 
-const Dropdown = ({ list, searchCount, onSelect, closeDropdown }: DropdownProps) => {
+const Dropdown = <T extends { name: string }>({
+  list,
+  searchCount,
+  onSelect,
+  closeDropdown
+}: DropdownProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,9 +43,9 @@ const Dropdown = ({ list, searchCount, onSelect, closeDropdown }: DropdownProps)
           <li
             key={index}
             className="px-4 py-2 text-[14px] text-gray-800 hover:bg-slate-95 hover:text-green-600 cursor-pointer"
-            onClick={() => onSelect(item)}
+            onClick={() => onSelect(item.name)}
           >
-            {item}
+            {item.name}
           </li>
         ))}
       </ul>

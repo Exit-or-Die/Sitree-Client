@@ -3,10 +3,11 @@
 import { ERROR_MESSAGES } from '@/constants/error';
 import { useSignUp } from '@/service/auth/queries';
 import AuthQueryOptions from '@/service/auth/queries';
-import { useMutation } from '@tanstack/react-query';
+import BelongingQueryOptions from '@/service/belonging/queries';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Nullable } from 'types/common';
 
 import OnboardingButtonField from '@/components/account/OnboardingButtonField';
@@ -18,20 +19,11 @@ const Onboarding = () => {
   const [username, setUsername] = useState('');
   const [isUsernameValid, setIsUsernameValid] = useState<Nullable<boolean>>(null);
   const [affiliation, setAffiliation] = useState('');
+  const [debouncedAffiliation, setDebouncedAffiliation] = useState('');
   const [link, setLink] = useState('');
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const allSuggestions = [
-    '스마일게이트',
-    '스마일라식',
-    '스마일페이',
-    '스캐터랩',
-    '스타벅스',
-    '스파오'
-  ];
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const [searchCount, setSearchCount] = useState(312);
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
     mutationFn: () => AuthQueryOptions.validateUsername(username).mutateFn(),
@@ -48,6 +40,21 @@ const Onboarding = () => {
       setIsUsernameValid(false);
       setErrorMessage(ERROR_MESSAGES.USERNAME_INVALID);
     }
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedAffiliation(affiliation);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [affiliation]);
+
+  const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
+  const { data: belongingData = [] } = useQuery({
+    queryKey,
+    queryFn,
+    enabled: !!debouncedAffiliation
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -84,16 +91,10 @@ const Onboarding = () => {
 
   const handleAffiliationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
+    setIsDropdownVisible(true);
     setAffiliation(query);
 
-    if (query) {
-      const filtered = allSuggestions.filter((item) => {
-        return item.includes(query);
-      });
-      setFilteredSuggestions(filtered);
-      setSearchCount(filtered.length);
-      setIsDropdownVisible(true);
-    } else {
+    if (!query) {
       closeDropdown();
     }
   };
@@ -131,10 +132,10 @@ const Onboarding = () => {
             setValue={handleAffiliationChange}
             placeholder="학교, 회사 등 현재 소속을 입력해 주세요"
             renderDropdown={() =>
-              isDropdownVisible && filteredSuggestions.length > 0 ? (
+              isDropdownVisible && belongingData.length > 0 ? (
                 <Dropdown
-                  list={filteredSuggestions}
-                  searchCount={searchCount}
+                  list={belongingData}
+                  searchCount={belongingData.length}
                   onSelect={(suggestion) => {
                     setAffiliation(suggestion);
                     closeDropdown();
