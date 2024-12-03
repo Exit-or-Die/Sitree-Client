@@ -31,9 +31,11 @@ const ProjectHeadServiceLink = () => {
   };
 
   const deleteServiceLink = (key: keyof ClientUrl) => {
-    setServiceLinks((prev) =>
-      prev.map((link) => (link.key === key ? { ...link, value: '' } : link))
-    );
+    if (availableKeys.length !== serviceLinks.length - 1) {
+      setServiceLinks((prev) =>
+        prev.map((link) => (link.key === key ? { ...link, value: '' } : link))
+      );
+    }
   };
 
   const handleKeyChange = (oldKey: keyof ClientUrl, newKey: keyof ClientUrl) => {
@@ -73,9 +75,7 @@ const ProjectHeadServiceLink = () => {
             <div key={key} className="flex gap-1.5">
               <SSelect
                 value={{ key }}
-                onChange={(newOption) =>
-                  handleKeyChange(key, (newOption.key as keyof ClientUrl) || key)
-                }
+                onChange={(newOption) => handleKeyChange(key, newOption.key as keyof ClientUrl)}
                 options={[
                   { key },
                   ...availableKeys
@@ -83,11 +83,12 @@ const ProjectHeadServiceLink = () => {
                     .map((availableKey) => ({ key: availableKey }))
                 ]}
                 displayKey="key"
+                selectClass="w-[15.6rem]"
               />
               <SInput
-                className="w-[43.4rem]"
+                className="!w-[43.4rem] text-small font-md leading-5 tracking-[-0.14px]"
                 placeholder="링크를 입력해주세요"
-                value={value.trim()} // 입력 필드에서 공백 제거
+                value={value.trim()}
                 onChange={(e) => updateServiceLinks(key, e.target.value)}
               />
               <span
@@ -103,6 +104,7 @@ const ProjectHeadServiceLink = () => {
         size="lg"
         className="text-small bg-tree-93 text-tree-30 gap-1.5 h-[4.4rem] w-[10.8rem]"
         onClick={addServiceLink}
+        disabled
       >
         <p>+</p>
         <p className="leading-5 tracking-[-1%]">링크 추가</p>

@@ -1,39 +1,90 @@
-import React, { ChangeEvent } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+import SImage from '../Image';
 
 interface SSelectProps<T = { [key: string]: unknown }> {
-  value: T;
+  value?: T;
   onChange: (value: T) => void;
   options: T[];
   displayKey?: keyof T;
+  selectClass?: string;
+  optionClass?: string;
+  placeholder?: string;
 }
 
-const SSelect = <T,>({ value, onChange, options, displayKey }: SSelectProps<T>) => {
-  const getOptionDisplay = (option: T) => {
-    return displayKey ? String(option[displayKey] ?? '') : String(option);
+const SSelect = <T,>({
+  value,
+  onChange,
+  options,
+  displayKey,
+  selectClass = '',
+  optionClass = '',
+  placeholder = 'Select an option'
+}: SSelectProps<T>) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const getOptionDisplay = (option: T | undefined) => {
+    return option && displayKey ? String(option[displayKey] ?? '') : String(option ?? '');
   };
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-    const selectedOption = options.find((option) =>
-      displayKey ? String(option[displayKey]) === selectedValue : String(option) === selectedValue
-    );
-    onChange(selectedOption as T);
+  const handleSelect = (option: T) => {
+    onChange(option);
+    setIsDropdownOpen(false);
   };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // 현재 선택된 값을 제외한 옵션 목록
+  const filteredOptions = options.filter(
+    (option) => getOptionDisplay(option) !== getOptionDisplay(value)
+  );
 
   return (
-    <select
-      value={
-        value && displayKey && typeof value === 'object' ? String(value[displayKey]) : String(value)
-      }
-      onChange={handleChange}
-      className="border border-gray-300 rounded-md p-2"
+    <div
+      ref={dropdownRef}
+      className={`relative bg-white-100 text-small font-md leading-5 tracking-[-0.14px] ${selectClass}`}
     >
-      {options.map((option, index) => (
-        <option key={index} value={displayKey ? String(option[displayKey]) : String(option)}>
-          {getOptionDisplay(option)}
-        </option>
-      ))}
-    </select>
+      <div
+        className={`border border-slate-90 rounded-[1rem] p-3 cursor-pointer flex justify-between items-center ${isDropdownOpen ? 'border-none outline-none ring-1 ring-tree-50' : ''} ${selectClass}`}
+        onClick={() => setIsDropdownOpen((prev) => !prev)}
+      >
+        <span>{value && getOptionDisplay(value) ? getOptionDisplay(value) : placeholder}</span>
+        <div className="w-4 h-4 flex-shrink-0">
+          <SImage
+            src="/arrow.svg"
+            width={16}
+            height={16}
+            className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}
+          />
+        </div>
+      </div>
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1.5 w-full bg-white-100 border rounded-base shadow-md max-h-60 overflow-auto">
+          {filteredOptions.map((option, index) => (
+            <div
+              key={index}
+              onClick={() => handleSelect(option)}
+              className={`p-3 cursor-pointer hover:bg-slate-95 ${optionClass}`}
+            >
+              {getOptionDisplay(option)}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 
