@@ -4,4 +4,4 @@ export type Optional<T> = T | undefined;
 
 export type Maybe<T> = T | null | undefined;
 
-export type Belonging =  'HIGH_SCHOOL' | 'UNIVERSITY' | 'CORPORATION';
+export type Belonging = 'HIGH_SCHOOL' | 'UNIVERSITY' | 'CORPORATION';
