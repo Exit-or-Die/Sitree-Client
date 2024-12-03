@@ -37,8 +37,9 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        if (!response.isNewMember && response.accessToken) {
+        if (!response.isNewMember && response.accessToken && response.refreshToken) {
           cookieStore.set('accessToken', response.accessToken);
+          cookieStore.set('refreshToken', response.refreshToken)
         }
 
         user.information = { ...response, oAuthToken: accessToken, provider };

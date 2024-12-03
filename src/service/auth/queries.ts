@@ -29,8 +29,9 @@ export const useSignUp = () => {
   return useMutation({
     mutationFn: (credentials: SignUpData) => AuthQueryOptions.signUp(credentials).mutateFn(),
     onSuccess: (data) => {
-      if (!data.accessToken) return;
+      if (!data.accessToken || !data.refreshToken) return;
       setCookie('accessToken', data.accessToken);
+      setCookie('refreshToken', data.refreshToken);
     },
     onError: (error) => {
       console.error('Signup failed:', error);
