@@ -43,6 +43,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
         value={value}
         onChange={handleChange}
         accept={accept}
+        name={name}
         {...restRegister}
       />
     );

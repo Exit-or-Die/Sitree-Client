@@ -40,12 +40,12 @@ const TechViewForm: React.FC<{
         </div>
         <div className="w-full">
           <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-            기술 이름
+            GitHub 링크
           </label>
           <SInput
             type="text"
             placeholder="링크 입력"
-            name="githubRepositoryUrl"
+            name="gitRepositoryUrl"
             value={skill.gitRepositoryUrl}
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"

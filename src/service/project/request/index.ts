@@ -41,7 +41,7 @@ export interface TechView {
   techTitle: string;
   gitRepositoryUrl: string;
   techTagList: Array<string>;
-  description: string;
+  techDesc: string;
 }
 
 export interface Architecture {

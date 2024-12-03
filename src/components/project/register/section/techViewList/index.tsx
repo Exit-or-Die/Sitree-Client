@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { ProjectRegisterRequest } from '@/service/project/request';
+import { extractContentFromHtml } from '@/utils/stringUtil';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 
@@ -12,19 +15,22 @@ export interface TechViewProps {
 }
 
 const ProjectRegisterTechViewList = () => {
+  const { setValue } = useFormContext<ProjectRegisterRequest>();
   const [skills, setSkills] = useState<Array<TechViewProps>>([
     { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const updateSkill = (index: number, updatedSkill: TechViewProps) => {
-    const updatedSkills = skills.map((skill, i) => (i === index ? updatedSkill : skill));
-    setSkills(updatedSkills);
+    setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
   };
 
   const addSkill = () => {
     if (!canAddSkill()) return;
-    setSkills([...skills, { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }]);
+    setSkills((prevSkills) => [
+      ...prevSkills,
+      { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
+    ]);
     setCurrentIndex(skills.length);
   };
 
@@ -33,14 +39,17 @@ const ProjectRegisterTechViewList = () => {
   };
 
   const canAddSkill = () => {
-    const currentSkill = skills[currentIndex];
-
-    return (
-      currentSkill.techTitle.trim() !== '' &&
-      currentSkill.gitRepositoryUrl.trim() !== '' &&
-      currentSkill.techDesc.trim() !== ''
+    return skills.every(
+      (skill) =>
+        skill.techTitle.trim() !== '' &&
+        skill.gitRepositoryUrl.trim() !== '' &&
+        extractContentFromHtml(skill.techDesc.trim()) !== ''
     );
   };
+
+  useEffect(() => {
+    setValue('techviewList', skills);
+  }, [skills, setValue]);
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
