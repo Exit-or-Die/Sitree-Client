@@ -71,7 +71,9 @@ class Service {
       },
       credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
-      url: this.baseURL + url
+      baseURL: this.baseURL,
+      url: this.baseURL + url,
+      request: this.request
     };
 
     try {
@@ -79,9 +81,6 @@ class Service {
 
       const { url: requestUrl, ...fetchConfig } = requestConfig;
       const response = await fetch(requestUrl, fetchConfig);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
 
       const responseData: ApiResponse<T> = await response.json();
       requestConfig.response = responseData;
