@@ -39,7 +39,7 @@ const handler = NextAuth({
 
         if (!response.isNewMember && response.accessToken && response.refreshToken) {
           cookieStore.set('accessToken', response.accessToken);
-          cookieStore.set('refreshToken', response.refreshToken)
+          cookieStore.set('refreshToken', response.refreshToken);
         }
 
         user.information = { ...response, oAuthToken: accessToken, provider };

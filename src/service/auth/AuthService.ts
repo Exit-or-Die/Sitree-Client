@@ -45,6 +45,10 @@ class AuthService extends Service {
   validateUsername(nickname: string) {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
   }
+
+  renewAccessToken(token: any) {
+    console.log('refreshToken');
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
