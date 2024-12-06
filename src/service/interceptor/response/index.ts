@@ -1,8 +1,12 @@
 import AuthService from '@/service/auth/AuthService';
+
 import { RequestConfigWithResponse } from '..';
+
 import { setCookie } from 'cookies-next/client';
 
-export const handleResponseByCode = async <T>(config: RequestConfigWithResponse<T>): Promise<void> => {
+export const handleResponseByCode = async <T>(
+  config: RequestConfigWithResponse<T>
+): Promise<void> => {
   const { response } = config;
 
   // response가 undefined인지 확인
@@ -15,7 +19,6 @@ export const handleResponseByCode = async <T>(config: RequestConfigWithResponse<
     console.log('Access token expired. Renewing token...');
     try {
       const { accessToken, refreshToken } = await AuthService.renewAccessToken();
-
       setCookie('accessToken', accessToken);
       setCookie('refreshToken', refreshToken);
 
@@ -23,12 +26,12 @@ export const handleResponseByCode = async <T>(config: RequestConfigWithResponse<
         ...config,
         headers: {
           ...config.headers,
-          Authorization: `Bearer ${accessToken}`,
-        },
+          Authorization: `Bearer ${accessToken}`
+        }
       };
 
       const partialUrl = updatedConfig.url.split(config.baseURL)[1];
-      const json = await updatedConfig.request(
+      const json: T = await updatedConfig.request(
         updatedConfig.method,
         partialUrl,
         updatedConfig.body,
@@ -38,7 +41,7 @@ export const handleResponseByCode = async <T>(config: RequestConfigWithResponse<
       config.response = {
         code: 0,
         message: 'successfully fetched!',
-        value: json,
+        value: json
       };
 
       return;

@@ -4,7 +4,12 @@ import { handleResponseByCode } from './response';
 export interface RequestConfigWithResponse<T> extends RequestInit {
   url: string;
   method: string;
-  request: any;
+  request: <T = unknown>(
+    method: string,
+    url: string,
+    data?: unknown,
+    config?: RequestInit
+  ) => Promise<T>;
   baseURL: string;
   response?: ApiResponse<T>;
 }

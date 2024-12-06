@@ -1,5 +1,5 @@
-import { Maybe, Nullable } from 'types/common';
 import { getCookie } from 'cookies-next/client';
+import { Maybe, Nullable } from 'types/common';
 
 import Service from '../service';
 
@@ -47,28 +47,14 @@ class AuthService extends Service {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
   }
 
-  testComments() {
-    const accessToken = getCookie('accessToken');
-    const oldToken = 'eyJhbGciOiJSUzI1NiJ9.eyJtZW1iZXJDbGFpbSI6eyJwcm92aWRlciI6IkdPT0dMRSIsImVtYWlsIjoiYmVhcjA0MDEyQGdtYWlsLmNvbSJ9LCJpYXQiOjE3MzMyMjc2OTgsImV4cCI6MTczMzIyNTg5OCwiaXNzIjoiRU9EIiwic3ViIjoiYmVhcjA0MDEyQGdtYWlsLmNvbSJ9.b2PuZfnqhN4WcPrQzL2Cq8KqwFrKRpNYJ6iJkBm6Mw_37oMZIokwsORKFKg7C23Hz44luAlBKLvAyz8jHqIyjiWmOYyvPTCKnd1z5AO0CyzY6qAOVsnyPBrd4ecWKzBojB7uSp6ibnCgaUVGvjmyIU5FzqgSO6v2-7kSa1I9tzkxhBD2Oa_-Hh72oydwLMzGFTNMwuX_pjmX4JQ8TIXjQsFjDkGVFjk7iMbxzd1takH6mZSx3A43RgOPaBqIpYIvqFgjIHhZ8rx4-9-HJWJWemcmJ_6LLRD9YCfhDqbxF_naX_5SizpQyzQmjB3xXVFUte63duIyE162qdZ_ioOr_w'
-    const response = this.http.get<any>('comments/project/1', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      }
-    });
-    response.then((data) => {
-      console.log('fk');
-      console.log(data);
-    })
-    return response;
-  }
-
   renewAccessToken() {
     const refreshToken = getCookie('refreshToken');
-    const response = this.http.get<any>('members/refresh', {
+    const response = this.http.get<UserDetail>('members/refresh', {
       headers: {
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${refreshToken}`
       }
     });
+
     return response;
   }
 }
