@@ -1,4 +1,5 @@
 import SImage from '@/components/common/Image';
+import FileUploadButton from '../FileUploadButton';
 
 const ProjectIconUpload = () => {
   return (
@@ -17,7 +18,7 @@ const ProjectIconUpload = () => {
           </p>
           <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
         </div>
-        <div>파일 선택</div>
+        <FileUploadButton text="파일 선택" onUpload={() => {}} />
       </div>
     </div>
   );

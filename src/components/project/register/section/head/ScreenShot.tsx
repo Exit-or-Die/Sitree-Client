@@ -2,6 +2,7 @@ import { Image } from '@/service/project/response';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import FileUploadButton from '@/components/custom/FileUploadButton';
 import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
 
 const TOTAL_SCREENSHOT_ITEMS = 8;
@@ -23,7 +24,11 @@ const ProjectHeadScreenshot = () => {
             <p className="text-slate-70">/</p>
             <p className="text-slate-70">{TOTAL_SCREENSHOT_ITEMS}</p>
           </span>
-          <button className="border w-[96px] h-[36px]">파일 선택</button>
+          <FileUploadButton
+            className="border w-[96px] h-[36px]"
+            text="파일 선택"
+            onUpload={() => {}}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
