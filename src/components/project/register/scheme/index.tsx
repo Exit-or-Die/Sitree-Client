@@ -32,7 +32,7 @@ export const overviewSchema = z.object({
 
 export const techviewListSchema = z.array(
   z.object({
-    techTitle: z.string().min(1, 'Tech area is required').optional(),
+    techTitle: z.string().optional(),
     gitRepositoryUrl: z.string().optional(),
     techTagList: z.array(z.string()).optional(),
     techDesc: z.string().optional()

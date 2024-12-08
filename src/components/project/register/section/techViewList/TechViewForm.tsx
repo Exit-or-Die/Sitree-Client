@@ -1,4 +1,3 @@
-import { Tag } from '@/service/project/request';
 import dynamic from 'next/dynamic';
 
 import SInput from '@/components/common/Input';
@@ -69,11 +68,11 @@ const TechViewForm: React.FC<{
           기술 태그
         </label>
         <ProjectTagSelect
-          onChange={(tags: Array<Tag>) => {
-            updateSkill(index, { ...skill, techTagList: tags.map((tag) => tag.name) });
+          onChange={(tags: Array<string>) => {
+            updateSkill(index, { ...skill, techTagList: tags.map((tag) => tag) });
           }}
-          tags={[{ name: '스포츠' }, { name: '헬스케어' }]}
-          displayKey="name"
+          tags={['스포츠', '헬스케어']}
+          initialValue={skill.techTagList}
         />
       </div>
     </div>

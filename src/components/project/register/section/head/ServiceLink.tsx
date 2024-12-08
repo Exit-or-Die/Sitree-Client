@@ -53,7 +53,11 @@ const ProjectHeadServiceLink = () => {
   const addServiceLink = () => {
     if (availableKeys.length > 0) {
       const newKey = availableKeys[0];
-      setServiceLinks((prev) => [...prev, { key: newKey, value: ' ' }]); // 항상 아래에 추가
+      setServiceLinks((prev) => {
+        const filteredLinks = prev.filter((link) => link.key !== newKey);
+
+        return [...filteredLinks, { key: newKey, value: ' ' }];
+      });
     }
   };
 
@@ -100,15 +104,16 @@ const ProjectHeadServiceLink = () => {
             </div>
           ))}
       </div>
-      <SButton
-        size="lg"
-        className="text-small bg-tree-93 text-tree-30 gap-1.5 h-[4.4rem] w-[10.8rem]"
-        onClick={addServiceLink}
-        disabled
-      >
-        <p>+</p>
-        <p className="leading-5 tracking-[-1%]">링크 추가</p>
-      </SButton>
+      {!!availableKeys.length && (
+        <SButton
+          size="lg"
+          className="text-small bg-tree-93 text-tree-30 gap-1.5 h-[4.4rem] w-[10.8rem] cursor-pointer"
+          onClick={addServiceLink}
+        >
+          <p>+</p>
+          <p className="leading-5 tracking-[-1%]">링크 추가</p>
+        </SButton>
+      )}
     </div>
   );
 };

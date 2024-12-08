@@ -53,7 +53,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
         detailDescription: defaultValues.overview?.detailDescription || ''
       },
       techviewList: defaultValues.techviewList || [],
-      architectureList: [],
+      architectureList: defaultValues.architectureList || [],
       participantList: defaultValues.participantList || []
     }
   });

@@ -1,5 +1,5 @@
 import isEqual from '@/utils/isEqual';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -9,17 +9,23 @@ interface ProjectTagSelectProps<T = { [key: string]: unknown }> {
   onChange?: (tags: T[]) => void;
   tags?: T[];
   displayKey?: keyof T;
+  initialValue?: T[];
 }
 
 const ProjectTagSelect = <T,>({
   useDelete = true,
   onChange = () => {},
   tags = [],
-  displayKey
+  displayKey,
+  initialValue = []
 }: ProjectTagSelectProps<T>) => {
-  const [selectedTags, setSelectedTags] = useState<T[]>([]);
+  const tagSelectRef = useRef<HTMLDivElement>(null);
+  const [selectedTags, setSelectedTags] = useState<T[]>(initialValue);
   const [filteredTags, setFilteredTags] = useState<T[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const prevInitialValue = useRef<T[]>(initialValue);
+  const prevSelectedTags = useRef<T[]>(selectedTags);
 
   const handleSelectTag = (tag: T) => {
     if (!selectedTags.includes(tag)) {
@@ -39,12 +45,39 @@ const ProjectTagSelect = <T,>({
   );
 
   useEffect(() => {
-    onChange(selectedTags);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tagSelectRef.current && !tagSelectRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isEqual(initialValue, prevInitialValue.current)) {
+      setSelectedTags(initialValue);
+      prevInitialValue.current = initialValue;
+    }
+  }, [initialValue]);
+
+  useEffect(() => {
+    if (!isEqual(selectedTags, prevSelectedTags.current)) {
+      onChange(selectedTags);
+      prevSelectedTags.current = selectedTags;
+    }
+  }, [selectedTags, onChange]);
+
+  useEffect(() => {
     setFilteredTags(tags.filter((tag) => !selectedTags.some((selected) => isEqual(selected, tag))));
-  }, [selectedTags]);
+  }, [tags, selectedTags]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={tagSelectRef}>
       <div
         className={`w-full border border-slate-90 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer ${isDropdownOpen ? 'border-none outline-none ring-1 ring-tree-50' : ''}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}

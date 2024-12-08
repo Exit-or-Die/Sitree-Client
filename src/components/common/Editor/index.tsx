@@ -44,7 +44,7 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
     if (currentHTML !== (initialValue ?? '')) {
       instance.setHTML(initialValue ?? '');
     }
-  }, []);
+  }, [initialValue]);
 
   return (
     <div className="flex flex-col gap-1.5">

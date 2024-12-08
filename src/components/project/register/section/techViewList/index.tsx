@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
 
 import TechViewForm from './TechViewForm';
 
@@ -15,10 +16,11 @@ export interface TechViewProps {
 }
 
 const ProjectRegisterTechViewList = () => {
-  const { setValue } = useFormContext<ProjectRegisterRequest>();
+  const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
   const [skills, setSkills] = useState<Array<TechViewProps>>([
     { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
   ]);
+  // const [skills, setSkills] = useState<Array<TechViewProps>>(getValues('techviewList'));
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const updateSkill = (index: number, updatedSkill: TechViewProps) => {
@@ -34,6 +36,17 @@ const ProjectRegisterTechViewList = () => {
     setCurrentIndex(skills.length);
   };
 
+  const deleteSkill = (index: number) => {
+    if (!canDeleteSkill()) return;
+
+    const newSkills = skills.filter((_, i) => i !== index);
+    setSkills(newSkills);
+
+    if (index === currentIndex && newSkills.length > 0) {
+      setCurrentIndex(index === newSkills.length ? index - 1 : index);
+    }
+  };
+
   const goToSkill = (index: number) => {
     setCurrentIndex(index);
   };
@@ -45,6 +58,10 @@ const ProjectRegisterTechViewList = () => {
         skill.gitRepositoryUrl.trim() !== '' &&
         extractContentFromHtml(skill.techDesc.trim()) !== ''
     );
+  };
+
+  const canDeleteSkill = () => {
+    return skills.length > 1;
   };
 
   useEffect(() => {
@@ -84,7 +101,18 @@ const ProjectRegisterTechViewList = () => {
           </SButton>
         </div>
       </div>
-      <TechViewForm skill={skills[currentIndex]} index={currentIndex} updateSkill={updateSkill} />
+      <div>
+        <TechViewForm skill={skills[currentIndex]} index={currentIndex} updateSkill={updateSkill} />
+      </div>
+      {canDeleteSkill() && (
+        <div
+          className="mt-5 flex items-center justify-end gap-1 cursor-pointer"
+          onClick={() => deleteSkill(currentIndex)}
+        >
+          <SImage src="/redTrash.svg" width={16} height={16} />
+          <p className="text-red-50">삭제</p>
+        </div>
+      )}
     </div>
   );
 };
