@@ -1,5 +1,5 @@
 import { getCookie } from 'cookies-next/client';
-import { Maybe, Nullable } from 'types/common';
+import { Nullable } from 'types/common';
 
 import Service from '../service';
 
@@ -25,7 +25,6 @@ export interface SignUpData {
   oAuthToken: string;
   email: string;
   nickname: string;
-  profileImgUrl: Maybe<string>;
   thirdPartyProfileUrl?: string;
   belonging?: string;
 }
