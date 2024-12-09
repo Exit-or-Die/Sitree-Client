@@ -30,10 +30,10 @@ export const handleResponseByCode = async <T>(
         }
       };
 
-      const partialUrl = updatedConfig.url.split(config.baseURL)[1];
+      const { pathname } = new URL(updatedConfig.url);
       const json: T = await updatedConfig.request(
         updatedConfig.method,
-        partialUrl,
+        pathname.slice(1),
         updatedConfig.body,
         updatedConfig
       );

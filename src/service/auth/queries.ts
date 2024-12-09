@@ -1,3 +1,4 @@
+import { COOKIE_KEY } from '@/constants/cookie';
 import { setCookie } from '@/utils/cookie';
 import { useMutation } from '@tanstack/react-query';
 
@@ -30,8 +31,8 @@ export const useSignUp = () => {
     mutationFn: (credentials: SignUpData) => AuthQueryOptions.signUp(credentials).mutateFn(),
     onSuccess: (data) => {
       if (!data.accessToken || !data.refreshToken) return;
-      setCookie('accessToken', data.accessToken);
-      setCookie('refreshToken', data.refreshToken);
+      setCookie(COOKIE_KEY.ACCESS_TOKEN, data.accessToken);
+      setCookie(COOKIE_KEY.REFRESH_TOKEN, data.refreshToken);
     },
     onError: (error) => {
       console.error('Signup failed:', error);

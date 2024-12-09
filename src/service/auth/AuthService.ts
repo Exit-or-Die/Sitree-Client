@@ -1,3 +1,4 @@
+import { COOKIE_KEY } from '@/constants/cookie';
 import { getCookie } from 'cookies-next/client';
 import { Nullable } from 'types/common';
 
@@ -47,7 +48,7 @@ class AuthService extends Service {
   }
 
   renewAccessToken() {
-    const refreshToken = getCookie('refreshToken');
+    const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
     const response = this.http.get<UserDetail>('members/refresh', {
       headers: {
         Authorization: `Bearer ${refreshToken}`
