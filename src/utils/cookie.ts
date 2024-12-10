@@ -1,21 +1,24 @@
-export const setCookie = (
-  name: string,
-  value: string,
-  options: { path?: string; secure?: boolean; sameSite?: 'Lax' | 'Strict' | 'None' } = {}
-) => {
-  const { path = '/', secure = true, sameSite = 'Lax' } = options;
-  document.cookie = `${name}=${value}; path=${path}; ${secure ? 'secure;' : ''} SameSite=${sameSite}`;
+import { setCookie as nextSetCookie, deleteCookie as nextDeleteCookie } from 'cookies-next';
+import type { OptionsType } from 'cookies-next';
+
+import { isProduction } from './misc';
+
+interface DefaultOption {
+  path: string;
+  secure: boolean;
+  sameSite: boolean | 'lax' | 'strict' | 'none' | undefined;
+}
+
+const defaultOptions: DefaultOption = {
+  path: '/',
+  secure: isProduction(),
+  sameSite: 'lax'
 };
 
-export const getCookie = (name: string): string | null => {
-  const matches = document.cookie.match(
-    new RegExp(`(?:^|; )${name.replace(/([.*+?^${}()|[\]\\])/g, '\\$1')}=([^;]*)`)
-  );
-
-  return matches ? decodeURIComponent(matches[1]) : null;
+export const setCookie = (name: string, value: string, options: OptionsType = {}) => {
+  nextSetCookie(name, value, { ...options, ...defaultOptions });
 };
 
-export const deleteCookie = (name: string) => {
-  setCookie(name, '', { path: '/', secure: true, sameSite: 'Lax' });
-  document.cookie = `${name}=; Max-Age=-99999999;`;
+export const deleteCookie = (name: string, options: OptionsType = {}) => {
+  nextDeleteCookie(name, { ...defaultOptions, ...options });
 };

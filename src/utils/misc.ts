@@ -5,3 +5,7 @@ export const isBrowser = () => {
 export const isLoggedIn = () => {
   return document.cookie.includes('accessToken');
 };
+
+export const isProduction = () => {
+  return process.env.NODE_ENV === 'production';
+};

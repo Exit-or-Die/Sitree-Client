@@ -1,7 +1,7 @@
 import { COOKIE_KEY } from '@/constants/cookie';
 import { ROUTES } from '@/constants/route';
 import AuthService, { UserDetail } from '@/service/auth/AuthService';
-import { setCookie } from 'cookies-next';
+import { setCookie } from '@/utils/cookie';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
