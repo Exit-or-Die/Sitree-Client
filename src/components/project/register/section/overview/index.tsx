@@ -2,12 +2,12 @@ import { ProjectDetailResponse } from '@/service/project/response';
 import dynamic from 'next/dynamic';
 import { useFormContext } from 'react-hook-form';
 
-const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: false });
+const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: true });
 
 const ProjectRegisterOverview = () => {
-  const { setValue, watch } = useFormContext<ProjectDetailResponse>();
+  const { setValue, getValues } = useFormContext<ProjectDetailResponse>();
 
-  const detailDescription = watch('overview.detailDescription');
+  const detailDescription = getValues('overview.detailDescription');
 
   const handleChangeDescription = (value: string) => {
     setValue('overview.detailDescription', value, { shouldValidate: true });
