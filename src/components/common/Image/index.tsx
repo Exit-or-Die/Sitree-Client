@@ -32,19 +32,16 @@ const SImage = (props: ImageProps) => {
   };
 
   return (
-    <div>
-      {/* {isLoading && <div>Skeleton!</div>} */}
-      <Image
-        className={className}
-        src={src}
-        alt={alt}
-        fill={!width && !height}
-        width={width}
-        height={height}
-        onLoad={handleLoad}
-        onClick={onClick}
-      />
-    </div>
+    <Image
+      className={className}
+      src={src}
+      alt={alt}
+      fill={!width && !height}
+      width={width}
+      height={height}
+      onLoad={handleLoad}
+      onClick={onClick}
+    />
   );
 };
 

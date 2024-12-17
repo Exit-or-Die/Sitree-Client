@@ -3,8 +3,9 @@ import ProjectQueryOptions from '@/service/project/queries';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
-import RouterPush from '@/components/custom/RouterPush';
 import SwiperComponent from '@/components/common/Swiper';
+import RouterPush from '@/components/custom/RouterPush';
+import ProjectDetail from '@/components/project/detail/ProjectDetail';
 
 interface ProjectDetailPageProps {
   params: {
@@ -38,7 +39,15 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
           <SImage src="/leftArrow.svg" width={14} height={14} />
           <p className="text-small text-slate-30">프로젝트 목록</p>
         </RouterPush>
-        <SwiperComponent items={sampleImageComponent} />
+        <div className="py-5">
+          <SwiperComponent items={sampleImageComponent} />
+        </div>
+        <div className="mt-8 flex justify-center gap-5">
+          <div className="w-[94.2rem]">
+            <ProjectDetail />
+          </div>
+          <div className="w-[30.6rem] sticky top-5 self-start border border-red-100"></div>
+        </div>
       </Hydrate>
     </div>
   );

@@ -32,8 +32,6 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
           prevEl: '.swiper-button-prev'
         }}
         spaceBetween={20}
-        centeredSlides={true} // 동적으로 centeredSlides 값 적용
-        centeredSlidesBounds={true}
         breakpoints={{
           480: { slidesPerView: 2 },
           768: { slidesPerView: 3 },
@@ -63,7 +61,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
         {items.map((item, index) => (
           <SwiperSlide
             key={index}
-            className="swiper-slide flex items-center justify-center transition-transform duration-300 scale-75 active:scale-100"
+            className="swiper-slide flex items-center justify-center transition-transform duration-300"
           >
             {item}
           </SwiperSlide>
