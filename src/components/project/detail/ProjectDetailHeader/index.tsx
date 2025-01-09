@@ -23,7 +23,7 @@ const HealthCheckState = ({ health }: { health: boolean }) => {
   return (
     <div className="flex px-1 justify-center items-center gap-1.5">
       <HealthIcon />
-      <p className={`text-[1.3rem]`}>{health ? '운영중' : '운영 종료'}</p>
+      <p>{health ? '운영중' : '운영 종료'}</p>
     </div>
   );
 };
@@ -39,21 +39,40 @@ const ProjectLinkItem = ({ text = '테스트', url = 'https://www.naver.com' }: 
   );
 };
 
+const ProjectTagItem = ({ tag = '프로젝트 태그' }: { tag: string }) => {
+  return (
+    <div className="px-3 py-1.5 text-slate-50 border border-1 border-slate-90 rounded-[999px]">
+      {tag}
+    </div>
+  );
+};
+
 const ProjectDetailHeader = () => {
   return (
-    <div className="flex gap-5 p-10 text-[1.5rem] font-md">
+    <div className="flex gap-5 p-10 text-[1.3rem] font-md border-b border-b-1 border-slate-90">
       <div className="relative w-[9.2rem] h-[9.2rem]">
         <SImage src="https://picsum.photos/600/400" className="rounded-[2.8rem]" />
       </div>
-      <div>
+      <div className="flex-grow">
         <div className="h-10 text-2xlarge font-lb leading-8 tracking-[-0.64px]">개미는 툰툰</div>
         <div className="flex flex-col gap-4">
-          <div className="text-slate-50">ANTOON l Webtoon Community Service</div>
+          <div className="text-slate-50 text-[1.5rem]">ANTOON l Webtoon Community Service</div>
           <div className="flex gap-2 items-center">
             <HealthCheckState health={true} />
             {['1', '2'].map((link, idx) => (
               <ProjectLinkItem key={`project_link_${idx}`} />
             ))}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex gap-1.5 flex-wrap">
+              {['프로젝트태그01', '프로젝트태그02', '프로젝트태그03'].map((tag, idx) => (
+                <ProjectTagItem key={`project_tag_${idx}`} tag={tag} />
+              ))}
+            </div>
+            <div className="flex items-center gap-5 shrink-0 text-xsmall text-slate-50">
+              <span>조회수 999,999</span>
+              <span>YYYY.MM.DD 00:00</span>
+            </div>
           </div>
         </div>
       </div>
