@@ -25,6 +25,7 @@ const CommentListComponent = ({ fetchComments }: InfiniteScrollCommentProps) => 
     if (isLoading || !hasMore) return;
 
     setIsLoading(true);
+
     try {
       const newComments = await fetchComments(page);
       if (newComments.length > 0) {
