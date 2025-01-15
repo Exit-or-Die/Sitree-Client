@@ -1,6 +1,8 @@
+import ProjectMember from './ProejctMember';
 import ProjectDetailDescription from './ProjectDetailDescription';
 import ProjectDetailHeader from './ProjectDetailHeader';
 import ProjectDetailTech from './ProjectDetailTech';
+import ProjectDevArchitecture from './ProjectDevArchitecture';
 
 const ProjectDetail = () => {
   return (
@@ -8,6 +10,8 @@ const ProjectDetail = () => {
       <ProjectDetailHeader />
       <ProjectDetailDescription />
       <ProjectDetailTech />
+      <ProjectDevArchitecture />
+      <ProjectMember />
       <div className="h-[500px]"></div>
     </div>
   );

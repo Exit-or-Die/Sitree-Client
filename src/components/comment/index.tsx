@@ -1,7 +1,7 @@
-interface Comment {
-  list: Array<any>;
-}
+import CommentListComponent from './CommentListComponent';
 
-const CommentComponent = () => {};
+const CommentComponent = () => {
+  return <CommentListComponent />;
+};
 
 export default CommentComponent;
