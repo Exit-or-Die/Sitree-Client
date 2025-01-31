@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import ProjectGallery from '@/components/projectGallery/ProjectGallery';
 import AffiliationRanking from '@/components/ranking/AffiliationRanking';
 import SitreePick from '@/components/sitreePick/SitreePick';
 
@@ -9,18 +10,11 @@ const Home = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center">
       <div className="flex">
-        <div className="flex-1">
-          <SitreePick />
-        </div>
-        <div>
-          <AffiliationRanking />
-        </div>
+        <SitreePick />
+        <AffiliationRanking />
       </div>
 
-      <div className="home-page__bottom-section">
-        <div className="home-page__categories"></div>
-        <div className="home-page__projects"></div>
-      </div>
+      <ProjectGallery />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 const mockData = [
@@ -79,7 +80,7 @@ const AffiliationRanking = () => {
             <li key={affiliation.id} className="flex items-center">
               <div className="text-gray-500 text-sm w-8 text-center">{index + 1}</div>
               <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                <img
+                <Image
                   src={affiliation.logo}
                   alt="Affiliation Logo"
                   className="object-cover w-full h-full"

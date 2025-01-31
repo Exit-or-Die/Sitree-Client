@@ -73,7 +73,7 @@ const SitreePick = () => {
   }, [selectedProject]);
 
   return (
-    <div className="p-6 w-[954px]">
+    <div className="flex-1 p-6 w-[954px]">
       <h2 className="text-xlarge font-bold mb-4">사이트리 PICK</h2>
       <div className="flex shadow-lg border rounded-3xl h-[396px]">
         <div className="relative w-1/3 space-y-2 pl-2 bg-white-100 rounded-l-3xl">
