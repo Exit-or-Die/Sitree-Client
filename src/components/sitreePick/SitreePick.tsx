@@ -73,10 +73,10 @@ const SitreePick = () => {
   }, [selectedProject]);
 
   return (
-    <div className="bg-white rounded-xl p-6 w-[954px]">
-      <h2 className="text-lg font-bold mb-4">사이트리 PICK</h2>
-      <div className="flex shadow-lg border rounded-lg">
-        <div className="relative w-1/3 space-y-2 pl-2">
+    <div className="p-6 w-[954px]">
+      <h2 className="text-xlarge font-bold mb-4">사이트리 PICK</h2>
+      <div className="flex shadow-lg border rounded-3xl h-[396px]">
+        <div className="relative w-1/3 space-y-2 pl-2 bg-white-100 rounded-l-3xl">
           <div
             className="absolute left-2 w-[95%] h-[60px] border bg-gray-100 rounded-lg shadow-lg transition-all duration-300"
             style={{ top: `${position}px` }}
@@ -121,7 +121,7 @@ const SitreePick = () => {
               src={selectedProject.images[0]}
               alt={`Project ${selectedProject.name} Background`}
               layout="fill"
-              className="rounded-r-lg object-cover"
+              className="rounded-r-3xl object-cover"
             />
           ) : (
             <div className="text-gray-500">No images available</div>
