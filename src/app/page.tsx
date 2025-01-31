@@ -5,7 +5,7 @@ import React from 'react';
 import AffiliationRanking from '@/components/ranking/AffiliationRanking';
 import SitreePick from '@/components/sitreePick/SitreePick';
 
-export default function Home() {
+const Home = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center">
       <div className="flex">
@@ -18,10 +18,11 @@ export default function Home() {
       </div>
 
       <div className="home-page__bottom-section">
-        yo
         <div className="home-page__categories"></div>
         <div className="home-page__projects"></div>
       </div>
     </div>
   );
-}
+};
+
+export default Home;

@@ -1,3 +1,4 @@
+import { ROUTES } from '@/constants/route';
 import AuthService, { UserDetail } from '@/service/auth/AuthService';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
@@ -47,7 +48,7 @@ const handler = NextAuth({
       } catch (error) {
         console.error('Error checking user:', error);
 
-        return false;
+        return ROUTES.ONBOARDING;
       }
     },
     async jwt({ token, user }) {
