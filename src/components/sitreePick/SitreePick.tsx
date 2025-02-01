@@ -26,6 +26,19 @@ const SitreePick = () => {
     }
   }, [selectedProject]);
 
+  useEffect(() => {
+    if (data.length > 1) {
+      const interval = setInterval(() => {
+        setSelectedProject((prev) => {
+          const currentIndex = data.findIndex((p) => p.projectId === prev?.projectId);
+          const nextIndex = (currentIndex + 1) % data.length;
+          return data[nextIndex];
+        });
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [data]);
+
   if (!selectedProject) {
     return <p>Loading...</p>;
   }
@@ -36,7 +49,7 @@ const SitreePick = () => {
       <div className="flex shadow-lg border rounded-3xl h-[396px]">
         <div className="relative w-1/3 py-2 pl-2 bg-white-100 rounded-l-3xl">
           <div
-            className="absolute left-2 w-[95%] h-[75px] border bg-gray-100 rounded-lg shadow-lg transition-all duration-300"
+            className="absolute left-2 w-[95%] h-[75px] border bg-white-100 rounded-lg shadow-md transition-all duration-300"
             style={{ top: `${position}px` }}
           />
           <ul className="flex-1 flex flex-col justify-between h-full">
