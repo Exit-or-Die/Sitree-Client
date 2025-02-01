@@ -17,6 +17,9 @@ const Home = async () => {
   const { queryKey: sitreeKey, queryFn: sitreeFn } = ProjectQueryOptions.retrieveSitreePick();
   await queryClient.prefetchQuery({ queryKey: sitreeKey, queryFn: sitreeFn });
 
+  const { queryKey: projectsKey, queryFn: projectsFn } = ProjectQueryOptions.retrieveProjects();
+  await queryClient.prefetchQuery({ queryKey: projectsKey, queryFn: projectsFn });
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="flex">

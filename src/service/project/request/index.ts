@@ -56,3 +56,12 @@ export interface Participant {
   memberNo: number;
   position: string;
 }
+
+export type SortType = 'VIEWS' | 'LATEST' | 'LIKES' | 'COMMENTS';
+export interface ProjectParamsRequest {
+  sortType: SortType;
+  pageNo: string;
+  size: string;
+  categoryIds?: Array<number>;
+  nameKeyword?: string;
+}

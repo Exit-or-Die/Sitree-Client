@@ -1,9 +1,10 @@
 import ProjectService from './ProjectService';
-import { ProjectRegisterRequest } from './request';
+import { ProjectParamsRequest, ProjectRegisterRequest } from './request';
 
 const queryKeys = {
   retrieveProjectDetail: (projectDetail: string) => ['retrieveDetail', projectDetail] as const,
   retrieveSitreePick: () => ['project', 'retrieveSitreePick'] as const,
+  retrieveProjects: (projectQuery: ProjectParamsRequest) => ['retrieveProjects', projectQuery] as const
 };
 
 const ProjectQueryOptions = {
@@ -17,6 +18,10 @@ const ProjectQueryOptions = {
   retrieveSitreePick: () => ({
     queryKey: queryKeys.retrieveSitreePick(),
     queryFn: () => ProjectService.retrieveSitreePick()
+  }),
+  retrieveProjects: (query: ProjectParamsRequest = {sortType: 'VIEWS', pageNo: '0', size: '10'}) => ({
+    queryKey: queryKeys.retrieveProjects(query),
+    queryFn: () => ProjectService.retrieveProjects(query)
   })
 };
 

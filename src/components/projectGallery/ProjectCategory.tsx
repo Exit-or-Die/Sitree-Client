@@ -15,8 +15,8 @@ const ProjectCategory = ({ categoriesData, selectedCategory, onClickCategory }: 
         {categoriesData.map((category) => (
           <li
             key={category.categoryNames}
-            className={`p-3 rounded-lg cursor-pointer text-gray-600 hover:bg-gray-100 transition ${
-              selectedCategory.categoryNames === category.categoryNames ? 'bg-gray-200' : ''
+            className={`p-3 rounded-lg cursor-pointer text-[13px] hover:bg-gray-100 transition ${
+              selectedCategory.categoryNames === category.categoryNames ? 'bg-slate-95 text-slate-30' : 'text-slate-50'
             }`}
             onClick={() => onClickCategory(category)}
           >

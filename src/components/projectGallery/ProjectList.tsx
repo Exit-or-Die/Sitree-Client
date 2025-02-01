@@ -2,46 +2,43 @@
 
 import React, { useState } from 'react';
 import { CategoriesData } from '@/service/category/CategoryService';
-
-const projects = [
-  {
-    id: 1,
-    name: 'Project Name',
-    subText: 'Sub Text',
-    image: '/path/to/image.png',
-    likes: '000',
-    views: '000',
-    comments: '000',
-    status: '운영중',
-    focused: true,
-    lastUpdated: '1일 전 수정됨'
-  },
-  ...Array(8).fill({
-    id: null,
-    name: 'Project Name',
-    subText: 'Sub Text',
-    image: null,
-    likes: '000',
-    views: '000',
-    comments: '000',
-    status: '운영중',
-    focused: true,
-    lastUpdated: '1일 전 수정됨'
-  })
-];
+import ProjectQueryOptions from '@/service/project/queries';
+import { useQuery } from '@tanstack/react-query';
+import SImage from '../common/Image';
+import SInput from '../common/Input';
 
 type Props = {
   selectedCategory: CategoriesData;
 };
 
+const sortTypeMapping: Record<string, 'LATEST' | 'LIKES' | 'COMMENTS' | 'VIEWS'> = {
+  최신: 'LATEST',
+  좋아요: 'LIKES',
+  댓글: 'COMMENTS',
+  조회수: 'VIEWS',
+};
+
 const ProjectList = ({ selectedCategory }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState('최신');
   const filterList = ['최신', '좋아요', '댓글', '조회수'];
+  
+  const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjects({
+    sortType: sortTypeMapping[selectedFilter],
+    pageNo: '0',
+    size: '10',
+  });
+  
+  const { data, refetch } = useQuery({ queryKey, queryFn });
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+    refetch();
+  };
 
   return (
-    <div className="flex-1 w-[1064px] bg-white-100 rounded-3xl">
-      <div className="pt-4 pl-5 flex justify-between items-center mb-4 border-b">
-        <div className="flex text-sm h-[30px] text-gray-500">
+    <div className="flex-1 w-[1064px] bg-white-100 rounded-3xl border border-slate-90">
+      <div className="pl-5 flex justify-between items-center border-b">
+        <div className="flex text-sm text-gray-500 pt-6 h-[52px]">
           {filterList.map((filter) => (
             <div
               key={filter}
@@ -50,56 +47,90 @@ const ProjectList = ({ selectedCategory }: Props) => {
                   ? 'text-green-600 font-medium border-b-2 border-green-600'
                   : ''
               } px-2 text-small cursor-pointer`}
-              onClick={() => setSelectedFilter(filter)}
+              onClick={() => handleFilterChange(filter)}
             >
               {filter}
             </div>
           ))}
         </div>
-        <input 
-          type="text" 
-          placeholder="프로젝트 검색" 
-          className="border p-2 rounded-lg text-sm w-60 outline-none"
-        />
+        <div className="flex items-center border-l pl-4 text-sm w-60 outline-none h-[52px] text-small">
+          <SImage
+            src="/magnifyGlass.svg"
+            alt="magnify-glass"
+            width={18}
+            height={18}
+            className="w-[18px] h-[18px] text-slate-60"
+          />
+          <SInput
+            type="text"
+            placeholder="프로젝트 검색"
+            className="bg-transparent text-slate-40 w-full placeholder-slate-60 border-none focus:!ring-0 p-1"
+          />
+        </div>
       </div>
       
-      {/* Project Grid */}
       <div className="pl-5 grid grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <div key={index} className="bg-white p-4 rounded-xl shadow-lg">
-            {/* Project Header */}
+        {data?.projectList.map((project, index) => (
+          <div key={index} className="bg-white pt-6 px-3 rounded-xl cursor-pointer">
             <div className="flex items-center mb-2">
-              <div className="w-8 h-8 bg-gray-300 rounded-full">
-                {/* {project.image ? (
-                  <Image src={project.image} alt={project.name} width={32} height={32} />
-                ) : null} */}
+              <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
+                <SImage
+                  src={project.thumbnail}
+                  alt={`${project.name} Icon`}
+                  width={40}
+                  height={40}
+                />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium">{project.name}</h3>
-                <p className="text-xs text-gray-400">{project.subText}</p>
+                <h3 className="text-base font-bold max-w-[150px] whitespace-nowrap">{project.name}</h3>
+                <p className="text-xsmall text-gray-400 max-w-[150px] whitespace-nowrap">{project.shortDescription}</p>
               </div>
-              {project.focused && <span className="ml-auto text-green-600 text-xs">✅ focused on</span>}
+              <div className="flex ml-auto items-center">
+              <SImage
+                src="/focused.svg"
+                alt="focused on"
+                width={16}
+                height={16}
+              />
+                <div className="ml-1 text-xsmall text-tree-40">focused on</div>
+              </div>
             </div>
             
-            {/* Project Image */}
-            <div className="w-full h-40 bg-gray-200 rounded-lg">
-              {/* {project.image ? (
-                <Image src={project.image} alt={project.name} layout="fill" />
-              ) : null} */}
+            <div className="w-[312px] h-[184px] overflow-hidden rounded-3xl">
+              <SImage
+                src={project.backgroundImage}
+                alt={`Project ${project.name} Background`}
+                className="w-full h-full object-cover"
+                width={312}
+                height={184}
+              />
             </div>
             
-            {/* Project Details */}
-            <div className="flex justify-between text-xs text-gray-500 mt-2">
-              <span>🔍 {project.comments}</span>
-              <span>♥ {project.likes}</span>
-              <span>조회수 {project.views}</span>
+            <div className="flex text-xsmall text-gray-400 mt-4 pl-2 justify-between">
+              <div className="flex">
+                <div className="flex items-center mr-2">
+                  <SImage src="/comment.svg" width={12} height={12} alt="comment" className="mr-[3px]"/>{' '}
+                  <span className="text-slate-30">{project.commentCount}</span>
+                </div>
+                <div className="flex items-center mr-2">
+                  <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" /> 
+                  <span className="text-slate-30">{project.likesCount}</span>
+                </div>
+                <span className="text-slate-50">조회수 {project.viewCount}</span>
+              </div>
+              <div className="flex text-xs text-gray-400 items-center">
+                <SImage
+                  src="/alive.svg"
+                  alt="health-check"
+                  width={12}
+                  height={12}
+                />
+                <span className="text-[13px] text-slate-30 text-md ml-1">운영중</span>
+              </div>
             </div>
             
-            {/* Project Status */}
-            <div className="flex justify-between text-xs text-gray-400 mt-2">
-              <span className="text-green-500">● {project.status}</span>
-              <span>{project.lastUpdated}</span>
-            </div>
+            <div className="pl-2 mt-1 text-xsmall text-slate-50">1일 전 수정됨</div>
+            
           </div>
         ))}
       </div>
