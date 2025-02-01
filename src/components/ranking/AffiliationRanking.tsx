@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -58,7 +60,7 @@ const AffiliationRanking = () => {
       </div>
       <div className="p-4 shadow-lg h-[396px] rounded-3xl bg-white-100">
         {/* Category Tabs */}
-        <div className="flex space-x-4 border-b text-sm h-[30px] text-gray-500">
+        <div className="flex border-b text-sm h-[30px] text-gray-500">
           {categories.map((category) => (
             <div
               key={category}
@@ -83,6 +85,8 @@ const AffiliationRanking = () => {
                 <Image
                   src={affiliation.logo}
                   alt="Affiliation Logo"
+                  width={20}
+                  height={20}
                   className="object-cover w-full h-full"
                 />
               </div>
