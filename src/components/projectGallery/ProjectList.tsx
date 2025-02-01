@@ -6,12 +6,13 @@ import ProjectQueryOptions from '@/service/project/queries';
 import { useQuery } from '@tanstack/react-query';
 import SImage from '../common/Image';
 import SInput from '../common/Input';
+import { SortType } from '@/service/project/request';
 
 type Props = {
   selectedCategory: CategoriesData;
 };
 
-const sortTypeMapping: Record<string, 'LATEST' | 'LIKES' | 'COMMENTS' | 'VIEWS'> = {
+const sortTypeMapping: Record<string, SortType> = {
   최신: 'LATEST',
   좋아요: 'LIKES',
   댓글: 'COMMENTS',
@@ -38,7 +39,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
   };
 
   return (
-    <div className="flex-1 w-[1064px] bg-white-100 rounded-3xl border border-slate-90">
+    <div className="flex-1 w-[1050px] bg-white-100 rounded-3xl border border-slate-90">
       <div className="pl-5 flex justify-between items-center border-b">
         <div className="flex text-sm text-gray-500 pt-6 h-[52px]">
           {filterList.map((filter) => (
@@ -71,14 +72,14 @@ const ProjectList = ({ selectedCategory }: Props) => {
         </div>
       </div>
       
-      <div className="pl-5 grid grid-cols-3 gap-6 min-h-[600px] relative">
+      <div className="pl-3 grid grid-cols-3 gap-0 min-h-[600px] relative">
         {isFetching && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80">
             <div className="w-10 h-10 border-4 border-gray-300 border-t-green-600 rounded-full animate-spin"></div>
           </div>
         )}
         {!isFetching && data?.projectList.map((project, index) => (
-          <div key={index} className="bg-white pt-6 px-3 rounded-xl cursor-pointer">
+          <div key={index} className="bg-white pt-6 px-3 rounded-xl cursor-pointer w-[328px]">
             <div className="flex items-center mb-2">
               <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
                 <SImage
@@ -89,7 +90,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
                 />
               </div>
               <div className="ml-3">
-                <h3 className="text-base font-bold">{project.name}</h3>
+                <h3 className="text-base font-bold max-w-[150px] whitespace-nowrap">{project.name}</h3>
                 <p className="text-xsmall text-gray-400 max-w-[150px] whitespace-nowrap">{project.shortDescription}</p>
               </div>
               <div className="flex ml-auto items-center">
@@ -136,7 +137,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
               </div>
             </div>
             
-            <div className="pl-2 mt-1 text-xsmall text-slate-50">1일 전 수정됨</div>
+            <div className="pl-2 mt-1 text-xsmall text-slate-50 mb-4">1일 전 수정됨</div>
             
           </div>
         ))}

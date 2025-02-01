@@ -71,11 +71,11 @@ const SitreePick = () => {
                 <div className="ml-4 flex flex-col h-[80%] justify-evenly">
                   <span className="text-base font-bd truncate">{project.name}</span>
                   <span className="text-xsmall text-gray-400 flex gap-2">
-                    <div className="flex">
+                    <div className="flex items-center">
                       <SImage src="/comment.svg" width={12} height={12} alt="comment" className="mr-[3px]"/>{' '}
                       <span className="text-slate-30">{project.commentCount}</span>
                     </div>
-                    <div className="flex">
+                    <div className="flex items-center">
                       <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" /> 
                       <span className="text-slate-30">{project.likesCount}</span>
                     </div>
