@@ -28,9 +28,11 @@ const ProjectList = ({ selectedCategory }: Props) => {
     size: '10',
   });
   
-  const { data, refetch } = useQuery({ queryKey, queryFn });
+  const { data, refetch, isFetching } = useQuery({ queryKey, queryFn });
 
   const handleFilterChange = (filter: string) => {
+    if (selectedFilter === filter) return;
+    
     setSelectedFilter(filter);
     refetch();
   };
@@ -69,8 +71,13 @@ const ProjectList = ({ selectedCategory }: Props) => {
         </div>
       </div>
       
-      <div className="pl-5 grid grid-cols-3 gap-6">
-        {data?.projectList.map((project, index) => (
+      <div className="pl-5 grid grid-cols-3 gap-6 min-h-[600px] relative">
+        {isFetching && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80">
+            <div className="w-10 h-10 border-4 border-gray-300 border-t-green-600 rounded-full animate-spin"></div>
+          </div>
+        )}
+        {!isFetching && data?.projectList.map((project, index) => (
           <div key={index} className="bg-white pt-6 px-3 rounded-xl cursor-pointer">
             <div className="flex items-center mb-2">
               <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
@@ -82,7 +89,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
                 />
               </div>
               <div className="ml-3">
-                <h3 className="text-base font-bold max-w-[150px] whitespace-nowrap">{project.name}</h3>
+                <h3 className="text-base font-bold">{project.name}</h3>
                 <p className="text-xsmall text-gray-400 max-w-[150px] whitespace-nowrap">{project.shortDescription}</p>
               </div>
               <div className="flex ml-auto items-center">

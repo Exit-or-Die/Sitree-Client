@@ -1,11 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 import ProjectQueryOptions from '@/service/project/queries';
 import { useQuery } from '@tanstack/react-query';
 import { SitreePickResponse } from '@/service/project/response';
 import { Nullable } from 'types/common';
+import SImage from '../common/Image';
 
 const SitreePick = () => {
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveSitreePick();
@@ -61,7 +61,7 @@ const SitreePick = () => {
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="w-[52px] h-[52px] rounded-xlarge overflow-hidden">
-                  <Image
+                  <SImage
                     src={project.thumbnail}
                     alt={`${project.name} Icon`}
                     width={52}
@@ -72,11 +72,11 @@ const SitreePick = () => {
                   <span className="text-base font-bd truncate">{project.name}</span>
                   <span className="text-xsmall text-gray-400 flex gap-2">
                     <div className="flex">
-                      <Image src="/comment.svg" width={12} height={12} alt="comment" className="mr-[3px]"/>{' '}
+                      <SImage src="/comment.svg" width={12} height={12} alt="comment" className="mr-[3px]"/>{' '}
                       <span className="text-slate-30">{project.commentCount}</span>
                     </div>
                     <div className="flex">
-                      <Image src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" /> 
+                      <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" /> 
                       <span className="text-slate-30">{project.likesCount}</span>
                     </div>
                     <span className="text-slate-50">조회수 {project.viewCount}</span>
@@ -87,7 +87,7 @@ const SitreePick = () => {
           </ul>
         </div>
         <div className="w-2/3 flex items-center justify-center relative">
-          <Image
+          <SImage
             src={selectedProject.backgroundImage}
             alt={`Project ${selectedProject.name} Background`}
             layout="fill"

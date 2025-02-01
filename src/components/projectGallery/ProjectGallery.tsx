@@ -30,7 +30,7 @@ const ProjectGallery = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex mb-4">
       <ProjectCategory categoriesData={categoriesData} selectedCategory={selectedCategory} onClickCategory={onClickCategory} />
       <ProjectList selectedCategory={selectedCategory} />
     </div>

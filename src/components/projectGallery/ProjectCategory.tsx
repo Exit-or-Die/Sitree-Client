@@ -10,7 +10,7 @@ type Props = {
 const ProjectCategory = ({ categoriesData, selectedCategory, onClickCategory }: Props) => {
 
   return (
-    <div className="px-6 min-w-[192px]">
+    <div className="px-6 min-w-[192px] sticky top-5 h-fit">
       <ul className="p-3 bg-white-100 space-y-2 rounded-2xl shadow-md">
         {categoriesData.map((category) => (
           <li
