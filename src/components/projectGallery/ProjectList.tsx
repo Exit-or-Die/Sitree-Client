@@ -35,7 +35,6 @@ type Props = {
 };
 
 const ProjectList = ({ selectedCategory }: Props) => {
-  console.log(selectedCategory);
   const [selectedFilter, setSelectedFilter] = useState('최신');
   const filterList = ['최신', '좋아요', '댓글', '조회수'];
 

@@ -1,6 +1,6 @@
 import Service from '../service';
 import { ProjectRegisterRequest } from './request';
-import { ProjectDetailResponse, ProjectRegisterResponse } from './response';
+import { ProjectDetailResponse, ProjectRegisterResponse, SitreePickResponse } from './response';
 
 class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
@@ -8,6 +8,9 @@ class ProjectService extends Service {
   }
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`project/${projectId}`);
+  }
+  retrieveSitreePick() {
+    return this.http.get<Array<SitreePickResponse>>('projects/sitree-pick');
   }
 }
 

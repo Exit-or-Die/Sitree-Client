@@ -4,28 +4,9 @@ import './src/lib/env/env.mjs';
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'static.remove.bg'
-      },
-      {
-        protocol: 'https',
-        hostname: '2.img-dpreview.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 't4.ftcdn.net'
-      }
-    ]
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    unoptimized: true
   }
 };
 

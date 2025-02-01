@@ -60,3 +60,13 @@ export interface Participant {
   memberNo: number;
   position: string;
 }
+
+export interface SitreePickResponse {
+  projectId: number;
+  name: string;
+  thumbnail: string;
+  backgroundImage: string;
+  commentCount: number;
+  likesCount: number;
+  viewCount: number;
+}
