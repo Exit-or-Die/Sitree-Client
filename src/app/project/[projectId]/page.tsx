@@ -45,9 +45,9 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
         </div>
         <div className="mt-8 flex justify-center gap-5">
           <div className="w-[94.2rem]">
-            <ProjectDetail />
+            <ProjectDetail detail={data} />
           </div>
-          <CommentComponent />
+          {/* <CommentComponent /> */}
           <div className="w-[30.6rem] sticky top-5 self-start border border-red-100"></div>
         </div>
       </Hydrate>

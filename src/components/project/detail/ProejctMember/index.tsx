@@ -13,7 +13,7 @@ const ProjectMember = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="h-[66rem] p-10">
       <div className="text-xlarge font-lb leading-[3rem] tracking-[-0.48px] pb-5">팀원 N명</div>
       <div className="flex gap-5">
         <div>
@@ -30,7 +30,7 @@ const ProjectMember = () => {
             />
           ))}
         </div>
-        <ProjectMemberFocusedOn />
+        <ProjectMemberFocusedOn contents={`<span style="color: red;">Hello, World!</span>`} />
       </div>
     </div>
   );
