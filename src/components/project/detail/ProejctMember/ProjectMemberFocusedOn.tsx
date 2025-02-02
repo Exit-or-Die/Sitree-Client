@@ -1,10 +1,13 @@
+import dynamic from 'next/dynamic';
+
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
-import SViewer from '@/components/common/Viewer';
 
 interface ProjectMemberFocusedOnProps {
   contents: string;
 }
+
+const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
 
 const ProjectMemberFocusedOn = ({ contents }: ProjectMemberFocusedOnProps) => {
   return (

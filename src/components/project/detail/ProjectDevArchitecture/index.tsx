@@ -1,8 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 import SImage from '@/components/common/Image';
 import STab from '@/components/common/Tab';
-import SViewer from '@/components/common/Viewer';
+
+const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
 
 const ProjectDevArchitecture = () => {
   return (
