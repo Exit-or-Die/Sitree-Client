@@ -9,9 +9,9 @@ const CommentsQueryOptions = {
   registerComment: (projectId: string, params: CreateCommentRequest) => ({
     mutateFn: () => CommentsService.createComment(projectId, params)
   }),
-  retrieveCommentList: (projectId: string) => ({
+  retrieveCommentList: (projectId: string, page: number, size: number) => ({
     queryKey: queryKeys.retrieveCommentList(projectId),
-    queryFn: () => CommentsService.getCommentList(projectId)
+    queryFn: () => CommentsService.getCommentList(projectId, page, size)
   }),
   modifyComment: (commentId: number, contents: string) => ({
     mutateFn: () => CommentsService.modifyComment(commentId, contents)

@@ -1,8 +1,6 @@
-export interface CreateCommentResponse {
-  success: boolean;
-}
-
 export interface Comment {
+  createdAt: string | null;
+  modifiedAt: string;
   commentId: number;
   commentType: string; // PROJECT
   targetId: number; // CommentType이 Project인 경우 -> projectId와 같음
@@ -12,4 +10,17 @@ export interface Comment {
   childComments: Array<Comment> | null;
   isChildComment: boolean;
   isDeleted: boolean;
+}
+
+export interface CreateCommentResponse {
+  success: boolean;
+}
+
+export interface GetCommentListResponse {
+  content: Array<Comment>;
+  page: number;
+  size: number;
+  total: number;
+  hasPrev: boolean;
+  hasNext: boolean;
 }
