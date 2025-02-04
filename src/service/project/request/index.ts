@@ -60,8 +60,8 @@ export interface Participant {
 export type SortType = 'VIEWS' | 'LATEST' | 'LIKES' | 'COMMENTS';
 export interface ProjectParamsRequest {
   sortType: SortType;
-  pageNo: string;
-  size: string;
+  pageNo?: string;
+  size?: string;
   categoryIds?: Array<number>;
   nameKeyword?: string;
 }

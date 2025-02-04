@@ -1,6 +1,11 @@
 import Service from '../service';
 import { ProjectParamsRequest, ProjectRegisterRequest } from './request';
-import { ProjectDetailResponse, ProjectRegisterResponse, ProjectsResponse, SitreePickResponse } from './response';
+import {
+  ProjectDetailResponse,
+  ProjectRegisterResponse,
+  ProjectsResponse,
+  SitreePickResponse
+} from './response';
 
 class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
@@ -13,14 +18,12 @@ class ProjectService extends Service {
     return this.http.get<Array<SitreePickResponse>>('projects/sitree-pick');
   }
   retrieveProjects(query: ProjectParamsRequest) {
-    const params = new URLSearchParams({ 
-      pageNo: query.pageNo,
-      size: query.size,
-      sortType: query.sortType,
+    const params = new URLSearchParams({
+      sortType: query.sortType
     });
 
     if (query.categoryIds) {
-      query.categoryIds.forEach(id => params.append('categoryIds', id.toString()));
+      query.categoryIds.forEach((id) => params.append('categoryIds', id.toString()));
     }
 
     if (query.nameKeyword) {

@@ -81,6 +81,7 @@ export interface Project {
   projectId: number;
   name: string;
   thumbnail: string;
+  shortDescription: string;
   backgroundImage: string;
   commentCount: number;
   likesCount: number;

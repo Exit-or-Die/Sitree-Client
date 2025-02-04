@@ -1,16 +1,15 @@
-'use client'
+'use client';
+import { CategoriesData } from '@/service/category/CategoryService';
+import CategoryQueryOptions from '@/service/category/queries';
+import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 import ProjectCategory from './ProjectCategory';
 import ProjectList from './ProjectList';
-import CategoryQueryOptions from '@/service/category/queries';
-
-import { useQuery } from '@tanstack/react-query';
-import { CategoriesData } from '@/service/category/CategoryService';
 
 const ProjectGallery = () => {
   const allCategory = {
-    categoryIds: [-1],
+    categoryIds: [],
     categoryNames: '전체 보기'
   };
   const [selectedCategory, setSelectedCategory] = useState<CategoriesData>(allCategory);
@@ -18,10 +17,10 @@ const ProjectGallery = () => {
 
   const { data } = useQuery({ queryKey, queryFn });
   const categoriesData = [
-    allCategory, 
-    ...(data ?? []).map(group => ({
-      categoryIds: group.map(category => category.categoryId),
-      categoryNames: group.map(category => category.categoryName).join('/')
+    allCategory,
+    ...(data ?? []).map((group) => ({
+      categoryIds: group.map((category) => category.categoryId),
+      categoryNames: group.map((category) => category.categoryName).join('/')
     }))
   ];
 
@@ -31,7 +30,11 @@ const ProjectGallery = () => {
 
   return (
     <div className="flex mb-4">
-      <ProjectCategory categoriesData={categoriesData} selectedCategory={selectedCategory} onClickCategory={onClickCategory} />
+      <ProjectCategory
+        categoriesData={categoriesData}
+        selectedCategory={selectedCategory}
+        onClickCategory={onClickCategory}
+      />
       <ProjectList selectedCategory={selectedCategory} />
     </div>
   );

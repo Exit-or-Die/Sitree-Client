@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { Affiliation } from '@/service/ranking/RankingService';
 import RankingQueryOptions from '@/service/ranking/queries';
+import { Affiliation } from '@/service/ranking/RankingService';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -13,11 +13,10 @@ const AffiliationRanking = () => {
   const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking();
   const { data = [] } = useQuery<Array<Affiliation>>({ queryKey, queryFn });
   const [rankingList, setRankingList] = useState([]);
-  
+
   useEffect(() => {
-    setRankingList(data.slice(0,6));
+    setRankingList(data.slice(0, 6));
   }, [data]);
-  console.log(rankingList);
 
   return (
     <div className="pt-6 rounded-xl min-w-[302px]">
@@ -48,7 +47,10 @@ const AffiliationRanking = () => {
               <div className="text-slate-10 text-xsmall w-8 pl-2">{index + 1}</div>
               <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                 <Image
-                  src={affiliation.imageUrl ?? 'https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/25-famous-app-logos-to-keep-you-amused/TIDAL.jpg'}
+                  src={
+                    affiliation.imageUrl ??
+                    'https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/25-famous-app-logos-to-keep-you-amused/TIDAL.jpg'
+                  }
                   alt="Affiliation Logo"
                   width={36}
                   height={36}
@@ -58,8 +60,7 @@ const AffiliationRanking = () => {
               <div className="ml-4 flex-grow">
                 <span className="text-base font-bd">{affiliation.name}</span>
                 <div className="text-xsmall text-slate-60 block">
-                  <span className='text-slate-30 font-md'>8 </span>
-                  개 프로젝트
+                  <span className="text-slate-30 font-md">8 </span>개 프로젝트
                 </div>
               </div>
               <div className="text-sm text-red-600">{affiliation.rankChange}</div>
