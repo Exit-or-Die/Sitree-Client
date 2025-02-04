@@ -1,4 +1,5 @@
 import { Nullable } from 'types/common';
+
 import Service from '../service';
 
 export interface Affiliation {

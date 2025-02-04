@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
 import ProjectQueryOptions from '@/service/project/queries';
-import { useQuery } from '@tanstack/react-query';
 import { SitreePickResponse } from '@/service/project/response';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState, useRef, useEffect } from 'react';
 import { Nullable } from 'types/common';
+
 import SImage from '../common/Image';
 
 const SitreePick = () => {
@@ -32,9 +33,11 @@ const SitreePick = () => {
         setSelectedProject((prev) => {
           const currentIndex = data.findIndex((p) => p.projectId === prev?.projectId);
           const nextIndex = (currentIndex + 1) % data.length;
+
           return data[nextIndex];
         });
       }, 3000);
+
       return () => clearInterval(interval);
     }
   }, [data]);
@@ -72,11 +75,23 @@ const SitreePick = () => {
                   <span className="text-base font-bd truncate">{project.name}</span>
                   <span className="text-xsmall text-gray-400 flex gap-2">
                     <div className="flex items-center">
-                      <SImage src="/comment.svg" width={12} height={12} alt="comment" className="mr-[3px]"/>{' '}
+                      <SImage
+                        src="/comment.svg"
+                        width={12}
+                        height={12}
+                        alt="comment"
+                        className="mr-[3px]"
+                      />{' '}
                       <span className="text-slate-30">{project.commentCount}</span>
                     </div>
                     <div className="flex items-center">
-                      <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" /> 
+                      <SImage
+                        src="/like.svg"
+                        width={12}
+                        height={12}
+                        alt="like"
+                        className="mr-[3px]"
+                      />
                       <span className="text-slate-30">{project.likesCount}</span>
                     </div>
                     <span className="text-slate-50">조회수 {project.viewCount}</span>
