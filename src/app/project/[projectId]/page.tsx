@@ -8,6 +8,7 @@ import SwiperComponent from '@/components/common/Swiper';
 import RouterPush from '@/components/custom/RouterPush';
 import CommentComponent from '@/components/project/comment';
 import ProjectDetail from '@/components/project/detail/ProjectDetail';
+import ProjectDetailSideBar from '@/components/project/detail/ProjectDetailSideBar';
 
 interface ProjectDetailPageProps {
   params: {
@@ -60,7 +61,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
             <ProjectDetail detail={projectDetail} />
             <CommentComponent commentInfo={projectComment} />
           </div>
-          <div className="w-[30.6rem] sticky top-5 self-start border border-red-100"></div>
+          <ProjectDetailSideBar />
         </div>
       </Hydrate>
     </div>
