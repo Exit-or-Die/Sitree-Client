@@ -41,7 +41,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
   return (
     <div className="flex-1 w-[1050px] bg-white-100 rounded-3xl border border-slate-90">
       <div className="pl-5 flex justify-between items-center border-b">
-        <div className="flex text-sm text-gray-500 pt-6 h-[52px]">
+        <div className="flex text-sm text-slate-50 pt-6 h-[52px]">
           {filterList.map((filter) => (
             <div
               key={filter}
