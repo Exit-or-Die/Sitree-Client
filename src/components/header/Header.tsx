@@ -1,7 +1,6 @@
 'use client';
 
 import WithModal from '@/enhancers/WithModal';
-import { isLoggedIn } from '@/utils/misc';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -12,7 +11,11 @@ import SButton from '../common/Button';
 import SImage from '../common/Image';
 import SInput from '../common/Input';
 
-export const Header = () => {
+type Props = {
+  isUser: boolean;
+};
+
+export const Header = ({ isUser }: Props) => {
   const SignWithModal = WithModal(SignInModal);
   const [toggleLogin, setToggleLogin] = useState(false);
   const { data: session } = useSession();
@@ -42,7 +45,7 @@ export const Header = () => {
         </nav>
       </div>
 
-      {!isLoggedIn() ? (
+      {!isUser ? (
         <SButton
           className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
           onClick={() => setToggleLogin(true)}

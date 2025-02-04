@@ -1,5 +1,6 @@
 import CategoryQueryOptions from '@/service/category/queries';
 import ProjectQueryOptions from '@/service/project/queries';
+import { ProjectParamsRequest } from '@/service/project/request';
 import RankingQueryOptions from '@/service/ranking/queries';
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import React from 'react';
@@ -10,6 +11,11 @@ import SitreePick from '@/components/sitreePick/SitreePick';
 
 const Home = async () => {
   const queryClient = new QueryClient();
+  const cachedParams: ProjectParamsRequest = {
+    sortType: 'LATEST',
+    categoryIds: [],
+    nameKeyword: ''
+  };
 
   const { queryKey: categoryKey, queryFn: categoryFn } =
     CategoryQueryOptions.getGroupedCategories();
@@ -18,7 +24,8 @@ const Home = async () => {
   const { queryKey: sitreeKey, queryFn: sitreeFn } = ProjectQueryOptions.retrieveSitreePick();
   await queryClient.prefetchQuery({ queryKey: sitreeKey, queryFn: sitreeFn });
 
-  const { queryKey: projectsKey, queryFn: projectsFn } = ProjectQueryOptions.retrieveProjects();
+  const { queryKey: projectsKey, queryFn: projectsFn } =
+    ProjectQueryOptions.retrieveProjects(cachedParams);
   await queryClient.prefetchQuery({ queryKey: projectsKey, queryFn: projectsFn });
 
   const { queryKey: rankingKey, queryFn: rankingFn } =

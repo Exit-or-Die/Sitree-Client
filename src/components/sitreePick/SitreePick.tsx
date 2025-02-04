@@ -42,10 +42,6 @@ const SitreePick = () => {
     }
   }, [data]);
 
-  if (!selectedProject) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <div className="flex-1 p-6 w-[954px]">
       <h2 className="text-xlarge font-bold mb-4">사이트리 PICK</h2>
@@ -59,7 +55,13 @@ const SitreePick = () => {
             {data.map((project) => (
               <li
                 key={project.projectId}
-                ref={selectedProject.projectId === project.projectId ? selectedRef : null}
+                ref={
+                  !selectedProject
+                    ? null
+                    : selectedProject.projectId === project.projectId
+                      ? selectedRef
+                      : null
+                }
                 className="relative flex items-center p-3 cursor-pointer rounded-lg transition"
                 onClick={() => setSelectedProject(project)}
               >
@@ -103,9 +105,8 @@ const SitreePick = () => {
         </div>
         <div className="w-2/3 flex items-center justify-center relative">
           <SImage
-            src={selectedProject.backgroundImage}
-            alt={`Project ${selectedProject.name} Background`}
-            layout="fill"
+            src={!selectedProject ? data[0].backgroundImage : selectedProject.backgroundImage}
+            alt={`Project ${!selectedProject ? data[0].name : selectedProject.name} Background`}
             className="rounded-r-3xl object-cover"
           />
         </div>

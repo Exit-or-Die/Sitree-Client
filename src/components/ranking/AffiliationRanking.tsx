@@ -4,7 +4,7 @@ import RankingQueryOptions from '@/service/ranking/queries';
 import { Affiliation } from '@/service/ranking/RankingService';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const AffiliationRanking = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
@@ -12,11 +12,6 @@ const AffiliationRanking = () => {
 
   const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking();
   const { data = [] } = useQuery<Array<Affiliation>>({ queryKey, queryFn });
-  const [rankingList, setRankingList] = useState([]);
-
-  useEffect(() => {
-    setRankingList(data.slice(0, 6));
-  }, [data]);
 
   return (
     <div className="pt-6 rounded-xl min-w-[302px]">
@@ -42,7 +37,7 @@ const AffiliationRanking = () => {
         </div>
 
         <ul className="space-y-4 mt-4">
-          {rankingList.map((affiliation, index) => (
+          {data.slice(0, 6).map((affiliation, index) => (
             <li key={affiliation.belongingId} className="flex items-center">
               <div className="text-slate-10 text-xsmall w-8 pl-2">{index + 1}</div>
               <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
