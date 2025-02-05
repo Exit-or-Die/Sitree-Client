@@ -16,8 +16,7 @@ const ProjectDetailSideBar = ({ isLiked = true, teamMember = [] }: ProjectDetail
           <div className="relative w-[7.2rem] h-[7.2rem] rounded-2xlarge overflow-hidden">
             <SImage src="https://picsum.photos/400/400" />
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-small font-lb">24위</span>
+          <div className="flex items-center">
             <div className="flex flex-col gap-1">
               <span className="text-large font-lb leading-6 tracking-[-0.4px]">개미는 툰툰</span>
               <div className="flex gap-1.5 items-center text-xsmall">

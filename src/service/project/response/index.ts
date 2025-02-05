@@ -1,3 +1,10 @@
+export const IMAGE_TYPE = {
+  BACKGROUND: 'BACKGROUND',
+  REPRESENT: 'REPRESENT'
+} as const;
+
+export type ImageType = keyof typeof IMAGE_TYPE;
+
 export interface ProjectRegisterResponse {
   detailUrlPath: string;
 }
@@ -9,6 +16,9 @@ export interface ProjectDetailResponse {
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
   participantList: Array<Participant>;
+  viewCount: boolean;
+  createdAt: string;
+  healthy: boolean;
 }
 
 export interface Head {
@@ -30,7 +40,7 @@ export interface Overview {
 
 export interface Image {
   imageUrl: string;
-  imageType: 'REPRESENT' | 'BACKGROUND' | 'ARCHITECTURE';
+  imageType: ImageType;
 }
 
 export interface ClientUrl {

@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import '@/styles/swiper.css';
 
 interface SwiperComponentProps {
-  items: ReactNode[]; // 이미지나 children을 전달받기 위한 배열
+  items: Element[]; // 이미지나 children을 전달받기 위한 배열
 }
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {

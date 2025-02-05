@@ -1,6 +1,7 @@
 import { getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
 import CommentsQueryOptions from '@/service/comments/queries';
 import ProjectQueryOptions from '@/service/project/queries';
+import { Image, IMAGE_TYPE } from '@/service/project/response';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
@@ -33,14 +34,18 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     queryFn: projectCommentFn
   });
 
-  const projectDetail = projectDetailQuery.state.data;
-  const projectComment = projectCommentQuery.state.data;
+  const projectDetail = projectDetailQuery?.state.data;
+  const projectComment = projectCommentQuery?.state.data;
 
-  const sampleImages = new Array(10).fill('https://picsum.photos/600/400');
+  const ImageSlideSrc = projectDetail?.overview.images.map((src: Image, index) => {
+    if (src.imageType === IMAGE_TYPE.BACKGROUND) {
+      return (
+        <SImage key={index} src={src.imageUrl} width={400} height={30} alt={`Slide ${index + 1}`} />
+      );
+    }
+  });
 
-  const sampleImageComponent = sampleImages.map((src, index) => (
-    <SImage key={index} src={src} width={400} height={30} alt={`Slide ${index + 1}`} />
-  ));
+  console.log('projectDetail', projectDetail);
 
   if (!projectDetailQuery) {
     redirect('/404');
@@ -54,7 +59,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
           <p className="text-small text-slate-30">프로젝트 목록</p>
         </RouterPush>
         <div className="py-5">
-          <SwiperComponent items={sampleImageComponent} />
+          <SwiperComponent items={ImageSlideSrc} />
         </div>
         <div className="mt-8 flex justify-center gap-5">
           <div className="w-[94.2rem] flex flex-col gap-10">

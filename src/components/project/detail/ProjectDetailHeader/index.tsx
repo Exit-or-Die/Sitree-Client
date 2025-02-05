@@ -1,7 +1,12 @@
+import { Head } from '@/service/project/response';
 import Link from 'next/link';
 
 import SImage from '@/components/common/Image';
-import { Head } from '@/service/project/response';
+
+interface ProjectDetailHeaderProps {
+  head?: Head;
+  healthy?: boolean;
+}
 
 interface ProjectLinkProps {
   text: string;
@@ -48,16 +53,16 @@ const ProjectTagItem = ({ tag = '프로젝트 태그' }: { tag: string }) => {
   );
 };
 
-const ProjectDetailHeader = ({ head }: { head: Head | undefined }) => {
+const ProjectDetailHeader = ({ head, healthy }: ProjectDetailHeaderProps) => {
   return (
     <div className="flex gap-5 p-10 text-[1.3rem] font-md border-b border-b-1 border-slate-90">
       <div className="relative w-[9.2rem] h-[9.2rem]">
-        <SImage src="https://picsum.photos/600/400" className="rounded-[2.8rem]" />
+        <SImage src={head?.thumbnailImageUrl} className="rounded-[2.8rem]" />
       </div>
       <div className="flex-grow">
         <div className="h-10 text-2xlarge font-lb leading-8 tracking-[-0.64px]">{head?.title}</div>
         <div className="flex flex-col gap-4">
-          <div className="text-slate-50 text-[1.5rem]">ANTOON l Webtoon Community Service</div>
+          <div className="text-slate-50 text-[1.5rem]">{head?.shortDescription}</div>
           <div className="flex gap-2 items-center">
             <HealthCheckState health={true} />
             {['1', '2'].map((link, idx) => (
