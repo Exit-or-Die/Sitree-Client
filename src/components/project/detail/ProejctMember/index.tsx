@@ -1,11 +1,17 @@
 'use client';
 
+import { Participant } from '@/service/project/response';
 import { useState } from 'react';
 
 import ProjectMemberFocusedOn from './ProjectMemberFocusedOn';
 import ProjectMemberItem from './ProjectMemberItem';
 
-const ProjectMember = () => {
+interface ProjectMemberProps {
+  id: string;
+  participantList: Array<Participant>;
+}
+
+const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const onChangeMember = (index: number) => {
@@ -13,24 +19,30 @@ const ProjectMember = () => {
   };
 
   return (
-    <div className="h-[66rem] p-10">
-      <div className="text-xlarge font-lb leading-[3rem] tracking-[-0.48px] pb-5">팀원 N명</div>
+    <div id={id} className="h-[66rem] p-10">
+      <div className="text-xlarge font-lb leading-[3rem] tracking-[-0.48px] pb-5">
+        팀원 {participantList.length}명
+      </div>
       <div className="flex gap-5">
         <div>
-          {new Array(5).fill(0).map((member, index) => (
+          {participantList.map((member, index) => (
             <ProjectMemberItem
               key={`project_detail_member_${index}`}
-              imageSrc="https://picsum.photos/600/400"
-              name="조성훈"
+              imageSrc={''}
+              name={'교체'}
               index={index}
-              position="프론트엔드 개발자"
-              isOwner={index === 0}
+              position={member.position}
+              isOwner={member.leader}
               selected={index === currentIndex}
               onChangeMember={onChangeMember}
             />
           ))}
         </div>
-        <ProjectMemberFocusedOn contents={`<span style="color: red;">Hello, World!</span>`} />
+        <ProjectMemberFocusedOn
+          contents={participantList[currentIndex].focusPoint}
+          isMe={true}
+          key={currentIndex}
+        />
       </div>
     </div>
   );

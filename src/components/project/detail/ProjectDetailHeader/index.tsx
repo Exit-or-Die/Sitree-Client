@@ -1,4 +1,5 @@
-import { Head } from '@/service/project/response';
+import { ClientUrl, Head, Tag } from '@/service/project/response';
+import { formatToKoreanDate } from '@/utils/date';
 import Link from 'next/link';
 
 import SImage from '@/components/common/Image';
@@ -6,6 +7,10 @@ import SImage from '@/components/common/Image';
 interface ProjectDetailHeaderProps {
   head?: Head;
   healthy?: boolean;
+  clientUrl?: ClientUrl;
+  categories?: Array<Tag>;
+  viewCount?: number;
+  createdAt?: string;
 }
 
 interface ProjectLinkProps {
@@ -53,7 +58,14 @@ const ProjectTagItem = ({ tag = '프로젝트 태그' }: { tag: string }) => {
   );
 };
 
-const ProjectDetailHeader = ({ head, healthy }: ProjectDetailHeaderProps) => {
+const ProjectDetailHeader = ({
+  head,
+  healthy,
+  clientUrl,
+  categories = [],
+  viewCount = 0,
+  createdAt
+}: ProjectDetailHeaderProps) => {
   return (
     <div className="flex gap-5 p-10 text-[1.3rem] font-md border-b border-b-1 border-slate-90">
       <div className="relative w-[9.2rem] h-[9.2rem]">
@@ -64,20 +76,21 @@ const ProjectDetailHeader = ({ head, healthy }: ProjectDetailHeaderProps) => {
         <div className="flex flex-col gap-4">
           <div className="text-slate-50 text-[1.5rem]">{head?.shortDescription}</div>
           <div className="flex gap-2 items-center">
-            <HealthCheckState health={true} />
-            {['1', '2'].map((link, idx) => (
-              <ProjectLinkItem key={`project_link_${idx}`} />
-            ))}
+            <HealthCheckState health={healthy ?? false} />
+            {clientUrl &&
+              Object.entries(clientUrl).map(([key, value]) => (
+                <ProjectLinkItem key={key} text={key} url={value} />
+              ))}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex gap-1.5 flex-wrap">
-              {['프로젝트태그01', '프로젝트태그02', '프로젝트태그03'].map((tag, idx) => (
-                <ProjectTagItem key={`project_tag_${idx}`} tag={tag} />
+              {categories.map((tag, idx) => (
+                <ProjectTagItem key={`project_tag_${idx}`} tag={tag.name} />
               ))}
             </div>
             <div className="flex items-center gap-5 shrink-0 text-xsmall text-slate-50">
-              <span>조회수 999,999</span>
-              <span>YYYY.MM.DD 00:00</span>
+              <span>조회수 {viewCount}</span>
+              {createdAt && <span>{formatToKoreanDate(createdAt)}</span>}
             </div>
           </div>
         </div>

@@ -4,12 +4,13 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectMemberFocusedOnProps {
-  contents: string;
+  contents: string | null;
+  isMe: boolean;
 }
 
 const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
 
-const ProjectMemberFocusedOn = ({ contents }: ProjectMemberFocusedOnProps) => {
+const ProjectMemberFocusedOn = ({ contents, isMe }: ProjectMemberFocusedOnProps) => {
   return (
     <div className="border border-1 border-slate-90 rounded-2xlarge p-5 flex flex-col flex-grow gap-4">
       <div className="flex justify-between items-center">
@@ -20,7 +21,7 @@ const ProjectMemberFocusedOn = ({ contents }: ProjectMemberFocusedOnProps) => {
         </div>
       </div>
       <div className="h-[36.8rem]">
-        {contents.length ? (
+        {contents && contents.length ? (
           <SViewer content={contents} />
         ) : (
           <div className="h-full flex flex-col gap-4 justify-center items-center">
@@ -31,9 +32,11 @@ const ProjectMemberFocusedOn = ({ contents }: ProjectMemberFocusedOnProps) => {
                 프로젝트 과정에서 집중했던 부분과 어필하고 싶은 점을 추가해 주세요!
               </p>
             </div>
-            <SButton className="bg-tree-93 text-tree-30 border-none" size="md">
-              + Focused On
-            </SButton>
+            {isMe && (
+              <SButton className="bg-tree-93 text-tree-30 border-none" size="md">
+                + Focused On
+              </SButton>
+            )}
           </div>
         )}
       </div>

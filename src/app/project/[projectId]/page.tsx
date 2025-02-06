@@ -66,7 +66,14 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
             <ProjectDetail detail={projectDetail} />
             <CommentComponent commentInfo={projectComment} />
           </div>
-          <ProjectDetailSideBar />
+          <ProjectDetailSideBar
+            thumbnailImage={projectDetail?.head.thumbnailImageUrl}
+            isLiked={projectDetail?.isLiked}
+            likeCounts={projectDetail?.likeCounts}
+            teamMember={projectDetail?.participantList || []}
+            viewCount={projectDetail?.viewCount}
+            commentCount={projectComment?.total}
+          />
         </div>
       </Hydrate>
     </div>

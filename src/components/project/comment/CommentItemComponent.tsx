@@ -1,55 +1,44 @@
+'use client';
+
 import { Comment } from '@/service/comments/response';
-import { useState } from 'react';
+import { formatToKoreanDate } from '@/utils/date';
+
+import SImage from '@/components/common/Image';
 
 interface CommentItemComponentProps {
   comment: Comment;
-  onReply: () => void;
+  isReply?: boolean;
 }
 
-const CommentItemComponent = ({ comment, onReply }: CommentItemComponentProps) => {
-  const [isReplying, setIsReplying] = useState(false);
-  const [replyText, setReplyText] = useState('');
-
-  const handleReplyClick = () => {
-    setIsReplying(true);
-  };
-
-  const handleReplySubmit = () => {
-    //onReply(comment.id, replyText);
-    setReplyText('');
-    setIsReplying(false);
-  };
-
+const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponentProps) => {
   return (
-    <div className="border-b border-gray-200 p-4">
-      <div className="flex items-center mb-2">
-        <span className="font-bold mr-2">{comment.contents}</span>
-        <span className="text-sm text-gray-500">{comment.createdAt}</span>
-      </div>
-      <div className="whitespace-pre-wrap">{comment.contents}</div>
-      <button className="text-blue-500 mt-2" onClick={handleReplyClick}>
-        답글
-      </button>
-      {isReplying && (
-        <div className="mt-4">
-          <textarea
-            className="w-full p-2 border border-gray-300"
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-          />
-          <button className="bg-blue-500 text-white py-2 px-4 mt-2" onClick={handleReplySubmit}>
-            작성
-          </button>
+    <div className="w-full">
+      <div className={`flex p-3 gap-3 ${isReply ? 'ml-12 rounded-large bg-slate-98' : ''}`}>
+        <SImage src="/github.svg" width={32} height={32} className="rounded-full" alt="" />
+        <div className="w-full flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <div className="flex gap-2 items-center">
+              <p className="text-base font-lb leading-5 tracking-[-0.32px]">nickname</p>
+              <span className="px-2 py-1 rounded-small bg-slate-tint-6 text-xsmall text-slate-50 leading-4 tracking-[-0.12px]">
+                position
+              </span>
+            </div>
+            <div className="flex gap-1">
+              <SImage src="/commentReply.svg" width={18} height={18} className="p-1" />
+              <SImage src="/commentDelete.svg" width={18} height={18} className="p-1" />
+            </div>
+          </div>
+          <span className="text-small leading-5 tracking-[-0.14px]">{comment.contents}</span>
+          {comment.createdAt && (
+            <span className="text-slate-60 text-xsmall leading-4 tracking-[-0.12px]">
+              {formatToKoreanDate(comment.createdAt)}
+            </span>
+          )}
         </div>
-      )}
-      {comment.childComments &&
-        comment.childComments.map((childComment) => (
-          <CommentItemComponent
-            key={childComment.commentId}
-            comment={childComment}
-            onReply={onReply}
-          />
-        ))}
+      </div>
+      {comment.childComments?.map((childComment) => (
+        <CommentItemComponent key={childComment.commentId} comment={childComment} isReply />
+      ))}
     </div>
   );
 };

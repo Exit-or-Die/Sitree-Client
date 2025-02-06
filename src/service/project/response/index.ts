@@ -11,14 +11,16 @@ export interface ProjectRegisterResponse {
 
 export interface ProjectDetailResponse {
   head: Head;
-  tagList: Array<Tag>;
+  categories: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
   participantList: Array<Participant>;
-  viewCount: boolean;
+  viewCount: number;
   createdAt: string;
   healthy: boolean;
+  likeCounts: number;
+  isLiked: boolean;
 }
 
 export interface Head {
@@ -54,8 +56,8 @@ export interface ClientUrl {
 export interface TechView {
   techTitle: string;
   gitRepositoryUrl: string;
-  techTagList: Array<string>;
-  description: string;
+  techStackTypes: Array<string>;
+  techDesc: string;
 }
 
 export interface Architecture {
@@ -70,6 +72,8 @@ export interface FocusedPoint {
 }
 
 export interface Participant {
-  memberNo: number;
+  memberId: number;
   position: string;
+  focusPoint: string | null;
+  leader: boolean;
 }

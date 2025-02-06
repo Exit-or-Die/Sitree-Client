@@ -6,19 +6,12 @@ import SInput from '@/components/common/Input';
 
 interface CommentHeaderComponentProps {
   totalCount: number;
-  fetchComment: () => void;
 }
 
-const CommentHeaderComponent = ({
-  totalCount,
-  createComment,
-  fetchComment
-}: CommentHeaderComponentProps) => {
+const CommentHeaderComponent = ({ totalCount }: CommentHeaderComponentProps) => {
   const { getCommentList } = CommentsService;
 
-  const handleCreateComment = async () => {
-    await fetchComment();
-  };
+  const handleCreateComment = async () => {};
 
   return (
     <div className="flex flex-col gap-5">

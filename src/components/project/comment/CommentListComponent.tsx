@@ -17,7 +17,7 @@ const CommentListComponent = ({ commentList }: CommentListComponentProps) => {
   return (
     <div>
       {commentList.map((comment) => (
-        <CommentItemComponent key={comment.commentId} comment={comment} onReply={handleReply} />
+        <CommentItemComponent key={comment.commentId} comment={comment} />
       ))}
     </div>
   );
