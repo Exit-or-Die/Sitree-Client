@@ -4,7 +4,9 @@ import { CreateCommentResponse, GetCommentListResponse } from './response';
 
 class CommentsService extends Service {
   createComment(projectId: string, params: CreateCommentRequest) {
-    return this.http.post<CreateCommentResponse>(`comments/project/${projectId}`, params);
+    return this.http.post<CreateCommentResponse>(`comments/project/${projectId}`, params, {
+      includeAuth: true
+    });
   }
   getCommentList(projectId: string, page: number, size: number) {
     return this.http.get<GetCommentListResponse>(
