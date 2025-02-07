@@ -1,4 +1,4 @@
-export const formatToKoreanDate = (isoString: string) => {
+export const formatToDate = (isoString: string) => {
   const date = new Date(isoString);
 
   // 한국 시간(KST) 변환

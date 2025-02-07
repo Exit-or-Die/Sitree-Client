@@ -1,8 +1,8 @@
 'use client';
 
 import { Comment } from '@/service/comments/response';
-import { formatToKoreanDate } from '@/utils/date';
 
+import { FormattedDate } from '@/components/common/Date';
 import SImage from '@/components/common/Image';
 
 interface CommentItemComponentProps {
@@ -31,14 +31,16 @@ const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponent
           <span className="text-small leading-5 tracking-[-0.14px]">{comment.contents}</span>
           {comment.createdAt && (
             <span className="text-slate-60 text-xsmall leading-4 tracking-[-0.12px]">
-              {formatToKoreanDate(comment.createdAt)}
+              <FormattedDate isoString={comment.createdAt} />
             </span>
           )}
         </div>
       </div>
-      {comment.childComments?.map((childComment) => (
-        <CommentItemComponent key={childComment.commentId} comment={childComment} isReply />
-      ))}
+      <div className="flex flex-col gap-2 pt-2">
+        {comment.childComments?.map((childComment) => (
+          <CommentItemComponent key={childComment.commentId} comment={childComment} isReply />
+        ))}
+      </div>
     </div>
   );
 };

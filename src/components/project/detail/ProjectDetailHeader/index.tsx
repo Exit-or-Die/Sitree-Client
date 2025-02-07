@@ -1,7 +1,7 @@
 import { ClientUrl, Head, Tag } from '@/service/project/response';
-import { formatToKoreanDate } from '@/utils/date';
 import Link from 'next/link';
 
+import { FormattedDate } from '@/components/common/Date';
 import SImage from '@/components/common/Image';
 
 interface ProjectDetailHeaderProps {
@@ -90,7 +90,11 @@ const ProjectDetailHeader = ({
             </div>
             <div className="flex items-center gap-5 shrink-0 text-xsmall text-slate-50">
               <span>조회수 {viewCount}</span>
-              {createdAt && <span>{formatToKoreanDate(createdAt)}</span>}
+              {createdAt && (
+                <span>
+                  <FormattedDate isoString={createdAt} />
+                </span>
+              )}
             </div>
           </div>
         </div>
