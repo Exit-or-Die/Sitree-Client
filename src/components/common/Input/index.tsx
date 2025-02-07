@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import SImage from '../Image';
@@ -15,8 +15,8 @@ interface InputProps<T extends FieldValues> {
   name?: string;
   accept?: string;
   iconName?: string; // 아이콘 이름을 받는 props 추가
-  onEnterPress?: () => void; // 엔터 키 눌렀을 때 실행할 함수 추가
-  onIconClick?: () => void; // 아이콘 클릭 시 실행할 함수 추가
+  onEnterPress?: (contents: string) => void; // 엔터 키 눌렀을 때 실행할 함수 추가
+  onIconClick?: (contents: string) => void; // 아이콘 클릭 시 실행할 함수 추가
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -43,25 +43,28 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       ...restRegister
     } = register && name ? register(name) : { ref: undefined, onChange: undefined };
 
+    const [text, setText] = useState<string>('');
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       [registerOnChange, onChange].forEach((fn) => {
         if (fn) {
           fn(e);
         }
       });
+      setText(e.target.value);
     };
 
     // 엔터 키 눌렀을 때 처리
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter' && onEnterPress) {
-        onEnterPress();
+        onEnterPress(text);
       }
     };
 
     // 아이콘 클릭 이벤트 처리
     const handleIconClick = () => {
       if (onIconClick) {
-        onIconClick();
+        onIconClick(text);
       }
     };
 
@@ -74,7 +77,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
-          onKeyPress={handleKeyPress} // 엔터 키 이벤트 추가
+          onKeyDown={handleKeyDown} // 엔터 키 이벤트 추가
           accept={accept}
           {...restRegister}
         />
