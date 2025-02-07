@@ -1,3 +1,5 @@
+import { getCookie } from '@/utils/cookie';
+
 import {
   requestInterceptors,
   responseInterceptors,
@@ -6,14 +8,18 @@ import {
   InterceptorFunction
 } from './interceptor';
 
+interface RequestInitWithAuth extends RequestInit {
+  includeAuth?: boolean;
+}
+
 interface HTTPInstance {
-  get<T>(url: string, config?: RequestInit): Promise<T>;
-  delete<T>(url: string, config?: RequestInit): Promise<T>;
-  head<T>(url: string, config?: RequestInit): Promise<T>;
-  options<T>(url: string, config?: RequestInit): Promise<T>;
-  post<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
-  put<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
-  patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
+  get<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  delete<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  head<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  options<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  post<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  put<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  patch<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
 }
 
 export interface ApiResponse<T> {
@@ -33,7 +39,8 @@ class Service {
     this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
       csrf: 'token',
-      Referer: this.baseURL
+      Referer: this.baseURL,
+      'Content-Type': 'application/json'
     };
 
     this.http = {
@@ -45,6 +52,10 @@ class Service {
       put: this.put.bind(this),
       patch: this.patch.bind(this)
     };
+  }
+
+  private getToken(): string {
+    return getCookie('accessToken') || '';
   }
 
   public addRequestInterceptor(interceptor: InterceptorFunction): void {
@@ -59,15 +70,15 @@ class Service {
     method: string,
     url: string,
     data?: unknown,
-    config: RequestInit = {}
+    config: RequestInitWithAuth = {}
   ): Promise<T> {
     const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
       headers: {
         ...this.headers,
-        'Content-Type': 'application/json',
-        ...config.headers
+        ...config.headers,
+        ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
