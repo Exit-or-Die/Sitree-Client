@@ -28,13 +28,7 @@ export const Header = () => {
       <SignWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
       <div className="flex items-center space-x-8">
         <Link href="/" className="flex items-center space-x-2">
-          <SImage
-            src="/icon.svg"
-            width={30}
-            height={30}
-            alt="Sitree Logo"
-            defaultType="affiliation"
-          />
+          <SImage src="/icon.svg" width={30} height={30} alt="Sitree Logo" />
           <span className="text-xlarge font-sb text-slate-30 font-montserrat">Sitree</span>
         </Link>
 
