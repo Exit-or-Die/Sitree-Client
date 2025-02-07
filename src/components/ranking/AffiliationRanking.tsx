@@ -16,7 +16,7 @@ const AffiliationRanking = () => {
 
   return (
     <div className="pt-6 rounded-xl min-w-[302px]">
-      <div className="flex justify-between items-center mb-4 px-6">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-xlarge font-bold">소속 랭킹</h2>
         <button className="text-small text-slate-30 hover:underline">전체 보기</button>
       </div>

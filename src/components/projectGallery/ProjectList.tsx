@@ -33,7 +33,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
     const timeout = setTimeout(() => {
       setDebouncedKeyword(searchKeyword);
       setIsTyping(false);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [searchKeyword]);
