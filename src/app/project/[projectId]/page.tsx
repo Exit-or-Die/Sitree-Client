@@ -40,7 +40,14 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const ImageSlideSrc = projectDetail?.overview.images.map((src: Image, index) => {
     if (src.imageType === IMAGE_TYPE.BACKGROUND) {
       return (
-        <SImage key={index} src={src.imageUrl} width={400} height={30} alt={`Slide ${index + 1}`} />
+        <SImage
+          key={index}
+          src={src.imageUrl}
+          width={306}
+          height={204}
+          alt={`Slide ${index + 1}`}
+          className="rounded-large"
+        />
       );
     }
   });
@@ -52,28 +59,28 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   }
 
   return (
-    <div className="px-20 pt-10 pb-20 bg-slate-95">
-      <Hydrate state={{ queries: [projectDetailQuery] }}>
-        <RouterPush className="px-2 py-1.5 flex items-center gap-1 cursor-pointer" path="/">
-          <SImage src="/leftArrow.svg" width={14} height={14} />
-          <p className="text-small text-slate-30">프로젝트 목록</p>
-        </RouterPush>
-        <div className="py-5">
-          <SwiperComponent items={ImageSlideSrc} />
-        </div>
-        <div className="mt-8 flex justify-center gap-5">
-          <div className="w-[94.2rem] flex flex-col gap-10">
-            <ProjectDetail detail={projectDetail} />
-            <CommentComponent commentInfo={projectComment} />
+    <div className="flex justify-center px-20 pt-10 pb-20 bg-slate-95">
+      <Hydrate state={{ queries: [projectDetailQuery, projectCommentQuery] }}>
+        <div className="w-[128rem]">
+          <RouterPush className="px-2 py-1.5 flex items-center gap-1 cursor-pointer" path="/">
+            <SImage src="/leftArrow.svg" width={14} height={14} />
+            <p className="text-small text-slate-30">프로젝트 목록</p>
+          </RouterPush>
+          <div className="py-5">{/* <SwiperComponent items={ImageSlideSrc} /> */}</div>
+          <div className="w-[128rem] mt-8 flex justify-center gap-5">
+            <div className="w-[95.4rem] flex flex-col gap-10">
+              <ProjectDetail detail={projectDetail} />
+              <CommentComponent commentInfo={projectComment} />
+            </div>
+            <ProjectDetailSideBar
+              thumbnailImage={projectDetail?.head.thumbnailImageUrl}
+              isLiked={projectDetail?.isLiked}
+              likeCounts={projectDetail?.likeCounts}
+              teamMember={projectDetail?.participantList || []}
+              viewCount={projectDetail?.viewCount}
+              commentCount={projectComment?.total}
+            />
           </div>
-          <ProjectDetailSideBar
-            thumbnailImage={projectDetail?.head.thumbnailImageUrl}
-            isLiked={projectDetail?.isLiked}
-            likeCounts={projectDetail?.likeCounts}
-            teamMember={projectDetail?.participantList || []}
-            viewCount={projectDetail?.viewCount}
-            commentCount={projectComment?.total}
-          />
         </div>
       </Hydrate>
     </div>

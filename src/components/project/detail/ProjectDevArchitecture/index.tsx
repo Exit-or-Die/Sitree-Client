@@ -1,11 +1,13 @@
 'use client';
 
 import { Architecture } from '@/service/project/response';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import SImage from '@/components/common/Image';
 import STab from '@/components/common/Tab';
-import SViewer from '@/components/common/Viewer';
+
+const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
 
 interface ProjectDevArchitectureProps {
   architectureList: Array<Architecture>;

@@ -30,7 +30,7 @@ const ProjectDetailSideBar = ({
   const teamLeader = teamMember.find((member) => member.leader);
 
   return (
-    <div className="w-[30.6rem] h-full flex flex-col border border-1 border-slate-90 rounded-2xlarge bg-white-100 leading-5 tracking-[-0.14px]">
+    <div className="w-[30.6rem] sticky top-5 h-full flex flex-col border border-1 border-slate-90 rounded-2xlarge bg-white-100 leading-5 tracking-[-0.14px]">
       <div className="p-5 flex flex-col gap-5">
         <div className="flex gap-4">
           <div className="relative w-[7.2rem] h-[7.2rem] rounded-2xlarge overflow-hidden">

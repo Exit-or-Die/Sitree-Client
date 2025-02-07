@@ -1,12 +1,14 @@
 'use client';
 
 import { TechView } from '@/service/project/response';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import SImage from '@/components/common/Image';
 import STab from '@/components/common/Tab';
-import SViewer from '@/components/common/Viewer';
+
+const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
 
 interface ProjectDetailTechProps {
   id: string;
