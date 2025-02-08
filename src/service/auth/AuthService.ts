@@ -1,38 +1,7 @@
-import { COOKIE_KEY } from '@/constants/cookie';
-import { getCookie } from '@/utils/cookie';
-import { Nullable } from 'types/common';
+import Service from '@/service/service';
 
-import Service from '../service';
-
-export interface UserDetail {
-  authId: string;
-  provider: string;
-  email: string;
-  nickname: string;
-  oAuthToken: string;
-  profileImgUrl: string;
-  isNewMember: boolean;
-  accessToken?: Nullable<string>;
-  refreshToken?: Nullable<string>;
-}
-export interface SignInData {
-  provider: string;
-  email: string;
-  oAuthToken: string;
-}
-
-export interface SignUpData {
-  provider: string;
-  oAuthToken: string;
-  email: string;
-  nickname: string;
-  thirdPartyProfileUrl?: string;
-  belonging?: string;
-}
-
-interface ValidateUsername {
-  exist: boolean;
-}
+import { SignInData, SignUpData } from './request';
+import { UserDetail, ValidateUsername } from './response';
 
 class AuthService extends Service {
   signIn(data: SignInData) {
@@ -45,17 +14,6 @@ class AuthService extends Service {
 
   validateUsername(nickname: string) {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
-  }
-
-  renewAccessToken() {
-    const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
-    const response = this.http.get<UserDetail>('members/refresh', {
-      headers: {
-        Authorization: `Bearer ${refreshToken}`
-      }
-    });
-
-    return response;
   }
 }
 
