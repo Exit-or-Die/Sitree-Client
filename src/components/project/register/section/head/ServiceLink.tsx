@@ -5,22 +5,38 @@ import { useFormContext } from 'react-hook-form';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
-import SSelect from '@/components/common/Select'; // SSelect 컴포넌트 가져오기
+import SSelect from '@/components/common/Select';
 
 type ServiceLink = { key: keyof ClientUrl; value: string };
 
 const CLIENT_URL_KEYS: (keyof ClientUrl)[] = ['WEB', 'IOS', 'WINDOWS', 'AOS', 'MAC_OS'];
 
-const ProjectHeadServiceLink = () => {
-  const { setValue } = useFormContext<ProjectRegisterRequest>();
+const DEFAULT_SERVICE_LINKS: ServiceLink[] = [
+  { key: 'WEB', value: ' ' },
+  { key: 'IOS', value: '' },
+  { key: 'WINDOWS', value: '' },
+  { key: 'AOS', value: '' },
+  { key: 'MAC_OS', value: '' }
+];
 
-  const [serviceLinks, setServiceLinks] = useState<ServiceLink[]>([
-    { key: 'WEB', value: '123' },
-    { key: 'IOS', value: '' },
-    { key: 'WINDOWS', value: '' },
-    { key: 'AOS', value: '' },
-    { key: 'MAC_OS', value: '' }
-  ]);
+const ProjectHeadServiceLink = () => {
+  const { getValues, setValue } = useFormContext<ProjectRegisterRequest>();
+  const [serviceLinks, setServiceLinks] = useState<ServiceLink[]>(DEFAULT_SERVICE_LINKS);
+
+  useEffect(() => {
+    const initialClientUrl = getValues('overview.clientUrl');
+    if (initialClientUrl && Object.keys(initialClientUrl).length > 0) {
+      const mappedLinks = (Object.entries(initialClientUrl) as [keyof ClientUrl, string][]).map(
+        ([key, value]) => ({
+          key,
+          value
+        })
+      );
+      setServiceLinks(mappedLinks);
+    } else {
+      setServiceLinks(DEFAULT_SERVICE_LINKS);
+    }
+  }, [getValues]);
 
   const availableKeys = CLIENT_URL_KEYS.filter(
     (key) => !serviceLinks.some((link) => link.key === key && link.value.length > 0)
@@ -55,19 +71,20 @@ const ProjectHeadServiceLink = () => {
       const newKey = availableKeys[0];
       setServiceLinks((prev) => {
         const filteredLinks = prev.filter((link) => link.key !== newKey);
-
         return [...filteredLinks, { key: newKey, value: ' ' }];
       });
     }
   };
 
   useEffect(() => {
-    const clientUrl: ClientUrl = serviceLinks.reduce(
+    const newClientUrl: ClientUrl = serviceLinks.reduce(
       (acc, { key, value }) => ({ ...acc, [key]: value }),
       {} as ClientUrl
     );
-    setValue('overview.clientUrl', clientUrl);
-  }, [serviceLinks, setValue]);
+
+    // clientUrl과 서비스 링크가 다를 때만 setValue 호출
+    setValue('overview.clientUrl', newClientUrl);
+  }, [serviceLinks, setValue]); // serviceLinks가 변경될 때만 실행
 
   return (
     <div className="p-10 flex flex-col gap-5">
@@ -80,12 +97,7 @@ const ProjectHeadServiceLink = () => {
               <SSelect
                 value={{ key }}
                 onChange={(newOption) => handleKeyChange(key, newOption.key as keyof ClientUrl)}
-                options={[
-                  { key },
-                  ...availableKeys
-                    .filter((availableKey) => availableKey !== key)
-                    .map((availableKey) => ({ key: availableKey }))
-                ]}
+                options={[{ key }, ...availableKeys.map((availableKey) => ({ key: availableKey }))]}
                 displayKey="key"
                 selectClass="w-[15.6rem]"
               />

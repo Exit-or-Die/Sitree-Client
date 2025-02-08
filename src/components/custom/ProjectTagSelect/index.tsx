@@ -1,3 +1,5 @@
+'use client';
+
 import isEqual from '@/utils/isEqual';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 

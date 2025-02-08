@@ -1,3 +1,5 @@
+'use client';
+
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useState, useEffect, useMemo } from 'react';
@@ -16,11 +18,11 @@ const ProjectUploadProgress = () => {
   const sectionItems = useMemo(() => {
     // 기본 정보 섹션에서 체크할 필드들
     const headFields = [
-      head.title,
-      head.healthCheckUrl,
-      head.shortDescription,
-      head.thumbnailImageUrl,
-      tagList.length > 0
+      head?.title,
+      head?.healthCheckUrl,
+      head?.shortDescription,
+      head?.thumbnailImageUrl,
+      (tagList || []).length > 0
     ];
 
     // 채워진 필드의 개수 계산
@@ -36,23 +38,23 @@ const ProjectUploadProgress = () => {
       },
       {
         name: '프로젝트 소개',
-        completed: extractContentFromHtml(overview.detailDescription).length > 0,
-        completionRate: extractContentFromHtml(overview.detailDescription).length > 0 ? 1 : 0
+        completed: extractContentFromHtml(overview?.detailDescription).length > 0,
+        completionRate: extractContentFromHtml(overview?.detailDescription).length > 0 ? 1 : 0
       },
       {
         name: '프로젝트 기술',
-        completed: Boolean(techviewList.length > 0),
-        completionRate: techviewList.length > 0 ? 1 : 0
+        completed: Boolean((techviewList || []).length > 0),
+        completionRate: (techviewList || []).length > 0 ? 1 : 0
       },
       {
         name: '기술 아키텍쳐',
-        completed: !!architectureList.length,
-        completionRate: architectureList.length > 0 ? 1 : 0
+        completed: !!(architectureList || []).length,
+        completionRate: (architectureList || []).length > 0 ? 1 : 0
       },
       {
         name: '참여자 목록',
-        completed: Boolean(participantList.length > 0),
-        completionRate: participantList.length > 0 ? 1 : 0
+        completed: Boolean((participantList || []).length > 0),
+        completionRate: (participantList || []).length > 0 ? 1 : 0
       }
     ];
   }, [head, tagList, overview, techviewList, architectureList, participantList]);

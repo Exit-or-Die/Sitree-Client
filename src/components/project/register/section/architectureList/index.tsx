@@ -1,7 +1,10 @@
+'use client';
+
 import React, { useState } from 'react';
 
 import SEditor from '@/components/common/Editor';
 import SImage from '@/components/common/Image';
+import FileUploadButton from '@/components/custom/FileUploadButton';
 
 const tabs = [
   { id: 1, label: '프론트엔드' },
@@ -18,6 +21,8 @@ const ArchitectureComponent = () => {
   const handleTabClick = (id: number) => {
     setActiveTab(id);
   };
+
+  const handleUpload = () => {};
 
   return (
     <div className="border-[1px] border-slate-90 rounded-2xlarge">
@@ -56,7 +61,7 @@ const ArchitectureComponent = () => {
               </p>
               <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
             </div>
-            <div>파일 선택</div>
+            <FileUploadButton text="파일 선택" iconName="/fileUpload.svg" onUpload={handleUpload} />
           </div>
         </div>
         <div className="ml-auto grow px-3 py-2">

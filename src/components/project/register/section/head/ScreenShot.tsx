@@ -1,3 +1,5 @@
+'use client';
+
 import { Image } from '@/service/project/response';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -9,7 +11,9 @@ const TOTAL_SCREENSHOT_ITEMS = 8;
 
 const ProjectHeadScreenshot = () => {
   const { getValues } = useFormContext();
-  const [screenShotList, setScreenShotList] = useState<Array<Image>>(getValues('overview.images')); // 스크린샷 리스트를 빈 배열로 초기화
+  const [screenShotList, setScreenShotList] = useState<Array<Image>>(
+    getValues('overview.images') ?? []
+  );
 
   return (
     <div className="p-10">
@@ -25,8 +29,9 @@ const ProjectHeadScreenshot = () => {
             <p className="text-slate-70">{TOTAL_SCREENSHOT_ITEMS}</p>
           </span>
           <FileUploadButton
-            className="border w-[96px] h-[36px]"
+            className="border h-[36px]"
             text="파일 선택"
+            iconName="/fileUpload.svg"
             onUpload={() => {}}
           />
         </div>
@@ -44,7 +49,7 @@ const ProjectHeadScreenshot = () => {
         {Array.from({ length: TOTAL_SCREENSHOT_ITEMS - screenShotList.length }, (_, index) => (
           <ProjectScreenshotItem
             key={`placeholder-${index}`}
-            isRepresentative={!screenShotList.length && !!index}
+            isRepresentative={!screenShotList.length && !index}
           />
         ))}
       </div>

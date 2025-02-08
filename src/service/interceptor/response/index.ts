@@ -15,42 +15,42 @@ export const handleResponseByCode = async <T>(
   }
 
   // accessToken 만료되었을시
-  if (response.code === 401) {
-    console.log('Access token expired. Renewing token...');
-    try {
-      const { accessToken, refreshToken } = await AuthService.renewAccessToken();
-      setCookie('accessToken', accessToken);
-      setCookie('refreshToken', refreshToken);
+  // if (response.code === 401) {
+  //   console.log('Access token expired. Renewing token...');
+  //   try {
+  //     const { accessToken, refreshToken } = await AuthService.renewAccessToken();
+  //     setCookie('accessToken', accessToken);
+  //     setCookie('refreshToken', refreshToken);
 
-      const updatedConfig: RequestConfigWithResponse<T> = {
-        ...config,
-        headers: {
-          ...config.headers
-        },
-        includeAuth: true
-      };
+  //     const updatedConfig: RequestConfigWithResponse<T> = {
+  //       ...config,
+  //       headers: {
+  //         ...config.headers
+  //       },
+  //       includeAuth: true
+  //     };
 
-      const { pathname, search } = new URL(updatedConfig.url);
-      const fullPathURL = pathname + search;
-      const json: T = await updatedConfig.request(
-        updatedConfig.method,
-        fullPathURL.slice(1),
-        updatedConfig.body,
-        updatedConfig
-      );
+  //     const { pathname, search } = new URL(updatedConfig.url);
+  //     const fullPathURL = pathname + search;
+  //     const json: T = await updatedConfig.request(
+  //       updatedConfig.method,
+  //       fullPathURL.slice(1),
+  //       updatedConfig.body,
+  //       updatedConfig
+  //     );
 
-      config.response = {
-        code: 0,
-        message: 'successfully fetched!',
-        value: json
-      };
+  //     config.response = {
+  //       code: 0,
+  //       message: 'successfully fetched!',
+  //       value: json
+  //     };
 
-      return;
-    } catch (error) {
-      console.error('Failed to renew token:', error);
-      throw new Error('Unauthorized: Failed to renew access token');
-    }
-  }
+  //     return;
+  //   } catch (error) {
+  //     console.error('Failed to renew token:', error);
+  //     throw new Error('Unauthorized: Failed to renew access token');
+  //   }
+  // }
 
   // code 값에 따라 처리
   if (response.code !== 0) {
