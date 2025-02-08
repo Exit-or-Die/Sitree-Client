@@ -2,7 +2,7 @@
 
 import WithModal from '@/enhancers/WithModal';
 import AuthQueryOptions from '@/service/auth/queries';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -19,8 +19,9 @@ export const Header = () => {
   const { data: session } = useSession();
   const nickname = session && session.detail && session.detail.nickname;
   const name = session && session.user && session.user.name;
-  const { queryKey, queryFn } = AuthQueryOptions.validateUser();
-  const { data: isLoggedIn } = useQuery<boolean>({ queryKey, queryFn });
+  const { queryKey } = AuthQueryOptions.validateUser();
+  const queryClient = useQueryClient();
+  const isLoggedIn = queryClient.getQueryData(queryKey);
 
   const onClickCloseModal = () => {
     setToggleLogin(false);
