@@ -1,5 +1,5 @@
 import { COOKIE_KEY } from '@/constants/cookie';
-import { getCookie } from 'cookies-next/client';
+import { getCookie } from '@/utils/cookie';
 import { Nullable } from 'types/common';
 
 import Service from '../service';

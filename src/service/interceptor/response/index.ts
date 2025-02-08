@@ -25,15 +25,16 @@ export const handleResponseByCode = async <T>(
       const updatedConfig: RequestConfigWithResponse<T> = {
         ...config,
         headers: {
-          ...config.headers,
-          Authorization: `Bearer ${accessToken}`
-        }
+          ...config.headers
+        },
+        includeAuth: true
       };
 
-      const { pathname } = new URL(updatedConfig.url);
+      const { pathname, search } = new URL(updatedConfig.url);
+      const fullPathURL = pathname + search;
       const json: T = await updatedConfig.request(
         updatedConfig.method,
-        pathname.slice(1),
+        fullPathURL.slice(1),
         updatedConfig.body,
         updatedConfig
       );
@@ -55,4 +56,6 @@ export const handleResponseByCode = async <T>(
   if (response.code !== 0) {
     throw new Error(`API Error: ${response.code}`);
   }
+
+  return;
 };

@@ -1,13 +1,16 @@
 import { COOKIE_KEY } from '@/constants/cookie';
 import { setCookie } from '@/utils/cookie';
+import { getCookie } from '@/utils/cookie';
 import { useMutation } from '@tanstack/react-query';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 import AuthService, { SignInData, SignUpData } from './AuthService';
 
 const queryKeys = {
   signIn: () => ['auth', 'signin'] as const,
   signUp: () => ['auth', 'signup'] as const,
-  validateUsername: (nickname: string) => ['auth', 'validateUsername', nickname] as const
+  validateUsername: (nickname: string) => ['auth', 'validateUsername', nickname] as const,
+  validateUser: () => ['auth', 'validateUser'] as const
 };
 
 const AuthQueryOptions = {
@@ -23,7 +26,17 @@ const AuthQueryOptions = {
     mutateKey: queryKeys.validateUsername(nickname),
     mutateFn: () => AuthService.validateUsername(nickname),
     enabled: !!nickname
+  }),
+  validateUser: (cookies?: () => ReadonlyRequestCookies) => ({
+    queryKey: queryKeys.validateUser(),
+    queryFn: () => isLoggedIn(cookies)
   })
+};
+
+const isLoggedIn = async (cookies?: () => ReadonlyRequestCookies): Promise<boolean> => {
+  const accessToken = await getCookie(COOKIE_KEY.ACCESS_TOKEN, { cookies });
+
+  return !!accessToken;
 };
 
 export const useSignUp = () => {

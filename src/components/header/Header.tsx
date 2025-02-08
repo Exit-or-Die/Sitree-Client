@@ -1,7 +1,8 @@
 'use client';
 
 import WithModal from '@/enhancers/WithModal';
-import { isLoggedIn } from '@/utils/misc';
+import AuthQueryOptions from '@/service/auth/queries';
+import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -18,6 +19,8 @@ export const Header = () => {
   const { data: session } = useSession();
   const nickname = session && session.detail && session.detail.nickname;
   const name = session && session.user && session.user.name;
+  const { queryKey, queryFn } = AuthQueryOptions.validateUser();
+  const { data: isLoggedIn } = useQuery<boolean>({ queryKey, queryFn });
 
   const onClickCloseModal = () => {
     setToggleLogin(false);
@@ -33,16 +36,22 @@ export const Header = () => {
         </Link>
 
         <nav className="flex space-x-6">
-          <Link href="/rankings" className="text-slate-30 hover:text-gray-900 text-small font-md">
+          <Link
+            href="/rankings"
+            className="text-slate-30 hover:text-gray-900 text-small font-md min-w-[52px]"
+          >
             소속 랭킹
           </Link>
-          <Link href="/rankings" className="text-slate-30 hover:text-gray-900 text-small font-md">
+          <Link
+            href="/rankings"
+            className="text-slate-30 hover:text-gray-900 text-small font-md min-w-[52px]"
+          >
             유저 랭킹
           </Link>
         </nav>
       </div>
 
-      {!isLoggedIn() ? (
+      {!isLoggedIn ? (
         <SButton
           className="text-sm h-[36px] text-slate-40 border border-slate-90 rounded-base hover:bg-slate-100 transition-all"
           onClick={() => setToggleLogin(true)}
