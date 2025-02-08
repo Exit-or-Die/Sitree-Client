@@ -1,8 +1,8 @@
 'use client';
 
+import { FILTER_LIST, SORT_TYPE_MAPPING } from '@/constants/home';
 import { CategoriesData } from '@/service/category/CategoryService';
 import ProjectQueryOptions from '@/service/project/queries';
-import { SortType } from '@/service/project/request';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
@@ -13,19 +13,11 @@ type Props = {
   selectedCategory: CategoriesData;
 };
 
-const sortTypeMapping: Record<string, SortType> = {
-  최신: 'LATEST',
-  좋아요: 'LIKES',
-  댓글: 'COMMENTS',
-  조회수: 'VIEWS'
-};
-
 const ProjectList = ({ selectedCategory }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState('최신');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const filterList = ['최신', '좋아요', '댓글', '조회수'];
 
   useEffect(() => {
     if (!searchKeyword && !debouncedKeyword) return;
@@ -39,7 +31,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
   }, [searchKeyword]);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjects({
-    sortType: sortTypeMapping[selectedFilter],
+    sortType: SORT_TYPE_MAPPING[selectedFilter],
     categoryIds: selectedCategory.categoryIds,
     nameKeyword: debouncedKeyword
   });
@@ -57,7 +49,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
     <div className="flex-1 w-[1050px] bg-white-100 rounded-3xl border border-slate-90">
       <div className="pl-5 flex justify-between items-center border-b">
         <div className="flex text-sm text-slate-50 pt-6 h-[52px]">
-          {filterList.map((filter) => (
+          {FILTER_LIST.map((filter) => (
             <div
               key={filter}
               className={`${

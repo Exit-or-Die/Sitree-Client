@@ -1,5 +1,6 @@
 'use client';
 
+import { CATEGORIES } from '@/constants/home';
 import RankingQueryOptions from '@/service/ranking/queries';
 import { Affiliation } from '@/service/ranking/RankingService';
 import { useQuery } from '@tanstack/react-query';
@@ -8,8 +9,7 @@ import React, { useState } from 'react';
 import SImage from '../common/Image';
 
 const AffiliationRanking = () => {
-  const [selectedCategory, setSelectedCategory] = useState('전체');
-  const categories = ['전체', '회사', '대학교', '고등학교'];
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
 
   const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking();
   const { data = [] } = useQuery<Array<Affiliation>>({ queryKey, queryFn });
@@ -21,8 +21,8 @@ const AffiliationRanking = () => {
         <button className="text-small text-slate-30 hover:underline">전체 보기</button>
       </div>
       <div className="p-4 shadow-lg h-[396px] rounded-3xl bg-white-100">
-        <div className="flex border-b text-sm h-[30px] text-slate-50">
-          {categories.map((category) => (
+        <div className="pt-1 flex border-b text-sm h-[30px] text-slate-50">
+          {CATEGORIES.map((category) => (
             <div
               key={category}
               className={`${

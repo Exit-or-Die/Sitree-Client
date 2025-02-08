@@ -1,4 +1,5 @@
 'use client';
+import { ALL } from '@/constants/home';
 import { CategoriesData } from '@/service/category/CategoryService';
 import CategoryQueryOptions from '@/service/category/queries';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +11,7 @@ import ProjectList from './ProjectList';
 const ProjectGallery = () => {
   const allCategory = {
     categoryIds: [],
-    categoryNames: '전체 보기'
+    categoryNames: ALL
   };
   const [selectedCategory, setSelectedCategory] = useState<CategoriesData>(allCategory);
   const { queryKey, queryFn } = CategoryQueryOptions.getGroupedCategories();
