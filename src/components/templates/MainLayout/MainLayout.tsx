@@ -1,4 +1,6 @@
-import { isBrowser } from '@/utils/misc';
+import { getDehydratedQuery, getQueryClient } from '@/hooks/react-query/react-query';
+import AuthQueryOptions from '@/service/auth/queries';
+import { HydrationBoundary } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 
@@ -11,24 +13,20 @@ interface MainLayoutProps {
   className?: string;
 }
 
-export const MainLayout = ({ children, className }: MainLayoutProps) => {
+export const MainLayout = async ({ children, className }: MainLayoutProps) => {
   const wrapperStyles = cn('flex flex-col min-h-screen bg-slate-100', className);
-  const cookieStore = cookies();
+  const queryClient = getQueryClient();
 
-  const isLoggedIn = () => {
-    if (!isBrowser()) {
-      return cookieStore.has('accessToken');
-    }
-
-    return document.cookie.includes('accessToken');
-  };
-
-  const isUserExist = isLoggedIn();
+  const { queryKey, queryFn } = AuthQueryOptions.validateUser(cookies);
+  await queryClient.prefetchQuery({ queryKey, queryFn });
+  const query = await getDehydratedQuery({ queryKey, queryFn });
 
   return (
     <div className={wrapperStyles}>
-      <Header isUser={isUserExist} />
-      <main className="flex-1">{children}</main>
+      <HydrationBoundary state={{ queries: [query] }}>
+        <Header />
+        <main className="flex-1">{children}</main>
+      </HydrationBoundary>
     </div>
   );
 };
