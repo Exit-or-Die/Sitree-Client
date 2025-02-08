@@ -3,6 +3,7 @@
 import { FILTER_LIST, SORT_TYPE_MAPPING } from '@/constants/home';
 import { CategoriesData } from '@/service/category/CategoryService';
 import ProjectQueryOptions from '@/service/project/queries';
+import { getTimeDifferenceMessage } from '@/utils/time';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
@@ -148,12 +149,23 @@ const ProjectList = ({ selectedCategory }: Props) => {
                   <span className="text-slate-50">조회수 {project.viewCount}</span>
                 </div>
                 <div className="flex text-xs text-gray-400 items-center">
-                  <SImage src="/alive.svg" alt="health-check" width={12} height={12} />
-                  <span className="text-[13px] text-slate-30 text-md ml-1">운영중</span>
+                  {project.isHealthy ? (
+                    <>
+                      <SImage src="/alive.svg" alt="health-check" width={12} height={12} />
+                      <span className="text-[13px] text-slate-30 text-md ml-1">운영중</span>
+                    </>
+                  ) : (
+                    <>
+                      <SImage src="/grayDot.svg" alt="service-down" width={6} height={6} />
+                      <span className="text-[13px] text-slate-50 text-md ml-2">서비스 종료</span>
+                    </>
+                  )}
                 </div>
               </div>
 
-              <div className="pl-2 mt-1 text-xsmall text-slate-50 mb-4">1일 전 수정됨</div>
+              <div className="pl-2 mt-1 text-xsmall text-slate-50 mb-4">
+                {getTimeDifferenceMessage(project.latestUpdateTime)}
+              </div>
             </div>
           ))}
       </div>

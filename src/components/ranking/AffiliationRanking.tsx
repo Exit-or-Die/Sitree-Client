@@ -65,7 +65,7 @@ const AffiliationRanking = () => {
                   </div>
                 </div>
                 <div className="text-sm" style={{ color: rankChangeColor }}>
-                  {rankChange !== 0 && (
+                  {rankChange !== 0 ? (
                     <div className="flex justify-center items-center">
                       <span className="mr-1 text-[10px]">{Math.abs(rankChange)}</span>
                       <SImage
@@ -75,6 +75,8 @@ const AffiliationRanking = () => {
                         height={6}
                       />
                     </div>
+                  ) : (
+                    <SImage src="/trendIndicator.svg" width={16} height={16} />
                   )}
                 </div>
               </li>
