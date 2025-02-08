@@ -111,31 +111,31 @@ class Service {
     }
   }
 
-  private get<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private get<T>(url: string, config: RequestInitWithAuth): Promise<T> {
     return this.request<T>('GET', url, undefined, config);
   }
 
-  private delete<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private delete<T>(url: string, config: RequestInitWithAuth): Promise<T> {
     return this.request<T>('DELETE', url, undefined, config);
   }
 
-  private head<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private head<T>(url: string, config: RequestInitWithAuth): Promise<T> {
     return this.request<T>('HEAD', url, undefined, config);
   }
 
-  private options<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private options<T>(url: string, config: RequestInitWithAuth): Promise<T> {
     return this.request<T>('OPTIONS', url, undefined, config);
   }
 
-  private post<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private post<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('POST', url, data, config);
   }
 
-  private put<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private put<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PUT', url, data, config);
   }
 
-  private patch<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private patch<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PATCH', url, data, config);
   }
 }
