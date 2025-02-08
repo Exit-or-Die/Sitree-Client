@@ -12,6 +12,9 @@ const ProjectQueryOptions = {
   retrieveProjectDetail: (projectId: string) => ({
     queryKey: queryKeys.retrieveProjectDetail(projectId),
     queryFn: () => ProjectService.retrieveProjectDetail(projectId)
+  }),
+  likeProject: (projectId: string) => ({
+    mutateFn: () => ProjectService.likeProject(projectId)
   })
 };
 

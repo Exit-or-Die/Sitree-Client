@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import '@/styles/swiper.css';
 
 interface SwiperComponentProps {
-  items: Element[];
+  items: React.JSX.Element[];
 }
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
@@ -67,7 +67,6 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      {/* Navigation Buttons */}
       <button className="swiper-button-prev absolute left-0 z-10 hidden bg-black p-2 text-white"></button>
       <button className="swiper-button-next absolute right-0 z-10 hidden bg-black p-2 text-white"></button>
     </div>

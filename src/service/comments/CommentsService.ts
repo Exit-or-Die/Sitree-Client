@@ -14,9 +14,15 @@ class CommentsService extends Service {
     );
   }
   modifyComment(commentId: number, contents: string) {
-    return this.http.put<CreateCommentResponse>(`comments/${commentId}`, {
-      contents
-    });
+    return this.http.put<CreateCommentResponse>(
+      `comments/${commentId}`,
+      {
+        contents
+      },
+      {
+        includeAuth: true
+      }
+    );
   }
   deleteComment(commentId: number) {
     return this.http.delete<CreateCommentRequest>(`comments/${commentId}`);

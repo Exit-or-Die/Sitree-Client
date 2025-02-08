@@ -1,15 +1,19 @@
 'use client';
 
 import { PROJECT_SCROLL_ID } from '@/constants/scrollId';
+import ProjectQueryOptions from '@/service/project/queries';
 import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
+import { useMutation } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectDetailSideBarProps {
   thumbnailImage?: string;
-  isLiked?: boolean;
+  liked?: boolean;
   likeCounts?: number;
   teamMember: Array<Participant>;
   viewCount?: number;
@@ -18,11 +22,25 @@ interface ProjectDetailSideBarProps {
 
 const ProjectDetailSideBar = ({
   thumbnailImage = '',
-  isLiked = true,
+  liked = true,
   likeCounts = 0,
   teamMember = [],
   viewCount
 }: ProjectDetailSideBarProps) => {
+  const { projectId } = useParams();
+  const [isLiked, setIsLiked] = useState<boolean>(liked);
+
+  const { mutate: likeProject } = useMutation({
+    mutationFn: () => {
+      const { mutateFn } = ProjectQueryOptions.likeProject(projectId as string);
+
+      return mutateFn();
+    },
+    onSuccess: () => {
+      setIsLiked((prev) => !prev);
+    }
+  });
+
   const handleScrollToElement = (id: string) => {
     scrollToElement(id);
   };
@@ -55,12 +73,13 @@ const ProjectDetailSideBar = ({
         </div>
         <div className="flex justify-between">
           <SButton
-            className={`w-[16rem] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked && 'bg-red-95'}`}
+            className={`w-[160px] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
+            onClick={likeProject}
           >
             <SImage src={isLiked ? '/likeFill.svg' : '/like.svg'} width={20} height={20} />
             <p className={`font-bd text-[1rem] ${isLiked && 'text-red-50'}`}>좋아요</p>
           </SButton>
-          <SButton className="w-[9.4rem] h-[6rem] flex flex-col gap-1 rounded-large border-none bg-slate-98">
+          <SButton className="w-[9.4rem] h-[6rem] flex flex-col gap-1 rounded-large border-none hover:bg-slate-95">
             <SImage src="/share.svg" width={20} height={20} />
             <p className={`font-bd text-[1rem]`}>공유</p>
           </SButton>

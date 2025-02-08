@@ -37,22 +37,24 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const projectDetail = projectDetailQuery?.state.data;
   const projectComment = projectCommentQuery?.state.data;
 
-  const ImageSlideSrc = projectDetail?.overview.images.map((src: Image, index) => {
-    if (src.imageType === IMAGE_TYPE.BACKGROUND) {
-      return (
-        <SImage
-          key={index}
-          src={src.imageUrl}
-          width={306}
-          height={204}
-          alt={`Slide ${index + 1}`}
-          className="rounded-large"
-        />
-      );
-    }
-  });
-
-  console.log('projectDetail', projectDetail);
+  const ImageSlideSrc = (projectDetail?.overview.images || [])
+    .map((src: Image, index) => {
+      if (src.imageType === IMAGE_TYPE.BACKGROUND) {
+        return (
+          <SImage
+            key={index}
+            src={src.imageUrl}
+            width={306}
+            height={204}
+            alt={`Slide ${index + 1}`}
+            className="rounded-large"
+          />
+        );
+      } else {
+        return undefined;
+      }
+    })
+    .filter((item) => item !== undefined);
 
   if (!projectDetailQuery) {
     redirect('/404');
@@ -66,15 +68,17 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
             <SImage src="/leftArrow.svg" width={14} height={14} />
             <p className="text-small text-slate-30">프로젝트 목록</p>
           </RouterPush>
-          <div className="py-5">{/* <SwiperComponent items={ImageSlideSrc} /> */}</div>
+          <div className="py-5">
+            <SwiperComponent items={ImageSlideSrc} />
+          </div>
           <div className="w-[128rem] mt-8 flex justify-center gap-5">
             <div className="w-[95.4rem] flex flex-col gap-10">
               <ProjectDetail detail={projectDetail} />
-              <CommentComponent commentInfo={projectComment} />
+              <CommentComponent projectId={projectId} />
             </div>
             <ProjectDetailSideBar
               thumbnailImage={projectDetail?.head.thumbnailImageUrl}
-              isLiked={projectDetail?.isLiked}
+              liked={projectDetail?.isLiked}
               likeCounts={projectDetail?.likeCounts}
               teamMember={projectDetail?.participantList || []}
               viewCount={projectDetail?.viewCount}

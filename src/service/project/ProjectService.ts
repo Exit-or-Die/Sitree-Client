@@ -9,6 +9,9 @@ class ProjectService extends Service {
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
   }
+  likeProject(projectId: string) {
+    return this.http.post(`projects/${projectId}/likes`, {}, { includeAuth: true });
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
