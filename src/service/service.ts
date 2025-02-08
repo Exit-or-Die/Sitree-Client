@@ -131,11 +131,11 @@ class Service {
     return this.request<T>('POST', url, data, config);
   }
 
-  private put<T>(url: string, data?: unknown, config?: RequestInitWithAuth = {}): Promise<T> {
+  private put<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PUT', url, data, config);
   }
 
-  private patch<T>(url: string, data?: unknown, config?: RequestInitWithAuth = {}): Promise<T> {
+  private patch<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PATCH', url, data, config);
   }
 }
