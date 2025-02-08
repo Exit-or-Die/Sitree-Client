@@ -1,3 +1,5 @@
+import { COOKIE_KEY } from '@/constants/cookie';
+import { getCookie } from '@/utils/cookie';
 import { Nullable } from 'types/common';
 
 import Service from '../service';
@@ -43,6 +45,17 @@ class AuthService extends Service {
 
   validateUsername(nickname: string) {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
+  }
+
+  renewAccessToken() {
+    const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
+    const response = this.http.get<UserDetail>('members/refresh', {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`
+      }
+    });
+
+    return response;
   }
 }
 

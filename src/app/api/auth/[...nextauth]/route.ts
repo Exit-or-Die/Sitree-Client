@@ -1,5 +1,7 @@
+import { COOKIE_KEY } from '@/constants/cookie';
 import { ROUTES } from '@/constants/route';
 import AuthService, { UserDetail } from '@/service/auth/AuthService';
+import { setCookie } from '@/utils/cookie';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -21,7 +23,6 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      const cookieStore = cookies();
       if (!account) return false;
 
       const { email } = user;
@@ -38,8 +39,9 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        if (!response.isNewMember && response.accessToken) {
-          cookieStore.set('accessToken', response.accessToken);
+        if (!response.isNewMember && response.accessToken && response.refreshToken) {
+          setCookie(COOKIE_KEY.ACCESS_TOKEN, response.accessToken, { cookies });
+          setCookie(COOKIE_KEY.REFRESH_TOKEN, response.refreshToken, { cookies });
         }
 
         user.information = { ...response, oAuthToken: accessToken, provider };
