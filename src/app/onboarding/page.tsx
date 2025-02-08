@@ -3,23 +3,27 @@
 import { ERROR_MESSAGES } from '@/constants/error';
 import { useSignUp } from '@/service/auth/queries';
 import AuthQueryOptions from '@/service/auth/queries';
-import { useMutation } from '@tanstack/react-query';
+import BelongingQueryOptions from '@/service/belonging/queries';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Nullable } from 'types/common';
 
 import OnboardingButtonField from '@/components/account/OnboardingButtonField';
 import OnboardingInputField from '@/components/account/OnboardingInputField';
+import Dropdown from '@/components/common/Dropdown';
 
 const Onboarding = () => {
   const { data: session, status } = useSession();
   const [username, setUsername] = useState('');
   const [isUsernameValid, setIsUsernameValid] = useState<Nullable<boolean>>(null);
   const [affiliation, setAffiliation] = useState('');
+  const [debouncedAffiliation, setDebouncedAffiliation] = useState('');
   const [link, setLink] = useState('');
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(ERROR_MESSAGES.USERNAME_INVALID);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const { mutate: signUp } = useSignUp();
   const { mutate: validateUsername } = useMutation({
     mutationFn: () => AuthQueryOptions.validateUsername(username).mutateFn(),
@@ -38,6 +42,21 @@ const Onboarding = () => {
     }
   });
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedAffiliation(affiliation);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [affiliation]);
+
+  const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
+  const { data: belongingData = [] } = useQuery({
+    queryKey,
+    queryFn,
+    enabled: !!debouncedAffiliation
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session || !isUsernameValid) return;
@@ -49,7 +68,6 @@ const Onboarding = () => {
       oAuthToken: detail.oAuthToken,
       email: detail.email,
       nickname: username || detail.nickname,
-      profileImgUrl: session.user?.image,
       thirdPartyProfileUrl: link,
       belonging: affiliation
     };
@@ -64,6 +82,20 @@ const Onboarding = () => {
   const handleUsernameVerify = () => {
     if (username) {
       validateUsername();
+    }
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownVisible(false);
+  };
+
+  const handleAffiliationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setIsDropdownVisible(true);
+    setAffiliation(query);
+
+    if (!query) {
+      closeDropdown();
     }
   };
 
@@ -97,8 +129,21 @@ const Onboarding = () => {
           <OnboardingInputField
             label="소속"
             value={affiliation}
-            setValue={(e) => setAffiliation(e.target.value)}
+            setValue={handleAffiliationChange}
             placeholder="학교, 회사 등 현재 소속을 입력해 주세요"
+            renderDropdown={() =>
+              isDropdownVisible && belongingData.length > 0 ? (
+                <Dropdown
+                  list={belongingData}
+                  searchCount={belongingData.length}
+                  onSelect={(suggestion) => {
+                    setAffiliation(suggestion);
+                    closeDropdown();
+                  }}
+                  closeDropdown={closeDropdown}
+                />
+              ) : null
+            }
           />
 
           <OnboardingInputField
