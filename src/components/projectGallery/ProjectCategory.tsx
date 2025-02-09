@@ -1,6 +1,8 @@
 'use client';
-import { CategoriesData } from '@/service/category/CategoryService';
+
+import { CategoriesData } from '@/service/category/response';
 import React from 'react';
+
 type Props = {
   categoriesData: Array<CategoriesData>;
   selectedCategory: CategoriesData;

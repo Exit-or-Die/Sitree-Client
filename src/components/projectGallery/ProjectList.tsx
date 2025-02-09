@@ -1,7 +1,7 @@
 'use client';
 
 import { FILTER_CATEGORIES } from '@/constants/home';
-import { CategoriesData } from '@/service/category/CategoryService';
+import { CategoriesData } from '@/service/category/response';
 import ProjectQueryOptions from '@/service/project/queries';
 import { FilterCategory } from '@/service/project/request';
 import { getTimeDifferenceMessage } from '@/utils/time';

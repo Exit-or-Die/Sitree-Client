@@ -3,18 +3,16 @@
 import { CATEGORIES } from '@/constants/home';
 import RankingQueryOptions from '@/service/ranking/queries';
 import { Affiliation } from '@/service/ranking/response';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 import SImage from '../common/Image';
 
 const AffiliationRanking = () => {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
-
-  const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking(
-    selectedCategory.type
-  );
-  const { data = [] } = useQuery<Array<Affiliation>>({ queryKey, queryFn });
+  const { queryKey } = RankingQueryOptions.retrieveAffiliationRanking(selectedCategory.type);
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<Array<Affiliation>>(queryKey) || [];
 
   return (
     <div className="pt-6 rounded-xl min-w-[302px]">

@@ -2,18 +2,19 @@
 
 import ProjectQueryOptions from '@/service/project/queries';
 import { SitreePickResponse } from '@/service/project/response';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useRef, useEffect } from 'react';
 import { Nullable } from 'types/common';
 
 import SImage from '../common/Image';
 
 const SitreePick = () => {
-  const { queryKey, queryFn } = ProjectQueryOptions.retrieveSitreePick();
-  const { data = [] } = useQuery<Array<SitreePickResponse>>({ queryKey, queryFn });
+  const { queryKey } = ProjectQueryOptions.retrieveSitreePick();
   const [selectedProject, setSelectedProject] = useState<Nullable<SitreePickResponse>>(null);
   const selectedRef = useRef(null);
   const [position, setPosition] = useState(0);
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<Array<SitreePickResponse>>(queryKey) || [];
 
   useEffect(() => {
     if (data.length > 0) {
@@ -55,13 +56,7 @@ const SitreePick = () => {
             {data.map((project) => (
               <li
                 key={project.projectId}
-                ref={
-                  !selectedProject
-                    ? null
-                    : selectedProject.projectId === project.projectId
-                      ? selectedRef
-                      : null
-                }
+                ref={selectedProject?.projectId === project.projectId ? selectedRef : null}
                 className="relative flex items-center p-3 cursor-pointer rounded-lg transition"
                 onClick={() => setSelectedProject(project)}
               >
