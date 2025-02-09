@@ -1,7 +1,7 @@
-import AuthService from '@/service/auth/AuthService';
-
-import { RequestConfigWithResponse } from '..';
-
+import { COOKIE_KEY } from '@/constants/cookie';
+import { UserDetail } from '@/service/auth/response';
+import { RequestConfigWithResponse } from '@/service/types';
+import { getCookie } from 'cookies-next';
 import { setCookie } from 'cookies-next/client';
 
 export const handleResponseByCode = async <T>(
@@ -18,7 +18,7 @@ export const handleResponseByCode = async <T>(
   if (response.code === 401) {
     console.log('Access token expired. Renewing token...');
     try {
-      const { accessToken, refreshToken } = await AuthService.renewAccessToken();
+      const { accessToken, refreshToken } = await renewAccessToken();
       setCookie('accessToken', accessToken);
       setCookie('refreshToken', refreshToken);
 
@@ -58,4 +58,30 @@ export const handleResponseByCode = async <T>(
   }
 
   return;
+};
+
+const renewAccessToken = async (): Promise<UserDetail> => {
+  const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
+
+  if (!refreshToken) {
+    console.log('Refresh Token does not exist');
+    throw new Error('Failed to renew token');
+  }
+
+  const response = await fetch('https://api.si-tree.com/members/refresh', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to renew token');
+  }
+
+  const data = await response.json();
+
+  return data.value;
 };
