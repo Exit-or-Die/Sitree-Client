@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 type DefaultImgType = 'user' | 'affiliation' | 'default';
 
 interface ImageProps {
-  src?: string;
+  src: string;
   alt?: string;
   width?: number;
   height?: number;
@@ -20,7 +20,7 @@ interface ImageProps {
  */
 const SImage = (props: ImageProps) => {
   const {
-    src = '', // 기본값 설정
+    src,
     alt = 'Common Image Component',
     width,
     height,

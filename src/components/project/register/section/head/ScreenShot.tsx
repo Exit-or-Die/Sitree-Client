@@ -8,7 +8,7 @@ const TOTAL_SCREENSHOT_ITEMS = 8;
 
 const ProjectHeadScreenshot = () => {
   const { getValues } = useFormContext();
-  const [screenShotList, setScreenShotList] = useState<Array<Image>>(getValues('overview.images')); // 스크린샷 리스트를 빈 배열로 초기화
+  const [screenShotList, setScreenShotList] = useState<Array<Image>>(getValues('overview.images'));
 
   return (
     <div className="p-10">
@@ -30,7 +30,7 @@ const ProjectHeadScreenshot = () => {
         {screenShotList.map((screenShot, index) => (
           <ProjectScreenshotItem
             key={`screenshot-${index}`}
-            src={'https://picsum.photos/600/400'}
+            src={screenShot.imageUrl}
             alt={`Screenshot ${index + 1}`}
             className="w-full h-auto"
             isRepresentative={!index}

@@ -72,7 +72,9 @@ export interface FocusedPoint {
 }
 
 export interface Participant {
-  memberId: number;
+  memberNo: number;
+  nickname: string;
+  imageUrl: string;
   position: string;
   focusPoint: string | null;
   leader: boolean;

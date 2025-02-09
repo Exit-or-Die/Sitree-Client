@@ -42,7 +42,6 @@ const ProjectDetailTech = ({ id, techviewList }: ProjectDetailTechProps) => {
       </div>
       <div className="flex flex-col gap-2">
         <p className="py-1">기술 설명</p>
-        {/* editor viewer로? */}
         <SViewer content={techviewList[currentIndex].techDesc} key={currentIndex} />
       </div>
       <div className="flex flex-col gap-2">

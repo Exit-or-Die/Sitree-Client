@@ -126,7 +126,7 @@ const ProjectDetailSideBar = ({
             <SImage src="https://picsum.photos/400/400" />
           </div>
           <div className="flex flex-col justify-center">
-            <span className="font-lb tracking-[-0.32px] text-base">{teamLeader?.memberId}</span>
+            <span className="font-lb tracking-[-0.32px] text-base">{teamLeader?.nickname}</span>
             <span className="tracking-[-0.13px] text-[1.3rem] text-slate-50">
               {teamLeader?.position}
             </span>

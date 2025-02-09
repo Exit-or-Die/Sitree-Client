@@ -28,8 +28,8 @@ const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
           {participantList.map((member, index) => (
             <ProjectMemberItem
               key={`project_detail_member_${index}`}
-              imageSrc={''}
-              name={'교체'}
+              imageSrc={member.imageUrl}
+              name={member.nickname}
               index={index}
               position={member.position}
               isOwner={member.leader}

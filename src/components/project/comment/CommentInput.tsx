@@ -67,7 +67,6 @@ const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputP
   };
 
   const handleComment = (comment: string) => {
-    console.log('commentInfo', commentInfo);
     if (commentInfo?.commentId) {
       handleEditComment(comment);
     } else {

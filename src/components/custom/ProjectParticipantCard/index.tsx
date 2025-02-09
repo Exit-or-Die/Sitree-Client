@@ -12,7 +12,7 @@ const ProjectParticipantCard: React.FC<TeamMember> = ({ image, name, description
   return (
     <div className="bg-white rounded-large px-4 py-5 border-[1px] w-[20.4rem] border-slate-90 flex flex-col items-center gap-4">
       <SImage
-        src={'https://picsum.photos/600/400'}
+        src={image}
         width={64}
         height={64}
         alt={name}

@@ -23,10 +23,10 @@ const ProjectDevArchitecture = ({ architectureList }: ProjectDevArchitectureProp
         items={architectureList.map((architecture) => architecture.architectureType)}
         onChange={(item, index) => setCurrentIndex(index)}
       />
-      {/* 이미지 없을 때 처리 */}
       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-large border border-1 border-slate-90">
         <SImage
           src={architectureList[currentIndex].architectureImage}
+          defaultType="affiliation"
           className="object-cover"
           alt="Sitree Architecture Image"
         />

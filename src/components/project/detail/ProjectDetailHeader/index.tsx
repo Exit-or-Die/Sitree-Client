@@ -39,7 +39,7 @@ const HealthCheckState = ({ health }: { health: boolean }) => {
   );
 };
 
-const ProjectLinkItem = ({ text = '테스트', url = 'https://www.naver.com' }: ProjectLinkProps) => {
+const ProjectLinkItem = ({ text, url }: ProjectLinkProps) => {
   return (
     <Link href={url} target="_blank">
       <div className="px-[1rem] py-1.5 flex gap-1 items-center bg-slate-95 rounded-[999px]">
