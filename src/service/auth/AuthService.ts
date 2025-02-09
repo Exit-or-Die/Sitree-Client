@@ -1,37 +1,7 @@
-import { Maybe, Nullable } from 'types/common';
+import Service from '@/service/service';
 
-import Service from '../service';
-
-export interface UserDetail {
-  authId: string;
-  provider: string;
-  email: string;
-  nickname: string;
-  oAuthToken: string;
-  profileImgUrl: string;
-  isNewMember: boolean;
-  accessToken?: Nullable<string>;
-  refreshToken?: Nullable<string>;
-}
-export interface SignInData {
-  provider: string;
-  email: string;
-  oAuthToken: string;
-}
-
-export interface SignUpData {
-  provider: string;
-  oAuthToken: string;
-  email: string;
-  nickname: string;
-  profileImgUrl: Maybe<string>;
-  thirdPartyProfileUrl?: string;
-  belonging?: string;
-}
-
-interface ValidateUsername {
-  exist: boolean;
-}
+import { SignInData, SignUpData } from './request';
+import { UserDetail, ValidateUsername } from './response';
 
 class AuthService extends Service {
   signIn(data: SignInData) {

@@ -17,6 +17,7 @@ type Props = {
   successMessage?: string;
   errorMessage?: string;
   showIcon?: boolean;
+  renderDropdown?: () => React.ReactNode;
 };
 
 const OnboardingInputField = ({
@@ -30,7 +31,8 @@ const OnboardingInputField = ({
   isValid = null,
   successMessage,
   errorMessage,
-  showIcon = false
+  showIcon = false,
+  renderDropdown
 }: Props) => {
   return (
     <div className="mb-6">
@@ -81,6 +83,7 @@ const OnboardingInputField = ({
       {isValid === false && errorMessage && (
         <p className="text-small text-[#F6424E]">{errorMessage}</p>
       )}
+      {renderDropdown && <div className="relative">{renderDropdown()}</div>}
     </div>
   );
 };

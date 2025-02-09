@@ -1,11 +1,6 @@
-import { ApiResponse } from '../service';
-import { handleResponseByCode } from './response';
+import { RequestConfigWithResponse } from '@/service/types';
 
-export interface RequestConfigWithResponse<T> extends RequestInit {
-  url: string;
-  method: string;
-  response?: ApiResponse<T>;
-}
+import { handleResponseByCode } from './response';
 
 export type InterceptorFunction<T = unknown> = (
   config: RequestConfigWithResponse<T>

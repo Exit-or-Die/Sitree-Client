@@ -1,7 +1,8 @@
-'use client';
-
+import { DEFAULT_IMG_SRC } from '@/constants/image';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
+type DefaultImgType = 'user' | 'affiliation' | 'default';
 
 interface ImageProps {
   src?: string;
@@ -9,6 +10,7 @@ interface ImageProps {
   width?: number;
   height?: number;
   className?: string;
+  defaultType?: DefaultImgType;
   onClick?: () => void;
 }
 
@@ -23,35 +25,26 @@ const SImage = (props: ImageProps) => {
     width,
     height,
     onClick = () => {},
-    className
+    className,
+    defaultType = 'default'
   } = props;
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [srcSet, setSrcSet] = useState(src);
-
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (typeof src === 'string' && !src.startsWith('/')) {
-      setSrcSet('');
-    } else {
-      setSrcSet(src); // src가 올바른 경우 유지
-    }
-  }, [src]);
+  const [imgSrc, setImgSrc] = useState(src);
 
   return (
-    <Image
-      className={className}
-      src={srcSet} // 기본값이 빈 문자열로 설정됨
-      alt={alt}
-      fill={!width && !height}
-      width={width}
-      height={height}
-      onLoad={handleLoad}
-      onClick={onClick}
-    />
+    <div>
+      <Image
+        className={className}
+        src={imgSrc}
+        alt={alt}
+        fill={!width && !height}
+        width={width}
+        height={height}
+        onClick={onClick}
+        onError={() => {
+          setImgSrc(DEFAULT_IMG_SRC[defaultType]);
+        }}
+      />
+    </div>
   );
 };
 

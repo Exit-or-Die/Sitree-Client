@@ -1,35 +1,22 @@
+import { COOKIE_KEY } from '@/constants/cookie';
+import { ApiResponse, RequestInitWithAuth, RequestConfigWithResponse } from '@/service/types';
 import { getCookie } from '@/utils/cookie';
 
 import {
   requestInterceptors,
   responseInterceptors,
   runInterceptors,
-  RequestConfigWithResponse,
   InterceptorFunction
 } from './interceptor';
 
 interface HTTPInstance {
-  get<T>(url: string, config?: RequestInit & { includeAuth?: boolean }): Promise<T>;
-  delete<T>(url: string, config?: RequestInit & { includeAuth?: boolean }): Promise<T>;
-  head<T>(url: string, config?: RequestInit & { includeAuth?: boolean }): Promise<T>;
-  options<T>(url: string, config?: RequestInit & { includeAuth?: boolean }): Promise<T>;
-  post<T>(
-    url: string,
-    data?: unknown,
-    config?: RequestInit & { includeAuth?: boolean }
-  ): Promise<T>;
-  put<T>(url: string, data?: unknown, config?: RequestInit & { includeAuth?: boolean }): Promise<T>;
-  patch<T>(
-    url: string,
-    data?: unknown,
-    config?: RequestInit & { includeAuth?: boolean }
-  ): Promise<T>;
-}
-
-export interface ApiResponse<T> {
-  code: number;
-  message: string;
-  value: T;
+  get<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  delete<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  head<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  options<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  post<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  put<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  patch<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
 }
 
 class Service {
@@ -43,8 +30,11 @@ class Service {
     this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
       csrf: 'token',
-      Referer: this.baseURL
+      Referer: this.baseURL,
+      'Content-Type': 'application/json'
     };
+
+    this.request = this.request.bind(this);
 
     this.http = {
       get: this.get.bind(this),
@@ -58,9 +48,7 @@ class Service {
   }
 
   private getToken(): string {
-    // 토큰을 가져오는 로직을 구현합니다.
-    // 예를 들어, 로컬 스토리지에서 토큰을 가져올 수 있습니다.
-    return getCookie('accessToken') || '';
+    return getCookie(COOKIE_KEY.ACCESS_TOKEN) || '';
   }
 
   public addRequestInterceptor(interceptor: InterceptorFunction): void {
@@ -75,7 +63,7 @@ class Service {
     method: string,
     url: string,
     data?: unknown,
-    config: RequestInit & { includeAuth?: boolean } = {}
+    config: RequestInitWithAuth = {}
   ): Promise<T> {
     const headers: Record<string, string> = {
       ...this.headers,
@@ -90,10 +78,16 @@ class Service {
     const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
-      headers,
+      headers: {
+        ...this.headers,
+        ...config.headers,
+        ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
+      },
       credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
-      url: this.baseURL + url
+      baseURL: this.baseURL,
+      url: this.baseURL + url,
+      request: this.request
     };
 
     try {
@@ -101,9 +95,6 @@ class Service {
 
       const { url: requestUrl, ...fetchConfig } = requestConfig;
       const response = await fetch(requestUrl, fetchConfig);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
 
       const responseData: ApiResponse<T> = await response.json();
       requestConfig.response = responseData;
@@ -122,46 +113,31 @@ class Service {
     }
   }
 
-  private get<T>(url: string, config: RequestInit & { includeAuth?: boolean } = {}): Promise<T> {
+  private get<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('GET', url, undefined, config);
   }
 
-  private delete<T>(url: string, config: RequestInit & { includeAuth?: boolean } = {}): Promise<T> {
+  private delete<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('DELETE', url, undefined, config);
   }
 
-  private head<T>(url: string, config: RequestInit & { includeAuth?: boolean } = {}): Promise<T> {
+  private head<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('HEAD', url, undefined, config);
   }
 
-  private options<T>(
-    url: string,
-    config: RequestInit & { includeAuth?: boolean } = {}
-  ): Promise<T> {
+  private options<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('OPTIONS', url, undefined, config);
   }
 
-  private post<T>(
-    url: string,
-    data?: unknown,
-    config: RequestInit & { includeAuth?: boolean } = {}
-  ): Promise<T> {
+  private post<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('POST', url, data, config);
   }
 
-  private put<T>(
-    url: string,
-    data?: unknown,
-    config: RequestInit & { includeAuth?: boolean } = {}
-  ): Promise<T> {
+  private put<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PUT', url, data, config);
   }
 
-  private patch<T>(
-    url: string,
-    data?: unknown,
-    config: RequestInit & { includeAuth?: boolean } = {}
-  ): Promise<T> {
+  private patch<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PATCH', url, data, config);
   }
 }

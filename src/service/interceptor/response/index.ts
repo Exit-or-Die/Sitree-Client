@@ -1,6 +1,12 @@
-import { RequestConfigWithResponse } from '..';
+import { COOKIE_KEY } from '@/constants/cookie';
+import { UserDetail } from '@/service/auth/response';
+import { RequestConfigWithResponse } from '@/service/types';
+import { getCookie } from 'cookies-next';
+import { setCookie } from 'cookies-next/client';
 
-export const handleResponseByCode = <T>(config: RequestConfigWithResponse<T>): void => {
+export const handleResponseByCode = async <T>(
+  config: RequestConfigWithResponse<T>
+): Promise<void> => {
   const { response } = config;
 
   // response가 undefined인지 확인
@@ -8,8 +14,74 @@ export const handleResponseByCode = <T>(config: RequestConfigWithResponse<T>): v
     throw new Error('API Error: Response is undefined');
   }
 
+  // accessToken 만료되었을시
+  if (response.code === 401) {
+    console.log('Access token expired. Renewing token...');
+    try {
+      const { accessToken, refreshToken } = await renewAccessToken();
+      setCookie('accessToken', accessToken);
+      setCookie('refreshToken', refreshToken);
+
+      const updatedConfig: RequestConfigWithResponse<T> = {
+        ...config,
+        headers: {
+          ...config.headers
+        },
+        includeAuth: true
+      };
+
+      const { pathname, search } = new URL(updatedConfig.url);
+      const fullPathURL = pathname + search;
+      const json: T = await updatedConfig.request(
+        updatedConfig.method,
+        fullPathURL.slice(1),
+        updatedConfig.body,
+        updatedConfig
+      );
+
+      config.response = {
+        code: 0,
+        message: 'successfully fetched!',
+        value: json
+      };
+
+      return;
+    } catch (error) {
+      console.error('Failed to renew token:', error);
+      throw new Error('Unauthorized: Failed to renew access token');
+    }
+  }
+
   // code 값에 따라 처리
   if (response.code !== 0) {
     throw new Error(`API Error: ${response.code}`);
   }
+
+  return;
+};
+
+const renewAccessToken = async (): Promise<UserDetail> => {
+  const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
+
+  if (!refreshToken) {
+    console.log('Refresh Token does not exist');
+    throw new Error('Failed to renew token');
+  }
+
+  const response = await fetch('https://api.si-tree.com/members/refresh', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to renew token');
+  }
+
+  const data = await response.json();
+
+  return data.value;
 };

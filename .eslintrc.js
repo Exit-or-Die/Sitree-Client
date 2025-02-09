@@ -77,11 +77,6 @@ module.exports = {
         argsIgnorePattern: '^_'
       }
     ],
-    'no-console': [
-      2,
-      {
-        allow: ['warn', 'error']
-      }
-    ]
+    'no-console': 'off'
   }
 };
