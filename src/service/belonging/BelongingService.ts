@@ -1,13 +1,6 @@
-import { Belonging } from 'types/common';
-
 import Service from '../service';
+import { BelongingData } from './response';
 
-interface BelongingData {
-  belongingId: number;
-  belongingType: Belonging;
-  name: string;
-  imageUrl: string;
-}
 class BelongingService extends Service {
   search(belonging: string) {
     const params = new URLSearchParams({ name: belonging }).toString();
