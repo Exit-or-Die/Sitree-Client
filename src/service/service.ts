@@ -1,3 +1,6 @@
+import { COOKIE_KEY } from '@/constants/cookie';
+import { getCookie } from '@/utils/cookie';
+
 import {
   requestInterceptors,
   responseInterceptors,
@@ -6,14 +9,18 @@ import {
   InterceptorFunction
 } from './interceptor';
 
+export interface RequestInitWithAuth extends RequestInit {
+  includeAuth?: boolean;
+}
+
 interface HTTPInstance {
-  get<T>(url: string, config?: RequestInit): Promise<T>;
-  delete<T>(url: string, config?: RequestInit): Promise<T>;
-  head<T>(url: string, config?: RequestInit): Promise<T>;
-  options<T>(url: string, config?: RequestInit): Promise<T>;
-  post<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
-  put<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
-  patch<T>(url: string, data?: unknown, config?: RequestInit): Promise<T>;
+  get<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  delete<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  head<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  options<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
+  post<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  put<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
+  patch<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
 }
 
 export interface ApiResponse<T> {
@@ -33,8 +40,11 @@ class Service {
     this.baseURL = 'https://api.si-tree.com/';
     this.headers = {
       csrf: 'token',
-      Referer: this.baseURL
+      Referer: this.baseURL,
+      'Content-Type': 'application/json'
     };
+
+    this.request = this.request.bind(this);
 
     this.http = {
       get: this.get.bind(this),
@@ -45,6 +55,10 @@ class Service {
       put: this.put.bind(this),
       patch: this.patch.bind(this)
     };
+  }
+
+  private getToken(): string {
+    return getCookie(COOKIE_KEY.ACCESS_TOKEN) || '';
   }
 
   public addRequestInterceptor(interceptor: InterceptorFunction): void {
@@ -59,19 +73,21 @@ class Service {
     method: string,
     url: string,
     data?: unknown,
-    config: RequestInit = {}
+    config: RequestInitWithAuth = {}
   ): Promise<T> {
     const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
       headers: {
         ...this.headers,
-        'Content-Type': 'application/json',
-        ...config.headers
+        ...config.headers,
+        ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',
       body: data ? JSON.stringify(data) : undefined,
-      url: this.baseURL + url
+      baseURL: this.baseURL,
+      url: this.baseURL + url,
+      request: this.request
     };
 
     try {
@@ -79,9 +95,6 @@ class Service {
 
       const { url: requestUrl, ...fetchConfig } = requestConfig;
       const response = await fetch(requestUrl, fetchConfig);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
 
       const responseData: ApiResponse<T> = await response.json();
       requestConfig.response = responseData;
@@ -100,31 +113,31 @@ class Service {
     }
   }
 
-  private get<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private get<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('GET', url, undefined, config);
   }
 
-  private delete<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private delete<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('DELETE', url, undefined, config);
   }
 
-  private head<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private head<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('HEAD', url, undefined, config);
   }
 
-  private options<T>(url: string, config: RequestInit = {}): Promise<T> {
+  private options<T>(url: string, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('OPTIONS', url, undefined, config);
   }
 
-  private post<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private post<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('POST', url, data, config);
   }
 
-  private put<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private put<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PUT', url, data, config);
   }
 
-  private patch<T>(url: string, data?: unknown, config: RequestInit = {}): Promise<T> {
+  private patch<T>(url: string, data?: unknown, config: RequestInitWithAuth = {}): Promise<T> {
     return this.request<T>('PATCH', url, data, config);
   }
 }

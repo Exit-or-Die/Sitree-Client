@@ -1,3 +1,3 @@
-export const extractContentFromHtml = (html: string): string => {
-  return html.replace(/<\/?[^>]+(>|$)/g, '');
+export const extractContentFromHtml = (html?: string): string => {
+  return (html ?? '').replace(/<\/?[^>]+(>|$)/g, '');
 };

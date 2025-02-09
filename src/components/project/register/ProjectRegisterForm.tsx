@@ -1,9 +1,11 @@
 'use client';
-import ProjectQueryOptions from '@/service/project/queries';
-import { ProjectDetailResponse } from '@/service/project/response';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import ProjectQueryOptions from '@/service/project/queries';
+import { ProjectDetailResponse } from '@/service/project/response';
 
 import SButton from '@/components/common/Button';
 import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
@@ -16,58 +18,52 @@ import {
   ProjectRegisterTechViewList
 } from './section';
 import ProjectRegisterArchitectureList from './section/architectureList';
+
 interface ProjectRegisterFormProps {
-  projectId: string;
+  projectId?: string;
 }
 
+const defaultData: ProjectDetailResponse = {
+  head: { title: '', thumbnailImageUrl: '', shortDescription: '', healthCheckUrl: '' },
+  tagList: [],
+  overview: {
+    images: [],
+    clientUrl: { WEB: ' ', IOS: '', WINDOWS: '', AOS: '', MAC_OS: '' },
+    detailDescription: ''
+  },
+  techviewList: [],
+  architectureList: [],
+  participantList: []
+};
+
 const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
-  const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectDetail(projectId);
-  const { data: defaultValues = {} as ProjectDetailResponse } = useQuery({
+  const { queryKey, queryFn } = projectId
+    ? ProjectQueryOptions.retrieveProjectDetail(projectId)
+    : { queryKey: [], queryFn: async () => defaultData };
+
+  const { data } = useQuery({
     queryKey,
-    queryFn
+    queryFn,
+    enabled: !!projectId,
+    placeholderData: defaultData
   });
 
-  // @ts-expect-error 테스트용 허용
-  const onInvalid = (errors) => console.error(errors);
+  const formMethods = useForm({ resolver: zodResolver(projectSchema), mode: 'onChange' });
 
-  const formMethods = useForm({
-    resolver: zodResolver(projectSchema),
-    mode: 'onChange',
-    defaultValues: {
-      head: {
-        title: defaultValues.head?.title || '',
-        thumbnailImageUrl: defaultValues.head?.thumbnailImageUrl || '',
-        shortDescription: defaultValues.head?.shortDescription || '',
-        healthCheckUrl: defaultValues.head?.healthCheckUrl || ''
-      },
-      tagList: defaultValues.tagList || [],
-      overview: {
-        images: defaultValues.overview?.images || [],
-        clientUrl: {
-          WEB: defaultValues.overview.clientUrl.WEB,
-          IOS: defaultValues.overview.clientUrl.IOS,
-          WINDOWS: defaultValues.overview.clientUrl.WINDOWS,
-          AOS: defaultValues.overview.clientUrl.AOS,
-          MAC_OS: defaultValues.overview.clientUrl.MAC_OS
-        },
-        detailDescription: defaultValues.overview?.detailDescription || ''
-      },
-      techviewList: defaultValues.techviewList || [],
-      architectureList: defaultValues.architectureList || [],
-      participantList: defaultValues.participantList || []
+  useEffect(() => {
+    if (data) {
+      formMethods.reset(data);
     }
-  });
+  }, [data, formMethods]);
 
-  const isCompleted = false;
+  const onInvalid = (errors: unknown) => console.error(errors);
 
   return (
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
           <form
-            onSubmit={formMethods.handleSubmit((data) => {
-              console.log(data);
-            }, onInvalid)}
+            onSubmit={formMethods.handleSubmit(console.log, onInvalid)}
             className="flex flex-col gap-10"
           >
             <ProjectRegisterHead />
@@ -75,19 +71,17 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             <ProjectRegisterTechViewList />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList />
+            <SButton
+              type="submit"
+              size="xl"
+              className="w-full leading-5 justify-center bg-tree-50 text-white-100"
+            >
+              등록하기
+            </SButton>
           </form>
         </div>
         <div className="w-[30.4rem] sticky top-5 self-start space-y-2">
           <ProjectUploadProgress />
-          <SButton
-            size="xl"
-            onClick={formMethods.handleSubmit((data) => {
-              console.log(data);
-            }, onInvalid)}
-            className={`w-full leading-5 tracking-[-0.16px] justify-center ${isCompleted ? 'bg-tree-50 text-white-100' : 'bg-slate-90 text-slate-80'}`}
-          >
-            등록하기
-          </SButton>
         </div>
       </FormProvider>
     </div>

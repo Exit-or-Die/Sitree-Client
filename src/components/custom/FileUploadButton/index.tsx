@@ -1,7 +1,10 @@
+'use client';
+
 import { uploadFile } from '@/utils/file';
 import React, { useRef } from 'react';
 
 import SImage from '@/components/common/Image';
+import SButton from '@/components/common/Button';
 
 type FileUploadButtonProps = {
   text: string;
@@ -26,6 +29,7 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log('file', file);
     if (file) {
       try {
         const fileUrl = await uploadFile(file);
@@ -40,14 +44,14 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
 
   return (
     <div>
-      <button
+      <SButton
         type="button"
-        className={`flex items-center gap-2 ${className}`}
+        className={`flex items-center gap-1 ${className}`}
         onClick={handleButtonClick}
       >
-        {iconName && <SImage src={iconName} />}
         {text}
-      </button>
+        {iconName && <SImage src={iconName} width={16} height={16} />}
+      </SButton>
       <input
         type="file"
         ref={fileInputRef}

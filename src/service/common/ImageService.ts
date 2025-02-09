@@ -2,7 +2,7 @@ import Service from '../service';
 
 class ImageService extends Service {
   registerImage(file: FormData) {
-    return this.http.post<string>('image', file);
+    return this.http.post<string>('image', file, { includeAuth: true });
   }
 }
 

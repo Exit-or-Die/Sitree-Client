@@ -1,8 +1,25 @@
-import SImage from '@/components/common/Image';
+'use client';
 
+import SImage from '@/components/common/Image';
 import FileUploadButton from '../FileUploadButton';
+import { useFormContext } from 'react-hook-form';
+import { ProjectRegisterRequest } from '@/service/project/request';
+import { useState, useEffect } from 'react';
 
 const ProjectIconUpload = () => {
+  const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
+  const [iconUrl, setIconUrl] = useState<string>('');
+
+  useEffect(() => {
+    const initialImage = getValues('head.thumbnailImageUrl') || '/EmptyImage.svg';
+    setIconUrl(initialImage);
+  }, [getValues]);
+
+  const handleUpload = (fileUrl: string) => {
+    setIconUrl(fileUrl);
+    setValue('head.thumbnailImageUrl', fileUrl);
+  };
+
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex gap-1 py-1">
@@ -11,7 +28,7 @@ const ProjectIconUpload = () => {
       </div>
       <div className="w-[24rem] border rounded-[1.2rem] border-slate-90 px-[2.4rem] pt-[2.4rem] pb-[2.4rem] flex flex-col items-center gap-[2.4rem]">
         <div className="w-[9.6rem] h-[9.6rem] p-[2.4rem] border rounded-[2.4rem] border-slate-95 flex items-center justify-center">
-          <SImage src="/EmptyImage.svg" width={48} height={48} alt="project icon" />
+          <SImage src={iconUrl} width={48} height={48} alt="project icon" />
         </div>
         <div className="flex flex-col justify-center items-center">
           <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">
@@ -19,7 +36,7 @@ const ProjectIconUpload = () => {
           </p>
           <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
         </div>
-        <FileUploadButton text="파일 선택" onUpload={() => {}} />
+        <FileUploadButton text="파일 선택" iconName="/fileUpload.svg" onUpload={handleUpload} />
       </div>
     </div>
   );

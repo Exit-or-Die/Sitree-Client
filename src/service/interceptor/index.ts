@@ -1,9 +1,16 @@
-import { ApiResponse } from '../service';
+import { ApiResponse, RequestInitWithAuth } from '../service';
 import { handleResponseByCode } from './response';
 
-export interface RequestConfigWithResponse<T> extends RequestInit {
+export interface RequestConfigWithResponse<T> extends RequestInitWithAuth {
   url: string;
   method: string;
+  request: <T = unknown>(
+    method: string,
+    url: string,
+    data?: unknown,
+    config?: RequestInitWithAuth
+  ) => Promise<T>;
+  baseURL: string;
   response?: ApiResponse<T>;
 }
 

@@ -13,6 +13,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.us-east-1.amazonaws.com'
       }
     ]
   }
