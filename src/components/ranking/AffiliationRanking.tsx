@@ -2,7 +2,7 @@
 
 import { CATEGORIES } from '@/constants/home';
 import RankingQueryOptions from '@/service/ranking/queries';
-import { Affiliation } from '@/service/ranking/RankingService';
+import { Affiliation } from '@/service/ranking/response';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
@@ -11,7 +11,9 @@ import SImage from '../common/Image';
 const AffiliationRanking = () => {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
 
-  const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking();
+  const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking(
+    selectedCategory.type
+  );
   const { data = [] } = useQuery<Array<Affiliation>>({ queryKey, queryFn });
 
   return (
@@ -24,21 +26,21 @@ const AffiliationRanking = () => {
         <div className="pt-1 flex border-b text-sm h-[30px] text-slate-50">
           {CATEGORIES.map((category) => (
             <div
-              key={category}
+              key={category.label}
               className={`${
-                selectedCategory === category
+                selectedCategory.type === category.type
                   ? 'text-green-600 font-medium border-b-2 border-green-600'
                   : ''
               } px-2 text-small cursor-pointer`}
               onClick={() => setSelectedCategory(category)}
             >
-              {category}
+              {category.label}
             </div>
           ))}
         </div>
 
         <ul className="space-y-4 mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 h-[320px]">
-          {data.slice(0, 20).map((affiliation, index) => {
+          {data.map((affiliation, index) => {
             const rankChange = affiliation.prevRanking - affiliation.currentRanking;
             const rankChangeColor =
               rankChange > 0 ? '#F6424E' : rankChange < 0 ? '#1271FF' : 'gray';
@@ -61,7 +63,8 @@ const AffiliationRanking = () => {
                 <div className="ml-4 flex-grow">
                   <span className="text-base font-bd">{affiliation.name}</span>
                   <div className="text-xsmall text-slate-60 block">
-                    <span className="text-slate-30 font-md">8 </span>개 프로젝트
+                    <span className="text-slate-30 font-md">{affiliation.projectCount} </span>개
+                    프로젝트
                   </div>
                 </div>
                 <div className="text-sm" style={{ color: rankChangeColor }}>

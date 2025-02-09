@@ -1,13 +1,15 @@
 import RankingService from './RankingService';
+import { ExtendedAffiliationType } from './request';
 
 const queryKeys = {
-  retrieveAffiliationRanking: () => ['ranking', 'retrieveAffiliationRanking'] as const
+  retrieveAffiliationRanking: (type: ExtendedAffiliationType) =>
+    ['retrieveAffiliationRanking', type] as const
 };
 
 const RankingQueryOptions = {
-  retrieveAffiliationRanking: () => ({
-    queryKey: queryKeys.retrieveAffiliationRanking(),
-    queryFn: () => RankingService.retrieveAffiliationRanking()
+  retrieveAffiliationRanking: (type: ExtendedAffiliationType) => ({
+    queryKey: queryKeys.retrieveAffiliationRanking(type),
+    queryFn: () => RankingService.retrieveAffiliationRanking(type)
   })
 };
 

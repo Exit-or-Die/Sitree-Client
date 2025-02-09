@@ -1,18 +1,12 @@
-import { Nullable } from 'types/common';
-
 import Service from '../service';
+import { ExtendedAffiliationType } from './request';
+import { Affiliation } from './response';
 
-export interface Affiliation {
-  belongingId: number;
-  type: 'UNIVERSITY' | 'HIGH_SCHOOL' | 'CORPORATION';
-  name: string;
-  imageUrl: Nullable<string>;
-  currentRanking: number;
-  prevRanking: number;
-}
 class RankingService extends Service {
-  retrieveAffiliationRanking() {
-    return this.http.get<Array<Affiliation>>('belongings/ranking');
+  retrieveAffiliationRanking(type: ExtendedAffiliationType) {
+    const params = new URLSearchParams({ type }).toString();
+
+    return this.http.get<Array<Affiliation>>(`belongings/ranking?${params}`);
   }
 }
 

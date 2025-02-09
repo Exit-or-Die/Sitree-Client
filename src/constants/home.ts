@@ -1,6 +1,24 @@
 import { SortType } from '@/service/project/request';
+import { CategoryType } from '@/service/ranking/request';
 
-export const CATEGORIES = ['전체', '회사', '대학교', '고등학교'];
+export const CATEGORIES: Array<CategoryType> = [
+  {
+    label: '전체',
+    type: 'ALL'
+  },
+  {
+    label: '회사',
+    type: 'CORPORATION'
+  },
+  {
+    label: '대학교',
+    type: 'UNIVERSITY'
+  },
+  {
+    label: '고등학교',
+    type: 'HIGH_SCHOOL'
+  }
+];
 
 export const ALL = '전체 보기';
 

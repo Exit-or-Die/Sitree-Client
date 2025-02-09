@@ -1,3 +1,4 @@
+import { CATEGORIES } from '@/constants/home';
 import CategoryQueryOptions from '@/service/category/queries';
 import ProjectQueryOptions from '@/service/project/queries';
 import { ProjectParamsRequest } from '@/service/project/request';
@@ -11,11 +12,12 @@ import SitreePick from '@/components/sitreePick/SitreePick';
 
 const Home = async () => {
   const queryClient = new QueryClient();
-  const cachedParams: ProjectParamsRequest = {
+  const projectCachedParams: ProjectParamsRequest = {
     sortType: 'LATEST',
     categoryIds: [],
     nameKeyword: ''
   };
+  const categoryCachedParam = CATEGORIES[0].type;
 
   const { queryKey: categoryKey, queryFn: categoryFn } =
     CategoryQueryOptions.getGroupedCategories();
@@ -25,11 +27,11 @@ const Home = async () => {
   await queryClient.prefetchQuery({ queryKey: sitreeKey, queryFn: sitreeFn });
 
   const { queryKey: projectsKey, queryFn: projectsFn } =
-    ProjectQueryOptions.retrieveProjects(cachedParams);
+    ProjectQueryOptions.retrieveProjects(projectCachedParams);
   await queryClient.prefetchQuery({ queryKey: projectsKey, queryFn: projectsFn });
 
   const { queryKey: rankingKey, queryFn: rankingFn } =
-    RankingQueryOptions.retrieveAffiliationRanking();
+    RankingQueryOptions.retrieveAffiliationRanking(categoryCachedParam);
   await queryClient.prefetchQuery({ queryKey: rankingKey, queryFn: rankingFn });
 
   return (
