@@ -1,17 +1,13 @@
 import { COOKIE_KEY } from '@/constants/cookie';
+import { ApiResponse, RequestInitWithAuth, RequestConfigWithResponse } from '@/service/types';
 import { getCookie } from '@/utils/cookie';
 
 import {
   requestInterceptors,
   responseInterceptors,
   runInterceptors,
-  RequestConfigWithResponse,
   InterceptorFunction
 } from './interceptor';
-
-export interface RequestInitWithAuth extends RequestInit {
-  includeAuth?: boolean;
-}
 
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInitWithAuth): Promise<T>;
@@ -21,12 +17,6 @@ interface HTTPInstance {
   post<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
   put<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
   patch<T>(url: string, data?: unknown, config?: RequestInitWithAuth): Promise<T>;
-}
-
-export interface ApiResponse<T> {
-  code: number;
-  message: string;
-  value: T;
 }
 
 class Service {

@@ -1,7 +1,8 @@
-'use client';
-
+import { DEFAULT_IMG_SRC } from '@/constants/image';
 import Image from 'next/image';
 import React, { useState } from 'react';
+
+type DefaultImgType = 'user' | 'affiliation' | 'default';
 
 interface ImageProps {
   src: string;
@@ -9,6 +10,7 @@ interface ImageProps {
   width?: number;
   height?: number;
   className?: string;
+  defaultType?: DefaultImgType;
   onClick?: () => void;
 }
 
@@ -23,26 +25,24 @@ const SImage = (props: ImageProps) => {
     width,
     height,
     onClick = () => {},
-    className
+    className,
+    defaultType = 'default'
   } = props;
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
+  const [imgSrc, setImgSrc] = useState(src);
 
   return (
     <div>
-      {/* {isLoading && <div>Skeleton!</div>} */}
       <Image
         className={className}
-        src={src}
+        src={imgSrc}
         alt={alt}
         fill={!width && !height}
         width={width}
         height={height}
-        onLoad={handleLoad}
         onClick={onClick}
+        onError={() => {
+          setImgSrc(DEFAULT_IMG_SRC[defaultType]);
+        }}
       />
     </div>
   );
