@@ -1,8 +1,9 @@
 'use client';
 
-import { FILTER_LIST, SORT_TYPE_MAPPING } from '@/constants/home';
+import { FILTER_CATEGORIES } from '@/constants/home';
 import { CategoriesData } from '@/service/category/CategoryService';
 import ProjectQueryOptions from '@/service/project/queries';
+import { FilterCategory } from '@/service/project/request';
 import { getTimeDifferenceMessage } from '@/utils/time';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
@@ -15,7 +16,7 @@ type Props = {
 };
 
 const ProjectList = ({ selectedCategory }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState('최신');
+  const [selectedFilter, setSelectedFilter] = useState(FILTER_CATEGORIES[0]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -32,35 +33,34 @@ const ProjectList = ({ selectedCategory }: Props) => {
   }, [searchKeyword]);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjects({
-    sortType: SORT_TYPE_MAPPING[selectedFilter],
+    sortType: selectedFilter.type,
     categoryIds: selectedCategory.categoryIds,
     nameKeyword: debouncedKeyword
   });
 
-  const { data, refetch, isFetching } = useQuery({ queryKey, queryFn });
+  const { data, isFetching } = useQuery({ queryKey, queryFn });
 
-  const handleFilterChange = (filter: string) => {
-    if (selectedFilter === filter) return;
+  const handleFilterChange = (filter: FilterCategory) => {
+    if (selectedFilter.type === filter.type) return;
 
     setSelectedFilter(filter);
-    refetch();
   };
 
   return (
     <div className="flex-1 w-[1050px] bg-white-100 rounded-3xl border border-slate-90">
       <div className="pl-5 flex justify-between items-center border-b">
         <div className="flex text-sm text-slate-50 pt-6 h-[52px]">
-          {FILTER_LIST.map((filter) => (
+          {FILTER_CATEGORIES.map((filter) => (
             <div
-              key={filter}
+              key={filter.type}
               className={`${
-                selectedFilter === filter
+                selectedFilter.type === filter.type
                   ? 'text-green-600 font-medium border-b-2 border-green-600'
                   : ''
               } px-2 text-small cursor-pointer`}
               onClick={() => handleFilterChange(filter)}
             >
-              {filter}
+              {filter.label}
             </div>
           ))}
         </div>

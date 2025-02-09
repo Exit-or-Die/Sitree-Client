@@ -1,4 +1,4 @@
-import { SortType } from '@/service/project/request';
+import { FilterCategory } from '@/service/project/request';
 import { CategoryType } from '@/service/ranking/request';
 
 export const CATEGORIES: Array<CategoryType> = [
@@ -22,11 +22,21 @@ export const CATEGORIES: Array<CategoryType> = [
 
 export const ALL = '전체 보기';
 
-export const SORT_TYPE_MAPPING: Record<string, SortType> = {
-  최신: 'LATEST',
-  좋아요: 'LIKES',
-  댓글: 'COMMENTS',
-  조회수: 'VIEWS'
-};
-
-export const FILTER_LIST = ['최신', '좋아요', '댓글', '조회수'];
+export const FILTER_CATEGORIES: Array<FilterCategory> = [
+  {
+    label: '최신',
+    type: 'LATEST'
+  },
+  {
+    label: '좋아요',
+    type: 'LIKES'
+  },
+  {
+    label: '댓글',
+    type: 'COMMENTS'
+  },
+  {
+    label: '조회수',
+    type: 'VIEWS'
+  }
+];

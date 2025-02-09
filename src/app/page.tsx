@@ -1,4 +1,4 @@
-import { CATEGORIES } from '@/constants/home';
+import { CATEGORIES, FILTER_CATEGORIES } from '@/constants/home';
 import CategoryQueryOptions from '@/service/category/queries';
 import ProjectQueryOptions from '@/service/project/queries';
 import { ProjectParamsRequest } from '@/service/project/request';
@@ -13,7 +13,7 @@ import SitreePick from '@/components/sitreePick/SitreePick';
 const Home = async () => {
   const queryClient = new QueryClient();
   const projectCachedParams: ProjectParamsRequest = {
-    sortType: 'LATEST',
+    sortType: FILTER_CATEGORIES[0].type,
     categoryIds: [],
     nameKeyword: ''
   };
