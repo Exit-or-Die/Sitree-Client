@@ -55,6 +55,7 @@ const AffiliationRanking = () => {
                     alt="Affiliation Logo"
                     width={38}
                     height={38}
+                    defaultType="affiliation"
                   />
                 </div>
                 <div className="ml-4 flex-grow">
