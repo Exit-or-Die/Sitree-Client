@@ -46,16 +46,15 @@ const AffiliationRanking = () => {
             return (
               <li key={affiliation.belongingId} className="flex items-center">
                 <div className="text-slate-10 text-xsmall w-8 pl-2">{index + 1}</div>
-                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                <div className="rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                   <SImage
                     src={
                       affiliation.imageUrl ??
                       'https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/25-famous-app-logos-to-keep-you-amused/TIDAL.jpg'
                     }
                     alt="Affiliation Logo"
-                    width={36}
-                    height={36}
-                    className="object-cover w-full h-full"
+                    width={38}
+                    height={38}
                   />
                 </div>
                 <div className="ml-4 flex-grow">
