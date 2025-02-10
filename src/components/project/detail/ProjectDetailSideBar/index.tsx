@@ -12,15 +12,16 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectDetailSideBarProps {
+  commentCount?: number;
   thumbnailImage?: string;
   liked?: boolean;
   likeCounts?: number;
   teamMember: Array<Participant>;
   viewCount?: number;
-  commentCount?: number;
 }
 
 const ProjectDetailSideBar = ({
+  commentCount = 0,
   thumbnailImage = '',
   liked = true,
   likeCounts = 0,
@@ -60,7 +61,7 @@ const ProjectDetailSideBar = ({
               <div className="flex gap-1.5 items-center text-xsmall">
                 <div className="flex gap-0.5 leading-4 tracking-[-0.12px]">
                   <SImage src="/chat.svg" width={12} height={12} />
-                  {viewCount}
+                  {commentCount}
                 </div>
                 <div className="flex gap-0.5">
                   <SImage src="/like.svg" width={12} height={12} />

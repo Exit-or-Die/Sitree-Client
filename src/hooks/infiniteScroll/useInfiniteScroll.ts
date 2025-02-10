@@ -1,45 +1,52 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface UseInfiniteScrollProps {
-  id: string; // id를 받아서 해당 DOM 요소를 찾기 위한 prop
-  onScrollEnd: () => void; // 스크롤이 끝났을 때 실행할 함수
-  threshold?: number; // threshold (기본값: 0.1)
+  id: string;
+  onScrollEnd: () => Promise<void>; // 비동기 함수 고려
+  threshold?: number;
 }
 
 const useInfiniteScroll = ({ id, onScrollEnd, threshold = 0.1 }: UseInfiniteScrollProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleScrollEnd = useCallback(async () => {
+    if (isLoading) return; // 중복 호출 방지
+
+    setIsLoading(true);
+    try {
+      await onScrollEnd(); // 비동기 처리
+    } catch (error) {
+      console.error('Error in onScrollEnd:', error);
+    } finally {
+      setIsLoading(false); // 완료 후 다시 로딩 해제
+    }
+  }, [onScrollEnd, isLoading]);
+
   useEffect(() => {
     const element = document.getElementById(id);
-
     if (!element) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        // IntersectionObserver가 트리거되었을 때의 로직
-        if (entry.isIntersecting && !isLoading) {
-          setIsLoading(true);
-          onScrollEnd();
+      async ([entry]) => {
+        if (entry.isIntersecting) {
+          await handleScrollEnd();
         }
       },
       {
-        root: null, // viewport에 대해서 감지
+        root: null,
         rootMargin: '0px',
-        threshold // 해당 비율 이상으로 요소가 보일 때 실행
+        threshold
       }
     );
 
     observer.observe(element);
 
-    // Cleanup
     return () => {
       observer.disconnect();
     };
-  }, [id, onScrollEnd, isLoading, threshold]);
+  }, [id, handleScrollEnd, threshold]);
 
-  return {
-    isLoading
-  };
+  return { isLoading };
 };
 
 export default useInfiniteScroll;

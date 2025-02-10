@@ -23,7 +23,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const { queryKey: projectDetailKey, queryFn: projectDetailFn } =
     ProjectQueryOptions.retrieveProjectDetail(projectId);
   const { queryKey: projectCommentKey, queryFn: projectCommentFn } =
-    CommentsQueryOptions.retrieveCommentList(projectId, 0, 10);
+    CommentsQueryOptions.retrieveCommentList(projectId, 10);
 
   const projectDetailQuery = await getDehydratedQuery({
     queryKey: projectDetailKey,
@@ -31,7 +31,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   });
   const projectCommentQuery = await getDehydratedQuery({
     queryKey: projectCommentKey,
-    queryFn: projectCommentFn
+    queryFn: () => projectCommentFn({ pageParam: 0 })
   });
 
   const projectDetail = projectDetailQuery?.state.data;

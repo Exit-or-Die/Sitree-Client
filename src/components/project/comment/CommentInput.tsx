@@ -22,7 +22,7 @@ const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputP
   const [commentText, setCommentText] = useState('');
 
   const queryClient = useQueryClient();
-  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string, 0, 10);
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
 
   const { mutate: registerComment } = useMutation({
     mutationFn: (params: CreateCommentRequest) =>
