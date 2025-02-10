@@ -28,5 +28,5 @@ export interface UserResult {
 }
 
 export interface UserSearchResult extends PaginationResponse {
-  contents: Array<UserResult>;
+  content: Array<UserResult>;
 }

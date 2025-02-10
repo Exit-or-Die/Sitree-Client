@@ -24,7 +24,7 @@ export interface RequestConfigWithResponse<T> extends RequestInitWithAuth {
 export interface PaginationResponse {
   page: number;
   size: number;
-  totla: number;
+  total: number;
   hasPrev: boolean;
   hasNext: boolean;
 }
