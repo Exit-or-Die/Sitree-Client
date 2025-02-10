@@ -1,23 +1,23 @@
 'use client';
-import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import ProjectQueryOptions from '@/service/project/queries';
 import { ProjectDetailResponse } from '@/service/project/response';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
 
 import { projectSchema } from './scheme';
 import {
+  ProjectRegisterArchitectureList,
   ProjectRegisterHead,
   ProjectRegisterOverview,
   ProjectRegisterParticipantList,
   ProjectRegisterTechViewList
 } from './section';
-import ProjectRegisterArchitectureList from './section/architectureList';
 
 interface ProjectRegisterFormProps {
   projectId?: string;
@@ -58,12 +58,28 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
 
   const onInvalid = (errors: unknown) => console.error(errors);
 
+  const { mutate } = useMutation({
+    mutationFn: (formValues: any) => ProjectQueryOptions.registerProject(formValues).mutateFn(),
+    onSuccess: (data) => {
+      console.log('data', data);
+    }
+  });
+
+  const handleSubmitClick = () => {
+    formMethods.handleSubmit((formValues) => {
+      console.log('🚀 Submitted Data:', formValues);
+      mutate(formValues); // 직접 mutate 호출
+    }, onInvalid)();
+  };
+
   return (
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
           <form
-            onSubmit={formMethods.handleSubmit(console.log, onInvalid)}
+            onSubmit={formMethods.handleSubmit((formValues) => {
+              console.log('🚀 Submitted Data:', formValues);
+            }, onInvalid)}
             className="flex flex-col gap-10"
           >
             <ProjectRegisterHead />
@@ -71,17 +87,18 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             <ProjectRegisterTechViewList />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList />
-            <SButton
-              type="submit"
-              size="xl"
-              className="w-full leading-5 justify-center bg-tree-50 text-white-100"
-            >
-              등록하기
-            </SButton>
           </form>
         </div>
         <div className="w-[30.4rem] sticky top-5 self-start space-y-2">
           <ProjectUploadProgress />
+          <SButton
+            type="button"
+            size="xl"
+            className="w-full leading-5 justify-center bg-tree-50 text-white-100"
+            onClick={handleSubmitClick}
+          >
+            등록하기
+          </SButton>
         </div>
       </FormProvider>
     </div>

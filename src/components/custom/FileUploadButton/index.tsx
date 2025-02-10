@@ -3,8 +3,8 @@
 import { uploadFile } from '@/utils/file';
 import React, { useRef } from 'react';
 
-import SImage from '@/components/common/Image';
 import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
 
 type FileUploadButtonProps = {
   text: string;

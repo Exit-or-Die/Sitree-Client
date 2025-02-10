@@ -71,6 +71,7 @@ const ProjectHeadServiceLink = () => {
       const newKey = availableKeys[0];
       setServiceLinks((prev) => {
         const filteredLinks = prev.filter((link) => link.key !== newKey);
+
         return [...filteredLinks, { key: newKey, value: ' ' }];
       });
     }
@@ -92,7 +93,7 @@ const ProjectHeadServiceLink = () => {
       <div className="flex flex-col gap-2">
         {serviceLinks
           .filter(({ value }) => value.length > 0)
-          .map(({ key, value }) => (
+          .map(({ key, value }, index) => (
             <div key={key} className="flex gap-1.5">
               <SSelect
                 value={{ key }}
@@ -107,12 +108,14 @@ const ProjectHeadServiceLink = () => {
                 value={value.trim()}
                 onChange={(e) => updateServiceLinks(key, e.target.value)}
               />
-              <span
-                className="flex items-center p-1 cursor-pointer"
-                onClick={() => deleteServiceLink(key)}
-              >
-                <SImage src="/trash.svg" width={20} height={20} />
-              </span>
+              {index !== 0 && (
+                <span
+                  className="flex items-center p-1 cursor-pointer"
+                  onClick={() => deleteServiceLink(key)}
+                >
+                  <SImage src="/trash.svg" width={20} height={20} />
+                </span>
+              )}
             </div>
           ))}
       </div>

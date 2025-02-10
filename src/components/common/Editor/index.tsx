@@ -1,5 +1,6 @@
 'use client';
 
+import { uploadFile } from '@/utils/file';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@/styles/editor.css';
 import { Editor } from '@toast-ui/react-editor';
@@ -37,6 +38,16 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
     onChange(newHTML);
   }, [onChange]);
 
+  const handleImageUpload = useCallback((blob: Blob, callback: (url: string) => void) => {
+    uploadFile(blob as File) // Blob을 File로 캐스팅하여 사용
+      .then((url) => {
+        callback(url); // 서버에서 반환된 이미지 URL을 에디터에 삽입
+      })
+      .catch((error) => {
+        console.error('이미지 업로드 오류', error);
+      });
+  }, []);
+
   useEffect(() => {
     if (!editorRef.current) return;
 
@@ -62,6 +73,9 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
         placeholder={placeholder}
         useCommandShortcut={true}
         onChange={handleChange}
+        hooks={{
+          addImageBlobHook: handleImageUpload
+        }}
       />
       <div className="text-xsmall text-right text-slate-60">
         {currentLength} / {maxLength}

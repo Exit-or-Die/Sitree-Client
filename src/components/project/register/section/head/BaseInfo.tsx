@@ -49,7 +49,7 @@ const ProjectHeadBaseInfo = () => {
       title: '프로젝트 태그',
       component: (
         <ProjectTagSelect<Tag>
-          onChange={(tags: Tag[]) => setValue('tagList', tags)}
+          onChange={(tags: Tag[]) => setValue('categories', tags)}
           displayKey="name"
           tags={[{ name: 'abc' }, { name: 'aaa' }]}
         />

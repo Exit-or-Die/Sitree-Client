@@ -1,53 +1,45 @@
 'use client';
 
 import withModal from '@/enhancers/WithModal';
+import { Participant, ProjectRegisterRequest } from '@/service/project/request';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState, useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
-import { useFormContext } from 'react-hook-form';
-import { Participant, ProjectRegisterRequest } from '@/service/project/request';
-import { useSession } from 'next-auth/react';
 
 const TOTAL_MEMBER = 10;
 
 interface ParticipantModalProps {
   onClose: () => void;
-  register: (nickname: string, position: string) => void;
+  register: (nickname: string) => void;
 }
 
 const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
   const [nickname, setNickname] = useState('');
-  const [position, setPosition] = useState('');
 
   const handleRegister = () => {
-    if (nickname && position) {
-      register(nickname, position);
+    if (nickname) {
+      register(nickname);
       onClose();
     }
   };
 
   return (
     <div className="w-[56rem] h-[22.6rem] bg-white-100 flex flex-col gap-4 rounded-[2.4rem] p-6">
-      <p className="text-large font-lb leading-6 tracking-[-0.4px] text-left">팀원 등록</p>
-      <div className="flex gap-5">
-        <div className="text-left flex-1">
-          <p className="text-small leading-5 tracking-[-0.14px] py-1 mb-1.5">팀원 ID</p>
-          <SInput
-            className="text-small"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </div>
-        <div className="text-left flex-1">
-          <p className="text-small leading-5 tracking-[-0.14px] py-1 mb-1.5">포지션</p>
-          <SInput
-            className="text-small"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-          />
-        </div>
+      <div className="flex gap-2 items-center">
+        <p className="text-large font-lb leading-6 tracking-[-0.4px] text-left">팀원 등록</p>
+        <p className="text-small text-slate-50">사이트리에 가입한 팀원만 등록할 수 있어요.</p>
+      </div>
+      <div className="text-left py-4">
+        <SInput
+          className="text-small leading-5 tracking-[-0.14px]"
+          placeholder="이메일 또는 닉네임 검색"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+        />
       </div>
       <div className="flex gap-2 ml-auto">
         <SButton className="bg-slate-95 border-none" onClick={onClose}>
@@ -70,14 +62,13 @@ const ProjectRegisterParticipantList = () => {
   const AddWithModal = withModal(ParticipantAddModal);
 
   const addTeamMember = useCallback(
-    (nickname: string, position: string) => {
+    (nickname: string) => {
       const newMember: Participant = {
         memberNo: teamMembers.length + 1,
         nickname,
         isLeader: false,
         focusPoint: '',
-        imageUrl: '',
-        position
+        imageUrl: ''
       };
 
       const updatedTeamMembers = [...teamMembers, newMember];

@@ -51,7 +51,7 @@ export interface TechView {
 export interface Architecture {
   architectureType: string;
   architectureDesc: string;
-  architectureImage: string;
+  architectureImage: Image;
 }
 
 export interface FocusedPoint {

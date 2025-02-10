@@ -1,6 +1,6 @@
 export interface ProjectRegisterRequest {
   head: Head;
-  tagList: Array<Tag>;
+  categories: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
@@ -40,14 +40,14 @@ export interface ClientUrl {
 export interface TechView {
   techTitle: string;
   gitRepositoryUrl: string;
-  techTagList: Array<string>;
+  techStackTypes: Array<string>;
   techDesc: string;
 }
 
 export interface Architecture {
   architectureType: string;
   architectureDesc: string;
-  architectureImage: string;
+  architectureImage: Image;
 }
 
 export interface Participant {

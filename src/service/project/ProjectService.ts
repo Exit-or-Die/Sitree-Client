@@ -4,7 +4,9 @@ import { ProjectDetailResponse, ProjectRegisterResponse } from './response';
 
 class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
-    return this.http.post<ProjectRegisterResponse>('projects', param);
+    return this.http.post<ProjectRegisterResponse>('projects', param, {
+      includeAuth: true
+    });
   }
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
