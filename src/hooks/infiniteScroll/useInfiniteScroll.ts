@@ -1,30 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 
 interface UseInfiniteScrollProps {
-  id: string;
-  onScrollEnd: () => Promise<void>; // 비동기 함수 고려
+  ref: React.RefObject<HTMLDivElement>;
+  onScrollEnd: () => Promise<void>;
+  isFetching: boolean; // 중복 호출 방지용
   threshold?: number;
 }
 
-const useInfiniteScroll = ({ id, onScrollEnd, threshold = 0.1 }: UseInfiniteScrollProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
+const useInfiniteScroll = ({
+  ref,
+  onScrollEnd,
+  isFetching,
+  threshold = 0.3
+}: UseInfiniteScrollProps) => {
   const handleScrollEnd = useCallback(async () => {
-    if (isLoading) return; // 중복 호출 방지
-
-    setIsLoading(true);
-    try {
-      await onScrollEnd(); // 비동기 처리
-    } catch (error) {
-      console.error('Error in onScrollEnd:', error);
-    } finally {
-      setIsLoading(false); // 완료 후 다시 로딩 해제
-    }
-  }, [onScrollEnd, isLoading]);
+    if (!ref.current || isFetching) return;
+    await onScrollEnd();
+  }, [onScrollEnd, ref, isFetching]);
 
   useEffect(() => {
-    const element = document.getElementById(id);
-    if (!element) return;
+    if (!ref.current) return;
 
     const observer = new IntersectionObserver(
       async ([entry]) => {
@@ -39,14 +34,14 @@ const useInfiniteScroll = ({ id, onScrollEnd, threshold = 0.1 }: UseInfiniteScro
       }
     );
 
-    observer.observe(element);
+    observer.observe(ref.current);
 
     return () => {
       observer.disconnect();
     };
-  }, [id, handleScrollEnd, threshold]);
+  }, [ref, handleScrollEnd, threshold]);
 
-  return { isLoading };
+  return;
 };
 
 export default useInfiniteScroll;

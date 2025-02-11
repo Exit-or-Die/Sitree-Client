@@ -1,8 +1,10 @@
 'use client';
 
+import useInfiniteScroll from '@/hooks/infiniteScroll/useInfiniteScroll';
 import CommentsQueryOptions from '@/service/comments/queries';
 import { GetCommentListResponse } from '@/service/comments/response';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useRef } from 'react';
 
 import CommentHeaderComponent from './CommentHeaderComponent';
 import CommentListComponent from './CommentListComponent';
@@ -28,13 +30,24 @@ const CommentComponent = ({ projectId }: CommentComponentProps) => {
     })
   });
 
+  const triggerRef = useRef<HTMLDivElement | null>(null);
+
+  useInfiniteScroll({
+    ref: triggerRef,
+    onScrollEnd: async () => {
+      if (hasNextPage) {
+        await fetchNextPage();
+      }
+    },
+    isFetching: isFetchingNextPage,
+    threshold: 0.3
+  });
+
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
       <CommentHeaderComponent totalCount={data?.total || 0} />
       <CommentListComponent commentList={data?.comments || []} />
-      <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
-        {isFetchingNextPage ? '로딩 중' : hasNextPage ? '더 로드하기' : '더 로드할 것이 없음!'}
-      </button>
+      {hasNextPage && <div ref={triggerRef} className="h-10" />}
     </div>
   );
 };
