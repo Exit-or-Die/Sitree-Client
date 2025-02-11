@@ -1,7 +1,9 @@
 export const formatToDate = (isoString: string) => {
   const date = new Date(isoString);
 
-  // 한국 시간(KST) 변환
+  // 9시간 추가
+  date.setTime(date.getTime() + 9 * 60 * 60 * 1000);
+
   const koreaDate = new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
     month: '2-digit',
@@ -12,6 +14,5 @@ export const formatToDate = (isoString: string) => {
     timeZone: 'Asia/Seoul'
   }).format(date);
 
-  // 마지막 점을 공백으로 변경하여 'YYYY.MM.DD HH:mm' 형식 유지
   return koreaDate.replace(/(\d{4}\.\d{2}\.\d{2})\./, '$1 ');
 };
