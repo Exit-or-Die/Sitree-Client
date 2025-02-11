@@ -1,6 +1,7 @@
 'use client';
 
 import ProjectQueryOptions from '@/service/project/queries';
+import { ProjectRegisterRequest } from '@/service/project/request';
 import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -24,8 +25,13 @@ interface ProjectRegisterFormProps {
 }
 
 const defaultData: ProjectDetailResponse = {
-  head: { title: '', thumbnailImageUrl: '', shortDescription: '', healthCheckUrl: '' },
-  tagList: [],
+  head: {
+    title: '',
+    thumbnailImageUrl: '',
+    shortDescription: '',
+    healthCheckUrl: ''
+  },
+  categories: [],
   overview: {
     images: [],
     clientUrl: { WEB: ' ', IOS: '', WINDOWS: '', AOS: '', MAC_OS: '' },
@@ -59,7 +65,8 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const onInvalid = (errors: unknown) => console.error(errors);
 
   const { mutate } = useMutation({
-    mutationFn: (formValues: any) => ProjectQueryOptions.registerProject(formValues).mutateFn(),
+    mutationFn: (formValues: ProjectRegisterRequest) =>
+      ProjectQueryOptions.registerProject(formValues).mutateFn(),
     onSuccess: (data) => {
       console.log('data', data);
     }
@@ -68,7 +75,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const handleSubmitClick = () => {
     formMethods.handleSubmit((formValues) => {
       console.log('🚀 Submitted Data:', formValues);
-      mutate(formValues); // 직접 mutate 호출
+      mutate(formValues as ProjectRegisterRequest);
     }, onInvalid)();
   };
 

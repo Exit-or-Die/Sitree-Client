@@ -4,7 +4,7 @@ export interface ProjectRegisterResponse {
 
 export interface ProjectDetailResponse {
   head: Head;
-  tagList: Array<Tag>;
+  categories: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;

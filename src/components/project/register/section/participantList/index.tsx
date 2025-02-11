@@ -1,47 +1,43 @@
 'use client';
 
 import withModal from '@/enhancers/WithModal';
+import AuthService from '@/service/auth/AuthService';
+import { UserResult } from '@/service/auth/response';
 import { Participant, ProjectRegisterRequest } from '@/service/project/request';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
-import AuthService from '@/service/auth/AuthService';
-import { UserResult, UserSearchResult } from '@/service/auth/response';
-import SImage from '@/components/common/Image';
 
 const TOTAL_MEMBER = 10;
 
-interface ParticipantModalProps {
+const ParticipantAddModal = ({
+  onClose,
+  register
+}: {
   onClose: () => void;
   register: (nickname: string) => void;
-}
-
-const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
+}) => {
   const [nickname, setNickname] = useState('');
+  const [searchResults, setSearchResults] = useState<UserResult[]>([]);
   const [hasNextResult, setHasNextResult] = useState(false);
-  const [searchResults, setSearchResults] = useState<Array<UserResult>>([]);
-  const [searchTotalCount, setSearchTotalCount] = useState<number>(0);
-  const [page, setPage] = useState(0);
+  const [searchTotalCount, setSearchTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  const pageRef = useRef(0);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const searchUsers = async (q: string, page: number) => {
+    if (!q) return;
     setLoading(true);
     try {
       const data = await AuthService.searchUsers({ q, page, size: 10 });
-      if (page === 0) {
-        setSearchResults(data.content);
-        setSearchTotalCount(data.total);
-        setHasNextResult(data.hasNext);
-      } else {
-        setSearchResults((prevResults) => [...prevResults, ...data.content]);
-        setHasNextResult(data.hasNext);
-      }
+      setSearchResults((prev) => (page === 0 ? data.content : [...prev, ...data.content]));
+      setSearchTotalCount(data.total);
+      setHasNextResult(data.hasNext);
     } catch (error) {
       console.error('검색 중 오류 발생', error);
     } finally {
@@ -50,75 +46,53 @@ const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
   };
 
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      if (nickname) {
-        searchUsers(nickname, page);
-      } else {
-        setSearchResults([]);
-        setSearchTotalCount(0);
-        setHasNextResult(false);
-      }
+      searchUsers(nickname, 0);
+      pageRef.current = 0;
     }, 500);
 
     return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [nickname, page]);
+  }, [nickname]);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    const bottom =
-      e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.clientHeight;
-    if (bottom && !loading && hasNextResult) {
-      setPage((prevPage) => {
-        const nextPage = prevPage + 1;
-        searchUsers(nickname, nextPage);
-
-        return nextPage;
-      });
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!hasNextResult || loading) return;
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop === clientHeight) {
+      pageRef.current += 1;
+      searchUsers(nickname, pageRef.current);
     }
   };
-
-  const handleRegister = () => {
-    if (nickname) {
-      register(nickname);
-      onClose();
-    }
-  };
-
-  useEffect(() => {
-    console.log('searchResult', searchResults);
-  }, [searchResults]);
 
   return (
     <div className="w-[42rem] h-[22.6rem] bg-white-100 flex flex-col gap-4 rounded-[2.4rem] p-6">
       <div className="flex gap-2 items-center">
-        <p className="text-large font-lb leading-6 tracking-[-0.4px] text-left">팀원 등록</p>
+        <p className="text-large font-lb">팀원 등록</p>
         <p className="text-small text-slate-50">사이트리에 가입한 팀원만 등록할 수 있어요.</p>
       </div>
-      <div className="relative text-left py-4">
+      <div className="relative py-4">
         <SInput
-          className="text-small leading-5 tracking-[-0.14px]"
+          className="text-small w-[34.6rem]"
           placeholder="이메일 또는 닉네임 검색"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         />
         {searchResults.length > 0 && (
           <div
-            className="absolute top-full left-0 flex flex-col gap-2 w-full bg-white-100 border rounded-md shadow-md mt-2 max-h-[12rem] overflow-hidden z-10 p-4"
+            className="fixed w-[34.6rem] left-[3.8rem] bg-white-100 border rounded-md shadow-md mt-[1rem] max-h-[12rem] overflow-auto z-10 p-4"
             onScroll={handleScroll}
           >
-            <span className="flex leading-4 text-xsmall text-slate-50">
-              검색 결과 &nbsp;<p className="font-bd text-slate-30">{searchTotalCount}</p>건
+            <span className="text-xsmall text-slate-50">
+              검색 결과 <span className="font-bd text-slate-30">{searchTotalCount}</span>건
             </span>
-            <div className="max-h-[12rem] overflow-y-hidden">
-              {searchResults.map((result, index) => (
-                <div key={index} className="flex gap-[1rem] p-3 rounded-large hover:bg-slate-95">
+            <div className="max-h-[12rem] overflow-y-auto">
+              {searchResults.map((result) => (
+                <div
+                  key={result.memberId}
+                  className="flex gap-4 p-3 rounded-large hover:bg-slate-95"
+                >
                   <SImage
                     src={result.profileImgUrl}
                     width={40}
@@ -127,12 +101,8 @@ const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
                     className="rounded-full"
                   />
                   <div className="flex flex-col gap-1">
-                    <p className="leading-5 font-md text-small">{result.nickname}</p>
-                    <div className="flex gap-1.5 text-xsmall font-md">
-                      {result.belongingId && <p>{result.belongingId}</p>}
-                      {result.belongingId && <p className="text-slate-90">|</p>}
-                      <p className="text-slate-50">{result.email}</p>
-                    </div>
+                    <p className="text-small font-md">{result.nickname}</p>
+                    <p className="text-xsmall text-slate-50">{result.email}</p>
                   </div>
                 </div>
               ))}
@@ -141,10 +111,13 @@ const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
         )}
       </div>
       <div className="flex gap-2 ml-auto">
-        <SButton className="bg-slate-95 border-none" onClick={onClose}>
+        <SButton className="bg-slate-95" onClick={onClose}>
           닫기
         </SButton>
-        <SButton className="bg-tree-50 border-none text-white-100" onClick={handleRegister}>
+        <SButton
+          className="bg-tree-50 text-white-100"
+          onClick={() => nickname && register(nickname)}
+        >
           등록
         </SButton>
       </div>
@@ -155,8 +128,8 @@ const ParticipantAddModal = ({ onClose, register }: ParticipantModalProps) => {
 const ProjectRegisterParticipantList = () => {
   const { data: session } = useSession();
   const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
-  const [teamMembers, setTeamMembers] = useState<Participant[]>(getValues('participantList') || []);
-  const [toggleModal, setToggleModal] = useState(false);
+  const [teamMembers, setTeamMembers] = useState(getValues('participantList') || []);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const AddWithModal = withModal(ParticipantAddModal);
 
@@ -169,76 +142,64 @@ const ProjectRegisterParticipantList = () => {
         focusPoint: '',
         imageUrl: ''
       };
-
       const updatedTeamMembers = [...teamMembers, newMember];
       setTeamMembers(updatedTeamMembers);
       setValue('participantList', updatedTeamMembers);
+      setIsModalOpen(false);
     },
     [teamMembers, setValue]
   );
 
-  const openAddModal = () => {
-    setToggleModal(true);
-  };
-
-  const closeAddModal = () => {
-    setToggleModal(false);
-  };
-
   useEffect(() => {
     if (!teamMembers.length && session) {
-      const initialMember = {
+      const initialMember: Participant = {
         memberNo: 1,
-        nickname: session?.detail.nickname,
+        nickname: session.detail.nickname,
         isLeader: true,
         focusPoint: '',
         imageUrl: '',
         position: ''
       };
-
-      setValue('participantList', [initialMember]);
       setTeamMembers([initialMember]);
+      setValue('participantList', [initialMember]);
     }
-  }, [session, teamMembers, setValue]);
-
-  const renderTeamCards = () => {
-    return teamMembers.map((member, index) => (
-      <ProjectParticipantCard
-        key={index}
-        image={member.imageUrl}
-        name={member.nickname}
-        description={member.position}
-      />
-    ));
-  };
+  }, [session, setValue]);
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border border-slate-90">
-      <AddWithModal
-        isVisible={toggleModal}
-        hideClose={true}
-        onClickClose={() => {}}
-        onClose={closeAddModal}
-        register={addTeamMember}
-      />
+      {isModalOpen && (
+        <AddWithModal
+          isVisible={isModalOpen}
+          hideClose
+          onClickClose={() => {}}
+          onClose={() => setIsModalOpen(false)}
+          register={addTeamMember}
+        />
+      )}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">팀원 소개</h1>
         <div className="flex items-center space-x-4">
-          <span className="text-small flex">
-            <p className="text-slate-50">{teamMembers.length}</p>
-            <p className="text-slate-70">&nbsp;/&nbsp;{TOTAL_MEMBER}</p>
+          <span className="text-small">
+            {teamMembers.length} / {TOTAL_MEMBER}
           </span>
           <button
-            onClick={openAddModal}
-            className="flex items-center border border-slate-90 text-slate-40 text-small px-3 py-2 rounded-[1rem]"
+            onClick={() => setIsModalOpen(true)}
+            className="border border-slate-90 text-small px-3 py-2 rounded-[1rem]"
           >
             팀원 추가 +
           </button>
         </div>
       </div>
-
-      {/* Team Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">{renderTeamCards()}</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {teamMembers.map((member) => (
+          <ProjectParticipantCard
+            key={member.memberNo}
+            image={member.imageUrl}
+            name={member.nickname}
+            description={member.position}
+          />
+        ))}
+      </div>
     </div>
   );
 };
