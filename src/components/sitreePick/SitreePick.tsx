@@ -2,19 +2,22 @@
 
 import ProjectQueryOptions from '@/service/project/queries';
 import { SitreePickResponse } from '@/service/project/response';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import React, { useState, useRef, useEffect } from 'react';
 import { Nullable } from 'types/common';
 
 import SImage from '../common/Image';
 
 const SitreePick = () => {
-  const { queryKey } = ProjectQueryOptions.retrieveSitreePick();
+  const { queryKey, queryFn } = ProjectQueryOptions.retrieveSitreePick();
   const [selectedProject, setSelectedProject] = useState<Nullable<SitreePickResponse>>(null);
-  const selectedRef = useRef(null);
+  const selectedRef = useRef<Nullable<HTMLLIElement>>(null);
+  null;
   const [position, setPosition] = useState(0);
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<Array<SitreePickResponse>>(queryKey) || [];
+  const { data = [] } = useQuery<Array<SitreePickResponse>>({
+    queryKey,
+    queryFn
+  });
 
   useEffect(() => {
     if (data.length > 0) {

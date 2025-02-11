@@ -2,17 +2,32 @@
 
 import { CATEGORIES } from '@/constants/home';
 import RankingQueryOptions from '@/service/ranking/queries';
+import { CategoryType } from '@/service/ranking/request';
 import { Affiliation } from '@/service/ranking/response';
-import { useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 
 import SImage from '../common/Image';
 
 const AffiliationRanking = () => {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
-  const { queryKey } = RankingQueryOptions.retrieveAffiliationRanking(selectedCategory.type);
+  const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking(
+    selectedCategory.type
+  );
+  const { data = [] } = useQuery<Array<Affiliation>>({
+    queryKey,
+    queryFn
+  });
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<Array<Affiliation>>(queryKey) || [];
+
+  useEffect(() => {
+    const otherCategories = CATEGORIES.slice(1);
+    otherCategories.forEach((category: CategoryType) => {
+      const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking(category.type);
+
+      queryClient.prefetchQuery({ queryKey, queryFn });
+    });
+  }, [queryClient]);
 
   return (
     <div className="pt-6 rounded-xl min-w-[302px]">

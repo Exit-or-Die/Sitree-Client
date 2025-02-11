@@ -37,6 +37,7 @@ const SImage = (props: ImageProps) => {
       alt={alt}
       fill={!width && !height}
       width={width}
+      priority
       height={height}
       onClick={onClick}
       onError={() => {

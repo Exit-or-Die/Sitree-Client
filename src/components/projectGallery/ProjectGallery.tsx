@@ -3,7 +3,7 @@
 import { ALL } from '@/constants/home';
 import CategoryQueryOptions from '@/service/category/queries';
 import { CategoriesData, CategoryData } from '@/service/category/response';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 import ProjectCategory from './ProjectCategory';
@@ -14,10 +14,14 @@ const ProjectGallery = () => {
     categoryIds: [],
     categoryNames: ALL
   };
-  const queryClient = useQueryClient();
   const [selectedCategory, setSelectedCategory] = useState<CategoriesData>(allCategory);
-  const { queryKey } = CategoryQueryOptions.getGroupedCategories();
-  const data = queryClient.getQueryData<Array<Array<CategoryData>>>(queryKey);
+  const { queryKey, queryFn } = CategoryQueryOptions.getGroupedCategories();
+
+  const { data = [] } = useQuery<Array<Array<CategoryData>>>({
+    queryKey,
+    queryFn
+  });
+
   const categoriesData = [
     allCategory,
     ...(data ?? []).map((group) => ({

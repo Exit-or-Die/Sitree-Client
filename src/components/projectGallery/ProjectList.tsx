@@ -101,10 +101,8 @@ const ProjectList = ({ selectedCategory }: Props) => {
                   />
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-base font-bold max-w-[150px] whitespace-nowrap">
-                    {project.name}
-                  </h3>
-                  <p className="text-xsmall text-gray-400 max-w-[150px] whitespace-nowrap">
+                  <h3 className="text-base font-bold max-w-[150px] truncate">{project.name}</h3>
+                  <p className="text-xsmall text-gray-400 max-w-[150px] truncate">
                     {project.shortDescription}
                   </p>
                 </div>
