@@ -12,6 +12,11 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
+import { ParticipantResponse } from '@/service/project/response';
+import ProjectQueryOptions from '@/service/project/queries';
+import { useParams } from 'next/navigation';
+import { DEFAULT_DETAIL_DATA } from '../../ProjectRegisterForm';
+import { useQuery } from '@tanstack/react-query';
 
 const TOTAL_MEMBER = 10;
 
@@ -20,10 +25,11 @@ const ParticipantAddModal = ({
   register
 }: {
   onClose: () => void;
-  register: (nickname: string) => void;
+  register: (member: UserResult) => void;
 }) => {
   const [nickname, setNickname] = useState('');
   const [searchResults, setSearchResults] = useState<UserResult[]>([]);
+  const [selectedMember, setSelectedMember] = useState<UserResult>();
   const [hasNextResult, setHasNextResult] = useState(false);
   const [searchTotalCount, setSearchTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -92,6 +98,7 @@ const ParticipantAddModal = ({
                 <div
                   key={result.memberId}
                   className="flex gap-4 p-3 rounded-large hover:bg-slate-95"
+                  onClick={() => setSelectedMember(result)}
                 >
                   <SImage
                     src={result.profileImgUrl}
@@ -116,7 +123,7 @@ const ParticipantAddModal = ({
         </SButton>
         <SButton
           className="bg-tree-50 text-white-100"
-          onClick={() => nickname && register(nickname)}
+          onClick={() => selectedMember && register(selectedMember)}
         >
           등록
         </SButton>
@@ -126,44 +133,61 @@ const ParticipantAddModal = ({
 };
 
 const ProjectRegisterParticipantList = () => {
+  const { projectId } = useParams();
   const { data: session } = useSession();
-  const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
-  const [teamMembers, setTeamMembers] = useState(getValues('participantList') || []);
+  const { queryKey, queryFn } = projectId
+    ? ProjectQueryOptions.retrieveProjectDetail(projectId as string)
+    : {
+        queryKey: [],
+        queryFn: async () => ({
+          ...DEFAULT_DETAIL_DATA,
+          participantList: [
+            {
+              memberId: session?.detail.memberId,
+              nickname: session?.detail.nickname,
+              leader: true,
+              focusPoint: '',
+              imageUrl: '',
+              position: ''
+            }
+          ]
+        })
+      };
+
+  const { data, isFetching } = useQuery({ queryKey, queryFn });
+
+  const { setValue } = useFormContext<ProjectRegisterRequest>();
+  const [teamMembers, setTeamMembers] = useState<Array<ParticipantResponse>>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const AddWithModal = withModal(ParticipantAddModal);
 
-  const addTeamMember = useCallback(
-    (nickname: string) => {
-      const newMember: Participant = {
-        memberNo: teamMembers.length + 1,
-        nickname,
-        isLeader: false,
-        focusPoint: '',
-        imageUrl: ''
-      };
-      const updatedTeamMembers = [...teamMembers, newMember];
-      setTeamMembers(updatedTeamMembers);
-      setValue('participantList', updatedTeamMembers);
-      setIsModalOpen(false);
-    },
-    [teamMembers, setValue]
-  );
+  const addTeamMember = (member: UserResult) => {
+    const newMember: ParticipantResponse = {
+      memberNo: session?.detail.memberId,
+      nickname: member.nickname,
+      leader: false,
+      position: '',
+      focusPoint: '',
+      imageUrl: ''
+    };
+    const updatedTeamMembers = [...teamMembers, newMember];
+    setTeamMembers(updatedTeamMembers);
+    setValue('participantList', updatedTeamMembers);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
-    if (!teamMembers.length && session) {
-      const initialMember: Participant = {
-        memberNo: 1,
-        nickname: session.detail.nickname,
-        isLeader: true,
-        focusPoint: '',
-        imageUrl: '',
-        position: ''
-      };
-      setTeamMembers([initialMember]);
-      setValue('participantList', [initialMember]);
+    if (data) {
+      setTeamMembers(data.participantList || []);
     }
-  }, [session, setValue]);
+  }, [data, isFetching]);
+
+  useEffect(() => {
+    setValue('participantList', teamMembers);
+  }, [teamMembers]);
+
+  console.log('ddd', data);
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border border-slate-90">

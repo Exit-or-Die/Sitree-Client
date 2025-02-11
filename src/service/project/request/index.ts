@@ -52,9 +52,6 @@ export interface Architecture {
 
 export interface Participant {
   memberNo: number;
-  nickname: string;
-  imageUrl: string;
   position: string;
-  focusPoint: string;
-  isLeader: boolean;
+  leader: boolean;
 }

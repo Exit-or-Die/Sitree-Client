@@ -5,6 +5,7 @@ import { ProjectRegisterRequest } from '@/service/project/request';
 import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -24,7 +25,7 @@ interface ProjectRegisterFormProps {
   projectId?: string;
 }
 
-const defaultData: ProjectDetailResponse = {
+export const DEFAULT_DETAIL_DATA: ProjectDetailResponse = {
   head: {
     title: '',
     thumbnailImageUrl: '',
@@ -43,15 +44,16 @@ const defaultData: ProjectDetailResponse = {
 };
 
 const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
+  const { data: session } = useSession();
   const { queryKey, queryFn } = projectId
     ? ProjectQueryOptions.retrieveProjectDetail(projectId)
-    : { queryKey: [], queryFn: async () => defaultData };
+    : { queryKey: [], queryFn: async () => DEFAULT_DETAIL_DATA };
 
   const { data } = useQuery({
     queryKey,
     queryFn,
     enabled: !!projectId,
-    placeholderData: defaultData
+    placeholderData: DEFAULT_DETAIL_DATA
   });
 
   const formMethods = useForm({ resolver: zodResolver(projectSchema), mode: 'onChange' });

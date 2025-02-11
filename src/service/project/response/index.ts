@@ -8,7 +8,7 @@ export interface ProjectDetailResponse {
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
-  participantList: Array<Participant>;
+  participantList: Array<ParticipantResponse>;
 }
 
 export interface Head {
@@ -59,7 +59,11 @@ export interface FocusedPoint {
   focusedOn: string;
 }
 
-export interface Participant {
-  memberNo: number;
+export interface ParticipantResponse {
+  memberId: number;
+  nickname: string;
+  imageUrl: string;
   position: string;
+  focusPoint: string;
+  leader: boolean;
 }
