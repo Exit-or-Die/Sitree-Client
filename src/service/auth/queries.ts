@@ -4,7 +4,8 @@ import { getCookie } from '@/utils/cookie';
 import { useMutation } from '@tanstack/react-query';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
-import AuthService, { SignInData, SignUpData } from './AuthService';
+import AuthService from './AuthService';
+import { SignInData, SignUpData } from './request';
 
 const queryKeys = {
   signIn: () => ['auth', 'signin'] as const,
