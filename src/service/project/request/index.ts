@@ -55,3 +55,18 @@ export interface Participant {
   position: string;
   isLeader: boolean;
 }
+
+export type SortType = 'VIEWS' | 'LATEST' | 'LIKES' | 'COMMENTS';
+
+export interface ProjectParamsRequest {
+  sortType: SortType;
+  pageNo?: string;
+  size?: string;
+  categoryIds?: Array<number>;
+  nameKeyword?: string;
+}
+
+export interface FilterCategory {
+  label: string;
+  type: SortType;
+}

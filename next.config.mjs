@@ -4,21 +4,9 @@ import './src/lib/env/env.mjs';
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['picsum.photos'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: '**' // 모든 호스트 허용
-      }
-    ]
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    unoptimized: true
   }
 };
 

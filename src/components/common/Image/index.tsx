@@ -31,20 +31,19 @@ const SImage = (props: ImageProps) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (
-    <div>
-      <Image
-        className={className}
-        src={imgSrc}
-        alt={alt}
-        fill={!width && !height}
-        width={width}
-        height={height}
-        onClick={onClick}
-        onError={() => {
-          setImgSrc(DEFAULT_IMG_SRC[defaultType]);
-        }}
-      />
-    </div>
+    <Image
+      className={className}
+      src={imgSrc}
+      alt={alt}
+      fill={!width && !height}
+      width={width}
+      priority
+      height={height}
+      onClick={onClick}
+      onError={() => {
+        setImgSrc(DEFAULT_IMG_SRC[defaultType]);
+      }}
+    />
   );
 };
 
