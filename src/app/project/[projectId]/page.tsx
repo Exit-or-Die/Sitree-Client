@@ -57,8 +57,6 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     redirect('/404');
   }
 
-  console.log('projectDetail', projectDetail);
-
   return (
     <div className="flex justify-center px-20 pt-10 pb-20 bg-slate-95">
       <Hydrate state={{ queries: [projectDetailQuery, projectCommentQuery] }}>
