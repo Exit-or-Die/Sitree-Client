@@ -6,7 +6,7 @@ import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
