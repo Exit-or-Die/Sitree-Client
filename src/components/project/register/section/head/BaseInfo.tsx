@@ -1,4 +1,6 @@
+import CategoryQueryOptions from '@/service/category/queries';
 import { ProjectRegisterRequest, Tag } from '@/service/project/request';
+import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
@@ -7,6 +9,11 @@ import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const ProjectHeadBaseInfo = () => {
   const { register, setValue } = useFormContext<ProjectRegisterRequest>();
+
+  const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
+  const { data: tagData } = useQuery({ queryKey, queryFn });
+
+  const tags = (tagData ?? []).map((tag) => ({ name: tag.categoryName }));
 
   const InputList = [
     {
@@ -51,7 +58,7 @@ const ProjectHeadBaseInfo = () => {
         <ProjectTagSelect<Tag>
           onChange={(tags: Tag[]) => setValue('categories', tags)}
           displayKey="name"
-          tags={[{ name: 'abc' }, { name: 'aaa' }]}
+          tags={tags}
         />
       ),
       required: true
