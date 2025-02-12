@@ -70,6 +70,7 @@ class Service {
       method,
       headers: {
         ...this.headers,
+        ...config.headers,
         ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',
