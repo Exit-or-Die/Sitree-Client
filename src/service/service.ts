@@ -65,22 +65,11 @@ class Service {
     data?: unknown,
     config: RequestInitWithAuth = {}
   ): Promise<T> {
-    const headers: Record<string, string> = {
-      ...this.headers,
-      'Content-Type': 'application/json',
-      ...(config.headers as Record<string, string>)
-    };
-
-    if (config.includeAuth) {
-      headers['Authorization'] = `Bearer ${this.getToken()}`;
-    }
-
     const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
       headers: {
         ...this.headers,
-        ...config.headers,
         ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',

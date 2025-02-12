@@ -3,54 +3,16 @@ import React, { useEffect, useState } from 'react';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-const EXAMPLE_TAGS = [
-  '스포츠',
-  '헬스케어',
-  '지도',
-  '여행',
-  '이동',
-  '자기계발',
-  '생산성',
-  '외국어',
-  '교육',
-  '게임',
-  'AI',
-  '금융',
-  '라이프스타일',
-  '소설',
-  '커뮤니티',
-  '아트',
-  '디자인',
-  '책',
-  '만화',
-  '데이트',
-  '육아',
-  '엔터테인먼트',
-  '이벤트',
-  '음식',
-  '인테리어',
-  '공간',
-  '부동산',
-  '의료',
-  '뉴스',
-  '음악',
-  '사진',
-  '영상',
-  '쇼핑',
-  '날씨',
-  '플랫폼'
-];
-
 interface ProjectTagSelectProps<T = string> {
   useDelete?: boolean;
   onChange?: (tags: T[]) => void;
-  tags?: T[];
+  tags: T[];
 }
 
 const ProjectTagSelect = <T,>({
   useDelete = true,
   onChange = () => {},
-  tags = EXAMPLE_TAGS as T[]
+  tags
 }: ProjectTagSelectProps<T>) => {
   const [selectedTags, setSelectedTags] = useState<T[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
