@@ -13,13 +13,13 @@ const ProjectDetail = ({ detail }: { detail: ProjectDetailResponse | undefined }
       <ProjectDetailHeader
         head={detail?.head}
         healthy={detail?.healthy}
-        clientUrl={detail?.overview.clientUrl}
+        clientUrl={detail?.overview?.clientUrl}
         categories={detail?.categories}
         viewCount={detail?.viewCount}
         createdAt={detail?.createdAt}
       />
       <ProjectDetailDescription
-        description={detail?.overview.detailDescription}
+        description={detail?.overview?.detailDescription}
         id={PROJECT_SCROLL_ID.PROJECT_DESCRIPTION}
       />
       <ProjectDetailTech

@@ -1,3 +1,5 @@
+'use client';
+
 import { DEFAULT_IMG_SRC } from '@/constants/image';
 import Image from 'next/image';
 import React, { useState } from 'react';

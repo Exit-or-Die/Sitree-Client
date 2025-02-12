@@ -6,7 +6,7 @@ import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -48,23 +48,27 @@ const ProjectDetailSideBar = ({
 
   const teamLeader = teamMember.find((member) => member.leader);
 
+  useEffect(() => {
+    console.log('islIKED', isLiked);
+  }, [isLiked]);
+
   return (
     <div className="w-[30.6rem] sticky top-5 h-full flex flex-col border border-1 border-slate-90 rounded-2xlarge bg-white-100 leading-5 tracking-[-0.14px]">
       <div className="p-5 flex flex-col gap-5">
         <div className="flex gap-4">
           <div className="relative w-[7.2rem] h-[7.2rem] rounded-2xlarge overflow-hidden">
-            <SImage src={thumbnailImage} />
+            <SImage src={thumbnailImage} defaultType="default" alt="project thumbnail image" />
           </div>
           <div className="flex items-center">
             <div className="flex flex-col gap-1">
               <span className="text-large font-lb leading-6 tracking-[-0.4px]">개미는 툰툰</span>
               <div className="flex gap-1.5 items-center text-xsmall">
                 <div className="flex gap-0.5 leading-4 tracking-[-0.12px]">
-                  <SImage src="/chat.svg" width={12} height={12} />
+                  <SImage src="/chat.svg" alt="project comment count" width={12} height={12} />
                   {commentCount}
                 </div>
                 <div className="flex gap-0.5">
-                  <SImage src="/like.svg" width={12} height={12} />
+                  <SImage src="/like.svg" alt="projet like count" width={12} height={12} />
                   {likeCounts}
                 </div>
                 <div className="text-slate-50">조회수 {viewCount}</div>
@@ -77,7 +81,13 @@ const ProjectDetailSideBar = ({
             className={`w-[160px] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
             onClick={likeProject}
           >
-            <SImage src={isLiked ? '/likeFill.svg' : '/like.svg'} width={20} height={20} />
+            <SImage
+              src={isLiked ? '/likeFill.svg' : '/like.svg'}
+              key={isLiked ? 'liked' : 'not-liked'}
+              alt="heart image"
+              width={20}
+              height={20}
+            />
             <p className={`font-bd text-[1rem] ${isLiked && 'text-red-50'}`}>좋아요</p>
           </SButton>
           <SButton className="w-[9.4rem] h-[6rem] flex flex-col gap-1 rounded-large border-none hover:bg-slate-95">
@@ -110,7 +120,7 @@ const ProjectDetailSideBar = ({
                     className={`relative w-[2.7rem] h-[2.7rem] rounded-full border border-2 border-white-100 ml-[-4px] overflow-hidden`}
                     style={{ zIndex: 3 - index }}
                   >
-                    <SImage src="https://picsum.photos/400/400" />
+                    <SImage src={member.imageUrl} defaultType="user" alt="project member profile" />
                   </div>
                 ))}
               </div>
@@ -124,7 +134,11 @@ const ProjectDetailSideBar = ({
         </div>
         <div className="p-3 flex gap-2.5">
           <div className="relative w-[5.2rem] h-[5.2rem] rounded-full overflow-hidden">
-            <SImage src="https://picsum.photos/400/400" />
+            <SImage
+              src={teamLeader?.imageUrl ?? ''}
+              defaultType="user"
+              alt="project member profile"
+            />
           </div>
           <div className="flex flex-col justify-center">
             <span className="font-lb tracking-[-0.32px] text-base">{teamLeader?.nickname}</span>

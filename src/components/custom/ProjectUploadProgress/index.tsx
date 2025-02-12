@@ -1,3 +1,5 @@
+'use client';
+
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useState, useEffect, useMemo } from 'react';

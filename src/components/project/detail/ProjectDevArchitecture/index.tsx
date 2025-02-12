@@ -25,8 +25,7 @@ const ProjectDevArchitecture = ({ architectureList }: ProjectDevArchitectureProp
       />
       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-large border border-1 border-slate-90">
         <SImage
-          src={architectureList[currentIndex].architectureImage}
-          defaultType="affiliation"
+          src={architectureList[currentIndex].architectureImage.imageUrl ?? ''}
           className="object-cover"
           alt="Sitree Architecture Image"
         />

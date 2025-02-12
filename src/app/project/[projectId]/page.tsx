@@ -1,7 +1,8 @@
-import { getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
+import { getDehydratedQueries, Hydrate } from '@/hooks/react-query/react-query';
 import CommentsQueryOptions from '@/service/comments/queries';
+import { GetCommentListResponse } from '@/service/comments/response';
 import ProjectQueryOptions from '@/service/project/queries';
-import { Image, IMAGE_TYPE } from '@/service/project/response';
+import { Image, IMAGE_TYPE, ProjectDetailResponse } from '@/service/project/response';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
@@ -25,19 +26,15 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const { queryKey: projectCommentKey, queryFn: projectCommentFn } =
     CommentsQueryOptions.retrieveCommentList(projectId, 10);
 
-  const projectDetailQuery = await getDehydratedQuery({
-    queryKey: projectDetailKey,
-    queryFn: projectDetailFn
-  });
-  const projectCommentQuery = await getDehydratedQuery({
-    queryKey: projectCommentKey,
-    queryFn: () => projectCommentFn({ pageParam: 0 })
-  });
+  const [projectDetailQuery, projectCommentQuery] = await getDehydratedQueries([
+    { queryKey: projectDetailKey, queryFn: projectDetailFn },
+    { queryKey: projectCommentKey, queryFn: () => projectCommentFn({ pageParam: 0 }) }
+  ]);
 
-  const projectDetail = projectDetailQuery?.state.data;
-  const projectComment = projectCommentQuery?.state.data;
+  const projectDetail = projectDetailQuery?.state.data as ProjectDetailResponse;
+  const projectComment = projectCommentQuery?.state.data as GetCommentListResponse;
 
-  const ImageSlideSrc = (projectDetail?.overview.images || [])
+  const ImageSlideSrc = (projectDetail.overview?.images ?? [])
     .map((src: Image, index) => {
       if (src.imageType === IMAGE_TYPE.BACKGROUND) {
         return (
@@ -60,6 +57,8 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     redirect('/404');
   }
 
+  console.log('projectDetail', projectDetail);
+
   return (
     <div className="flex justify-center px-20 pt-10 pb-20 bg-slate-95">
       <Hydrate state={{ queries: [projectDetailQuery, projectCommentQuery] }}>
@@ -77,7 +76,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
               <CommentComponent projectId={projectId} />
             </div>
             <ProjectDetailSideBar
-              thumbnailImage={projectDetail?.head.thumbnailImageUrl}
+              thumbnailImage={projectDetail.head?.thumbnailImageUrl}
               liked={projectDetail?.isLiked}
               likeCounts={projectDetail?.likeCounts}
               teamMember={projectDetail?.participantList || []}
