@@ -50,14 +50,11 @@ const Onboarding = () => {
     return () => clearTimeout(timeout);
   }, [affiliation]);
 
-  const isQueryEnabled = !!debouncedAffiliation;
-  const queryOptions = isQueryEnabled ? BelongingQueryOptions.search(debouncedAffiliation) : null;
-
-  // const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
+  const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
   const { data: belongingData = [] } = useQuery({
-    queryKey: queryOptions?.queryKey ?? ['belonging', debouncedAffiliation],
-    queryFn: queryOptions?.queryFn ?? (() => Promise.resolve([])),
-    enabled: isQueryEnabled
+    queryKey,
+    queryFn,
+    enabled: !!debouncedAffiliation
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
