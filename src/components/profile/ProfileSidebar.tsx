@@ -1,11 +1,29 @@
 'use client';
 
+import html2pdf from 'html2pdf.js';
 import { useState } from 'react';
 
 import SImage from '../common/Image';
+import PortfolioPDF from './PortfolioPDF';
 
 const ProfileSidebar = () => {
   const [text, setText] = useState('');
+
+  const exportToPDF = () => {
+    const element = document.getElementById('pdf-template');
+    if (!element) return;
+
+    html2pdf()
+      .set({
+        margin: 0,
+        filename: '이력서.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 3, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .from(element)
+      .save();
+  };
 
   return (
     <div className="w-[300px] flex flex-col">
@@ -29,7 +47,10 @@ const ProfileSidebar = () => {
           <div className="absolute top-1 left-5 -mt-2 w-3 h-3 bg-gray-100 rotate-45" />
         </div>
       </div>
-      <button className="mt-3 w-full py-2 text-slate-80 bg-slate-90 rounded-large text-center text-base font-bd h-[52px]">
+      <button
+        onClick={exportToPDF}
+        className="mt-3 w-full py-2 text-slate-80 bg-slate-90 rounded-large text-center text-base font-bd h-[52px]"
+      >
         PDF 이력서
       </button>
       <div className="mt-6 w-full flex justify-around text-slate-30 text-small font-md">
@@ -38,6 +59,9 @@ const ProfileSidebar = () => {
           <SImage src="/setting.svg" alt="setting" width={18} height={18} className="mr-1" />
           프로필 편집
         </button>
+      </div>
+      <div className="hidden">
+        <PortfolioPDF />
       </div>
     </div>
   );
