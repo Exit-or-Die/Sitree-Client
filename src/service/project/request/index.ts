@@ -51,7 +51,7 @@ export interface Architecture {
 }
 
 export interface Participant {
-  memberNo: number;
+  memberId: number;
   position: string;
   isLeader: boolean;
 }

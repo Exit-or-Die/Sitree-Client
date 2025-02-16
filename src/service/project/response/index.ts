@@ -68,13 +68,8 @@ export interface Architecture {
   architectureImage: Image;
 }
 
-export interface FocusedPoint {
-  memberNo: number;
-  focusedOn: string;
-}
-
 export interface Participant {
-  memberNo: number;
+  memberId: number;
   nickname: string;
   imageUrl: string;
   position: string;
@@ -105,7 +100,7 @@ export interface Project {
   shortDescription: string;
   backgroundImage: string;
   commentCount: number;
-  likesCount: number;
+  likeCount: number;
   viewCount: number;
   latestUpdateTime: Date;
   isHealthy: boolean;

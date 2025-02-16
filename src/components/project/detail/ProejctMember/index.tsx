@@ -1,6 +1,7 @@
 'use client';
 
 import { Participant } from '@/service/project/response';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 import ProjectMemberFocusedOn from './ProjectMemberFocusedOn';
@@ -12,6 +13,8 @@ interface ProjectMemberProps {
 }
 
 const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
+  const { data: session } = useSession();
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (participantList.length === 0) {
@@ -44,7 +47,7 @@ const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
         </div>
         <ProjectMemberFocusedOn
           contents={participantList[currentIndex].focusPoint}
-          isMe={true}
+          isMe={session?.detail.memberId === participantList[currentIndex].memberId}
           key={currentIndex}
         />
       </div>
