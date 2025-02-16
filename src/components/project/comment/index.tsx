@@ -5,6 +5,7 @@ import CommentsQueryOptions from '@/service/comments/queries';
 import { GetCommentListResponse } from '@/service/comments/response';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
+import { Nullable } from 'types/common';
 
 import CommentHeaderComponent from './CommentHeaderComponent';
 import CommentListComponent from './CommentListComponent';
@@ -14,7 +15,7 @@ interface CommentComponentProps {
   projectId: string;
 }
 
-const CommentComponent = ({ projectId }: CommentComponentProps) => {
+const CommentComponent = ({ commentInfo, projectId }: CommentComponentProps) => {
   const { queryKey, queryFn } = CommentsQueryOptions.retrieveCommentList(projectId);
 
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } = useInfiniteQuery({
@@ -22,15 +23,19 @@ const CommentComponent = ({ projectId }: CommentComponentProps) => {
     queryFn: ({ pageParam }) => queryFn({ pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.hasNext ? allPages.length : undefined;
+      return lastPage?.hasNext ? allPages.length : undefined;
     },
     select: (data) => ({
-      comments: data.pages.flatMap((page) => page.content),
+      comments: data.pages.flatMap((page) => page?.content ?? []),
       total: data.pages[0]?.total ?? 0
-    })
+    }),
+    initialData: {
+      pages: [commentInfo],
+      pageParams: [0]
+    }
   });
 
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<Nullable<HTMLDivElement>>(null);
 
   useInfiniteScroll({
     ref: triggerRef,

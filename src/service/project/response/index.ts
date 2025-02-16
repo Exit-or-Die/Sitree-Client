@@ -1,3 +1,5 @@
+import { Nullable } from 'types/common';
+
 export const IMAGE_TYPE = {
   BACKGROUND: 'BACKGROUND',
   REPRESENT: 'REPRESENT'
@@ -76,7 +78,7 @@ export interface Participant {
   nickname: string;
   imageUrl: string;
   position: string;
-  focusPoint: string | null;
+  focusPoint: Nullable<string>;
   leader: boolean;
 }
 

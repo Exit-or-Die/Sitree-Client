@@ -2,21 +2,21 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Navigation } from 'swiper/modules';
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import '@/styles/swiper.css';
+import { Nullable } from 'types/common';
 
 interface SwiperComponentProps {
   items: React.JSX.Element[];
 }
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
-  const swiperRef = useRef<SwiperRef | null>(null);
+  const swiperRef = useRef<Nullable<SwiperRef>>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const updateNavigationButtons = (swiper) => {
+  const updateNavigationButtons = (swiper: SwiperClass) => {
     const prevButton = document.querySelector('.swiper-button-prev');
     const nextButton = document.querySelector('.swiper-button-next');
 

@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic';
+import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectMemberFocusedOnProps {
-  contents: string | null;
+  contents: Nullable<string>;
   isMe: boolean;
 }
 

@@ -2,7 +2,7 @@ import { getDehydratedQueries, Hydrate } from '@/hooks/react-query/react-query';
 import CommentsQueryOptions from '@/service/comments/queries';
 import { GetCommentListResponse } from '@/service/comments/response';
 import ProjectQueryOptions from '@/service/project/queries';
-import { Image, IMAGE_TYPE, ProjectDetailResponse } from '@/service/project/response';
+import { IMAGE_TYPE, ProjectDetailResponse } from '@/service/project/response';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
@@ -19,6 +19,7 @@ interface ProjectDetailPageProps {
 }
 
 const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
+  // memberId는 쿠키 저장해서 사용
   const { projectId } = params;
 
   const { queryKey: projectDetailKey, queryFn: projectDetailFn } =
@@ -34,26 +35,15 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const projectDetail = projectDetailQuery?.state.data as ProjectDetailResponse;
   const projectComment = projectCommentQuery?.state.data as GetCommentListResponse;
 
-  const ImageSlideSrc = (projectDetail.overview?.images ?? [])
-    .map((src: Image, index) => {
-      if (src.imageType === IMAGE_TYPE.BACKGROUND) {
-        return (
-          <SImage
-            key={index}
-            src={src.imageUrl}
-            width={306}
-            height={204}
-            alt={`Slide ${index + 1}`}
-            className="rounded-large"
-          />
-        );
-      } else {
-        return undefined;
-      }
-    })
-    .filter((item) => item !== undefined);
+  const ImageSlideElements: JSX.Element[] = (projectDetail?.overview.images ?? [])
+    .filter((src) => src.imageType === IMAGE_TYPE.BACKGROUND)
+    .map((src, index) => (
+      <div key={`Slide ${index + 1}`} className="w-[30.6rem] h-[20.4rem]">
+        <SImage src={src.imageUrl} alt={`Slide ${index + 1}`} className="rounded-large" />
+      </div>
+    ));
 
-  if (!projectDetailQuery) {
+  if (!projectDetail) {
     redirect('/404');
   }
 
@@ -66,14 +56,15 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
             <p className="text-small text-slate-30">프로젝트 목록</p>
           </RouterPush>
           <div className="py-5">
-            <SwiperComponent items={ImageSlideSrc} />
+            <SwiperComponent items={ImageSlideElements} />
           </div>
           <div className="w-[128rem] mt-8 flex justify-center gap-5">
             <div className="w-[95.4rem] flex flex-col gap-10">
               <ProjectDetail detail={projectDetail} />
-              <CommentComponent projectId={projectId} />
+              <CommentComponent projectId={projectId} commentInfo={projectComment} />
             </div>
             <ProjectDetailSideBar
+              title={projectDetail.head?.title}
               thumbnailImage={projectDetail.head?.thumbnailImageUrl}
               liked={projectDetail?.isLiked}
               likeCounts={projectDetail?.likeCounts}

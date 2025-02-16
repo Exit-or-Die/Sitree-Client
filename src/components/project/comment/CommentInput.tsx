@@ -6,6 +6,7 @@ import { CreateCommentRequest } from '@/service/comments/request';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { Nullable } from 'types/common';
 
 import SInput from '@/components/common/Input';
 
@@ -13,7 +14,7 @@ import { CommentInfoProps } from './CommentItemComponent';
 
 interface CommentInputProps {
   commentInfo?: CommentInfoProps;
-  handleCommentInfo?: (id: string, value: number | null) => void;
+  handleCommentInfo?: (id: string, value: Nullable<number>) => void;
   isReply?: boolean;
 }
 

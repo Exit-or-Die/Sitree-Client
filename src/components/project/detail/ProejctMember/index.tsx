@@ -14,6 +14,10 @@ interface ProjectMemberProps {
 const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  if (participantList.length === 0) {
+    return null;
+  }
+
   const onChangeMember = (index: number) => {
     setCurrentIndex(index);
   };

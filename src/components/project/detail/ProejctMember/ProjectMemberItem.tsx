@@ -23,7 +23,7 @@ const ProjectMemberItem = (props: ProjectMemberItemProps) => {
       </div>
       <div className="flex flex-grow flex-col gap-1">
         <p className="text-base font-lb leading-5 tracking-[-0.32px]">{name}</p>
-        <p className="text-slate-50">{position}자</p>
+        <p className="text-slate-50">{position}</p>
       </div>
       {isOwner && (
         <div className="flex items-center">

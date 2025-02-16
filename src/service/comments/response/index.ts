@@ -1,5 +1,7 @@
+import { Nullable } from 'types/common';
+
 export interface Comment {
-  createdAt: string | null;
+  createdAt: Nullable<string>;
   modifiedAt: string;
   commentId: number;
   commentType: string; // PROJECT
@@ -7,7 +9,7 @@ export interface Comment {
   contents: string;
   createMemberId: number; // 작성자
   parentCommentId: number; // 대댓글인 경우, 부모댓글 ID
-  childComments: Array<Comment> | null;
+  childComments: Nullable<Array<Comment>>;
   isChildComment: boolean;
   isDeleted: boolean;
 }

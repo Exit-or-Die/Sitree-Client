@@ -3,6 +3,7 @@
 import { Comment } from '@/service/comments/response';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { Nullable } from 'types/common';
 
 import { FormattedDate } from '@/components/common/Date';
 import SImage from '@/components/common/Image';
@@ -15,8 +16,8 @@ interface CommentItemComponentProps {
 }
 
 export interface CommentInfoProps {
-  commentId: number | null;
-  parentCommentId: number | null;
+  commentId: Nullable<number>;
+  parentCommentId: Nullable<number>;
   contents: string;
 }
 
@@ -28,7 +29,7 @@ const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponent
     contents: comment.contents
   });
 
-  const handleCommentInfo = (id: string, value: number | null) => {
+  const handleCommentInfo = (id: string, value: Nullable<number>) => {
     setCommentInfo({
       ...commentInfo,
       [id]: value

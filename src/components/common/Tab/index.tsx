@@ -43,7 +43,6 @@ const STab: React.FC<TabProps> = ({ items, onChange, activeItem = items[0] }) =>
         ))}
       </Swiper>
 
-      {/* Right side gradient */}
       <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-white opacity-50" />
     </div>
   );

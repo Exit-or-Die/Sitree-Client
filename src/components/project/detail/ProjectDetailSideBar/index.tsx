@@ -12,6 +12,7 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectDetailSideBarProps {
+  title?: string;
   commentCount?: number;
   thumbnailImage?: string;
   liked?: boolean;
@@ -21,6 +22,7 @@ interface ProjectDetailSideBarProps {
 }
 
 const ProjectDetailSideBar = ({
+  title = '',
   commentCount = 0,
   thumbnailImage = '',
   liked = true,
@@ -57,7 +59,7 @@ const ProjectDetailSideBar = ({
           </div>
           <div className="flex items-center">
             <div className="flex flex-col gap-1">
-              <span className="text-large font-lb leading-6 tracking-[-0.4px]">개미는 툰툰</span>
+              <span className="text-large font-lb leading-6 tracking-[-0.4px]">{title}</span>
               <div className="flex gap-1.5 items-center text-xsmall">
                 <div className="flex gap-0.5 leading-4 tracking-[-0.12px]">
                   <SImage src="/chat.svg" alt="project comment count" width={12} height={12} />
@@ -113,8 +115,7 @@ const ProjectDetailSideBar = ({
                 {teamMember.slice(0, 3).map((member, index) => (
                   <div
                     key={index}
-                    className={`relative w-[2.7rem] h-[2.7rem] rounded-full border border-2 border-white-100 ml-[-4px] overflow-hidden`}
-                    style={{ zIndex: 3 - index }}
+                    className={`relative w-[2.7rem] h-[2.7rem] rounded-full border-2 border-white-100 ml-[-4px] overflow-hidden z-[${3 - index}]`}
                   >
                     <SImage src={member.imageUrl} defaultType="user" alt="project member profile" />
                   </div>

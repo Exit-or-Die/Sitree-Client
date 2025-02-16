@@ -2,10 +2,11 @@ import { ClientUrl, Head, Tag } from '@/service/project/response';
 import Link from 'next/link';
 
 import { FormattedDate } from '@/components/common/Date';
+import HealthCheckState from '@/components/common/HealthState';
 import SImage from '@/components/common/Image';
 
 interface ProjectDetailHeaderProps {
-  head?: Head;
+  head: Head;
   healthy?: boolean;
   clientUrl?: ClientUrl;
   categories?: Array<Tag>;
@@ -17,27 +18,6 @@ interface ProjectLinkProps {
   text: string;
   url: string;
 }
-
-const HealthCheckState = ({ health }: { health: boolean }) => {
-  const HealthIcon = () => {
-    return (
-      <div
-        className={`relative w-[1.2rem] h-[1.2rem] rounded-full ${health ? 'bg-tree-50/20' : 'bg-slate-50/20'}`}
-      >
-        <span
-          className={`absolute top-1/2 left-1/2 w-[0.6rem] h-[0.6rem] rounded-full transform -translate-x-1/2 -translate-y-1/2 ${health ? 'bg-tree-50' : 'bg-slate-50'}`}
-        />
-      </div>
-    );
-  };
-
-  return (
-    <div className="flex px-1 justify-center items-center gap-1.5">
-      <HealthIcon />
-      <p>{health ? '운영중' : '운영 종료'}</p>
-    </div>
-  );
-};
 
 const ProjectLinkItem = ({ text, url }: ProjectLinkProps) => {
   return (
@@ -69,12 +49,12 @@ const ProjectDetailHeader = ({
   return (
     <div className="flex gap-5 p-10 text-[1.3rem] font-md border-b border-b-1 border-slate-90">
       <div className="relative w-[9.2rem] h-[9.2rem]">
-        <SImage src={head?.thumbnailImageUrl} className="rounded-[2.8rem]" />
+        <SImage src={head.thumbnailImageUrl} className="rounded-[2.8rem]" />
       </div>
       <div className="flex-grow">
-        <div className="h-10 text-2xlarge font-lb leading-8 tracking-[-0.64px]">{head?.title}</div>
+        <div className="h-10 text-2xlarge font-lb leading-8 tracking-[-0.64px]">{head.title}</div>
         <div className="flex flex-col gap-4">
-          <div className="text-slate-50 text-[1.5rem]">{head?.shortDescription}</div>
+          <div className="text-slate-50 text-[1.5rem]">{head.shortDescription}</div>
           <div className="flex gap-2 items-center">
             <HealthCheckState health={healthy ?? false} />
             {clientUrl &&

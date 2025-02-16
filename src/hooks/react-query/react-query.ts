@@ -7,6 +7,7 @@ import {
   QueryKey
 } from '@tanstack/react-query';
 import { cache } from 'react';
+import { Nullable } from 'types/common';
 
 export const getQueryClient = cache(
   () =>
@@ -42,13 +43,27 @@ export async function getDehydratedQuery<Q extends QueryProps>({ queryKey, query
 
 export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
   const queryClient = getQueryClient();
-  await Promise.all(
-    queries.map(({ queryKey, queryFn }) => queryClient.prefetchQuery({ queryKey, queryFn }))
+
+  const results = await Promise.allSettled(
+    queries.map(async ({ queryKey, queryFn }) => {
+      try {
+        await queryClient.prefetchQuery({ queryKey, queryFn });
+
+        return {
+          queryKey,
+          data: dehydrate(queryClient).queries.find((q) => q.queryKey === queryKey)
+        };
+      } catch (error) {
+        console.error(`Error fetching query: ${queryKey}`, error);
+
+        return { queryKey, data: null };
+      }
+    })
   );
 
-  return dehydrate(queryClient).queries as DehydratedQueryExtended<
-    UnwrapPromise<ReturnType<Q[number]['queryFn']>>
-  >[];
+  return results.map((result) =>
+    result.status === 'fulfilled' ? result.value.data : null
+  ) as DehydratedQueryExtended<Nullable<UnwrapPromise<ReturnType<Q[number]['queryFn']>>>>[];
 }
 
 export async function getDehydratedQueryData<Q extends QueryProps>({ queryKey, queryFn }: Q) {
