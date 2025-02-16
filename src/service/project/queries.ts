@@ -2,10 +2,7 @@ import ProjectService from './ProjectService';
 import { ProjectParamsRequest, ProjectRegisterRequest } from './request';
 
 const queryKeys = {
-  retrieveProjectDetail: (projectId: string, memberId?: number) =>
-    memberId
-      ? (['retrieveDetail', projectId, memberId] as const)
-      : (['retrieveDetail', projectId] as const),
+  retrieveProjectDetail: (projectId: string) => ['retrieveDetail', projectId] as const,
   retrieveSitreePick: () => ['project', 'retrieveSitreePick'] as const,
   retrieveProjects: (projectQuery: ProjectParamsRequest) =>
     ['retrieveProjects', projectQuery] as const
@@ -15,9 +12,9 @@ const ProjectQueryOptions = {
   registerProject: (param: ProjectRegisterRequest) => ({
     mutateFn: () => ProjectService.registerProject(param)
   }),
-  retrieveProjectDetail: (projectId: string, memberId?: number) => ({
-    queryKey: queryKeys.retrieveProjectDetail(projectId, memberId),
-    queryFn: () => ProjectService.retrieveProjectDetail(projectId, memberId)
+  retrieveProjectDetail: (projectId: string) => ({
+    queryKey: queryKeys.retrieveProjectDetail(projectId),
+    queryFn: () => ProjectService.retrieveProjectDetail(projectId)
   }),
   likeProject: (projectId: string) => ({
     mutateFn: () => ProjectService.likeProject(projectId)

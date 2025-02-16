@@ -11,10 +11,8 @@ class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
     return this.http.post<ProjectRegisterResponse>('projects', param);
   }
-  retrieveProjectDetail(projectId: string, memberId?: number) {
-    const query = memberId != null ? `?memberId=${memberId}` : '';
-
-    return this.http.get<ProjectDetailResponse>(`projects/${projectId}${query}`);
+  retrieveProjectDetail(projectId: string) {
+    return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
   }
 
   likeProject(projectId: string) {
