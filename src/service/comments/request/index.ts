@@ -3,3 +3,8 @@ export interface CreateCommentRequest {
   isChildComment: boolean;
   parentCommentId?: number;
 }
+
+export interface EditCommentRequest {
+  commentId: number;
+  contents: string;
+}

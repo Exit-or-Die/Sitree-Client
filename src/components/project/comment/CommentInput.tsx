@@ -2,7 +2,7 @@
 
 import CommentsService from '@/service/comments/CommentsService';
 import CommentsQueryOptions from '@/service/comments/queries';
-import { CreateCommentRequest } from '@/service/comments/request';
+import { CreateCommentRequest, EditCommentRequest } from '@/service/comments/request';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -39,12 +39,12 @@ const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputP
   });
 
   const { mutate: editComment } = useMutation({
-    mutationFn: (comment: string) => {
+    mutationFn: ({ commentId, contents }: EditCommentRequest) => {
       if (!commentInfo?.commentId) {
         return Promise.reject(new Error('Invalid commentId'));
       }
 
-      return CommentsService.modifyComment(1, comment);
+      return CommentsService.modifyComment({ commentId, contents });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
@@ -63,15 +63,19 @@ const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputP
     registerComment(params);
   };
 
-  const handleEditComment = (comment: string) => {
-    editComment(comment);
+  const handleEditComment = ({ commentId, contents }: EditCommentRequest) => {
+    editComment({ commentId, contents });
   };
 
-  const handleComment = (comment: string) => {
+  const handleComment = (contents: string) => {
+    if (!contents.length) {
+      return null;
+    }
+
     if (commentInfo?.commentId) {
-      handleEditComment(comment);
+      handleEditComment({ commentId: commentInfo.commentId, contents });
     } else {
-      handleCreateComment(comment);
+      handleCreateComment(contents);
     }
   };
 

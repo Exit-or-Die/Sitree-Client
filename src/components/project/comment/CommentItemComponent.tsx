@@ -1,7 +1,11 @@
 'use client';
 
+import CommentsService from '@/service/comments/CommentsService';
+import CommentsQueryOptions from '@/service/comments/queries';
 import { Comment } from '@/service/comments/response';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Nullable } from 'types/common';
 
@@ -22,12 +26,27 @@ export interface CommentInfoProps {
 }
 
 const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponentProps) => {
-  const { data: session, status } = useSession();
+  const queryClient = useQueryClient();
+  const { projectId } = useParams();
+  const { data: session } = useSession();
   const [commentInfo, setCommentInfo] = useState<CommentInfoProps>({
     commentId: null,
     parentCommentId: null,
     contents: comment.contents
   });
+
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
+
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: (commentId: number) => CommentsService.deleteComment(commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey
+      });
+    }
+  });
+
+  const isMyComment = session?.detail.memberId === comment.createMember.memberId;
 
   const handleCommentInfo = (id: string, value: Nullable<number>) => {
     setCommentInfo({
@@ -43,7 +62,9 @@ const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponent
         <div className="w-full flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center">
-              <p className="text-base font-lb leading-5 tracking-[-0.32px]">nickname</p>
+              <p className="text-base font-lb leading-5 tracking-[-0.32px]">
+                {comment.createMember.nickname}
+              </p>
               <span className="px-2 py-1 rounded-small bg-slate-tint-6 text-xsmall text-slate-50 leading-4 tracking-[-0.12px]">
                 position
               </span>
@@ -58,21 +79,24 @@ const CommentItemComponent = ({ comment, isReply = false }: CommentItemComponent
                   onClick={() => handleCommentInfo('parentCommentId', 1)}
                 />
               )}
-              <SImage
-                src="/commentEdit.svg"
-                width={20}
-                height={20}
-                className="m-1 cursor-pointer"
-                onClick={() => handleCommentInfo('commentId', 1)}
-              />
-              {
+              {isMyComment && (
+                <SImage
+                  src="/commentEdit.svg"
+                  width={20}
+                  height={20}
+                  className="m-1 cursor-pointer"
+                  onClick={() => handleCommentInfo('commentId', comment.commentId)}
+                />
+              )}
+              {isMyComment && (
                 <SImage
                   src="/commentDelete.svg"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"
+                  onClick={() => deleteComment(comment.commentId)}
                 />
-              }
+              )}
             </div>
           </div>
           <span className="text-small leading-5 tracking-[-0.14px]">{comment.contents}</span>

@@ -1,5 +1,5 @@
 import Service from '../service';
-import { CreateCommentRequest } from './request';
+import { CreateCommentRequest, EditCommentRequest } from './request';
 import { CreateCommentResponse, GetCommentListResponse } from './response';
 
 class CommentsService extends Service {
@@ -13,7 +13,7 @@ class CommentsService extends Service {
       `comments/project/${projectId}?page=${page}&size=${size}`
     );
   }
-  modifyComment(commentId: number, contents: string) {
+  modifyComment({ commentId, contents }: EditCommentRequest) {
     return this.http.put<CreateCommentResponse>(
       `comments/${commentId}`,
       {
@@ -25,7 +25,9 @@ class CommentsService extends Service {
     );
   }
   deleteComment(commentId: number) {
-    return this.http.delete<CreateCommentRequest>(`comments/${commentId}`);
+    return this.http.delete<CreateCommentRequest>(`comments/${commentId}`, {
+      includeAuth: true
+    });
   }
 }
 
