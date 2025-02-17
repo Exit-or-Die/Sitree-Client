@@ -1,12 +1,12 @@
 import BelongingService from './BelongingService';
 
 const queryKeys = {
-  search: () => ['search', 'belonging'] as const
+  search: (belonging: string) => ['search', belonging] as const
 };
 
 const BelongingQueryOptions = {
   search: (belonging: string) => ({
-    queryKey: queryKeys.search(),
+    queryKey: queryKeys.search(belonging),
     queryFn: () => BelongingService.search(belonging)
   })
 };
