@@ -30,7 +30,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [searchKeyword]);
+  }, [searchKeyword, debouncedKeyword]);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjects({
     sortType: selectedFilter.type,
