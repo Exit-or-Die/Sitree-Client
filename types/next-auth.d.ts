@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth';
-import { UserDetail } from '@/service/auth/AuthService';
+import { UserDetail } from '@/service/auth/response';
+import NextAuth from 'next-auth/next';
 
 declare module 'next-auth' {
   interface Session {
