@@ -53,7 +53,7 @@ const PortfolioPDF = () => {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 mb-6">
         <h3 className="text-xl font-bold">기술 스택 00</h3>
         <p className="text-gray-700">{`{Tech Name}, ReactJS, {Tech Name}, Typescript, {Tech Name}, {Tech Name}, Javascript`}</p>
       </div>

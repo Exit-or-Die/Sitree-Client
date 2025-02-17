@@ -8,9 +8,7 @@ declare module 'html2pdf.js' {
   }
 
   interface Html2Pdf {
-    output(
-        type: "blob" | "datauristring" | "arraybuffer"
-    ): Promise<Blob | string | ArrayBuffer>;
+    output(type: 'blob' | 'datauristring' | 'arraybuffer'): Promise<Blob | string | ArrayBuffer>;
     from(element: HTMLElement): this;
     set(options: Html2PdfOptions): this;
     toPdf(): this;
