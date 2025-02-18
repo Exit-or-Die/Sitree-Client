@@ -3,9 +3,6 @@ import Service from '../service';
 class ImageService extends Service {
   registerImage(file: FormData) {
     return this.http.post<string>('image', file, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
       includeAuth: true
     });
   }

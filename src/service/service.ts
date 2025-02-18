@@ -65,6 +65,12 @@ class Service {
     data?: unknown,
     config: RequestInitWithAuth = {}
   ): Promise<T> {
+    if (data instanceof FormData) {
+      delete this.headers['Content-Type'];
+    } else if (data) {
+      this.headers['Content-Type'] = 'application/json';
+    }
+
     const requestConfig: RequestConfigWithResponse<T> = {
       ...config,
       method,
@@ -74,7 +80,7 @@ class Service {
         ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',
-      body: data instanceof FormData ? data : data ? JSON.stringify(data) : undefined, // FormData일 때는 그대로 전송
+      body: data instanceof FormData ? data : data ? JSON.stringify(data) : undefined,
       baseURL: this.baseURL,
       url: this.baseURL + url,
       request: this.request
