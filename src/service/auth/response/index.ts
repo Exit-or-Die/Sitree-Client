@@ -9,6 +9,7 @@ export interface UserDetail {
   oAuthToken: string;
   profileImgUrl: string;
   isNewMember: boolean;
+  memberId: number;
   accessToken?: Nullable<string>;
   refreshToken?: Nullable<string>;
 }

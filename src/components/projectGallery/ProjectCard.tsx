@@ -1,0 +1,101 @@
+'use client';
+
+import { getTimeDifferenceMessage } from '@/utils/time';
+import Link from 'next/link';
+
+import SImage from '../common/Image';
+
+type Props = {
+  projectId: number;
+  thumbnail: string;
+  name: string;
+  shortDescription: string;
+  backgroundImage: string;
+  commentCount: number;
+  likesCount: number;
+  viewCount: number;
+  isHealthy: boolean;
+  latestUpdateTime: Date;
+};
+
+const ProjectCard = ({
+  projectId,
+  thumbnail,
+  name,
+  shortDescription,
+  backgroundImage,
+  commentCount,
+  likesCount,
+  viewCount,
+  isHealthy,
+  latestUpdateTime
+}: Props) => {
+  return (
+    <Link href={`/project/${projectId}`}>
+      <div className="bg-white pt-6 px-3 rounded-xl cursor-pointer w-[328px]">
+        <div className="flex items-center mb-2">
+          <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
+            <SImage src={thumbnail} alt={`${name} Icon`} width={40} height={40} />
+          </div>
+          <div className="ml-3">
+            <h3 className="text-base font-bold max-w-[150px] truncate">{name}</h3>
+            <p className="text-xsmall text-gray-400 max-w-[150px] truncate">{shortDescription}</p>
+          </div>
+          <div className="flex ml-auto items-center">
+            <SImage src="/focused.svg" alt="focused on" width={16} height={16} />
+            <div className="ml-1 text-xsmall text-tree-40">focused on</div>
+          </div>
+        </div>
+
+        <div className="w-[312px] h-[184px] overflow-hidden rounded-3xl">
+          <SImage
+            src={backgroundImage}
+            alt={`Project ${name} Background`}
+            className="w-full h-full object-cover"
+            width={312}
+            height={184}
+          />
+        </div>
+
+        <div className="flex text-xsmall text-gray-400 mt-4 pl-2 justify-between">
+          <div className="flex">
+            <div className="flex items-center mr-2">
+              <SImage
+                src="/comment.svg"
+                width={12}
+                height={12}
+                alt="comment"
+                className="mr-[3px]"
+              />{' '}
+              <span className="text-slate-30">{commentCount}</span>
+            </div>
+            <div className="flex items-center mr-2">
+              <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" />
+              <span className="text-slate-30">{likesCount}</span>
+            </div>
+            <span className="text-slate-50">조회수 {viewCount}</span>
+          </div>
+          <div className="flex text-xs text-gray-400 items-center">
+            {isHealthy ? (
+              <>
+                <SImage src="/alive.svg" alt="health-check" width={12} height={12} />
+                <span className="text-[13px] text-slate-30 text-md ml-1">운영중</span>
+              </>
+            ) : (
+              <>
+                <SImage src="/grayDot.svg" alt="service-down" width={6} height={6} />
+                <span className="text-[13px] text-slate-50 text-md ml-2">서비스 종료</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="pl-2 mt-1 text-xsmall text-slate-50 mb-4">
+          {getTimeDifferenceMessage(latestUpdateTime)}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+export default ProjectCard;
