@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-const ErrorPage = () => {
+const NotFound = () => {
   const router = useRouter();
 
   return (
@@ -34,4 +34,4 @@ const ErrorPage = () => {
   );
 };
 
-export default ErrorPage;
+export default NotFound;
