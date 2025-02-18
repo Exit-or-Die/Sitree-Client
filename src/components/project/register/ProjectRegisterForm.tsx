@@ -64,9 +64,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     }
   }, [data, formMethods]);
 
-  const onInvalid = (errors: unknown) => console.error(errors);
-
-  const { mutate } = useMutation({
+  const { mutate: registerProject } = useMutation({
     mutationFn: (formValues: ProjectRegisterRequest) =>
       ProjectQueryOptions.registerProject(formValues).mutateFn(),
     onSuccess: (data) => {
@@ -77,9 +75,11 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const handleSubmitClick = () => {
     formMethods.handleSubmit((formValues) => {
       console.log('🚀 Submitted Data:', formValues);
-      mutate(formValues as ProjectRegisterRequest);
+      registerProject(formValues as ProjectRegisterRequest);
     }, onInvalid)();
   };
+
+  const onInvalid = (errors: unknown) => console.error(errors);
 
   return (
     <div className="flex justify-center gap-5">

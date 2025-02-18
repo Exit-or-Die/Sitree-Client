@@ -65,7 +65,7 @@ export interface ParticipantResponse {
   imageUrl: string;
   position: string;
   focusPoint: string;
-  leader: boolean;
+  isLeader: boolean;
 }
 
 export interface SitreePickResponse {

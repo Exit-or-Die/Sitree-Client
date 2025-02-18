@@ -51,9 +51,9 @@ export interface Architecture {
 }
 
 export interface Participant {
-  memberNo: number;
+  memberId: number;
   position: string;
-  leader: boolean;
+  isLeader: boolean;
 }
 
 export type SortType = 'VIEWS' | 'LATEST' | 'LIKES' | 'COMMENTS';

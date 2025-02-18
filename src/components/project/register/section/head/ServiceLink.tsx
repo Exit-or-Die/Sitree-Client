@@ -1,3 +1,5 @@
+'use client';
+
 import { ClientUrl, ProjectRegisterRequest } from '@/service/project/request';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
