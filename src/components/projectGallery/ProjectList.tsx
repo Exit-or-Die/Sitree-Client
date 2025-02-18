@@ -30,6 +30,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
     }, 500);
 
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchKeyword]);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjects({

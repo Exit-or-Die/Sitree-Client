@@ -17,7 +17,8 @@ export const MainLayout = async ({ children, className }: MainLayoutProps) => {
   const wrapperStyles = cn('flex flex-col min-h-screen bg-slate-100', className);
   const queryClient = getQueryClient();
 
-  const { queryKey, queryFn } = AuthQueryOptions.validateUser(cookies);
+  const userCookies = cookies();
+  const { queryKey, queryFn } = AuthQueryOptions.validateUser(() => userCookies);
   await queryClient.prefetchQuery({ queryKey, queryFn });
   const query = await getDehydratedQuery({ queryKey, queryFn });
 
