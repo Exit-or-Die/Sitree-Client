@@ -74,7 +74,7 @@ class Service {
         ...(config.includeAuth ? { Authorization: `Bearer ${this.getToken()}` } : {})
       },
       credentials: 'include',
-      body: data ? JSON.stringify(data) : undefined,
+      body: data instanceof FormData ? data : data ? JSON.stringify(data) : undefined, // FormData일 때는 그대로 전송
       baseURL: this.baseURL,
       url: this.baseURL + url,
       request: this.request

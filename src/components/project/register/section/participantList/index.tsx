@@ -3,20 +3,21 @@
 import withModal from '@/enhancers/WithModal';
 import AuthService from '@/service/auth/AuthService';
 import { UserResult } from '@/service/auth/response';
-import { Participant, ProjectRegisterRequest } from '@/service/project/request';
+import ProjectQueryOptions from '@/service/project/queries';
+import { ProjectRegisterRequest } from '@/service/project/request';
+import { ParticipantResponse } from '@/service/project/response';
+import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
-import { ParticipantResponse } from '@/service/project/response';
-import ProjectQueryOptions from '@/service/project/queries';
-import { useParams } from 'next/navigation';
+
 import { DEFAULT_DETAIL_DATA } from '../../ProjectRegisterForm';
-import { useQuery } from '@tanstack/react-query';
 
 const TOTAL_MEMBER = 10;
 
