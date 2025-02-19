@@ -38,7 +38,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       <input
         type={type}
         ref={registerRef || ref}
-        className={`w-full p-3 border border-slate-90 rounded-base bg-white focus:outline-none focus:ring-1 focus:ring-tree-50 focus:outline-none ${className}`}
+        className={`w-full p-3 border border-slate-90 rounded-base bg-white focus:outline-none focus:ring-1 focus:ring-tree-50 ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={handleChange}

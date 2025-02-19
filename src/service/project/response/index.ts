@@ -44,8 +44,8 @@ export interface ClientUrl {
 export interface TechView {
   techTitle: string;
   gitRepositoryUrl: string;
-  techTagList: Array<string>;
-  description: string;
+  techStackTypes: Array<string>;
+  techDesc: string;
 }
 
 export interface Architecture {

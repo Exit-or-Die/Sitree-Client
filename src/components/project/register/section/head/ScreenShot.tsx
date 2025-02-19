@@ -1,7 +1,7 @@
 'use client';
 
 import { Image } from '@/service/project/response';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import FileUploadButton from '@/components/custom/FileUploadButton';
@@ -10,10 +10,22 @@ import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
 const TOTAL_SCREENSHOT_ITEMS = 8;
 
 const ProjectHeadScreenshot = () => {
-  const { getValues } = useFormContext();
+  const { getValues, setValue } = useFormContext();
   const [screenShotList, setScreenShotList] = useState<Array<Image>>(
     getValues('overview.images') ?? []
   );
+
+  const handleScreenshotUpload = (screenshot: string) => {
+    const imageObject: Image = {
+      imageUrl: screenshot,
+      imageType: screenShotList.length === 0 ? 'REPRESENT' : 'BACKGROUND'
+    };
+    setScreenShotList((prev) => [...prev, imageObject]);
+  };
+
+  useEffect(() => {
+    setValue('overview.images', screenShotList);
+  }, [screenShotList, setValue]);
 
   return (
     <div className="p-10">
@@ -32,7 +44,7 @@ const ProjectHeadScreenshot = () => {
             className="border h-[36px]"
             text="파일 선택"
             iconName="/fileUpload.svg"
-            onUpload={() => {}}
+            onUpload={handleScreenshotUpload}
           />
         </div>
       </div>
@@ -40,7 +52,7 @@ const ProjectHeadScreenshot = () => {
         {screenShotList.map((screenShot, index) => (
           <ProjectScreenshotItem
             key={`screenshot-${index}`}
-            src={'https://picsum.photos/600/400'}
+            src={screenShot.imageUrl}
             alt={`Screenshot ${index + 1}`}
             className="w-full h-auto"
             isRepresentative={!index}

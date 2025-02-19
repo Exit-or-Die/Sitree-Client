@@ -29,13 +29,13 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log('file', file);
+
     if (file) {
       try {
         const fileUrl = await uploadFile(file);
         onUpload(fileUrl);
       } catch (error) {
-        console.error('파일 업로드 실패:', error);
+        console.error('Error: 파일 업로드 실패:', error);
       } finally {
         event.target.value = '';
       }

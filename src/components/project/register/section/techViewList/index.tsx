@@ -1,6 +1,7 @@
 'use client';
 
 import { ProjectRegisterRequest } from '@/service/project/request';
+import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -13,16 +14,14 @@ import TechViewForm from './TechViewForm';
 export interface TechViewProps {
   techTitle: string;
   gitRepositoryUrl: string;
-  techTagList: string[];
+  techStackTypes: string[];
   techDesc: string;
 }
 
 const ProjectRegisterTechViewList = () => {
   const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
-  const [skills, setSkills] = useState<Array<TechViewProps>>([
-    { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
-  ]);
-  // const [skills, setSkills] = useState<Array<TechViewProps>>(getValues('techviewList'));
+  const [skills, setSkills] = useState<Array<TechView>>([]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const updateSkill = (index: number, updatedSkill: TechViewProps) => {
@@ -33,7 +32,7 @@ const ProjectRegisterTechViewList = () => {
     if (!canAddSkill()) return;
     setSkills((prevSkills) => [
       ...prevSkills,
-      { techTitle: '', gitRepositoryUrl: '', techTagList: [], techDesc: '' }
+      { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
     ]);
     setCurrentIndex(skills.length);
   };
@@ -69,6 +68,15 @@ const ProjectRegisterTechViewList = () => {
   useEffect(() => {
     setValue('techviewList', skills);
   }, [skills, setValue]);
+
+  useEffect(() => {
+    const initialSkills = getValues('techviewList');
+    if (!initialSkills || initialSkills.length === 0) {
+      setSkills([{ techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }]);
+    } else {
+      setSkills(initialSkills);
+    }
+  }, [getValues]);
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">

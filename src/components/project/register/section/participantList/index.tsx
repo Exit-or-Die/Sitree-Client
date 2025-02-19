@@ -188,8 +188,6 @@ const ProjectRegisterParticipantList = () => {
     setValue('participantList', teamMembers);
   }, [teamMembers]);
 
-  console.log('ddd', data);
-
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border border-slate-90">
       {isModalOpen && (

@@ -1,5 +1,6 @@
 import CategoryQueryOptions from '@/service/category/queries';
 import { ProjectRegisterRequest, Tag } from '@/service/project/request';
+import getErrorMessage from '@/utils/getErrorMessage';
 import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
@@ -8,7 +9,11 @@ import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const ProjectHeadBaseInfo = () => {
-  const { register, setValue } = useFormContext<ProjectRegisterRequest>();
+  const {
+    register,
+    setValue,
+    formState: { errors }
+  } = useFormContext<ProjectRegisterRequest>();
 
   const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
   const { data: tagData } = useQuery({ queryKey, queryFn });
@@ -26,7 +31,8 @@ const ProjectHeadBaseInfo = () => {
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true
+      required: true,
+      errorKey: 'head.title'
     },
     {
       title: 'Health Check API',
@@ -38,7 +44,8 @@ const ProjectHeadBaseInfo = () => {
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true
+      required: true,
+      errorKey: 'head.healthCheckUrl'
     },
     {
       title: '한 줄 소개',
@@ -50,7 +57,8 @@ const ProjectHeadBaseInfo = () => {
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true
+      required: true,
+      errorKey: 'head.shortDescription'
     },
     {
       title: '프로젝트 태그',
@@ -61,7 +69,8 @@ const ProjectHeadBaseInfo = () => {
           tags={tags}
         />
       ),
-      required: true
+      required: true,
+      errorKey: 'categories'
     }
   ];
 
@@ -77,6 +86,11 @@ const ProjectHeadBaseInfo = () => {
               )}
             </label>
             {input.component}
+            {getErrorMessage(errors, input.errorKey) && (
+              <span className="text-red-500 text-sm">
+                {getErrorMessage(errors, input.errorKey)}
+              </span>
+            )}
           </div>
         ))}
       </div>
