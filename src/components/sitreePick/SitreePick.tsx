@@ -102,12 +102,12 @@ const SitreePick = () => {
           </ul>
         </div>
         <div className="w-2/3 flex items-center justify-center relative">
-          {/* <SImage
+          <SImage
             key={selectedProject?.projectId || data[0].projectId}
             src={selectedProject?.backgroundImage || data[0].backgroundImage}
             alt={`Project ${selectedProject?.name || data[0].name} Background`}
             className="rounded-r-3xl object-cover"
-          /> */}
+          />
         </div>
       </div>
     </div>

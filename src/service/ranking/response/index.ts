@@ -11,3 +11,12 @@ export interface Affiliation {
   prevRanking: number;
   projectCount: number;
 }
+
+export interface AffiliationResponseData {
+  content: Array<Affiliation>;
+  page: number;
+  size: number;
+  total: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+}
