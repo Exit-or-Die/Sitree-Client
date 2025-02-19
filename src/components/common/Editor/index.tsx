@@ -6,7 +6,7 @@ import '@/styles/editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { useRef, useEffect, useCallback, useState } from 'react';
 
-interface EditorProps {
+export interface EditorProps {
   onChange: (e: string) => void;
   initialValue?: string;
   placeholder?: string;

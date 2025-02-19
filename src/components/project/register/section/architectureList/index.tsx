@@ -2,14 +2,12 @@
 
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { Architecture } from '@/service/project/request';
-import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SImage from '@/components/common/Image';
 import FileUploadButton from '@/components/custom/FileUploadButton';
-
-const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: true });
 
 interface TabType {
   id: number;
@@ -103,7 +101,7 @@ const ArchitectureComponent = () => {
           <p className="py-1 text-small leading-5 tracking-[-0.14px] text-slate-30">
             아키텍쳐 설명
           </p>
-          <SEditor
+          <DynamicSEditor
             onChange={handleDescription}
             initialValue={tabContents?.architectureDesc}
             key={activeTab.id}

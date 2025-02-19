@@ -1,8 +1,7 @@
 import { ProjectDetailResponse } from '@/service/project/response';
-import dynamic from 'next/dynamic';
 import { useFormContext } from 'react-hook-form';
 
-const SEditor = dynamic(() => import('@/components/common/Editor'), { ssr: true });
+import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 
 const ProjectRegisterOverview = () => {
   const { setValue, getValues } = useFormContext<ProjectDetailResponse>();
@@ -17,7 +16,7 @@ const ProjectRegisterOverview = () => {
     <div className="bg-white-100 p-10 rounded-2xlarge border-[1px] border-slate-90">
       <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
       <div>
-        <SEditor
+        <DynamicSEditor
           placeholder="님의 프로젝트를 소개해 주세요"
           initialValue={detailDescription || ''}
           onChange={handleChangeDescription}
