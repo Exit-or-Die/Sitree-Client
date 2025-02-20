@@ -61,7 +61,11 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
           <div className="w-[128rem] mt-8 flex justify-center gap-5">
             <div className="w-[95.4rem] flex flex-col gap-10">
               <ProjectDetail detail={projectDetail} />
-              <CommentComponent projectId={projectId} commentInfo={projectComment} />
+              <CommentComponent
+                projectId={projectId}
+                commentInfo={projectComment}
+                teamMember={projectDetail.participantList}
+              />
             </div>
             <ProjectDetailSideBar
               title={projectDetail.head?.title}
