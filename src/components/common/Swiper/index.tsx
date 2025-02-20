@@ -15,6 +15,7 @@ interface SwiperComponentProps {
 const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
   const swiperRef = useRef<Nullable<SwiperRef>>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   const updateNavigationButtons = (swiper: SwiperClass) => {
     const prevButton = document.querySelector('.swiper-button-prev');
@@ -34,11 +35,16 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
   };
 
   useEffect(() => {
+    setIsClient(true);
     if (swiperRef.current) {
       swiperRef.current.swiper.update();
       updateNavigationButtons(swiperRef.current.swiper);
     }
   }, [items]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="relative w-full">
@@ -50,9 +56,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
           prevEl: '.swiper-button-prev'
         }}
         spaceBetween={20}
-        breakpoints={{
-          1024: { slidesPerView: 4 }
-        }}
+        slidesPerView={4}
         onSlideChange={(swiper) => {
           setActiveIndex(swiper.activeIndex);
           updateNavigationButtons(swiper);
