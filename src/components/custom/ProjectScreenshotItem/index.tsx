@@ -14,7 +14,7 @@ const ProjectScreenshotItem = ({
   className
 }: ProjectScreenshotItemProps) => {
   return (
-    <div className="relative flex items-center justify-center rounded-large bg-slate-98 w-[20.4rem] h-[16rem] overflow-hidden">
+    <div className="relative flex items-center justify-center rounded-large bg-slate-98 h-[16rem] overflow-hidden">
       <SImage
         src={src || '/blankImage.svg'}
         width={src ? undefined : 40}

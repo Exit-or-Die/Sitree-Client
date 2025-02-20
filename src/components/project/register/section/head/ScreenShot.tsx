@@ -28,10 +28,10 @@ const ProjectHeadScreenshot = () => {
   }, [screenShotList, setValue]);
 
   return (
-    <div className="p-10">
-      <div className="flex justify-between">
+    <div className="p-10 flex flex-col gap-4">
+      <div className="flex justify-between items-center">
         <span className="flex">
-          <p className="mb-6 text-slate-10 font-lb text-large leading-5">스크린샷 이미지</p>
+          <p className="text-slate-10 font-lb text-large leading-5">스크린샷 이미지</p>
           <span className="ml-1 mt-1 w-1.5 h-1.5 bg-tree-50 rounded-full" />
         </span>
         <div className="flex items-center gap-4">

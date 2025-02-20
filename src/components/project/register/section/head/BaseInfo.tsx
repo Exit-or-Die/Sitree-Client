@@ -87,7 +87,7 @@ const ProjectHeadBaseInfo = () => {
             </label>
             {input.component}
             {getErrorMessage(errors, input.errorKey) && (
-              <span className="text-red-500 text-sm">
+              <span className="text-[#DC2430] text-xsmall">
                 {getErrorMessage(errors, input.errorKey)}
               </span>
             )}

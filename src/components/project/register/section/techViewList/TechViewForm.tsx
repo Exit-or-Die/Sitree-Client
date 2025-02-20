@@ -38,8 +38,9 @@ const TechViewForm: React.FC<{
             value={skill?.techTitle}
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
+            errors={getErrorMessage(errors, `techviewList.${index}.techTitle`)}
           />
-          <span className="text-red-500 text-sm">
+          <span className="text-[#DC2430] text-xsmall">
             {getErrorMessage(errors, `techviewList.${index}.techTitle`)}
           </span>
         </div>
@@ -55,7 +56,7 @@ const TechViewForm: React.FC<{
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
-          <span className="text-red-500 text-sm">
+          <span className="text-[#DC2430] text-xsmall">
             {getErrorMessage(errors, `techviewList.${index}.gitRepositoryUrl`)}
           </span>
         </div>
@@ -84,6 +85,7 @@ const TechViewForm: React.FC<{
           initialValue={skill?.techStackTypes}
         />
       </div>
+      <span className="text-[#DC2430] text-small">{getErrorMessage(errors, `techviewList`)}</span>
     </div>
   );
 };
