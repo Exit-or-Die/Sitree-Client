@@ -216,7 +216,7 @@ const ProjectRegisterParticipantList = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {teamMembers.map((member) => (
           <ProjectParticipantCard
-            key={member.memberNo}
+            key={member.memberId}
             image={member.imageUrl}
             name={member.nickname}
             description={member.position}
