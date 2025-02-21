@@ -1,6 +1,7 @@
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { TechView } from '@/service/project/response';
 import getErrorMessage from '@/utils/getErrorMessage';
+import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useFormContext } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
@@ -21,6 +22,10 @@ const TechViewForm: React.FC<{
   };
 
   const handleEditorChange = (value: string) => {
+    if (!extractContentFromHtml(value).length) {
+      return;
+    }
+
     updateSkill(index, { ...skill, techDesc: value });
   };
 

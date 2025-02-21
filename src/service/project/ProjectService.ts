@@ -34,6 +34,7 @@ class ProjectService extends Service {
 
     return this.http.get<ProjectsResponse>(`projects?${params.toString()}`);
   }
+  // retrieveProjectLikeStatus()
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
