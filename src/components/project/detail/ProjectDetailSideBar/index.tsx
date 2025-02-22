@@ -48,7 +48,7 @@ const ProjectDetailSideBar = ({
     scrollToElement(id);
   };
 
-  const teamLeader = teamMember.find((member) => member.leader);
+  const teamLeader = teamMember.find((member) => member.isLeader);
 
   return (
     <div className="w-[30.6rem] sticky top-5 h-full flex flex-col border border-1 border-slate-90 rounded-2xlarge bg-white-100 leading-5 tracking-[-0.14px]">

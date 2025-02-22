@@ -15,7 +15,7 @@ const CommentsQueryOptions = {
       CommentsService.getCommentList(projectId, pageParam, size)
   }),
   modifyComment: (commentId: number, contents: string) => ({
-    mutateFn: () => CommentsService.modifyComment(commentId, contents)
+    mutateFn: () => CommentsService.modifyComment({ commentId, contents })
   }),
   deleteComment: (commentId: number) => ({
     mutateFn: () => CommentsService.deleteComment(commentId)

@@ -14,7 +14,7 @@ interface SwiperComponentProps {
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({ items }) => {
   const swiperRef = useRef<Nullable<SwiperRef>>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [, setActiveIndex] = useState(0);
   const [isClient, setIsClient] = useState(false);
 
   const updateNavigationButtons = (swiper: SwiperClass) => {
