@@ -1,21 +1,17 @@
-import { ProjectRegisterRequest } from '@/service/project/request';
 import { TechView } from '@/service/project/response';
-import getErrorMessage from '@/utils/getErrorMessage';
 import { extractContentFromHtml } from '@/utils/stringUtil';
-import { useFormContext } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
+
+import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const TechViewForm: React.FC<{
   skill: TechView;
   index: number;
   updateSkill: (index: number, updatedSkill: TechView) => void;
 }> = ({ skill, index, updateSkill }) => {
-  const {
-    formState: { errors }
-  } = useFormContext<ProjectRegisterRequest>();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     updateSkill(index, { ...skill, [name]: value });
@@ -43,11 +39,8 @@ const TechViewForm: React.FC<{
             value={skill?.techTitle}
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
-            errors={getErrorMessage(errors, `techviewList.${index}.techTitle`)}
           />
-          <span className="text-[#DC2430] text-xsmall">
-            {getErrorMessage(errors, `techviewList.${index}.techTitle`)}
-          </span>
+          <RegiseterErrorMessage errorKey={`techviewList.${index}.techTitle`} />
         </div>
         <div className="w-full">
           <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
@@ -61,9 +54,7 @@ const TechViewForm: React.FC<{
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
-          <span className="text-[#DC2430] text-xsmall">
-            {getErrorMessage(errors, `techviewList.${index}.gitRepositoryUrl`)}
-          </span>
+          <RegiseterErrorMessage errorKey={`techviewList.${index}.gitRepositoryUrl`} />
         </div>
       </div>
       <div>
@@ -90,7 +81,7 @@ const TechViewForm: React.FC<{
           initialValue={skill?.techStackTypes}
         />
       </div>
-      <span className="text-[#DC2430] text-small">{getErrorMessage(errors, `techviewList`)}</span>
+      <RegiseterErrorMessage errorKey="techviewList" />
     </div>
   );
 };

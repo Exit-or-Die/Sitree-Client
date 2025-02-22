@@ -1,6 +1,5 @@
 import CategoryQueryOptions from '@/service/category/queries';
 import { ProjectRegisterRequest, Tag } from '@/service/project/request';
-import getErrorMessage from '@/utils/getErrorMessage';
 import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
@@ -8,12 +7,10 @@ import SInput from '@/components/common/Input';
 import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
+import { RegiseterErrorMessage } from '../../error/RegisterError';
+
 const ProjectHeadBaseInfo = () => {
-  const {
-    register,
-    setValue,
-    formState: { errors }
-  } = useFormContext<ProjectRegisterRequest>();
+  const { register, setValue } = useFormContext<ProjectRegisterRequest>();
 
   const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
   const { data: tagData } = useQuery({ queryKey, queryFn });
@@ -86,16 +83,13 @@ const ProjectHeadBaseInfo = () => {
               )}
             </label>
             {input.component}
-            {getErrorMessage(errors, input.errorKey) && (
-              <span className="text-[#DC2430] text-xsmall">
-                {getErrorMessage(errors, input.errorKey)}
-              </span>
-            )}
+            <RegiseterErrorMessage errorKey={input.errorKey} />
           </div>
         ))}
       </div>
-      <div>
+      <div className="text-center">
         <ProjectIconUpload />
+        <RegiseterErrorMessage errorKey="head.thumbnailImageUrl" />
       </div>
     </div>
   );

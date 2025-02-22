@@ -56,11 +56,16 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     placeholderData: DEFAULT_DETAIL_DATA
   });
 
-  const formMethods = useForm({ resolver: zodResolver(projectSchema), mode: 'onChange' });
+  const formMethods = useForm({
+    resolver: zodResolver(projectSchema),
+    mode: 'onSubmit', // 제출 시에만 validation
+    shouldFocusError: false,
+    defaultValues: DEFAULT_DETAIL_DATA // 초기 값 제공
+  });
 
   useEffect(() => {
     if (data) {
-      formMethods.reset(data);
+      formMethods.reset(data, { keepErrors: false });
     }
   }, [data, formMethods]);
 
@@ -85,12 +90,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
-          <form
-            onSubmit={formMethods.handleSubmit((formValues) => {
-              console.log('🚀 Submitted Data:', formValues);
-            }, onInvalid)}
-            className="flex flex-col gap-10"
-          >
+          <form className="flex flex-col gap-10">
             <ProjectRegisterHead />
             <ProjectRegisterOverview />
             <ProjectRegisterTechViewList />

@@ -31,15 +31,9 @@ const ProjectIconUpload = () => {
       </div>
       <div className="w-[24rem] border rounded-[1.2rem] border-slate-90 px-[2.4rem] pt-[2.4rem] pb-[2.4rem] flex flex-col items-center gap-[2.4rem]">
         <div
-          className={`w-[9.6rem] h-[9.6rem] border rounded-[2.4rem] border-slate-95 flex items-center justify-center ${!!iconUrl && 'p-[2.4rem]'}`}
+          className={`relative w-[9.6rem] h-[9.6rem] border rounded-[2.4rem] border-slate-95 flex items-center justify-center ${!iconUrl && 'p-[2.4rem]'}`}
         >
-          <SImage
-            key={iconUrl}
-            src={iconUrl || '/blankImage.svg'}
-            width={48}
-            height={48}
-            alt="project icon"
-          />
+          <SImage key={iconUrl} src={iconUrl || '/blankImage.svg'} alt="project icon" />
         </div>
         <div className="flex flex-col justify-center items-center">
           <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">

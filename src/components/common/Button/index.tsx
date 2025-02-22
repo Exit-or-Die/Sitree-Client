@@ -2,7 +2,7 @@
 
 interface ButtonProps {
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
