@@ -27,14 +27,14 @@ const DEBOUNCE_DELAY = 500;
 // Types
 interface ParticipantAddModalProps {
   onClose: () => void;
-  register: (member: UserResult) => void;
+  register: (members: Array<UserResult>) => void;
 }
 
 // Participant Search Modal Component
 const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({ onClose, register }) => {
-  const [nickname, setNickname] = useState('');
+  const [inputQuery, setInputQuery] = useState('');
   const [searchResults, setSearchResults] = useState<UserResult[]>([]);
-  const [selectedMember, setSelectedMember] = useState<UserResult | undefined>();
+  const [selectedMember, setSelectedMember] = useState<Array<UserResult>>([]);
   const [hasNextResult, setHasNextResult] = useState(false);
   const [searchTotalCount, setSearchTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,14 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({ onClose, regi
     setLoading(true);
     try {
       const data = await AuthService.searchUsers({ q: query, page, size: PAGE_SIZE });
-      setSearchResults((prev) => (page === 0 ? data.content : [...prev, ...data.content]));
+
+      const selectedMemberIds = new Set(selectedMember.map((member) => member.memberId));
+
+      const filteredResults = data.content.filter(
+        (result) => !selectedMemberIds.has(result.memberId)
+      );
+
+      setSearchResults((prev) => (page === 0 ? filteredResults : [...prev, ...filteredResults]));
       setSearchTotalCount(data.total);
       setHasNextResult(data.hasNext);
     } catch (error) {
@@ -55,21 +62,27 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({ onClose, regi
     }
   };
 
+  const handleClickMember = (member: UserResult) => {
+    setSelectedMember((prev) => [...prev, member]);
+
+    setSearchResults((prev) => prev.filter((result) => result.memberId !== member.memberId));
+  };
+
   useEffect(() => {
     const debounceSearch = setTimeout(() => {
-      searchUsers(nickname, 0);
+      searchUsers(inputQuery, 0);
       pageRef.current = 0;
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceSearch);
-  }, [nickname]);
+  }, [inputQuery]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (!hasNextResult || loading) return;
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollHeight - scrollTop === clientHeight) {
       pageRef.current += 1;
-      searchUsers(nickname, pageRef.current);
+      searchUsers(inputQuery, pageRef.current);
     }
   };
 
@@ -86,10 +99,13 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({ onClose, regi
         <SInput
           className="text-small w-[34.6rem]"
           placeholder="이메일 또는 닉네임 검색"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          value={inputQuery}
+          onChange={(e) => setInputQuery(e.target.value)}
         />
-        {searchResults.length > 0 && (
+        {selectedMember.map((member, index) => (
+          <div key={`selected_member_${index}`}>{member.nickname}</div>
+        ))}
+        {searchResults.length > 0 && inputQuery.length > 0 && (
           <div
             className="fixed w-[34.6rem] left-[3.8rem] bg-white-100 border rounded-md shadow-md mt-[1rem] max-h-[12rem] overflow-auto z-10 p-4"
             onScroll={handleScroll}
@@ -104,7 +120,7 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({ onClose, regi
                 <div
                   key={result.memberId}
                   className="flex gap-4 p-3 rounded-large hover:bg-slate-95 cursor-pointer"
-                  onClick={() => setSelectedMember(result)}
+                  onClick={() => handleClickMember(result)}
                 >
                   <SImage
                     src={result.profileImgUrl}
@@ -172,16 +188,16 @@ const ProjectRegisterParticipantList: React.FC = () => {
 
   const AddWithModal = withModal(ParticipantAddModal);
 
-  const addTeamMember = (member: UserResult) => {
-    const newMember: ParticipantResponse = {
+  const addTeamMember = (members: Array<UserResult>) => {
+    const newMemberArray: Array<ParticipantResponse> = members.map((member) => ({
       memberId: member.memberId,
       nickname: member.nickname,
       imageUrl: member.profileImgUrl,
       position: '',
       focusPoint: '',
       isLeader: false
-    };
-    const updatedTeamMembers = [...teamMembers, newMember];
+    }));
+    const updatedTeamMembers = [...teamMembers, ...newMemberArray];
     setTeamMembers(updatedTeamMembers);
     setValue('participantList', updatedTeamMembers);
     setIsModalOpen(false);
