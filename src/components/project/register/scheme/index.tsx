@@ -16,12 +16,14 @@ export const tagListSchema = z
   .optional();
 
 export const overviewSchema = z.object({
-  images: z.array(
-    z.object({
-      imageUrl: z.string().optional(),
-      imageType: z.string().optional()
-    })
-  ),
+  images: z
+    .array(
+      z.object({
+        imageUrl: z.string().optional(),
+        imageType: z.string().optional()
+      })
+    )
+    .min(1, { message: '이미지를 1개 이상 등록해주세요' }),
   clientUrl: z.object({
     WEB: z.string().optional(),
     IOS: z.string().optional(),
@@ -59,7 +61,7 @@ export const architectureListSchema = z
 export const participantListSchema = z.array(
   z.object({
     memberId: z.number().int().optional(),
-    position: z.string().optional(),
+    position: z.string().min(1, { message: '포지션을 입력해주세요' }),
     isLeader: z.boolean().optional()
   })
 );

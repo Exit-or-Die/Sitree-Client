@@ -7,6 +7,8 @@ import { useFormContext } from 'react-hook-form';
 import FileUploadButton from '@/components/custom/FileUploadButton';
 import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
 
+import { RegiseterErrorMessage } from '../../error/RegisterError';
+
 const TOTAL_SCREENSHOT_ITEMS = 8;
 
 const ProjectHeadScreenshot = () => {
@@ -65,6 +67,7 @@ const ProjectHeadScreenshot = () => {
           />
         ))}
       </div>
+      {!screenShotList.length && <RegiseterErrorMessage errorKey="overview.images" />}
     </div>
   );
 };

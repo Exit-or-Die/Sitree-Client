@@ -1,3 +1,5 @@
+'use cleint';
+
 import CategoryQueryOptions from '@/service/category/queries';
 import { ProjectRegisterRequest, Tag } from '@/service/project/request';
 import { useQuery } from '@tanstack/react-query';
@@ -13,7 +15,10 @@ const ProjectHeadBaseInfo = () => {
   const { register, setValue } = useFormContext<ProjectRegisterRequest>();
 
   const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
-  const { data: tagData } = useQuery({ queryKey, queryFn });
+  const { data: tagData } = useQuery({
+    queryKey,
+    queryFn
+  });
 
   const tags = (tagData ?? []).map((tag) => ({ name: tag.categoryName }));
 
@@ -89,7 +94,6 @@ const ProjectHeadBaseInfo = () => {
       </div>
       <div className="text-center">
         <ProjectIconUpload />
-        <RegiseterErrorMessage errorKey="head.thumbnailImageUrl" />
       </div>
     </div>
   );

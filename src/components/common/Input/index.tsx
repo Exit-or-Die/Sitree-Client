@@ -44,6 +44,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
         onChange={handleChange}
         accept={accept}
         name={name}
+        autoFocus={false}
         {...restRegister}
       />
     );

@@ -34,17 +34,24 @@ const INITIAL_ARCHITECTURE: Architecture = {
 
 const ArchitectureComponent = () => {
   const { getValues, setValue } = useFormContext<ProjectRegisterRequest>();
-  const [activeTab, setActiveTab] = useState(tabs[0]); // 초기 탭 설정
+  const [activeTab, setActiveTab] = useState(0); // 초기 탭 설정
   const [tabContents, setTabContents] = useState<Architecture>(INITIAL_ARCHITECTURE);
 
   const architectureList = getValues('architectureList');
 
-  const handleTabClick = (tab: TabType) => {
-    setActiveTab(tab);
+  const handleTabClick = (tab: TabType, index: number) => {
+    setActiveTab(index);
   };
 
   const resetArchitecture = () => {
-    setTabContents(INITIAL_ARCHITECTURE);
+    setTabContents((prev) => ({
+      ...prev,
+      architectureDesc: '',
+      architectureImage: {
+        imageType: 'ARCHITECTURE',
+        imageUrl: ''
+      }
+    }));
   };
 
   const updateArchitecture = (update: Partial<Architecture>) => {
@@ -57,16 +64,16 @@ const ArchitectureComponent = () => {
 
     const updatedArchitectureList: Array<Architecture> = (architectureList || []).map(
       (architecture) =>
-        architecture.architectureType === activeTab.label ? updatedArchitecture : architecture
+        architecture.architectureType === tabs[activeTab].label ? updatedArchitecture : architecture
     );
 
     const isTabExist = updatedArchitectureList.some(
-      (architecture) => architecture.architectureType === activeTab.label
+      (architecture) => architecture.architectureType === tabs[activeTab].label
     );
 
     if (!isTabExist) {
       updatedArchitectureList.push({
-        architectureType: activeTab.label,
+        architectureType: tabs[activeTab].label,
         architectureDesc: update.architectureDesc || '',
         architectureImage: update.architectureImage || { imageType: 'ARCHITECTURE', imageUrl: '' }
       });
@@ -87,10 +94,14 @@ const ArchitectureComponent = () => {
 
   useEffect(() => {
     const foundTab = (architectureList || []).find(
-      (architecture) => architecture.architectureType === activeTab.label
+      (architecture) => architecture.architectureType === tabs[activeTab].label
     );
-
-    setTabContents(foundTab ?? INITIAL_ARCHITECTURE);
+    setTabContents(
+      foundTab ?? {
+        ...INITIAL_ARCHITECTURE,
+        architectureType: tabs[activeTab].label
+      }
+    );
   }, [activeTab]);
 
   return (
@@ -99,12 +110,12 @@ const ArchitectureComponent = () => {
         <p className="text-xlarge font-lb tracking-[-0.48px]">개발 아키텍쳐</p>
       </div>
       <ul className="bg-white-100 flex gap-3 pt-4 px-10 border-b-[1px]">
-        {tabs.map((tab) => (
+        {tabs.map((tab, index) => (
           <li
             key={tab.id}
-            onClick={() => handleTabClick(tab)}
+            onClick={() => handleTabClick(tab, index)}
             className={`px-0.5 cursor-pointer hover:text-tree-50 text-small pb-3 tracking-[-0.14px] leading-5 text-slate-50 ${
-              activeTab.id === tab.id
+              tabs[activeTab].id === tab.id
                 ? 'font-bd text-tree-40 border-b-[1.6px] border-b-tree-50'
                 : ''
             }`}
@@ -120,8 +131,8 @@ const ArchitectureComponent = () => {
           </p>
           <DynamicSEditor
             onChange={handleDescription}
-            initialValue={tabContents?.architectureDesc}
-            key={activeTab.id}
+            initialValue={'안녕'}
+            key={tabs[activeTab].id}
             placeholder="개발 아키텍쳐를 설명해 주세요"
           />
         </div>

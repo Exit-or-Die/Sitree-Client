@@ -7,36 +7,43 @@ import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
+const DEFAULT_TECH_VIEW: TechView = {
+  techTitle: '',
+  gitRepositoryUrl: '',
+  techDesc: '',
+  techStackTypes: []
+};
+
 const TechViewForm: React.FC<{
   skill: TechView;
   index: number;
   updateSkill: (index: number, updatedSkill: TechView) => void;
-}> = ({ skill, index, updateSkill }) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+}> = ({ skill = DEFAULT_TECH_VIEW, index, updateSkill }) => {
+  // skill의 속성을 기본값으로 보장
+  const normalizedSkill: TechView = { ...DEFAULT_TECH_VIEW, ...skill };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    updateSkill(index, { ...skill, [name]: value });
+    updateSkill(index, { ...normalizedSkill, [name]: value });
   };
 
   const handleEditorChange = (value: string) => {
     if (!extractContentFromHtml(value).length) {
       return;
     }
-
-    updateSkill(index, { ...skill, techDesc: value });
+    updateSkill(index, { ...normalizedSkill, techDesc: value });
   };
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex gap-5">
         <div className="w-full">
-          <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-            기술 이름
-          </label>
+          <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">기술 이름</p>
           <SInput
             type="text"
             placeholder="이름 입력"
             name="techTitle"
-            value={skill?.techTitle}
+            value={normalizedSkill.techTitle}
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
@@ -50,7 +57,7 @@ const TechViewForm: React.FC<{
             type="text"
             placeholder="링크 입력"
             name="gitRepositoryUrl"
-            value={skill?.gitRepositoryUrl}
+            value={normalizedSkill.gitRepositoryUrl}
             onChange={handleInputChange}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
@@ -64,7 +71,7 @@ const TechViewForm: React.FC<{
         <div className="mt-1.5">
           <DynamicSEditor
             placeholder="프로젝트를 진행하면서 활용한 기술 스택을 소개해 주세요"
-            initialValue={skill?.techDesc}
+            initialValue={normalizedSkill.techDesc}
             onChange={handleEditorChange}
           />
         </div>
@@ -75,10 +82,10 @@ const TechViewForm: React.FC<{
         </label>
         <ProjectTagSelect
           onChange={(tags: Array<string>) => {
-            updateSkill(index, { ...skill, techStackTypes: tags.map((tag) => tag) });
+            updateSkill(index, { ...normalizedSkill, techStackTypes: tags });
           }}
           tags={['스포츠', '헬스케어']}
-          initialValue={skill?.techStackTypes}
+          initialValue={normalizedSkill.techStackTypes}
         />
       </div>
       <RegiseterErrorMessage errorKey="techviewList" />

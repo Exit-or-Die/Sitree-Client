@@ -6,7 +6,6 @@ import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
@@ -60,14 +59,8 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     resolver: zodResolver(projectSchema),
     mode: 'onSubmit', // 제출 시에만 validation
     shouldFocusError: false,
-    defaultValues: DEFAULT_DETAIL_DATA // 초기 값 제공
+    defaultValues: data || DEFAULT_DETAIL_DATA // 초기 값 제공
   });
-
-  useEffect(() => {
-    if (data) {
-      formMethods.reset(data, { keepErrors: false });
-    }
-  }, [data, formMethods]);
 
   const { mutate: registerProject } = useMutation({
     mutationFn: (formValues: ProjectRegisterRequest) =>
@@ -90,7 +83,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
-          <form className="flex flex-col gap-10">
+          <form className="flex flex-col gap-10" onSubmit={() => console.log('submitted')}>
             <ProjectRegisterHead />
             <ProjectRegisterOverview />
             <ProjectRegisterTechViewList />

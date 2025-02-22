@@ -31,7 +31,7 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
 
     const instance = editorRef.current.getInstance();
     const newHTML = instance.getHTML();
-    const markdown = instance.getMarkdown(); // 마크다운 형식으로 텍스트 얻기
+    const markdown = instance.getMarkdown();
     const textLength = markdown.replace(/\n/g, ' ').length;
     setCurrentLength(textLength);
 
@@ -39,38 +39,35 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
   }, [onChange]);
 
   const handleImageUpload = useCallback((blob: Blob, callback: (url: string) => void) => {
-    uploadFile(blob as File) // Blob을 File로 캐스팅하여 사용
-      .then((url) => {
-        callback(url); // 서버에서 반환된 이미지 URL을 에디터에 삽입
-      })
-      .catch((error) => {
-        console.error('이미지 업로드 오류', error);
-      });
+    uploadFile(blob as File)
+      .then((url) => callback(url))
+      .catch((error) => console.error('이미지 업로드 오류', error));
   }, []);
 
-  useEffect(() => {
-    if (!editorRef.current) return;
+  // useEffect(() => {
+  //   if (!editorRef.current) return;
 
-    const instance = editorRef.current.getInstance();
-    const currentHTML = instance.getHTML();
+  //   const instance = editorRef.current.getInstance();
+  //   const currentHTML = instance.getHTML();
 
-    if (currentHTML !== (initialValue ?? '')) {
-      instance.setHTML(initialValue ?? '');
-    }
-  }, [initialValue]);
+  //   if (currentHTML !== (initialValue ?? '')) {
+  //     instance.setHTML(initialValue ?? '');
+  //   }
+  // }, [initialValue]);
 
   return (
     <div className="flex flex-col gap-1.5">
       <Editor
         ref={editorRef}
         initialValue={initialValue}
+        placeholder={placeholder}
         initialEditType="markdown"
         hideModeSwitch={true}
         height="480px"
         theme={''}
+        autofocus={false}
         usageStatistics={false}
         toolbarItems={DEFAULT_TOOLBAR}
-        placeholder={placeholder}
         useCommandShortcut={true}
         onChange={handleChange}
         hooks={{

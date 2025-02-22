@@ -11,9 +11,11 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
 
+import { RegiseterErrorMessage } from '../../error/RegisterError';
 import { DEFAULT_DETAIL_DATA } from '../../ProjectRegisterForm';
 import ParticipantAddModal from './ParticipantAddModal';
 
@@ -108,17 +110,17 @@ const ProjectRegisterParticipantList: React.FC = () => {
         <h1 className="text-2xl font-bold">팀원 소개</h1>
         <div className="flex items-center space-x-4">
           <span className="text-small">{`${teamMembers.length} / ${TOTAL_MEMBER}`}</span>
-          <button
+          <SButton
             onClick={() => setIsModalOpen(true)}
             className="border border-slate-90 text-small px-3 py-2 rounded-[1rem]"
           >
             팀원 추가 +
-          </button>
+          </SButton>
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {teamMembers.map((member, index) => (
-          <div key={member.memberId} className="min-w-[20.4rem]">
+          <div key={member.memberId} className="min-w-[20.4rem] text-center">
             <ProjectParticipantCard
               image={member.imageUrl}
               name={member.nickname}
@@ -131,6 +133,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
               onChange={(e) => handlePositionInput(e.target.value, index)}
               value={teamMembers[index].position}
             />
+            <RegiseterErrorMessage errorKey={`participantList.${index}.position`} />
           </div>
         ))}
       </div>

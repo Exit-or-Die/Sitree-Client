@@ -17,17 +17,6 @@ const withModal =
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
       setIsClient(true);
-
-      const handleClose = () => {
-        if (!isVisible) return;
-        onClickClose();
-      };
-
-      window.addEventListener('keyup', handleClose);
-
-      return () => {
-        window.removeEventListener('keyup', handleClose);
-      };
     }, [isVisible, onClickClose]);
 
     if (!isVisible) return null;
