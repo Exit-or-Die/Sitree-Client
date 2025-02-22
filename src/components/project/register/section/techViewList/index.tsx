@@ -53,6 +53,10 @@ const ProjectRegisterTechViewList = () => {
   };
 
   const canAddSkill = () => {
+    if (!skills.length) {
+      return false;
+    }
+
     return skills.every(
       (skill) =>
         skill.techTitle.trim() !== '' &&
@@ -71,6 +75,7 @@ const ProjectRegisterTechViewList = () => {
 
   useEffect(() => {
     const initialSkills = getValues('techviewList');
+
     if (!initialSkills || initialSkills.length === 0) {
       setSkills([{ techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }]);
     } else {

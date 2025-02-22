@@ -54,11 +54,6 @@ export interface Architecture {
   architectureImage: Image;
 }
 
-export interface FocusedPoint {
-  memberNo: number;
-  focusedOn: string;
-}
-
 export interface ParticipantResponse {
   memberId: number;
   nickname: string;

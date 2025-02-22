@@ -37,7 +37,7 @@ export const techviewListSchema = z
     z.object({
       techTitle: z.string().min(1, { message: '기술 이름을 작성해주세요' }),
       gitRepositoryUrl: z.string().url({ message: 'URL 형식의 git 주소를 입력해주세요' }),
-      techTagList: z.array(z.string()).optional(),
+      techStackTypes: z.array(z.string()).optional(),
       techDesc: z.string().optional()
     })
   )
@@ -58,7 +58,7 @@ export const architectureListSchema = z
 
 export const participantListSchema = z.array(
   z.object({
-    memberNo: z.number().int().optional(),
+    memberId: z.number().int().optional(),
     position: z.string().optional(),
     isLeader: z.boolean().optional()
   })

@@ -11,7 +11,7 @@ const ProjectUploadProgress = () => {
   const { control } = useFormContext();
   const [progress, setProgress] = useState<number>(0);
 
-  const { head, tagList, overview, techviewList, architectureList, participantList } = useWatch({
+  const { head, categories, overview, techviewList, architectureList, participantList } = useWatch({
     control
   }) as ProjectRegisterRequest;
 
@@ -22,7 +22,7 @@ const ProjectUploadProgress = () => {
       head?.healthCheckUrl,
       head?.shortDescription,
       head?.thumbnailImageUrl,
-      (tagList || []).length > 0
+      (categories || []).length > 0
     ];
 
     // 채워진 필드의 개수 계산
@@ -57,7 +57,7 @@ const ProjectUploadProgress = () => {
         completionRate: (participantList || []).length > 0 ? 1 : 0
       }
     ];
-  }, [head, tagList, overview, techviewList, architectureList, participantList]);
+  }, [head, categories, overview, techviewList, architectureList, participantList]);
 
   // 각 섹션의 진행률을 기반으로 전체 progress 계산
   useEffect(() => {
