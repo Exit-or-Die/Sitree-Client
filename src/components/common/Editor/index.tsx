@@ -4,7 +4,7 @@ import { uploadFile } from '@/utils/file';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@/styles/editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useCallback, useState } from 'react';
 
 export interface EditorProps {
   onChange: (e: string) => void;
@@ -26,6 +26,8 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
   const editorRef = useRef<Editor>(null);
   const [currentLength, setCurrentLength] = useState(initialValue?.length ?? 0);
 
+  const effectiveInitialValue = initialValue ? initialValue : ' ';
+
   const handleChange = useCallback(() => {
     if (!editorRef.current) return;
 
@@ -44,28 +46,17 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
       .catch((error) => console.error('이미지 업로드 오류', error));
   }, []);
 
-  useEffect(() => {
-    if (!editorRef.current) return;
-
-    const instance = editorRef.current.getInstance();
-    const currentHTML = instance.getHTML();
-
-    if (currentHTML !== (initialValue ?? '')) {
-      instance.setHTML(initialValue ?? '');
-    }
-  }, [initialValue]);
-
   return (
     <div className="flex flex-col gap-1.5">
       <Editor
         ref={editorRef}
-        initialValue={initialValue}
+        initialValue={effectiveInitialValue} // 빈 문자열일 경우 placeholder 표시
         placeholder={placeholder}
-        initialEditType="markdown"
+        initialEditType="wysiwyg"
         hideModeSwitch={true}
         height="480px"
         theme={''}
-        autofocus={false}
+        autofocus={false} // 자동 포커스 비활성화
         usageStatistics={false}
         toolbarItems={DEFAULT_TOOLBAR}
         useCommandShortcut={true}
