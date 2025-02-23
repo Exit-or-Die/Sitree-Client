@@ -4,9 +4,9 @@ import { PROJECT_SCROLL_ID } from '@/constants/scrollId';
 import ProjectQueryOptions from '@/service/project/queries';
 import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -15,7 +15,6 @@ interface ProjectDetailSideBarProps {
   title?: string;
   commentCount?: number;
   thumbnailImage?: string;
-  liked?: boolean;
   likeCounts?: number;
   teamMember: Array<Participant>;
   viewCount?: number;
@@ -25,13 +24,18 @@ const ProjectDetailSideBar = ({
   title = '',
   commentCount = 0,
   thumbnailImage = '',
-  liked = true,
   likeCounts = 0,
   teamMember = [],
   viewCount
 }: ProjectDetailSideBarProps) => {
+  const queryClient = useQueryClient();
+  const { data: session } = useSession();
   const { projectId } = useParams();
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
+  const { queryKey, queryFn } = ProjectQueryOptions.checkProjectLikeStatus(
+    projectId as string,
+    session?.detail.memberId as number
+  );
+  const { isLiked } = useQuery({ queryKey, queryFn }).data ?? {};
 
   const { mutate: likeProject } = useMutation({
     mutationFn: () => {
@@ -40,7 +44,9 @@ const ProjectDetailSideBar = ({
       return mutateFn();
     },
     onSuccess: () => {
-      setIsLiked((prev) => !prev);
+      queryClient.invalidateQueries({
+        queryKey
+      });
     }
   });
 

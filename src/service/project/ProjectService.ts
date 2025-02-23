@@ -36,6 +36,15 @@ class ProjectService extends Service {
 
     return this.http.get<ProjectsResponse>(`projects?${params.toString()}`);
   }
+  checkProjectLikeStatus(projectId: string, memberId: number) {
+    if (!projectId || !memberId) {
+      return { isLiked: false };
+    }
+
+    return this.http.get<{ isLiked: boolean }>(
+      `projects/${projectId}/likes/check?memberId=${memberId}`
+    );
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
