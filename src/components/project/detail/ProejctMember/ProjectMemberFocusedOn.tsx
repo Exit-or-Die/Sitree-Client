@@ -1,17 +1,18 @@
-import dynamic from 'next/dynamic';
 import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
 interface ProjectMemberFocusedOnProps {
-  contents: Nullable<string>;
+  contents: Nullable<Array<string>>;
   isMe: boolean;
 }
 
-const SViewer = dynamic(() => import('@/components/common/Viewer'), { ssr: false });
-
 const ProjectMemberFocusedOn = ({ contents, isMe }: ProjectMemberFocusedOnProps) => {
+  if (!Array.isArray(contents)) {
+    return null;
+  }
+
   return (
     <div className="border border-1 border-slate-90 rounded-2xlarge p-5 flex flex-col flex-grow gap-4">
       <div className="flex justify-between items-center">
@@ -21,9 +22,13 @@ const ProjectMemberFocusedOn = ({ contents, isMe }: ProjectMemberFocusedOnProps)
           <SImage src="/externalLink.svg" width={16} height={16} />
         </div>
       </div>
-      <div className="h-[36.8rem]">
+      <div className="h-[36.8rem] p-5">
         {contents && contents.length ? (
-          <SViewer content={contents} />
+          <ul className="list-disc text-small flex flex-col gap-2">
+            {contents.map((content, index) => (
+              <li key={`focused_on_${index}`}>{content}</li>
+            ))}
+          </ul>
         ) : (
           <div className="h-full flex flex-col gap-4 justify-center items-center">
             <SImage width={76} height={76} src="/emptyFocusedOn.svg" />

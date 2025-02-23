@@ -73,7 +73,7 @@ export interface Participant {
   nickname: string;
   imageUrl: string;
   position: string;
-  focusPoint: Nullable<string>;
+  focusPoint: Nullable<Array<string>>;
   isLeader: boolean;
 }
 
