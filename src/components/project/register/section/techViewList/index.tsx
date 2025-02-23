@@ -3,7 +3,7 @@
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
@@ -20,42 +20,23 @@ export interface TechViewProps {
 
 const ProjectRegisterTechViewList = () => {
   const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
-  const [skills, setSkills] = useState<Array<TechView>>([]);
-
+  const initialSkills = getValues('techviewList') || [
+    { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
+  ];
+  const [skills, setSkills] = useState<Array<TechView>>(initialSkills);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const updateSkill = (index: number, updatedSkill: TechViewProps) => {
+  // skills 변경 시 폼에 반영
+  useEffect(() => {
+    setValue('techviewList', skills);
+  }, [skills, setValue]);
+
+  const updateSkill = useCallback((index: number, updatedSkill: TechViewProps) => {
     setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
-  };
+  }, []);
 
-  const addSkill = () => {
-    if (!canAddSkill()) return;
-    setSkills((prevSkills) => [
-      ...prevSkills,
-      { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
-    ]);
-    setCurrentIndex(skills.length);
-  };
-
-  const deleteSkill = (index: number) => {
-    if (!canDeleteSkill()) return;
-
-    const newSkills = skills.filter((_, i) => i !== index);
-    setSkills(newSkills);
-
-    if (index === currentIndex && newSkills.length > 0) {
-      setCurrentIndex(index === newSkills.length ? index - 1 : index);
-    }
-  };
-
-  const goToSkill = (index: number) => {
-    setCurrentIndex(index);
-  };
-
-  const canAddSkill = () => {
-    if (!skills.length) {
-      return false;
-    }
+  const canAddSkill = useCallback(() => {
+    if (!skills.length) return true;
 
     return skills.every(
       (skill) =>
@@ -63,25 +44,38 @@ const ProjectRegisterTechViewList = () => {
         skill.gitRepositoryUrl.trim() !== '' &&
         extractContentFromHtml(skill.techDesc.trim()) !== ''
     );
-  };
+  }, [skills]);
 
-  const canDeleteSkill = () => {
+  const canDeleteSkill = useCallback(() => {
     return skills.length > 1;
-  };
+  }, [skills]);
 
-  useEffect(() => {
-    setValue('techviewList', skills);
-  }, [skills, setValue]);
+  const addSkill = useCallback(() => {
+    if (!canAddSkill()) return;
+    setSkills((prevSkills) => [
+      ...prevSkills,
+      { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
+    ]);
+    setCurrentIndex(skills.length);
+  }, [skills.length, canAddSkill]);
 
-  useEffect(() => {
-    const initialSkills = getValues('techviewList');
+  const deleteSkill = useCallback(
+    (index: number) => {
+      if (!canDeleteSkill()) return;
 
-    if (!initialSkills || initialSkills.length === 0) {
-      setSkills([{ techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }]);
-    } else {
-      setSkills(initialSkills);
-    }
-  }, [getValues]);
+      const newSkills = skills.filter((_, i) => i !== index);
+      setSkills(newSkills);
+
+      if (index === currentIndex && newSkills.length > 0) {
+        setCurrentIndex(index === newSkills.length ? index - 1 : index);
+      }
+    },
+    [skills, currentIndex, canDeleteSkill]
+  );
+
+  const goToSkill = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
 
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
@@ -91,6 +85,7 @@ const ProjectRegisterTechViewList = () => {
           <div className="flex gap-1">
             {skills.map((_, index) => (
               <button
+                type="button" // 기본 제출 동작 방지
                 key={index}
                 onClick={() => goToSkill(index)}
                 className={`w-[2.8rem] h-[2.8rem] rounded-base leading-5 text-small ${
@@ -117,7 +112,12 @@ const ProjectRegisterTechViewList = () => {
         </div>
       </div>
       <div>
-        <TechViewForm skill={skills[currentIndex]} index={currentIndex} updateSkill={updateSkill} />
+        <TechViewForm
+          skill={skills[currentIndex]}
+          index={currentIndex}
+          updateSkill={updateSkill}
+          key={currentIndex}
+        />
       </div>
       {canDeleteSkill() && (
         <div

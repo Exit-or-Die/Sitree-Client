@@ -21,7 +21,6 @@ const TechViewForm: React.FC<{
 }> = ({ skill = DEFAULT_TECH_VIEW, index, updateSkill }) => {
   // skill의 속성을 기본값으로 보장
   const normalizedSkill: TechView = { ...DEFAULT_TECH_VIEW, ...skill };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     updateSkill(index, { ...normalizedSkill, [name]: value });

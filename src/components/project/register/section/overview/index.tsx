@@ -1,9 +1,13 @@
+'use client';
+
 import { ProjectDetailResponse } from '@/service/project/response';
+import { useSession } from 'next-auth/react';
 import { useFormContext } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 
 const ProjectRegisterOverview = () => {
+  const { data: session } = useSession();
   const { setValue, getValues } = useFormContext<ProjectDetailResponse>();
 
   const detailDescription = getValues('overview.detailDescription');
@@ -17,7 +21,7 @@ const ProjectRegisterOverview = () => {
       <p className="mb-6 text-slate-10 font-lb text-xlarge">프로젝트 소개</p>
       <div>
         <DynamicSEditor
-          placeholder="님의 프로젝트를 소개해 주세요"
+          placeholder={`${session?.detail.nickname}님의 프로젝트를 소개해 주세요`}
           initialValue={detailDescription || ''}
           onChange={handleChangeDescription}
         />

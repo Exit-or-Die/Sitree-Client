@@ -17,8 +17,6 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
 
   const query = await getDehydratedQuery({ queryKey, queryFn });
 
-  console.log('aaa', query.state.data);
-
   if (!query) {
     redirect('/404');
   }

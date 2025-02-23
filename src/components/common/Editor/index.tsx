@@ -44,16 +44,16 @@ const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: Edit
       .catch((error) => console.error('이미지 업로드 오류', error));
   }, []);
 
-  // useEffect(() => {
-  //   if (!editorRef.current) return;
+  useEffect(() => {
+    if (!editorRef.current) return;
 
-  //   const instance = editorRef.current.getInstance();
-  //   const currentHTML = instance.getHTML();
+    const instance = editorRef.current.getInstance();
+    const currentHTML = instance.getHTML();
 
-  //   if (currentHTML !== (initialValue ?? '')) {
-  //     instance.setHTML(initialValue ?? '');
-  //   }
-  // }, [initialValue]);
+    if (currentHTML !== (initialValue ?? '')) {
+      instance.setHTML(initialValue ?? '');
+    }
+  }, [initialValue]);
 
   return (
     <div className="flex flex-col gap-1.5">
