@@ -38,13 +38,13 @@ export const Header = () => {
 
         <nav className="flex space-x-6">
           <Link
-            href="/rankings"
+            href="/ranking"
             className="text-slate-30 hover:text-gray-900 text-small font-md min-w-[52px]"
           >
             소속 랭킹
           </Link>
           <Link
-            href="/rankings"
+            href="/ranking"
             className="text-slate-30 hover:text-gray-900 text-small font-md min-w-[52px]"
           >
             유저 랭킹
