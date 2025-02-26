@@ -5,7 +5,8 @@ const queryKeys = {
   retrieveProjectDetail: (projectId: string) => ['retrieveDetail', projectId] as const,
   retrieveSitreePick: () => ['project', 'retrieveSitreePick'] as const,
   retrieveProjects: (projectQuery: ProjectParamsRequest) =>
-    ['retrieveProjects', projectQuery] as const
+    ['retrieveProjects', projectQuery] as const,
+  retrieveProjectTechStacks: () => ['project', 'retrieveProjectTechStacks'] as const
 };
 
 const ProjectQueryOptions = {
@@ -23,6 +24,10 @@ const ProjectQueryOptions = {
   retrieveProjects: (query: ProjectParamsRequest = { sortType: 'VIEWS' }) => ({
     queryKey: queryKeys.retrieveProjects(query),
     queryFn: () => ProjectService.retrieveProjects(query)
+  }),
+  retrieveProjectTechStacks: () => ({
+    queryKey: queryKeys.retrieveProjectTechStacks(),
+    queryFn: () => ProjectService.retrieveProjectTechStacks()
   })
 };
 
