@@ -6,6 +6,7 @@ import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import SButton from '@/components/common/Button';
@@ -135,19 +136,35 @@ const ProjectDetailSideBar = ({
             </div>
           </div>
         </div>
-        <div className="p-3 flex gap-2.5">
-          <div className="relative w-[5.2rem] h-[5.2rem] rounded-full overflow-hidden">
-            <SImage
-              src={teamLeader?.imageUrl ?? ''}
-              defaultType="user"
-              alt="project member profile"
-            />
+        <div className="flex flex-col gap-2">
+          <div className="p-3 flex gap-2.5">
+            <div className="relative w-[5.2rem] h-[5.2rem] rounded-full overflow-hidden">
+              <SImage
+                src={teamLeader?.imageUrl ?? ''}
+                defaultType="user"
+                alt="project member profile"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-lb tracking-[-0.32px] text-base">{teamLeader?.nickname}</span>
+              <span className="tracking-[-0.13px] text-[1.3rem] text-slate-50">
+                {teamLeader?.position}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col justify-center">
-            <span className="font-lb tracking-[-0.32px] text-base">{teamLeader?.nickname}</span>
-            <span className="tracking-[-0.13px] text-[1.3rem] text-slate-50">
-              {teamLeader?.position}
-            </span>
+          <div className="flex flex-col gap-1.5">
+            <Link href={`/project/register/${projectId}`}>
+              <SButton
+                className="w-full flex justify-center gap-1.5 text-tree-30 bg-tree-93 px-4 py-3 border-none"
+                size="md"
+              >
+                <SImage src="/pencil.svg" alt="edit project" width={18} height={18} />
+                수정하기
+              </SButton>
+            </Link>
+            <SButton size="md" className="leading-5 border-none w-full flex justify-center">
+              프로젝트 삭제
+            </SButton>
           </div>
         </div>
       </div>
