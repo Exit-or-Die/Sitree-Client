@@ -152,20 +152,22 @@ const ProjectDetailSideBar = ({
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-1.5">
-            <Link href={`/project/register/${projectId}`}>
-              <SButton
-                className="w-full flex justify-center gap-1.5 text-tree-30 bg-tree-93 px-4 py-3 border-none"
-                size="md"
-              >
-                <SImage src="/pencil.svg" alt="edit project" width={18} height={18} />
-                수정하기
+          {teamLeader && (
+            <div className="flex flex-col gap-1.5">
+              <Link href={`/project/register/${projectId}`}>
+                <SButton
+                  className="w-full flex justify-center gap-1.5 text-tree-30 bg-tree-93 px-4 py-3 border-none"
+                  size="md"
+                >
+                  <SImage src="/pencil.svg" alt="edit project" width={18} height={18} />
+                  수정하기
+                </SButton>
+              </Link>
+              <SButton size="md" className="leading-5 border-none w-full flex justify-center">
+                프로젝트 삭제
               </SButton>
-            </Link>
-            <SButton size="md" className="leading-5 border-none w-full flex justify-center">
-              프로젝트 삭제
-            </SButton>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
