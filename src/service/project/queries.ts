@@ -2,10 +2,12 @@ import ProjectService from './ProjectService';
 import { ProjectParamsRequest, ProjectRegisterRequest } from './request';
 
 const queryKeys = {
-  retrieveProjectDetail: (projectDetail: string) => ['retrieveDetail', projectDetail] as const,
+  retrieveProjectDetail: (projectId: string) => ['retrieveDetail', projectId] as const,
   retrieveSitreePick: () => ['project', 'retrieveSitreePick'] as const,
   retrieveProjects: (projectQuery: ProjectParamsRequest) =>
-    ['retrieveProjects', projectQuery] as const
+    ['retrieveProjects', projectQuery] as const,
+  checkProjectLikeStatus: (projectId: string, memberId: number) =>
+    ['project', 'like', projectId, memberId] as const
 };
 
 const ProjectQueryOptions = {
@@ -16,6 +18,9 @@ const ProjectQueryOptions = {
     queryKey: queryKeys.retrieveProjectDetail(projectId),
     queryFn: () => ProjectService.retrieveProjectDetail(projectId)
   }),
+  likeProject: (projectId: string) => ({
+    mutateFn: () => ProjectService.likeProject(projectId)
+  }),
   retrieveSitreePick: () => ({
     queryKey: queryKeys.retrieveSitreePick(),
     queryFn: () => ProjectService.retrieveSitreePick()
@@ -23,6 +28,10 @@ const ProjectQueryOptions = {
   retrieveProjects: (query: ProjectParamsRequest = { sortType: 'VIEWS' }) => ({
     queryKey: queryKeys.retrieveProjects(query),
     queryFn: () => ProjectService.retrieveProjects(query)
+  }),
+  checkProjectLikeStatus: (projectId: string, memberId: number) => ({
+    queryKey: queryKeys.checkProjectLikeStatus(projectId, memberId),
+    queryFn: () => ProjectService.checkProjectLikeStatus(projectId, memberId)
   })
 };
 

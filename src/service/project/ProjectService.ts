@@ -9,10 +9,14 @@ import {
 
 class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
-    return this.http.post<ProjectRegisterResponse>('project', param);
+    return this.http.post<ProjectRegisterResponse>('projects', param);
   }
   retrieveProjectDetail(projectId: string) {
-    return this.http.get<ProjectDetailResponse>(`project/${projectId}`);
+    return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
+  }
+
+  likeProject(projectId: string) {
+    return this.http.post(`projects/${projectId}/likes`, {}, { includeAuth: true });
   }
   retrieveSitreePick() {
     return this.http.get<Array<SitreePickResponse>>('projects/sitree-pick');
@@ -31,6 +35,15 @@ class ProjectService extends Service {
     }
 
     return this.http.get<ProjectsResponse>(`projects?${params.toString()}`);
+  }
+  checkProjectLikeStatus(projectId: string, memberId: number) {
+    if (!projectId || !memberId) {
+      return { isLiked: false };
+    }
+
+    return this.http.get<{ isLiked: boolean }>(
+      `projects/${projectId}/likes/check?memberId=${memberId}`
+    );
   }
 }
 

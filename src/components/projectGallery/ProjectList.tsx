@@ -99,7 +99,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
               shortDescription={project.shortDescription}
               backgroundImage={project.backgroundImage}
               commentCount={project.commentCount}
-              likesCount={project.likesCount}
+              likesCount={project.likeCount}
               viewCount={project.viewCount}
               isHealthy={project.isHealthy}
               latestUpdateTime={project.latestUpdateTime}
