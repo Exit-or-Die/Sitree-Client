@@ -8,7 +8,16 @@ import {
 } from '@tanstack/react-query';
 import { cache } from 'react';
 
-export const getQueryClient = cache(() => new QueryClient());
+export const getQueryClient = cache(
+  () =>
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 60 * 1000
+        }
+      }
+    })
+);
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
@@ -33,13 +42,29 @@ export async function getDehydratedQuery<Q extends QueryProps>({ queryKey, query
 
 export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
   const queryClient = getQueryClient();
-  await Promise.all(
+
+  await Promise.allSettled(
     queries.map(({ queryKey, queryFn }) => queryClient.prefetchQuery({ queryKey, queryFn }))
   );
 
-  return dehydrate(queryClient).queries as DehydratedQueryExtended<
-    UnwrapPromise<ReturnType<Q[number]['queryFn']>>
-  >[];
+  const dehydratedQueries = dehydrate(queryClient).queries;
+
+  return dehydratedQueries.filter((q) =>
+    queries.some((input) => JSON.stringify(input.queryKey) === JSON.stringify(q.queryKey))
+  ) as DehydratedQueryExtended<UnwrapPromise<ReturnType<Q[number]['queryFn']>>>[];
+}
+
+export async function getDehydratedQueryData<Q extends QueryProps>({ queryKey, queryFn }: Q) {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({ queryKey, queryFn });
+
+  const data = queryClient.getQueryData(queryKey);
+
+  if (!data) {
+    throw new Error(`No data found for queryKey: ${JSON.stringify(queryKey)}`);
+  }
+
+  return data as UnwrapPromise<ReturnType<Q['queryFn']>>;
 }
 
 export const Hydrate = HydrationBoundary;

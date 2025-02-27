@@ -1,13 +1,28 @@
+import { Nullable } from 'types/common';
+
+export const IMAGE_TYPE = {
+  BACKGROUND: 'BACKGROUND',
+  REPRESENT: 'REPRESENT'
+} as const;
+
+export type ImageType = keyof typeof IMAGE_TYPE;
+
 export interface ProjectRegisterResponse {
   detailUrlPath: string;
 }
 
 export interface ProjectDetailResponse {
   head: Head;
-  tagList: Array<Tag>;
+  categories: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
+  architectureList: Array<Architecture>;
   participantList: Array<Participant>;
+  viewCount: number;
+  createdAt: string;
+  healthy: boolean;
+  likeCounts: number;
+  isLiked: boolean;
 }
 
 export interface Head {
@@ -29,36 +44,37 @@ export interface Overview {
 
 export interface Image {
   imageUrl: string;
-  imageType: 'REPRESENT' | 'BACKGROUND' | 'ARCHITECTURE';
+  imageType: ImageType;
 }
 
 export interface ClientUrl {
-  liveWebDomain: string;
-  downloadMethods: DownloadMethods;
-}
-
-export interface DownloadMethods {
+  WEB: string;
   IOS: string;
   WINDOWS: string;
+  AOS: string;
+  MAC_OS: string;
 }
 
 export interface TechView {
-  techArea: string;
+  techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: Array<string>;
-  architectureImage: Image;
-  architectureDescription: string;
-  focusedPoints: Array<FocusedPoint>;
+  techDesc: string;
 }
 
-export interface FocusedPoint {
-  memberNo: number;
-  focusedOn: string;
+export interface Architecture {
+  architectureType: string;
+  architectureDesc: string;
+  architectureImage: Image;
 }
 
 export interface Participant {
-  memberNo: number;
+  memberId: number;
+  nickname: string;
+  imageUrl: string;
   position: string;
+  focusPoint: Nullable<Array<string>>;
+  isLeader: boolean;
 }
 
 export interface SitreePickResponse {
@@ -84,7 +100,7 @@ export interface Project {
   shortDescription: string;
   backgroundImage: string;
   commentCount: number;
-  likesCount: number;
+  likeCount: number;
   viewCount: number;
   latestUpdateTime: Date;
   isHealthy: boolean;
