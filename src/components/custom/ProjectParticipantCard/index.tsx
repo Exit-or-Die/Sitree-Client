@@ -7,10 +7,9 @@ interface TeamMember {
   image: string;
   name: string;
   isOwner: boolean;
-  description: string;
 }
 
-const ProjectParticipantCard: React.FC<TeamMember> = ({ image, name, isOwner, description }) => {
+const ProjectParticipantCard: React.FC<TeamMember> = ({ image, name, isOwner }) => {
   return (
     <div
       className={`relative bg-white rounded-large px-4 py-5 border-[1px] border-slate-90 flex flex-col items-center gap-4 ${!isOwner && 'hover:shadow-md'}`}
