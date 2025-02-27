@@ -4,6 +4,7 @@ import {
   ProjectDetailResponse,
   ProjectRegisterResponse,
   ProjectsResponse,
+  ProjectTechStacks,
   SitreePickResponse
 } from './response';
 
@@ -33,6 +34,9 @@ class ProjectService extends Service {
     }
 
     return this.http.get<ProjectsResponse>(`projects?${params.toString()}`);
+  }
+  retrieveProjectTechStacks() {
+    return this.http.get<ProjectTechStacks>('projects/tech-stacks');
   }
 }
 

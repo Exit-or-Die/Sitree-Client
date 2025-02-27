@@ -58,7 +58,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const formMethods = useForm({
     resolver: zodResolver(projectSchema),
     mode: 'onSubmit', // 제출 시에만 validation
-    shouldFocusError: false,
+    shouldFocusError: true,
     defaultValues: data || DEFAULT_DETAIL_DATA // 초기 값 제공
   });
 
@@ -99,7 +99,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             className="w-full leading-5 justify-center bg-tree-50 text-white-100"
             onClick={handleSubmitClick}
           >
-            등록하기
+            {projectId ? '수정하기' : '등록하기'}
           </SButton>
         </div>
       </FormProvider>

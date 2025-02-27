@@ -91,3 +91,7 @@ export interface Project {
   latestUpdateTime: Date;
   isHealthy: boolean;
 }
+
+export interface ProjectTechStacks {
+  techStacks: Array<string>;
+}

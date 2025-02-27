@@ -1,5 +1,7 @@
+import ProjectQueryOptions from '@/service/project/queries';
 import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
+import { useQuery } from '@tanstack/react-query';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
@@ -19,6 +21,8 @@ const TechViewForm: React.FC<{
   index: number;
   updateSkill: (index: number, updatedSkill: TechView) => void;
 }> = ({ skill = DEFAULT_TECH_VIEW, index, updateSkill }) => {
+  const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectTechStacks();
+  const { data } = useQuery({ queryKey, queryFn });
   // skill의 속성을 기본값으로 보장
   const normalizedSkill: TechView = { ...DEFAULT_TECH_VIEW, ...skill };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +87,7 @@ const TechViewForm: React.FC<{
           onChange={(tags: Array<string>) => {
             updateSkill(index, { ...normalizedSkill, techStackTypes: tags });
           }}
-          tags={['스포츠', '헬스케어']}
+          tags={data?.techStacks || []}
           initialValue={normalizedSkill.techStackTypes}
         />
       </div>

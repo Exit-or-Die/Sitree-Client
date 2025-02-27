@@ -1,9 +1,9 @@
-import ProjectRegisterForm from '@/components/project/register/ProjectRegisterForm';
+import ProjectRegisterFromWrapper from '@/components/project/register/ProjectRegisterFormWrapper';
 
 const ProjectDetailPage = () => {
   return (
     <div className="p-10 bg-slate-95">
-      <ProjectRegisterForm />
+      <ProjectRegisterFromWrapper />
     </div>
   );
 };
