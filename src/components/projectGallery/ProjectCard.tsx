@@ -32,7 +32,7 @@ const ProjectCard = ({
   latestUpdateTime
 }: Props) => {
   return (
-    <Link href={`/project/${projectId}`}>
+    <Link href={`/project/${projectId}`} prefetch={false}>
       <div className="bg-white pt-6 px-3 rounded-xl cursor-pointer w-[328px]">
         <div className="flex items-center mb-2">
           <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
