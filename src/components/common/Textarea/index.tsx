@@ -8,12 +8,14 @@ interface TextareaProps {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   maxLength?: number; // 최대 글자 수 설정
+  name?: string;
 }
 
 const STextarea = ({
   className = '',
   placeholder,
   value,
+  name = '',
   onChange,
   maxLength = 1000
 }: TextareaProps) => {
@@ -34,6 +36,7 @@ const STextarea = ({
         value={value}
         onChange={handleChange}
         maxLength={maxLength}
+        name={name}
       />
       {maxLength && (
         <div className="absolute bottom-3 right-2 text-xsmall text-slate-500">

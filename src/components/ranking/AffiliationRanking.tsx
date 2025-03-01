@@ -3,7 +3,7 @@
 import { CATEGORIES } from '@/constants/home';
 import RankingQueryOptions from '@/service/ranking/queries';
 import { CategoryType } from '@/service/ranking/request';
-import { Affiliation } from '@/service/ranking/response';
+import { AffiliationResponseData } from '@/service/ranking/response';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
@@ -14,10 +14,11 @@ const AffiliationRanking = () => {
   const { queryKey, queryFn } = RankingQueryOptions.retrieveAffiliationRanking(
     selectedCategory.type
   );
-  const { data = [] } = useQuery<Array<Affiliation>>({
+  const { data } = useQuery<AffiliationResponseData>({
     queryKey,
     queryFn
   });
+  const rankingData = data?.content ?? [];
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const AffiliationRanking = () => {
         </div>
 
         <ul className="space-y-4 mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 h-[320px]">
-          {data.map((affiliation, index) => {
+          {rankingData.map((affiliation, index) => {
             const rankChange = affiliation.prevRanking - affiliation.currentRanking;
             const rankChangeColor =
               rankChange > 0 ? '#F6424E' : rankChange < 0 ? '#1271FF' : 'gray';

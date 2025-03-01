@@ -78,5 +78,6 @@ module.exports = {
       }
     ],
     'no-console': 'off'
-  }
+  },
+  ignorePatterns: ["**/*.css"]
 };
