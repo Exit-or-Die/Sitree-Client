@@ -3,6 +3,7 @@
 import { getTimeDifferenceMessage } from '@/utils/time';
 import Link from 'next/link';
 
+import HealthCheckState from '../common/HealthState';
 import SImage from '../common/Image';
 
 type Props = {
@@ -31,7 +32,7 @@ const ProjectCard = ({
   latestUpdateTime
 }: Props) => {
   return (
-    <Link href={`/project/${projectId}`}>
+    <Link href={`/project/${projectId}`} prefetch={false}>
       <div className="bg-white pt-6 px-3 rounded-xl cursor-pointer w-[328px]">
         <div className="flex items-center mb-2">
           <div className="w-[40px] h-[40px] rounded-large overflow-hidden">
@@ -75,18 +76,10 @@ const ProjectCard = ({
             </div>
             <span className="text-slate-50">조회수 {viewCount}</span>
           </div>
-          <div className="flex text-xs text-gray-400 items-center">
-            {isHealthy ? (
-              <>
-                <SImage src="/alive.svg" alt="health-check" width={12} height={12} />
-                <span className="text-[13px] text-slate-30 text-md ml-1">운영중</span>
-              </>
-            ) : (
-              <>
-                <SImage src="/grayDot.svg" alt="service-down" width={6} height={6} />
-                <span className="text-[13px] text-slate-50 text-md ml-2">서비스 종료</span>
-              </>
-            )}
+          <div
+            className={`items-center text-[1.3rem] ${isHealthy ? 'text-slate-30' : 'text-slate-50'}`}
+          >
+            <HealthCheckState health={isHealthy} />
           </div>
         </div>
 
