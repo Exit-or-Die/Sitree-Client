@@ -79,5 +79,5 @@ module.exports = {
     ],
     'no-console': 'off'
   },
-  ignorePatterns: ["**/*.css"]
+  ignorePatterns: ['**/*.css']
 };
