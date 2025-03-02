@@ -2,6 +2,7 @@
 
 import withModal from '@/enhancers/WithModal';
 import React, { createContext, useState, ReactNode, useContext } from 'react';
+import { Optional } from 'types/common';
 
 import SignInModal from '@/components/account/SignInModal';
 
@@ -10,7 +11,7 @@ interface AuthContextType {
   setToggleLogin: (value: boolean) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<Optional<AuthContextType>>(undefined);
 
 const SignWithModal = withModal(SignInModal);
 
