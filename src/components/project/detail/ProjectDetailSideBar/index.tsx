@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -32,6 +33,7 @@ const ProjectDetailSideBar = ({
   const queryClient = useQueryClient();
   const { data: session } = useSession();
   const { projectId } = useParams();
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const { queryKey, queryFn } = ProjectQueryOptions.checkProjectLikeStatus(
     projectId as string,
     session?.detail.memberId as number
@@ -53,6 +55,30 @@ const ProjectDetailSideBar = ({
 
   const handleScrollToElement = (id: string) => {
     scrollToElement(id);
+  };
+
+  const [copied, setCopied] = useState(false);
+  const url = typeof window !== 'undefined' ? window.location.href : '';
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // 2초 후 초기화
+    } catch (error) {
+      console.error('링크 복사 실패:', error);
+    }
+  };
+
+  const shareOnFacebook = () => {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(facebookUrl, '_blank');
+  };
+
+  const shareOnX = () => {
+    const text = encodeURIComponent('이 페이지를 확인해보세요!');
+    const xUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${text}`;
+    window.open(xUrl, '_blank');
   };
 
   const teamLeader = teamMember.find((member) => member.isLeader);
@@ -81,9 +107,9 @@ const ProjectDetailSideBar = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex gap-3 justify-between">
           <SButton
-            className={`w-[160px] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
+            className={`w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
             onClick={likeProject}
           >
             <SImage
@@ -95,10 +121,33 @@ const ProjectDetailSideBar = ({
             />
             <p className={`font-bd text-[1rem] ${isLiked && 'text-red-50'}`}>좋아요</p>
           </SButton>
-          <SButton className="w-[9.4rem] h-[6rem] flex flex-col gap-1 rounded-large border-none hover:bg-slate-95">
-            <SImage src="/share.svg" width={20} height={20} />
-            <p className={`font-bd text-[1rem]`}>공유</p>
-          </SButton>
+          <div>
+            <SButton
+              onClick={() => setIsShareOpen(!isShareOpen)}
+              className="w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none hover:bg-slate-95"
+            >
+              <SImage src="/share.svg" width={20} height={20} />
+              <p className={`font-bd text-[1rem]`}>공유</p>
+            </SButton>
+            {isShareOpen && (
+              <div className="w-[14.8rem] absolute right-[1rem] z-50 w-[15.6rem] p-3 bg-white-100 border border-slate-90 rounded-large">
+                <div className="flex flex-col gap-1 text-[1.5rem]">
+                  <div className="flex gap-1.5 h-[4.8rem] items-center px-3 rounded-large hover:bg-slate-95 cursor-pointer">
+                    <SImage src="/linkIcon.svg" width={24} height={24} />
+                    <p>링크 복사</p>
+                  </div>
+                  <div className="flex gap-1.5 h-[4.8rem] items-center px-3 rounded-large hover:bg-slate-95 cursor-pointer">
+                    <SImage src="/instagram.svg" width={24} height={24} />
+                    <p>인스타그램</p>
+                  </div>
+                  <div className="flex gap-1.5 h-[4.8rem] items-center px-3 rounded-large hover:bg-slate-95 cursor-pointer">
+                    <SImage src="/twitter.svg" width={24} height={24} />
+                    <p>X(Twitter)</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="p-2 border-t border-slate-90">
