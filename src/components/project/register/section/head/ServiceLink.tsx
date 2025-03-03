@@ -90,7 +90,7 @@ const ProjectHeadServiceLink = () => {
   }, [serviceLinks, setValue]); // serviceLinks가 변경될 때만 실행
 
   return (
-    <div className="p-10 flex flex-col gap-5">
+    <div className="p-10 flex flex-col gap-5 border-b border-1 border-slate-90">
       <p className="text-large font-lb">서비스 링크</p>
       <div className="flex flex-col gap-2">
         {serviceLinks

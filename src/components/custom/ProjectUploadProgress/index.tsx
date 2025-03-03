@@ -106,8 +106,8 @@ const ProjectUploadProgress = () => {
         <p className="mb-1 text-gray-500">완성도</p>
         <div className="flex items-center">
           <p className="w-[7.2rem] text-large font-lb">{Math.round(progress)}%</p>
-          <div className="ml-4 h-2 w-full rounded-full bg-gray-200">
-            <div className="h-full rounded-full bg-tree-50" style={{ width: `${progress}%` }} />
+          <div className="ml-4 h-2 w-full rounded-[999px] bg-gray-200">
+            <div className="h-full rounded-[999px] bg-tree-50" style={{ width: `${progress}%` }} />
           </div>
         </div>
       </div>

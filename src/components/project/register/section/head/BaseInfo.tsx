@@ -12,7 +12,7 @@ import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const ProjectHeadBaseInfo = () => {
-  const { register, setValue } = useFormContext<ProjectRegisterRequest>();
+  const { register, setValue, getValues } = useFormContext<ProjectRegisterRequest>();
 
   const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
   const { data: tagData } = useQuery({
@@ -20,6 +20,7 @@ const ProjectHeadBaseInfo = () => {
     queryFn
   });
 
+  const currentCategories = getValues('categories');
   const tags = (tagData ?? []).map((tag) => ({ name: tag.categoryName }));
 
   const InputList = [
@@ -69,6 +70,7 @@ const ProjectHeadBaseInfo = () => {
           onChange={(tags: Tag[]) => setValue('categories', tags)}
           displayKey="name"
           tags={tags}
+          initialValue={currentCategories}
         />
       ),
       required: true,
@@ -77,7 +79,7 @@ const ProjectHeadBaseInfo = () => {
   ];
 
   return (
-    <div className="flex gap-10 p-10">
+    <div className="flex gap-10 p-10 pt-0 border-b border-1 border-slate-90">
       <div className="w-full ">
         {InputList.map((input, index) => (
           <div key={index} className="mb-6">

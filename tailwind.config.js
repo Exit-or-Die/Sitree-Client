@@ -65,9 +65,6 @@ module.exports = {
           20: 'rgba(255, 255, 255, 0.2)',
           12: 'rgba(255, 255, 255, 0.12)',
           8: 'rgba(255, 255, 255, 0.08)'
-        },
-        red: {
-          50: '#F6424E'
         }
       },
       fontSize: {
@@ -85,7 +82,7 @@ module.exports = {
         md: 400,
         sb: 500,
         bd: 600,
-        lg: 700
+        lb: 700
       },
       lineHeight: {
         3: '1.2rem',

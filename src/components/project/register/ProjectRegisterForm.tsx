@@ -79,6 +79,8 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
 
   const onInvalid = (errors: unknown) => console.error(errors);
 
+  console.log('data', data);
+
   return (
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
