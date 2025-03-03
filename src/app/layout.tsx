@@ -17,7 +17,7 @@ const montserrat = Montserrat({
   variable: '--font-montserrat'
 });
 
-export const cls = (...classnames: string[]) => {
+const cls = (...classnames: string[]) => {
   return classnames.join(' ');
 };
 

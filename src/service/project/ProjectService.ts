@@ -17,6 +17,10 @@ class ProjectService extends Service {
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
   }
+
+  likeProject(projectId: string) {
+    return this.http.post(`projects/${projectId}/likes`, {}, { includeAuth: true });
+  }
   retrieveSitreePick() {
     return this.http.get<Array<SitreePickResponse>>('projects/sitree-pick');
   }
@@ -37,6 +41,15 @@ class ProjectService extends Service {
   }
   retrieveProjectTechStacks() {
     return this.http.get<ProjectTechStacks>('projects/tech-stacks');
+  }
+  checkProjectLikeStatus(projectId: string, memberId: number) {
+    if (!projectId || !memberId) {
+      return { isLiked: false };
+    }
+
+    return this.http.get<{ isLiked: boolean }>(
+      `projects/${projectId}/likes/check?memberId=${memberId}`
+    );
   }
 }
 

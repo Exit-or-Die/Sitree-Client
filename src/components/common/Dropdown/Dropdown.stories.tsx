@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SDropdown from '.';
+import SDropdown from './SDropdown';
 
 const meta: Meta<typeof SDropdown> = {
   title: 'components/common/SDropdown',

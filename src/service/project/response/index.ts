@@ -1,3 +1,12 @@
+import { Nullable } from 'types/common';
+
+export const IMAGE_TYPE = {
+  BACKGROUND: 'BACKGROUND',
+  REPRESENT: 'REPRESENT'
+} as const;
+
+export type ImageType = keyof typeof IMAGE_TYPE;
+
 export interface ProjectRegisterResponse {
   detailUrlPath: string;
 }
@@ -8,7 +17,12 @@ export interface ProjectDetailResponse {
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
-  participantList: Array<ParticipantResponse>;
+  participantList: Array<Participant>;
+  viewCount: number;
+  createdAt: string;
+  healthy: boolean;
+  likeCounts: number;
+  isLiked: boolean;
 }
 
 export interface Head {
@@ -30,7 +44,7 @@ export interface Overview {
 
 export interface Image {
   imageUrl: string;
-  imageType: 'REPRESENT' | 'BACKGROUND' | 'ARCHITECTURE';
+  imageType: ImageType;
 }
 
 export interface ClientUrl {
@@ -54,12 +68,12 @@ export interface Architecture {
   architectureImage: Image;
 }
 
-export interface ParticipantResponse {
+export interface Participant {
   memberId: number;
   nickname: string;
   imageUrl: string;
   position: string;
-  focusPoint: string;
+  focusPoint: Nullable<Array<string>>;
   isLeader: boolean;
 }
 
@@ -86,7 +100,7 @@ export interface Project {
   shortDescription: string;
   backgroundImage: string;
   commentCount: number;
-  likesCount: number;
+  likeCount: number;
   viewCount: number;
   latestUpdateTime: Date;
   isHealthy: boolean;

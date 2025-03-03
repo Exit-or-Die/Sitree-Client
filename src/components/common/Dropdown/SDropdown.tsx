@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Nullable } from 'types/common';
 
 import SImage from '@/components/common/Image';
 
 interface SDropdownProps<T = string> {
   options: T[];
-  onChange?: (selectedOption: T | null) => void;
+  onChange?: (selectedOption: Nullable<T>) => void;
   placeholder?: string;
   className?: string;
 }
@@ -15,7 +16,7 @@ const SDropdown = <T,>({
   placeholder = 'Select Option',
   className
 }: SDropdownProps<T>) => {
-  const [selectedOption, setSelectedOption] = useState<T | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Nullable<T>>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelectOption = (option: T) => {

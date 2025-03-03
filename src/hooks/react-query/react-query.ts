@@ -42,13 +42,16 @@ export async function getDehydratedQuery<Q extends QueryProps>({ queryKey, query
 
 export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
   const queryClient = getQueryClient();
-  await Promise.all(
+
+  await Promise.allSettled(
     queries.map(({ queryKey, queryFn }) => queryClient.prefetchQuery({ queryKey, queryFn }))
   );
 
-  return dehydrate(queryClient).queries as DehydratedQueryExtended<
-    UnwrapPromise<ReturnType<Q[number]['queryFn']>>
-  >[];
+  const dehydratedQueries = dehydrate(queryClient).queries;
+
+  return dehydratedQueries.filter((q) =>
+    queries.some((input) => JSON.stringify(input.queryKey) === JSON.stringify(q.queryKey))
+  ) as DehydratedQueryExtended<UnwrapPromise<ReturnType<Q[number]['queryFn']>>>[];
 }
 
 export async function getDehydratedQueryData<Q extends QueryProps>({ queryKey, queryFn }: Q) {
