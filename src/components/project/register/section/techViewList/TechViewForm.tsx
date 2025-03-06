@@ -1,6 +1,5 @@
 import ProjectQueryOptions from '@/service/project/queries';
 import { TechView } from '@/service/project/response';
-import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useQuery } from '@tanstack/react-query';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
@@ -10,6 +9,7 @@ import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const DEFAULT_TECH_VIEW: TechView = {
+  techviewId: null,
   techTitle: '',
   gitRepositoryUrl: '',
   techDesc: '',
@@ -25,15 +25,12 @@ const TechViewForm: React.FC<{
   const { data } = useQuery({ queryKey, queryFn });
   // skill의 속성을 기본값으로 보장
   const normalizedSkill: TechView = { ...DEFAULT_TECH_VIEW, ...skill };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     updateSkill(index, { ...normalizedSkill, [name]: value });
   };
 
   const handleEditorChange = (value: string) => {
-    if (!extractContentFromHtml(value).length) {
-      return;
-    }
     updateSkill(index, { ...normalizedSkill, techDesc: value });
   };
 
@@ -47,7 +44,7 @@ const TechViewForm: React.FC<{
             placeholder="이름 입력"
             name="techTitle"
             value={normalizedSkill.techTitle}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange('techTitle', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
           <RegiseterErrorMessage errorKey={`techviewList.${index}.techTitle`} />
@@ -61,7 +58,7 @@ const TechViewForm: React.FC<{
             placeholder="링크 입력"
             name="gitRepositoryUrl"
             value={normalizedSkill.gitRepositoryUrl}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange('gitRepositoryUrl', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
           <RegiseterErrorMessage errorKey={`techviewList.${index}.gitRepositoryUrl`} />

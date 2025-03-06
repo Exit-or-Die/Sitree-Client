@@ -24,7 +24,7 @@ interface ProjectRegisterFormProps {
   projectId?: string;
 }
 
-export const DEFAULT_DETAIL_DATA: ProjectDetailResponse = {
+export const DEFAULT_DETAIL_DATA: Partial<ProjectDetailResponse> = {
   head: {
     title: '',
     thumbnailImageUrl: '',
@@ -62,6 +62,14 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     defaultValues: data || DEFAULT_DETAIL_DATA // 초기 값 제공
   });
 
+  const { mutate: modifyProject } = useMutation({
+    mutationFn: (formValues: ProjectRegisterRequest) =>
+      ProjectQueryOptions.modifyProject(projectId as string, formValues).mutateFn(),
+    onSuccess: (data) => {
+      console.log('data', data);
+    }
+  });
+
   const { mutate: registerProject } = useMutation({
     mutationFn: (formValues: ProjectRegisterRequest) =>
       ProjectQueryOptions.registerProject(formValues).mutateFn(),
@@ -71,13 +79,22 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   });
 
   const handleSubmitClick = () => {
-    formMethods.handleSubmit((formValues) => {
-      console.log('🚀 Submitted Data:', formValues);
-      registerProject(formValues as ProjectRegisterRequest);
-    }, onInvalid)();
-  };
+    formMethods.handleSubmit(
+      (formValues) => {
+        console.log('🚀 Submitted Data (Valid):', formValues);
+        if (projectId) {
+          modifyProject(formValues as ProjectRegisterRequest);
 
-  const onInvalid = (errors: unknown) => console.error(errors);
+          return;
+        }
+        registerProject(formValues as ProjectRegisterRequest);
+      },
+      (errors) => {
+        console.log('🚀 Submitted Data (Invalid):', formMethods.getValues());
+        console.error('Validation Errors:', errors);
+      }
+    )();
+  };
 
   console.log('data', data);
 
@@ -85,7 +102,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
-          <form className="flex flex-col gap-10" onSubmit={() => console.log('submitted')}>
+          <form className="flex flex-col gap-10">
             <ProjectRegisterHead />
             <ProjectRegisterOverview />
             <ProjectRegisterTechViewList />

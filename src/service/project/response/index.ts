@@ -2,7 +2,8 @@ import { Nullable } from 'types/common';
 
 export const IMAGE_TYPE = {
   BACKGROUND: 'BACKGROUND',
-  REPRESENT: 'REPRESENT'
+  REPRESENT: 'REPRESENT',
+  ARCHITECTURE: 'ARCHITECTURE'
 } as const;
 
 export type ImageType = keyof typeof IMAGE_TYPE;
@@ -56,6 +57,7 @@ export interface ClientUrl {
 }
 
 export interface TechView {
+  techviewId: number | null;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: Array<string>;

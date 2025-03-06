@@ -38,6 +38,7 @@ export interface ClientUrl {
 }
 
 export interface TechView {
+  techviewId: number | null;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: Array<string>;

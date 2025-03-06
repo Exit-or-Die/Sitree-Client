@@ -37,6 +37,7 @@ export const overviewSchema = z.object({
 export const techviewListSchema = z
   .array(
     z.object({
+      techviewId: z.number().int().nullable().optional(),
       techTitle: z.string().min(1, { message: '기술 이름을 작성해주세요' }),
       gitRepositoryUrl: z.string().url({ message: 'URL 형식의 git 주소를 입력해주세요' }),
       techStackTypes: z.array(z.string()).optional(),

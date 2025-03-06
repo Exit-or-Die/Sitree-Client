@@ -12,6 +12,7 @@ import SImage from '@/components/common/Image';
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
+  techviewId: number | null;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: string[];
@@ -31,9 +32,10 @@ const ProjectRegisterTechViewList = () => {
     setValue('techviewList', skills);
   }, [skills, setValue]);
 
-  const updateSkill = useCallback((index: number, updatedSkill: TechViewProps) => {
-    setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
-  }, []);
+  const updateSkill = (index: number, updatedSkill: TechViewProps) => {
+    setSkills([updatedSkill]);
+    //setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
+  };
 
   const canAddSkill = useCallback(() => {
     if (!skills.length) return true;
@@ -54,7 +56,7 @@ const ProjectRegisterTechViewList = () => {
     if (!canAddSkill()) return;
     setSkills((prevSkills) => [
       ...prevSkills,
-      { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
+      { techviewId: null, techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
     ]);
     setCurrentIndex(skills.length);
   }, [skills.length, canAddSkill]);

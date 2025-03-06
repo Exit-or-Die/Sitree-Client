@@ -1,7 +1,6 @@
 'use client';
 
 import { Architecture } from '@/service/project/response';
-import { extractContentFromHtml } from '@/utils/stringUtil';
 import React from 'react';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
@@ -24,9 +23,6 @@ const ArchitectureForm = ({
   updateArchitecture
 }: ArchitectureFormProps) => {
   const handleEditorChange = (value: string) => {
-    if (!extractContentFromHtml(value).length) {
-      return;
-    }
     updateArchitecture({ architectureDesc: value });
   };
 

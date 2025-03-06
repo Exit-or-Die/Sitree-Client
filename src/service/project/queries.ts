@@ -15,6 +15,9 @@ const ProjectQueryOptions = {
   registerProject: (param: ProjectRegisterRequest) => ({
     mutateFn: () => ProjectService.registerProject(param)
   }),
+  modifyProject: (projectId: string, param: ProjectRegisterRequest) => ({
+    mutateFn: () => ProjectService.modifyProject(projectId, param)
+  }),
   retrieveProjectDetail: (projectId: string) => ({
     queryKey: queryKeys.retrieveProjectDetail(projectId),
     queryFn: () => ProjectService.retrieveProjectDetail(projectId)

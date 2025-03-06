@@ -14,6 +14,11 @@ class ProjectService extends Service {
       includeAuth: true
     });
   }
+  modifyProject(projectId: string, param: ProjectRegisterRequest) {
+    return this.http.put<ProjectRegisterResponse>(`projects/${projectId}`, param, {
+      includeAuth: true
+    });
+  }
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
   }

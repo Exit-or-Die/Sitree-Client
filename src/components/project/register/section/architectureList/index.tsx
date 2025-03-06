@@ -57,7 +57,6 @@ const ArchitectureComponent = () => {
     const updatedList = sortedList.map((arch) =>
       arch.architectureType === activeTab.label ? updatedArchitecture : arch
     );
-
     const filteredList = updatedList.filter(
       (arch) => arch.architectureDesc || arch.architectureImage.imageUrl
     );

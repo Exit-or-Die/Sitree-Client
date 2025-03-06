@@ -83,7 +83,7 @@ const ProjectDetailSideBar = ({
         <div className="flex justify-between">
           <SButton
             className={`w-[160px] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
-            onClick={likeProject}
+            onClick={() => likeProject()}
           >
             <SImage
               src={isLiked ? '/likeFill.svg' : '/like.svg'}
