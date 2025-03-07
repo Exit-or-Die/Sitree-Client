@@ -1,8 +1,64 @@
 'use client';
 
 import ProfileIntroSection from '@/components/profile/ProfileIntroSection';
+import ProfileIntroSkeleton from '@/components/profile/ProfileIntroSkeleton';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
 import ProjectPortfolioSection from '@/components/profile/ProjectPortfolioSection';
+
+const mockData = {
+  "memberId": 1,
+  "nickname": "Jona",
+  "email": "test1@gmail.com",
+  "profileImgUrl": "https://image.le.png",
+  "thirdPartyProfileUrl": "https://github.com",
+  "shortIntroduction": "i my me mine",
+  "belongingId": 2,
+  "belongingName": "가야대학교(김해)",
+  "myPage": {
+    "selfIntroduction": {
+      "title": "성장을 즐기는 프론트엔드 개발자 이혜린입니다!",
+      "contents": "성장을 즐기고 사용자에게 편리한 서비스를 만드는 목표를 가진\n주니어 Product Manager 김나연 입니다"
+    },
+    "careers": [{
+        "careerName": "String123123",
+        "startedAt": "2024-02-23T15:30:00",
+        "endedAt": "2024-02-27T15:30:00",
+        "position": "String",
+        "department": "String",
+        "projects": [
+          {
+            "projectName": "String",
+            "startedAt": "2025-02-23T15:30:00",
+            "endedAt": "2024-02-24T15:30:00",
+            "contents": "project description",
+            "roleTags": ["PM", "UX_UI", "FE", "BE", "AI", "DATA", "INFRA"]
+          }
+        ]
+      }
+    ],
+    "educationActivities": [
+      {
+        "educationActivityName": "String",
+        "startedAt": "2025-02-23T15:30:00",
+        "endedAt": "2025-02-23T15:30:00",
+        "majorOrOrganization": "String",
+        "category": "UNIVERSITY",
+        "contents": "String"
+      }
+    ],
+    "techStacks": ["JAVA", "REACT", "VUE_JS", "NEXT_JS", "TYPESCRIPT"],
+    "links": [
+      {
+        "linkProvider": "GITHUB",
+        "link": "String123123"
+      },
+      {
+        "linkProvider": "BEHANCE",
+        "link": "bear04012"
+      }
+    ]
+  }
+}
 
 const Profile = () => {
   return (
@@ -10,7 +66,12 @@ const Profile = () => {
       <ProfileSidebar />
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">
-        <ProfileIntroSection />
+        <ProfileIntroSkeleton />
+        <ProfileIntroSection 
+          content={mockData.myPage.selfIntroduction}
+          techStacks={mockData.myPage.techStacks}
+          links={mockData.myPage.links}
+        />
         <ProjectPortfolioSection />
       </div>
     </div>
