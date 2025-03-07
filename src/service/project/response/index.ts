@@ -106,3 +106,10 @@ export interface Project {
   latestUpdateTime: Date;
   isHealthy: boolean;
 }
+
+export interface ProjectLeader {
+  memberId: number;
+  imageUrl: string;
+  nickname: string;
+  position: string;
+}

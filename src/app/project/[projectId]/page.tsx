@@ -19,17 +19,19 @@ interface ProjectDetailPageProps {
 }
 
 const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
-  // memberId는 쿠키 저장해서 사용
   const { projectId } = params;
 
   const { queryKey: projectDetailKey, queryFn: projectDetailFn } =
     ProjectQueryOptions.retrieveProjectDetail(projectId);
   const { queryKey: projectCommentKey, queryFn: projectCommentFn } =
     CommentsQueryOptions.retrieveCommentList(projectId, 10);
+  const { queryKey: projectLedaerKey, queryFn: projectLeaderFn } =
+    ProjectQueryOptions.checkProjectLeader(projectId);
 
   const [projectDetailQuery, projectCommentQuery] = await getDehydratedQueries([
     { queryKey: projectDetailKey, queryFn: projectDetailFn },
-    { queryKey: projectCommentKey, queryFn: () => projectCommentFn({ pageParam: 0 }) }
+    { queryKey: projectCommentKey, queryFn: () => projectCommentFn({ pageParam: 0 }) },
+    { queryKey: projectLedaerKey, queryFn: projectLeaderFn }
   ]);
 
   const projectDetail = projectDetailQuery?.state.data as ProjectDetailResponse;

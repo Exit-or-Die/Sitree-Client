@@ -2,7 +2,7 @@
 
 import { Architecture } from '@/service/project/response';
 import dynamic from 'next/dynamic';
-import { use, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import SImage from '@/components/common/Image';
 import STab from '@/components/common/Tab';

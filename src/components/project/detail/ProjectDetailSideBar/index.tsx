@@ -34,11 +34,17 @@ const ProjectDetailSideBar = ({
   const { data: session } = useSession();
   const { projectId } = useParams();
   const [copied, setCopied] = useState(false);
-  const { queryKey, queryFn } = ProjectQueryOptions.checkProjectLikeStatus(
-    projectId as string,
-    session?.detail.memberId as number
-  );
-  const { isLiked } = useQuery({ queryKey, queryFn }).data ?? {};
+  const { queryKey: projectLikeKey, queryFn: projectLikeFn } =
+    ProjectQueryOptions.checkProjectLikeStatus(
+      projectId as string,
+      session?.detail.memberId as number
+    );
+  const { queryKey: projectLeaderKey, queryFn: projectLeaderFn } =
+    ProjectQueryOptions.checkProjectLeader(projectId as string);
+
+  const { data: teamLeader } = useQuery({ queryKey: projectLeaderKey, queryFn: projectLeaderFn });
+
+  const { isLiked } = useQuery({ queryKey: projectLikeKey, queryFn: projectLikeFn }).data ?? {};
 
   const { mutate: likeProject } = useMutation({
     mutationFn: () => {
@@ -48,8 +54,19 @@ const ProjectDetailSideBar = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey
+        queryKey: projectLikeKey
       });
+    }
+  });
+
+  const { mutate: deleteProject } = useMutation({
+    mutationFn: () => {
+      const { mutateFn } = ProjectQueryOptions.deleteProject(projectId as string);
+
+      return mutateFn();
+    },
+    onSuccess: () => {
+      //home으로 이동 처리
     }
   });
 
@@ -67,8 +84,6 @@ const ProjectDetailSideBar = ({
       console.error('링크 복사 실패:', error);
     }
   };
-
-  const teamLeader = teamMember.find((member) => member.isLeader);
 
   return (
     <div className="w-[30.6rem] sticky top-5 h-full flex flex-col border border-1 border-slate-90 rounded-2xlarge bg-white-100 leading-5 tracking-[-0.14px]">
@@ -181,7 +196,11 @@ const ProjectDetailSideBar = ({
                   수정하기
                 </SButton>
               </Link>
-              <SButton size="md" className="leading-5 border-none w-full flex justify-center">
+              <SButton
+                size="md"
+                className="leading-5 border-none w-full flex justify-center"
+                onClick={deleteProject}
+              >
                 프로젝트 삭제
               </SButton>
             </div>
