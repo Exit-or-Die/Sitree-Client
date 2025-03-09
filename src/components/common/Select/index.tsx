@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Optional } from 'types/common';
 
 import SImage from '../Image';
 
@@ -24,7 +25,7 @@ const SSelect = <T,>({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const getOptionDisplay = (option: T | undefined) => {
+  const getOptionDisplay = (option: Optional<T>) => {
     return option && displayKey ? String(option[displayKey] ?? '') : String(option ?? '');
   };
 

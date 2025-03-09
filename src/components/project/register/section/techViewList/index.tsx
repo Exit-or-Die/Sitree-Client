@@ -5,6 +5,7 @@ import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -12,7 +13,7 @@ import SImage from '@/components/common/Image';
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
-  techviewId: number | null;
+  techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: string[];
