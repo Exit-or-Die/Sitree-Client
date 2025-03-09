@@ -1,6 +1,7 @@
 'use client';
 
 import { PROJECT_SCROLL_ID } from '@/constants/scrollId';
+import withModal from '@/enhancers/WithModal';
 import ProjectQueryOptions from '@/service/project/queries';
 import { Participant } from '@/service/project/response';
 import { scrollToElement } from '@/utils/scrollElement';
@@ -12,6 +13,8 @@ import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+
+import ProjectDeleteModal from './ProjectDeleteModal';
 
 interface ProjectDetailSideBarProps {
   title?: string;
@@ -33,7 +36,9 @@ const ProjectDetailSideBar = ({
   const queryClient = useQueryClient();
   const { data: session } = useSession();
   const { projectId } = useParams();
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const ProjectDeleteWithModal = withModal(ProjectDeleteModal);
   const { queryKey: projectLikeKey, queryFn: projectLikeFn } =
     ProjectQueryOptions.checkProjectLikeStatus(
       projectId as string,
@@ -59,16 +64,9 @@ const ProjectDetailSideBar = ({
     }
   });
 
-  const { mutate: deleteProject } = useMutation({
-    mutationFn: () => {
-      const { mutateFn } = ProjectQueryOptions.deleteProject(projectId as string);
-
-      return mutateFn();
-    },
-    onSuccess: () => {
-      //home으로 이동 처리
-    }
-  });
+  const handleDeleteProject = () => {
+    setDeleteModalOpen(true);
+  };
 
   const handleScrollToElement = (id: string) => {
     scrollToElement(id);
@@ -185,7 +183,7 @@ const ProjectDetailSideBar = ({
               </span>
             </div>
           </div>
-          {teamLeader?.memberId === session?.detail.memberId && (
+          {teamLeader?.memberId !== session?.detail.memberId && (
             <div className="flex flex-col gap-1.5">
               <Link href={`/project/register/${projectId}`}>
                 <SButton
@@ -199,7 +197,7 @@ const ProjectDetailSideBar = ({
               <SButton
                 size="md"
                 className="leading-5 border-none w-full flex justify-center"
-                onClick={deleteProject}
+                onClick={handleDeleteProject}
               >
                 프로젝트 삭제
               </SButton>
@@ -207,6 +205,13 @@ const ProjectDetailSideBar = ({
           )}
         </div>
       </div>
+      <ProjectDeleteWithModal
+        projectId={projectId as string}
+        handleClose={() => setDeleteModalOpen(false)}
+        isVisible={deleteModalOpen}
+        hideClose={true}
+        onClickClose={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 };
