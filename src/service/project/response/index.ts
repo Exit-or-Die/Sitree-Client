@@ -56,7 +56,7 @@ export interface ClientUrl {
 }
 
 export interface TechView {
-  techviewId: number;
+  techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: Array<string>;
