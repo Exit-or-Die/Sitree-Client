@@ -79,7 +79,7 @@ const ProjectTagSelect = <T,>({
   }, [tags, selectedTags]);
 
   return (
-    <div className="relative w-full" ref={tagSelectRef}>
+    <div className="relative w-full z-50" ref={tagSelectRef}>
       <div
         className={`w-full border border-slate-90 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer ${isDropdownOpen ? 'border-none outline-none ring-1 ring-tree-50' : ''}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
