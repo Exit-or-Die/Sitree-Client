@@ -34,8 +34,13 @@ const ProjectRegisterTechViewList = () => {
   }, [skills, setValue]);
 
   const updateSkill = (index: number, updatedSkill: TechViewProps) => {
-    setSkills([updatedSkill]);
-    //setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
+    setSkills((prevSkills) => {
+      if (prevSkills.length === 0) {
+        return [updatedSkill];
+      }
+
+      return prevSkills.map((skill, i) => (i === index ? updatedSkill : skill));
+    });
   };
 
   const canAddSkill = useCallback(() => {

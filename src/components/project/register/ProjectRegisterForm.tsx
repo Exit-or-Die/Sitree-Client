@@ -93,10 +93,6 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
     )();
   };
 
-  if (!session?.detail.memberId) {
-    redirect('/');
-  }
-
   return (
     <div className="flex justify-center gap-5">
       <FormProvider {...formMethods}>
