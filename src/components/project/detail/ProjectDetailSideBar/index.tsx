@@ -183,7 +183,7 @@ const ProjectDetailSideBar = ({
               </span>
             </div>
           </div>
-          {teamLeader?.memberId !== session?.detail.memberId && (
+          {teamLeader?.memberId === session?.detail.memberId && (
             <div className="flex flex-col gap-1.5">
               <Link href={`/project/register/${projectId}`}>
                 <SButton

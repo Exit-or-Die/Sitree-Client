@@ -58,9 +58,11 @@ const ProjectDetailHeader = ({
           <div className="flex gap-2 items-center">
             <HealthCheckState health={healthy ?? false} />
             {clientUrl &&
-              Object.entries(clientUrl).map(([key, value]) => (
-                <ProjectLinkItem key={key} text={key} url={value} />
-              ))}
+              Object.entries(clientUrl).map(([key, value]) => {
+                if (value.trim().length) {
+                  return <ProjectLinkItem key={key} text={key} url={value} />;
+                }
+              })}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex gap-1.5 flex-wrap">
