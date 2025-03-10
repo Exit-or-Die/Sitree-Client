@@ -1,5 +1,6 @@
 'use client';
 
+import ProfileCareer from '@/components/profile/ProfileCareer';
 import ProfileIntroSection from '@/components/profile/ProfileIntroSection';
 import ProfileIntroSkeleton from '@/components/profile/ProfileIntroSkeleton';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
@@ -55,6 +56,10 @@ const mockData = {
       {
         "linkProvider": "BEHANCE",
         "link": "bear04012"
+      },
+      {
+        "linkProvider": "NOTION",
+        "link": "bear04012"
       }
     ]
   }
@@ -73,6 +78,7 @@ const Profile = () => {
           links={mockData.myPage.links}
         />
         <ProjectPortfolioSection />
+        <ProfileCareer careers={mockData.myPage.careers} />
       </div>
     </div>
   );
