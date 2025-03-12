@@ -1,6 +1,7 @@
 'use client';
 
-import ProfileCareer from '@/components/profile/ProfileCareer';
+import ProfileCareerSection from '@/components/profile/ProfileCareerSection';
+import ProfileEducationSection from '@/components/profile/ProfileEducationSection';
 import ProfileIntroSection from '@/components/profile/ProfileIntroSection';
 import ProfileIntroSkeleton from '@/components/profile/ProfileIntroSkeleton';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
@@ -78,7 +79,8 @@ const Profile = () => {
           links={mockData.myPage.links}
         />
         <ProjectPortfolioSection />
-        <ProfileCareer careers={mockData.myPage.careers} />
+        <ProfileCareerSection careers={mockData.myPage.careers} />
+        <ProfileEducationSection></ProfileEducationSection>
       </div>
     </div>
   );

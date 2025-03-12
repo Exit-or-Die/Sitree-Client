@@ -8,7 +8,7 @@ type Props = {
 };
 
 
-const ProfileCareer = ({ careers }: Props) => {
+const ProfileCareerSection = ({ careers }: Props) => {
 
   return (
     <div className="p-[40px] bg-white flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
@@ -60,4 +60,4 @@ const ProfileCareer = ({ careers }: Props) => {
   );
 };
 
-export default ProfileCareer;
+export default ProfileCareerSection;
