@@ -1,17 +1,15 @@
 'use client';
 
 import { UserCareerField } from '@/service/profile/response';
-import SImage from '../common/Image';
 import formatTimestamps from '@/utils/date';
+
+import SImage from '../common/Image';
 
 type Props = {
   careers: Array<UserCareerField>;
 };
 
-
 const ProfileCareerSection = ({ careers }: Props) => {
-  console.log(careers)
-
   return (
     <div className="p-[40px] bg-white flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lg text-slate-10">경력 0년 0개월</div>
@@ -27,17 +25,19 @@ const ProfileCareerSection = ({ careers }: Props) => {
                   <div className="border-l-2 mx-[10px] h-[14px]" />
                   <div className="text-small text-slate-50 font-md">{career.department}</div>
                 </div>
-                <p className="text-slate-30 text-xsmall">{formatTimestamps(careers[0].startedAt, careers[0].endedAt)}</p>
+                <p className="text-slate-30 text-xsmall">
+                  {formatTimestamps(careers[0].startedAt, careers[0].endedAt)}
+                </p>
               </div>
             </div>
 
             {career.projects.map((project, index) => (
               <div key={index} className="mb-6 border-l-2 pt-[8px] ml-[70px] pl-[20px]">
                 <h4 className="text-[15px] font-semibold text-slate-10">{project.projectName}</h4>
-                <p className="text-slate-50 text-xsmall">{formatTimestamps(project.startedAt, project.endedAt)}</p>
-                <p className="text-slate-30 text-small mt-2">
-                  {project.contents}
+                <p className="text-slate-50 text-xsmall">
+                  {formatTimestamps(project.startedAt, project.endedAt)}
                 </p>
+                <p className="text-slate-30 text-small mt-2">{project.contents}</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {project.roleTags.map((tag) => (
                     <span

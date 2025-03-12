@@ -1,33 +1,38 @@
 'use client';
 
+import { UserIntroField, UserLinkField } from '@/service/profile/response';
+
 import SImage from '../common/Image';
 
 type Props = {
-  content: any;
+  content: UserIntroField;
   techStacks: string[];
-  links: any;
+  links: Array<UserLinkField>;
 };
 
 type TechProps = {
   stack: string;
   label: string;
   bold?: boolean;
-}
+};
 
 const TechIcon = ({ stack, label, bold }: TechProps) => {
-  
   return (
     <div className="flex w-1/2 h-[32px] mb-[12px] items-center">
       <div className="min-w-[32px] min-h-[32px] border rounded-base bg-white flex justify-center items-center">
-        <SImage src={`https://image.si-tree.com/tech-stack/${stack}.svg`} alt={`${stack} Icon`} width={24} height={24} />
+        <SImage
+          src={`https://image.si-tree.com/tech-stack/${stack}.svg`}
+          alt={`${stack} Icon`}
+          width={24}
+          height={24}
+        />
       </div>
       <div className={`ml-[8px] text-small ${bold ? 'font-bd' : 'font-md'}`}>{label}</div>
     </div>
   );
-}
+};
 
 const ProfileIntroSection = ({ content, techStacks, links }: Props) => {
-
   return (
     <div className="p-[40px] flex flex-col justify-center bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lg text-slate-10">{content.title}</div>
@@ -40,14 +45,18 @@ const ProfileIntroSection = ({ content, techStacks, links }: Props) => {
         <div className="flex-1 pl-[32px]">
           <div className="text-base font-lg">기술 스택</div>
           <div className="w-full flex flex-wrap mt-[8px]">
-            {techStacks.map(stack => (
+            {techStacks.map((stack) => (
               <TechIcon key={stack} stack={stack} label={stack} bold />
             ))}
           </div>
           <div className="mt-[40px] text-base font-lg">링크</div>
           <div className="mt-[12px]">
-            {links.map((link: any) => (
-              <TechIcon key={link.linkProvider} stack={link.linkProvider} label={`${link.link}@${link.linkProvider.toLowerCase()}.com`} />
+            {links.map((link: UserLinkField) => (
+              <TechIcon
+                key={link.linkProvider}
+                stack={link.linkProvider}
+                label={`${link.link}@${link.linkProvider.toLowerCase()}.com`}
+              />
             ))}
           </div>
         </div>
