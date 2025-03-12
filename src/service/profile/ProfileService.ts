@@ -1,10 +1,14 @@
 import Service from '@/service/service';
 
-import { UserProfileResponse } from './response';
+import { UserProfileResponse, UserProject } from './response';
 
 class ProfileService extends Service {
   searchProfile(memberId: string) {
     return this.http.get<UserProfileResponse>(`members/${memberId}`);
+  }
+
+  searchUserProjects(memberId: string) {
+    return this.http.get<Array<UserProject>>(`projects/participants/${memberId}`);
   }
 }
 

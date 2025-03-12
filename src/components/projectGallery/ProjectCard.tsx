@@ -48,7 +48,7 @@ const ProjectCard = ({
           </div>
         </div>
 
-        <div className="w-[312px] h-[184px] overflow-hidden rounded-3xl">
+        <div className="w-[312px] h-[184px] overflow-hidden rounded-3xl border shadow-sm">
           <SImage
             src={backgroundImage}
             alt={`Project ${name} Background`}

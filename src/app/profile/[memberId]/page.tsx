@@ -1,6 +1,7 @@
-import { getDehydratedQuery } from '@/hooks/react-query/react-query';
+import { getDehydratedQueries } from '@/hooks/react-query/react-query';
 import ProfileQueryOptions from '@/service/profile/queries';
-import { UserProfileResponse } from '@/service/profile/response';
+import { UserProfileResponse, UserProject } from '@/service/profile/response';
+import { isEmpty } from '@/utils/array';
 
 import ProfileCareerSection from '@/components/profile/ProfileCareerSection';
 import ProfileEducationSection from '@/components/profile/ProfileEducationSection';
@@ -8,6 +9,7 @@ import ProfileIntroSection from '@/components/profile/ProfileIntroSection';
 import ProfileIntroSkeleton from '@/components/profile/ProfileIntroSkeleton';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
 import ProjectPortfolioSection from '@/components/profile/ProjectPortfolioSection';
+import ProjectPortfolioSkeleton from '@/components/profile/ProjectPortfolioSkeleton';
 
 interface ProfilePageProps {
   params: {
@@ -18,10 +20,14 @@ interface ProfilePageProps {
 const Profile = async ({ params }: ProfilePageProps) => {
   const { memberId } = params;
 
-  const { queryKey: profileKey, queryFn: profileFn } = ProfileQueryOptions.searchProfile(memberId);
+  const queries = [
+    ProfileQueryOptions.searchProfile(memberId),
+    ProfileQueryOptions.searchUserProjects(memberId)
+  ];
 
-  const query = await getDehydratedQuery({ queryKey: profileKey, queryFn: profileFn });
-  const profileDetail = query?.state.data as UserProfileResponse;
+  const [userProfileQuery, userProjectsQuery] = await getDehydratedQueries(queries);
+  const profileDetail = userProfileQuery?.state.data as UserProfileResponse;
+  const projects = userProjectsQuery?.state.data as Array<UserProject>;
 
   return (
     <div className="w-full h-full flex px-48 py-6">
@@ -43,7 +49,12 @@ const Profile = async ({ params }: ProfilePageProps) => {
             links={profileDetail.myPage.links ?? []}
           />
         )}
-        <ProjectPortfolioSection />
+        {isEmpty(projects) ? (
+          <ProjectPortfolioSkeleton />
+        ) : (
+          <ProjectPortfolioSection projects={projects} />
+        )}
+
         {profileDetail.myPage.careers && (
           <ProfileCareerSection careers={profileDetail.myPage.careers} />
         )}

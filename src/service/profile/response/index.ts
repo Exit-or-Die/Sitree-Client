@@ -1,3 +1,4 @@
+import { Project } from '@/service/project/response/index';
 import { Belonging, Nullable } from 'types/common';
 
 export interface UserProfileResponse {
@@ -54,4 +55,14 @@ export interface UserEducationField {
 export interface UserLinkField {
   linkProvider: string;
   link: string;
+}
+
+export interface UserProject extends Project {
+  participantId: string;
+  focusPoint: FocusPoint;
+}
+
+export interface FocusPoint {
+  focusPointId: string;
+  focusPoints: Array<string>;
 }
