@@ -1,61 +1,58 @@
 'use client';
 
-import SButton from '../common/Button';
+import { UserCareerField } from '@/service/profile/response';
 import SImage from '../common/Image';
+import formatTimestamps from '@/utils/date';
 
 type Props = {
-  careers: any;
+  careers: Array<UserCareerField>;
 };
 
 
 const ProfileCareerSection = ({ careers }: Props) => {
+  console.log(careers)
 
   return (
     <div className="p-[40px] bg-white flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lg text-slate-10">경력 0년 0개월</div>
-      <div className="flex items-start mt-[20px] mb-6">
-        <div className="w-12 h-12 bg-gray-200 rounded-md"></div>
-        <div className="ml-4">
-          <h3 className="text-large font-lg">마이크로소프트</h3>
-          <div className="flex items-center">
-            <div className="text-small text-slate-30 font-lg">프로덕트디자이너(애는 직접 입력)</div>
-            <div className="border-l-2 mx-[10px] h-[14px]" />
-            <div className="text-small text-slate-50 font-md">Team</div>
-          </div>
-          <p className="text-slate-30 text-xsmall">YYYY.MM ~ YYYY.MM</p>
-        </div>
-      </div>
+      {careers.map((career, index) => {
+        return (
+          <div key={index}>
+            <div className="flex items-start mt-[20px] mb-6">
+              <SImage src="/" alt="affiliation image" width={64} height={64} />
+              <div className="ml-4">
+                <h3 className="text-large font-lg">{career.careerName}</h3>
+                <div className="flex items-center">
+                  <div className="text-small text-slate-30 font-lg">{career.position}</div>
+                  <div className="border-l-2 mx-[10px] h-[14px]" />
+                  <div className="text-small text-slate-50 font-md">{career.department}</div>
+                </div>
+                <p className="text-slate-30 text-xsmall">{formatTimestamps(careers[0].startedAt, careers[0].endedAt)}</p>
+              </div>
+            </div>
 
-      {[1, 2].map((project, index) => (
-        <div key={index} className="mb-6 border-l-2 pt-[12px] ml-[70px] pl-[20px]">
-          <h4 className="text-[15px] font-semibold text-slate-10">권한관리시스템 UXUI 개선</h4>
-          <p className="text-slate-50 text-xsmall">YYYY.MM ~ YYYY.MM</p>
-          <p className="text-slate-30 text-small mt-2">
-            {index === 0 ? (
-              <>
-                어쩌고 저쩌고 엄청나게 많은 것을 했습니다.
-                <ul className="list-disc list-inside text-small mt-2">
-                  <li>짱 잘했음</li>
-                  <li>진짜 잘했음</li>
-                  <li>어쩌고저 1 고</li>
-                </ul>
-              </>
-            ) : (
-              <>{'{Project Description}'}</>
-            )}
-          </p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {['PM/PO', 'PD', 'FE', 'BE', 'INFRA', 'AI', 'DATA'].map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-gray-100 text-slate-20 text-[13px] rounded-large"
-              >
-                {tag}
-              </span>
+            {career.projects.map((project, index) => (
+              <div key={index} className="mb-6 border-l-2 pt-[8px] ml-[70px] pl-[20px]">
+                <h4 className="text-[15px] font-semibold text-slate-10">{project.projectName}</h4>
+                <p className="text-slate-50 text-xsmall">{formatTimestamps(project.startedAt, project.endedAt)}</p>
+                <p className="text-slate-30 text-small mt-2">
+                  {project.contents}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {project.roleTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-gray-100 text-slate-20 text-[13px] rounded-large"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
