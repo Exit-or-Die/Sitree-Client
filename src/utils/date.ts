@@ -19,11 +19,12 @@ export const formatToDate = (isoString: string) => {
 
 const formatTimestamps = (startTimestamp: Date, endTimestamp: Date) => {
   if (!startTimestamp || !endTimestamp) return '';
-  
+
   const formatDate = (timestamp: Date) => {
     const date = new Date(timestamp);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
+
     return `${year}.${month}`;
   };
 

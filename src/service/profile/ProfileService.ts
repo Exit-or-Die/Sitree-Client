@@ -1,4 +1,5 @@
 import Service from '@/service/service';
+
 import { UserProfileResponse } from './response';
 
 class ProfileService extends Service {

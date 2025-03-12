@@ -14,7 +14,13 @@ interface Props {
   affiliation: string;
 }
 
-const ProfileSidebar = ({ nickname, profileImgUrl, email, thirdPartyProfileUrl, affiliation }: Props) => {
+const ProfileSidebar = ({
+  nickname,
+  profileImgUrl,
+  email,
+  thirdPartyProfileUrl,
+  affiliation
+}: Props) => {
   const [text, setText] = useState('');
 
   const exportToPDF = () => {
@@ -38,7 +44,13 @@ const ProfileSidebar = ({ nickname, profileImgUrl, email, thirdPartyProfileUrl, 
       <div className="bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
         <div className="p-5">
           <div className="w-[88px] h-[88px] bg-white-100 rounded-full flex items-center justify-center border">
-            <SImage src={profileImgUrl} alt="default user" width={70} height={70} defaultType="user" />
+            <SImage
+              src={profileImgUrl}
+              alt="default user"
+              width={70}
+              height={70}
+              defaultType="user"
+            />
           </div>
           <h2 className="text-large text-slate-10 mt-4 font-lg">{nickname}</h2>
           <div className="text-[13px] text-slate-50 font-md">{email}</div>
@@ -60,14 +72,25 @@ const ProfileSidebar = ({ nickname, profileImgUrl, email, thirdPartyProfileUrl, 
         <div className="border-slate-95 border-t-[1px] p-5 space-y-4">
           {affiliation && (
             <div className="flex items-center text-slate-10 text-[13px]">
-              <SImage src="/education.svg" alt="education" width={18} height={18} className="mr-2" />
+              <SImage
+                src="/education.svg"
+                alt="education"
+                width={18}
+                height={18}
+                className="mr-2"
+              />
               {affiliation}
             </div>
           )}
           {thirdPartyProfileUrl && (
             <div className="flex items-center text-slate-10 text-[13px]">
               <SImage src="/link.svg" alt="link" width={18} height={18} className="mr-2" />
-              <a href={thirdPartyProfileUrl} target="_blank" rel="noopener noreferrer" className="underline">
+              <a
+                href={thirdPartyProfileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
                 {thirdPartyProfileUrl}
               </a>
             </div>
