@@ -34,7 +34,7 @@ const ProfileCareerSection = ({ careers }: Props) => {
             {index === 0 ? (
               <>
                 어쩌고 저쩌고 엄청나게 많은 것을 했습니다.
-                <ul className="list-disc list-inside text-sm mt-2">
+                <ul className="list-disc list-inside text-small mt-2">
                   <li>짱 잘했음</li>
                   <li>진짜 잘했음</li>
                   <li>어쩌고저 1 고</li>

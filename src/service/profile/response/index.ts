@@ -1,14 +1,23 @@
-import { Belonging } from 'types/common';
+import { Belonging, Nullable } from 'types/common';
 
 export interface UserProfileResponse {
 	memberId: string;
 	nickname: string;
 	email: string;
 	profileImgUrl: string;
-	shortIntroduction: string;
+	thirdPartyProfileUrl: string;
+	shortIntroduction: Nullable<string>;
 	belongingId: number;
 	belongingName: string;
 	myPage: UserDetailField;
+}
+
+export interface UserDetailField {
+	selfIntroduction: Nullable<UserIntroField>;
+	careers: Nullable<Array<UserCareerField>>;
+	educationActivities: Nullable<Array<UserEducationField>>;
+	techStacks: Nullable<Array<string>>;
+	links: Nullable<Array<UserLinkField>>;
 }
 
 export interface UserIntroField {
@@ -45,12 +54,4 @@ export interface UserEducationField {
 export interface UserLinkField {
 	linkProvider: string;
 	link: string;
-}
-
-export interface UserDetailField {
-	selfIntroduction: UserIntroField;
-	careers: Array<UserCareerField>;
-	educationActivities: Array<UserEducationField>;
-	techStacks: Array<string>;
-	links: Array<UserLinkField>;
 }

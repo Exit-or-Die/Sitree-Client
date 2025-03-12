@@ -84,15 +84,24 @@ const Profile = async ({ params }: ProfilePageProps) => {
 
   return (
     <div className="w-full h-full flex px-48 py-6">
-      <ProfileSidebar />
+      <ProfileSidebar 
+        nickname={profileDetail.nickname}
+        profileImgUrl={profileDetail.profileImgUrl}
+        email={profileDetail.email}
+        thirdPartyProfileUrl={profileDetail.thirdPartyProfileUrl}
+        affiliation={profileDetail.belongingName}
+      />
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">
-        <ProfileIntroSkeleton />
-        <ProfileIntroSection 
-          content={profileDetail.myPage.selfIntroduction}
-          techStacks={profileDetail.myPage.techStacks}
-          links={profileDetail.myPage.links}
-        />
+        {!profileDetail.myPage.selfIntroduction ? (
+          <ProfileIntroSkeleton />
+        ) : (
+          <ProfileIntroSection 
+            content={profileDetail.myPage.selfIntroduction}
+            techStacks={profileDetail.myPage.techStacks ?? []}
+            links={profileDetail.myPage.links ?? []}
+          />
+        )}
         <ProjectPortfolioSection />
         <ProfileCareerSection careers={profileDetail.myPage.careers} />
         <ProfileEducationSection></ProfileEducationSection>
