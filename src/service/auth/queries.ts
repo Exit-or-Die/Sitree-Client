@@ -34,7 +34,7 @@ const AuthQueryOptions = {
   })
 };
 
-const isLoggedIn = async (cookies?: () => ReadonlyRequestCookies): Promise<boolean> => {
+export const isLoggedIn = async (cookies?: () => ReadonlyRequestCookies): Promise<boolean> => {
   const accessToken = await getCookie(COOKIE_KEY.ACCESS_TOKEN, { cookies });
 
   return !!accessToken;
