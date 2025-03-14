@@ -21,7 +21,7 @@ export interface ProjectDetailResponse {
   viewCount: number;
   createdAt: string;
   healthy: boolean;
-  likeCounts: number;
+  likeCount: number;
   isLiked: boolean;
 }
 

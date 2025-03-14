@@ -72,7 +72,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
             <ProjectDetailSideBar
               title={projectDetail.head?.title}
               thumbnailImage={projectDetail.head?.thumbnailImageUrl}
-              likeCounts={projectDetail?.likeCounts}
+              likeCount={projectDetail?.likeCount}
               teamMember={projectDetail?.participantList || []}
               viewCount={projectDetail?.viewCount}
               commentCount={projectComment?.total}

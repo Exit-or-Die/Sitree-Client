@@ -11,8 +11,9 @@ function ReactQueryProvider({ children }: React.PropsWithChildren) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            // 1분 동안 캐시를 유지
-            staleTime: 60 * 1000
+            staleTime: 60 * 1000, // 1분 동안 캐시 유지
+            refetchOnWindowFocus: false, // 포커스 시 재요청 방지
+            refetchOnMount: false // 마운트 시 자동 재요청 방지
           }
         }
       })

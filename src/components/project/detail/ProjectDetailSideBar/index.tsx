@@ -20,7 +20,7 @@ interface ProjectDetailSideBarProps {
   title?: string;
   commentCount?: number;
   thumbnailImage?: string;
-  likeCounts?: number;
+  likeCount?: number;
   teamMember: Array<Participant>;
   viewCount?: number;
 }
@@ -29,7 +29,7 @@ const ProjectDetailSideBar = ({
   title = '',
   commentCount = 0,
   thumbnailImage = '',
-  likeCounts = 0,
+  likeCount = 0,
   teamMember = [],
   viewCount
 }: ProjectDetailSideBarProps) => {
@@ -94,13 +94,13 @@ const ProjectDetailSideBar = ({
             <div className="flex flex-col gap-1">
               <span className="text-large font-lb leading-6 tracking-[-0.4px]">{title}</span>
               <div className="flex gap-1.5 items-center text-xsmall">
-                <div className="flex gap-0.5 leading-4 tracking-[-0.12px]">
+                <div className="flex gap-0.5 leading-4 tracking-[-0.12px] items-center">
                   <SImage src="/chat.svg" alt="project comment count" width={12} height={12} />
                   {commentCount}
                 </div>
-                <div className="flex gap-0.5">
+                <div className="flex gap-0.5 items-center">
                   <SImage src="/like.svg" alt="projet like count" width={12} height={12} />
-                  {likeCounts}
+                  {likeCount}
                 </div>
                 <div className="text-slate-50">조회수 {viewCount}</div>
               </div>
