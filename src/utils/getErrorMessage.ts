@@ -1,9 +1,10 @@
 import { FieldErrors, FieldValues } from 'react-hook-form';
+import { Nullable } from 'types/common';
 
 const getErrorMessage = <T extends FieldValues>(
   errors: FieldErrors<T>,
   errorKey: string
-): string | null => {
+): Nullable<string> => {
   const keys = errorKey.split('.');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

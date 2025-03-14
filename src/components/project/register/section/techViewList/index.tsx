@@ -5,6 +5,7 @@ import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -12,7 +13,7 @@ import SImage from '@/components/common/Image';
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
-  techviewId: number | null;
+  techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: string[];
@@ -33,8 +34,13 @@ const ProjectRegisterTechViewList = () => {
   }, [skills, setValue]);
 
   const updateSkill = (index: number, updatedSkill: TechViewProps) => {
-    setSkills([updatedSkill]);
-    //setSkills((prevSkills) => prevSkills.map((skill, i) => (i === index ? updatedSkill : skill)));
+    setSkills((prevSkills) => {
+      if (prevSkills.length === 0) {
+        return [updatedSkill];
+      }
+
+      return prevSkills.map((skill, i) => (i === index ? updatedSkill : skill));
+    });
   };
 
   const canAddSkill = useCallback(() => {
