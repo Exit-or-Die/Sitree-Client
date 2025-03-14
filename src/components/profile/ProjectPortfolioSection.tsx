@@ -12,10 +12,11 @@ const ProjectPortfolioSection = ({ projects }: Props) => {
   return (
     <div className="bg-white p-[40px] flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lg text-slate-10">프로젝트 {projects.length}</div>
-      <div className="grid grid-cols-2 gap-0 ">
+      <div className="relative flex flex-wrap justify-between">
         {projects.map((project, index) => (
           <ProjectCard
             key={index}
+            className="w-[375px]"
             projectId={project.projectId}
             thumbnail={project.thumbnail}
             name={project.name}
@@ -26,6 +27,9 @@ const ProjectPortfolioSection = ({ projects }: Props) => {
             viewCount={project.viewCount}
             isHealthy={project.isHealthy}
             latestUpdateTime={project.latestUpdateTime}
+            participantId={project.participantId}
+            focusPoint={project.focusPoint}
+            isProfile
           />
         ))}
       </div>
