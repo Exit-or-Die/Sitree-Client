@@ -56,6 +56,7 @@ const ProjectCard = ({
     e.preventDefault();
     setToggleModal(true);
   }
+
   return (
     <>
       <Link href={`/project/${projectId}`} prefetch={false}>

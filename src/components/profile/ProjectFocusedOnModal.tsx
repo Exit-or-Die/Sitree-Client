@@ -16,13 +16,13 @@ type Props = {
 const MAX_FIELDS = 3;
 
 const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, focusPoint }: Props) => {
-  console.log(focusPoint);
-  
+
   const initialFields = focusPoint!.focusPoints!.length > 0
     ? focusPoint!.focusPoints.map((text, index) => ({ id: index + 1, text }))
     : [{ id: 1, text: '' }];
   
   const [fields, setFields] = useState(initialFields);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (focusPoint?.focusPoints) {
@@ -46,6 +46,10 @@ const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, f
     setFields(fields.map((field) => (field.id === id ? { ...field, text: newText } : field)));
   };
 
+  const onClickToggleType = () => {
+    setIsEdit(!isEdit);
+  }
+
   return (
     <div className="p-6 bg-white rounded-large shadow-lg w-full">
       <div className="flex justify-between items-center">
@@ -54,7 +58,7 @@ const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, f
           <span className="ml-2 text-slate-50 font-md text-small">{name}</span>
         </h2>
         <SButton
-          className={`${fields.length < MAX_FIELDS ? 'bg-tree-93 text-green-700' : 'bg-slate-95 text-slate-80'} px-3 py-1 rounded-base text-sm border-0`}
+          className={`${fields.length < MAX_FIELDS ? 'bg-tree-93 text-green-700' : 'bg-slate-95 text-slate-80'} px-3 py-1 rounded-base text-sm border-0 ${!isEdit ? 'hidden' : ''}`}
           onClick={handleAddField}
           disabled={fields.length >= MAX_FIELDS}
         >
@@ -63,7 +67,7 @@ const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, f
         </SButton>
       </div>
 
-      {fields.map((field) => (
+      {isEdit ? fields.map((field) => (
         <div key={field.id} className="mt-4">
           <div className="flex items-start">
             <SImage
@@ -84,18 +88,32 @@ const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, f
           </div>
           <div className="text-right text-slate-60 text-xsmall mt-1 ml-2">{field.text.length}/250</div>
         </div>
-      ))}
+      )) : (
+        <ul className="list-disc mt-4 p-5">
+          {fields.map((field) => 
+            <li className="text-small text-left text-slate-30">{field.text}</li>
+          )}
+        </ul>
+      )}
 
       <div className="flex items-center justify-between mt-4">
-        <div className="text-slate-30 text-[13px] flex items-center">
+        <div className={`text-slate-30 text-[13px] flex items-center ${!isEdit ? 'invisible' : ''}`}>
           <SImage src="/tip.svg" alt="info" width={14} height={14} className="mr-1" />
           작성 방법
         </div>
         <div className="flex gap-2">
-          <SButton onClick={onClickClose} className="bg-slate-95 text-slate-30 rounded-large text-small border-0">취소</SButton>
-          <SButton className="bg-tree-50 text-white-100 rounded-large text-small border-0" disabled>
-            등록
-          </SButton>
+          {isEdit ? 
+            <>
+              <SButton onClick={onClickToggleType} className="bg-slate-95 text-slate-30 rounded-large text-small border-0">취소</SButton>
+              <SButton className="bg-tree-50 text-white-100 rounded-large text-small border-0" disabled>
+                등록
+              </SButton>
+            </> : <>
+              <SButton onClick={onClickClose} className="bg-slate-95 text-slate-30 rounded-large text-small border-0">닫기</SButton>
+              <SButton onClick={onClickToggleType} className="bg-white-100 text-slate-30 rounded-large text-small">
+                수정
+              </SButton>
+            </>}
         </div>
       </div>
     </div>
