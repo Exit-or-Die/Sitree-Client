@@ -40,7 +40,11 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        if (!response.isNewMember && response.accessToken && response.refreshToken) {
+        if (!response.isNewMember) {
+          return ROUTES.ONBOARDING;
+        }
+
+        if (response.accessToken && response.refreshToken) {
           setCookie(COOKIE_KEY.ACCESS_TOKEN, response.accessToken, { cookies });
           setCookie(COOKIE_KEY.REFRESH_TOKEN, response.refreshToken, { cookies });
         }
@@ -51,7 +55,7 @@ const handler = NextAuth({
       } catch (error) {
         console.error('Error checking user:', error);
 
-        return ROUTES.ONBOARDING;
+        return ROUTES.HOME;
       }
     },
     async jwt({ token, user }) {
