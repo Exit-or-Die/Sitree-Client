@@ -11,7 +11,6 @@ const SignInButton = ({ authType, className }: Props) => {
   const currentPath = window.location.pathname;
 
   const handleSignIn = () => {
-    console.log('currentPath', currentPath);
     signIn(authType, { callbackUrl: currentPath });
   };
 
