@@ -4,6 +4,7 @@ import { PROJECT_SCROLL_ID } from '@/constants/scrollId';
 import withModal from '@/enhancers/WithModal';
 import ProjectQueryOptions from '@/service/project/queries';
 import { Participant } from '@/service/project/response';
+import { isBrowser } from '@/utils/misc';
 import { scrollToElement } from '@/utils/scrollElement';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -17,12 +18,12 @@ import SImage from '@/components/common/Image';
 import ProjectDeleteModal from './ProjectDeleteModal';
 
 interface ProjectDetailSideBarProps {
-  title?: string;
-  commentCount?: number;
-  thumbnailImage?: string;
-  likeCount?: number;
+  title: string;
+  commentCount: number;
+  thumbnailImage: string;
+  likeCount: number;
   teamMember: Array<Participant>;
-  viewCount?: number;
+  viewCount: number;
 }
 
 const ProjectDetailSideBar = ({
@@ -35,17 +36,13 @@ const ProjectDetailSideBar = ({
 }: ProjectDetailSideBarProps) => {
   const queryClient = useQueryClient();
   const { data: session } = useSession();
-  const { projectId } = useParams();
+  const { projectId }: { projectId: string } = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const ProjectDeleteWithModal = withModal(ProjectDeleteModal);
   const { queryKey: projectLikeKey, queryFn: projectLikeFn } =
-    ProjectQueryOptions.checkProjectLikeStatus(
-      projectId as string,
-      session?.detail.memberId as number
-    );
+    ProjectQueryOptions.checkProjectLikeStatus(projectId, session?.detail.memberId as number);
   const { queryKey: projectLeaderKey, queryFn: projectLeaderFn } =
-    ProjectQueryOptions.checkProjectLeader(projectId as string);
+    ProjectQueryOptions.checkProjectLeader(projectId);
 
   const { data: teamLeader } = useQuery({ queryKey: projectLeaderKey, queryFn: projectLeaderFn });
 
@@ -53,7 +50,7 @@ const ProjectDetailSideBar = ({
 
   const { mutate: likeProject } = useMutation({
     mutationFn: () => {
-      const { mutateFn } = ProjectQueryOptions.likeProject(projectId as string);
+      const { mutateFn } = ProjectQueryOptions.likeProject(projectId);
 
       return mutateFn();
     },
@@ -72,12 +69,11 @@ const ProjectDetailSideBar = ({
     scrollToElement(id);
   };
 
-  const url = typeof window !== 'undefined' ? window.location.href : '';
+  const url = isBrowser() ? window.location.href : '';
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
     } catch (error) {
       console.error('링크 복사 실패:', error);
     }
@@ -124,7 +120,7 @@ const ProjectDetailSideBar = ({
           <div>
             <SButton
               onClick={() => handleCopyLink()}
-              className={`w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none ${copied ? 'bg-slate-90' : 'hover:bg-slate-95'}`}
+              className="w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none active:bg-slate-90 hover:bg-slate-95"
             >
               <SImage src="/share.svg" width={20} height={20} />
               <p className={`font-bd text-[1rem]`}>링크 복사</p>
@@ -206,8 +202,7 @@ const ProjectDetailSideBar = ({
         </div>
       </div>
       <ProjectDeleteWithModal
-        projectId={projectId as string}
-        handleClose={() => setDeleteModalOpen(false)}
+        projectId={projectId}
         isVisible={deleteModalOpen}
         hideClose={true}
         onClickClose={() => setDeleteModalOpen(false)}

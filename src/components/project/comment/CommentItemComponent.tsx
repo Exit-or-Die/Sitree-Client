@@ -47,7 +47,7 @@ const CommentItemComponent = ({
   teamMember
 }: CommentItemComponentProps) => {
   const queryClient = useQueryClient();
-  const { projectId } = useParams();
+  const { projectId }: { projectId: string } = useParams();
   const { data: session } = useSession();
   const [commentInfo, setCommentInfo] = useState<CommentInfoProps>({
     commentId: null,
@@ -62,7 +62,7 @@ const CommentItemComponent = ({
   const leader = teamMember.find((member) => member.isLeader);
   const isOwner = leader ? leader.memberId === comment.createMember.memberId : false;
 
-  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId);
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: (commentId: number) => CommentsService.deleteComment(commentId),

@@ -8,10 +8,10 @@ import SButton from '@/components/common/Button';
 
 interface ProjectDeleteModalProps {
   projectId: string;
-  handleClose: () => void;
+  onClickClose: () => void;
 }
 
-const ProjectDeleteModal = ({ projectId, handleClose }: ProjectDeleteModalProps) => {
+const ProjectDeleteModal = ({ projectId, onClickClose }: ProjectDeleteModalProps) => {
   const { mutate: deleteProject } = useMutation({
     mutationFn: () => {
       const { mutateFn } = ProjectQueryOptions.deleteProject(projectId);
@@ -19,7 +19,7 @@ const ProjectDeleteModal = ({ projectId, handleClose }: ProjectDeleteModalProps)
       return mutateFn();
     },
     onSuccess: () => {
-      handleClose();
+      onClickClose();
       redirect('/');
     }
   });
@@ -32,7 +32,7 @@ const ProjectDeleteModal = ({ projectId, handleClose }: ProjectDeleteModalProps)
         <p>프로젝트를 함께한 팀원과 논의 후 결정해 주세요.</p>
       </div>
       <div className="pt-4 flex justify-end gap-2">
-        <SButton className="border-none bg-slate-95" onClick={handleClose}>
+        <SButton className="border-none bg-slate-95" onClick={onClickClose}>
           아니요
         </SButton>
         <SButton onClick={deleteProject} className="border-none bg-red-50 text-white-100">
