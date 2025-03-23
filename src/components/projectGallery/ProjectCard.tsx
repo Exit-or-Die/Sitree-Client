@@ -7,7 +7,6 @@ import Link from 'next/link';
 import HealthCheckState from '../common/HealthState';
 import SImage from '../common/Image';
 import { FocusPoint } from '@/service/profile/response';
-import SButton from '../common/Button';
 import WithModal from '@/enhancers/WithModal';
 import ProjectFocusedOnModal from '../profile/ProjectFocusedOnModal';
 

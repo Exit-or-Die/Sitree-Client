@@ -6,10 +6,9 @@ import { isEmpty } from '@/utils/array';
 import ProfileCareerSection from '@/components/profile/ProfileCareerSection';
 import ProfileEducationSection from '@/components/profile/ProfileEducationSection';
 import ProfileIntroSection from '@/components/profile/ProfileIntroSection';
-import ProfileIntroSkeleton from '@/components/profile/ProfileIntroSkeleton';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
 import ProjectPortfolioSection from '@/components/profile/ProjectPortfolioSection';
-import ProjectPortfolioSkeleton from '@/components/profile/ProjectPortfolioSkeleton';
+import ProjectSectionSkeleton from '@/components/profile/ProjectSectionSkeleton';
 
 interface ProfilePageProps {
   params: {
@@ -41,7 +40,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">
         {!profileDetail.myPage.selfIntroduction ? (
-          <ProfileIntroSkeleton />
+          <ProjectSectionSkeleton type="profile" />
         ) : (
           <ProfileIntroSection
             content={profileDetail.myPage.selfIntroduction}
@@ -50,7 +49,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
           />
         )}
         {isEmpty(projects) ? (
-          <ProjectPortfolioSkeleton />
+          <ProjectSectionSkeleton type="project" />
         ) : (
           <ProjectPortfolioSection projects={projects} />
         )}
