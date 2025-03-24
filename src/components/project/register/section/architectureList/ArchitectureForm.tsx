@@ -70,7 +70,7 @@ const ArchitectureForm = ({
                 <FileUploadButton
                   text="이미지 변경"
                   className="bg-white-100"
-                  iconName="/fileUpload.svg"
+                  iconName="/select.svg"
                   onUpload={handleImageUpload}
                 />
               </div>
@@ -86,7 +86,7 @@ const ArchitectureForm = ({
               </div>
               <FileUploadButton
                 text="파일 선택"
-                iconName="/fileUpload.svg"
+                iconName="/select.svg"
                 onUpload={handleImageUpload}
               />
             </div>

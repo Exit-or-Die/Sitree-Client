@@ -43,7 +43,7 @@ const ProjectIconUpload = () => {
             </p>
             <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
           </div>
-          <FileUploadButton text="파일 선택" iconName="/fileUpload.svg" onUpload={handleUpload} />
+          <FileUploadButton text="파일 선택" iconName="/select.svg" onUpload={handleUpload} />
         </div>
       </div>
       {iconUrl && !getValues('head.thumbnailImageUrl') && (
