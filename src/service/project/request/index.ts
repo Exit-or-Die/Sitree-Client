@@ -1,3 +1,5 @@
+import { Nullable } from 'types/common';
+
 export interface ProjectRegisterRequest {
   head: Head;
   tagList: Array<Tag>;
@@ -38,6 +40,7 @@ export interface ClientUrl {
 }
 
 export interface TechView {
+  techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
   techTagList: Array<string>;

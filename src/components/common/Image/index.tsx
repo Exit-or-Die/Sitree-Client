@@ -2,7 +2,7 @@
 
 import { DEFAULT_IMG_SRC } from '@/constants/image';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 type DefaultImgType = 'user' | 'affiliation' | 'default';
 
@@ -14,6 +14,7 @@ interface ImageProps {
   className?: string;
   defaultType?: DefaultImgType;
   onClick?: () => void;
+  onDefaultImageLoad?: (isDefault: boolean) => void; // 부모에게 Default 이미지 여부 전달
 }
 
 /**
@@ -28,13 +29,25 @@ const SImage = (props: ImageProps) => {
     height,
     onClick = () => {},
     className,
-    defaultType = 'default'
+    defaultType = 'default',
+    onDefaultImageLoad
   } = props;
   const [imgSrc, setImgSrc] = useState(src);
 
+  const isDefaultImage = useMemo(
+    () => imgSrc === DEFAULT_IMG_SRC[defaultType],
+    [imgSrc, defaultType]
+  );
+
+  useEffect(() => {
+    if (onDefaultImageLoad) {
+      onDefaultImageLoad(isDefaultImage);
+    }
+  }, [isDefaultImage, onDefaultImageLoad]);
+
   return (
     <Image
-      className={className}
+      className={`${className}`}
       src={imgSrc}
       alt={alt}
       fill={!width && !height}
@@ -43,7 +56,7 @@ const SImage = (props: ImageProps) => {
       height={height}
       onClick={onClick}
       onError={() => {
-        setImgSrc(DEFAULT_IMG_SRC[defaultType]);
+        setImgSrc(DEFAULT_IMG_SRC[defaultType]); // Default 이미지로 변경
       }}
     />
   );

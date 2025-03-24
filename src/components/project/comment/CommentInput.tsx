@@ -19,15 +19,14 @@ interface CommentInputProps {
 }
 
 const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputProps) => {
-  const { projectId } = useParams();
+  const { projectId }: { projectId: string } = useParams();
   const [commentText, setCommentText] = useState('');
 
   const queryClient = useQueryClient();
-  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId);
 
   const { mutate: registerComment } = useMutation({
-    mutationFn: (params: CreateCommentRequest) =>
-      CommentsService.createComment(projectId as string, params),
+    mutationFn: (params: CreateCommentRequest) => CommentsService.createComment(projectId, params),
     onSuccess: () => {
       // retrieveCommentList 쿼리를 무효화하고 즉시 다시 호출
       queryClient.invalidateQueries({

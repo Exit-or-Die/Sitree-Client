@@ -21,7 +21,7 @@ export interface ProjectDetailResponse {
   viewCount: number;
   createdAt: string;
   healthy: boolean;
-  likeCounts: number;
+  likeCount: number;
   isLiked: boolean;
 }
 
@@ -56,6 +56,7 @@ export interface ClientUrl {
 }
 
 export interface TechView {
+  techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
   techStackTypes: Array<string>;
@@ -104,4 +105,11 @@ export interface Project {
   viewCount: number;
   latestUpdateTime: Date;
   isHealthy: boolean;
+}
+
+export interface ProjectLeader {
+  memberId: number;
+  imageUrl: string;
+  nickname: string;
+  position: string;
 }

@@ -2,6 +2,7 @@ import Service from '../service';
 import { ProjectParamsRequest, ProjectRegisterRequest } from './request';
 import {
   ProjectDetailResponse,
+  ProjectLeader,
   ProjectRegisterResponse,
   ProjectsResponse,
   SitreePickResponse
@@ -14,7 +15,9 @@ class ProjectService extends Service {
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
   }
-
+  deleteProject(projectId: string) {
+    return this.http.delete(`projects/${projectId}`, { includeAuth: true });
+  }
   likeProject(projectId: string) {
     return this.http.post(`projects/${projectId}/likes`, {}, { includeAuth: true });
   }
@@ -38,12 +41,15 @@ class ProjectService extends Service {
   }
   checkProjectLikeStatus(projectId: string, memberId: number) {
     if (!projectId || !memberId) {
-      return { isLiked: false };
+      return Promise.resolve({ isLiked: false });
     }
 
     return this.http.get<{ isLiked: boolean }>(
       `projects/${projectId}/likes/check?memberId=${memberId}`
     );
+  }
+  checkProjectLeader(projectId: string) {
+    return this.http.get<ProjectLeader>(`projects/${projectId}/leader`);
   }
 }
 
