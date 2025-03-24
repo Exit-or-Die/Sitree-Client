@@ -40,7 +40,7 @@ const handler = NextAuth({
       try {
         const response = await AuthService.signIn(body);
 
-        if (!response.isNewMember) {
+        if (response.isNewMember) {
           return ROUTES.ONBOARDING;
         }
 
