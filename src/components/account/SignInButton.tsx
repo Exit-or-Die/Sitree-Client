@@ -8,8 +8,10 @@ type Props = {
 };
 
 const SignInButton = ({ authType, className }: Props) => {
+  const currentPath = window.location.pathname;
+
   const handleSignIn = () => {
-    signIn(authType, { callbackUrl: '/onboarding' });
+    signIn(authType, { callbackUrl: currentPath });
   };
 
   return (

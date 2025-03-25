@@ -1,21 +1,18 @@
 'use client';
 
-import WithModal from '@/enhancers/WithModal';
 import AuthQueryOptions from '@/service/auth/queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
-
-import SignInModal from '@/components/account/SignInModal';
+import React from 'react';
 
 import SButton from '../common/Button';
 import SImage from '../common/Image';
 import SInput from '../common/Input';
+import { useAuthContext } from '../providers/AuthProvider';
 
 export const Header = () => {
-  const SignWithModal = WithModal(SignInModal);
-  const [toggleLogin, setToggleLogin] = useState(false);
+  const { setToggleLogin } = useAuthContext();
   const { data: session } = useSession();
   const nickname = session && session.detail && session.detail.nickname;
   const name = session && session.user && session.user.name;
@@ -23,13 +20,8 @@ export const Header = () => {
   const queryClient = useQueryClient();
   const isLoggedIn = queryClient.getQueryData(queryKey);
 
-  const onClickCloseModal = () => {
-    setToggleLogin(false);
-  };
-
   return (
     <header className="flex items-center justify-between bg-white px-48 py-4 max-h-[56px] bg-white-100">
-      <SignWithModal isVisible={toggleLogin} onClickClose={onClickCloseModal} />
       <div className="flex items-center space-x-8">
         <Link href="/" className="flex items-center space-x-2">
           <SImage src="/icon.svg" width={30} height={30} alt="Sitree Logo" />
