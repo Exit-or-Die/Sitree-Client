@@ -14,7 +14,7 @@ type ServiceLink = { key: keyof ClientUrl; value: string };
 const CLIENT_URL_KEYS: (keyof ClientUrl)[] = ['WEB', 'IOS', 'WINDOWS', 'AOS', 'MAC_OS'];
 
 const DEFAULT_SERVICE_LINKS: ServiceLink[] = [
-  { key: 'WEB', value: ' ' },
+  { key: 'WEB', value: '' },
   { key: 'IOS', value: '' },
   { key: 'WINDOWS', value: '' },
   { key: 'AOS', value: '' },
@@ -79,6 +79,16 @@ const ProjectHeadServiceLink = () => {
     }
   };
 
+  // 실제 화면에 표시할 링크들을 계산하는 함수
+  const getLinksToRender = () => {
+    const filteredLinks = serviceLinks.filter(({ value }) => value.length > 0);
+    if (filteredLinks.length === 0) {
+      return [{ key: 'WEB' as keyof ClientUrl, value: '' }];
+    }
+
+    return filteredLinks;
+  };
+
   useEffect(() => {
     const newClientUrl: ClientUrl = serviceLinks.reduce(
       (acc, { key, value }) => ({ ...acc, [key]: value }),
@@ -93,33 +103,31 @@ const ProjectHeadServiceLink = () => {
     <div className="p-10 flex flex-col gap-5 border-b border-1 border-slate-90">
       <p className="text-large font-lb">서비스 링크</p>
       <div className="flex flex-col gap-2">
-        {serviceLinks
-          .filter(({ value }) => value.length > 0)
-          .map(({ key, value }, index) => (
-            <div key={key} className="flex gap-1.5">
-              <SSelect
-                value={{ key }}
-                onChange={(newOption) => handleKeyChange(key, newOption.key as keyof ClientUrl)}
-                options={[{ key }, ...availableKeys.map((availableKey) => ({ key: availableKey }))]}
-                displayKey="key"
-                selectClass="w-[15.6rem]"
-              />
-              <SInput
-                className="!w-[43.4rem] text-small font-md leading-5 tracking-[-0.14px]"
-                placeholder="링크를 입력해주세요"
-                value={value.trim()}
-                onChange={(e) => updateServiceLinks(key, e.target.value)}
-              />
-              {index !== 0 && (
-                <span
-                  className="flex items-center p-1 cursor-pointer"
-                  onClick={() => deleteServiceLink(key)}
-                >
-                  <SImage src="/trash.svg" width={20} height={20} />
-                </span>
-              )}
-            </div>
-          ))}
+        {getLinksToRender().map(({ key, value }) => (
+          <div key={key} className="flex gap-1.5">
+            <SSelect
+              value={{ key }}
+              onChange={(newOption) => handleKeyChange(key, newOption.key as keyof ClientUrl)}
+              options={[{ key }, ...availableKeys.map((availableKey) => ({ key: availableKey }))]}
+              displayKey="key"
+              selectClass="w-[15.6rem]"
+            />
+            <SInput
+              className="!w-[43.4rem] text-small font-md leading-5 tracking-[-0.14px]"
+              placeholder="링크를 입력해주세요"
+              value={value.trim()}
+              onChange={(e) => updateServiceLinks(key, e.target.value)}
+            />
+            {getLinksToRender().length > 1 && (
+              <span
+                className="flex items-center p-1 cursor-pointer"
+                onClick={() => deleteServiceLink(key)}
+              >
+                <SImage src="/trash.svg" width={20} height={20} />
+              </span>
+            )}
+          </div>
+        ))}
       </div>
       {!!availableKeys.length && (
         <SButton

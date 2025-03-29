@@ -34,7 +34,7 @@ export const DEFAULT_DETAIL_DATA: Partial<ProjectDetailResponse> = {
   categories: [],
   overview: {
     images: [],
-    clientUrl: { WEB: ' ', IOS: '', WINDOWS: '', AOS: '', MAC_OS: '' },
+    clientUrl: { WEB: '', IOS: '', WINDOWS: '', AOS: '', MAC_OS: '' },
     detailDescription: ''
   },
   techviewList: [],

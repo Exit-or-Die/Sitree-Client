@@ -1,7 +1,7 @@
 'use client';
 
 import { Architecture } from '@/service/project/response';
-import React from 'react';
+import React, { useState } from 'react';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SImage from '@/components/common/Image';
@@ -22,6 +22,8 @@ const ArchitectureForm = ({
   imageUrl,
   updateArchitecture
 }: ArchitectureFormProps) => {
+  const [resetCount, setResetCount] = useState(0);
+
   const handleEditorChange = (value: string) => {
     updateArchitecture({ architectureDesc: value });
   };
@@ -34,6 +36,7 @@ const ArchitectureForm = ({
 
   const resetArchitecture = () => {
     const resetContent = getInitialArchitecture(label);
+    setResetCount((prev) => prev + 1);
     updateArchitecture(resetContent);
   };
 
@@ -48,7 +51,7 @@ const ArchitectureForm = ({
             onChange={handleEditorChange}
             initialValue={description}
             placeholder="개발 아키텍쳐를 설명해 주세요"
-            key={label}
+            key={`${label}_${resetCount}`}
           />
         </div>
         <div>
@@ -93,10 +96,10 @@ const ArchitectureForm = ({
           )}
         </div>
         <div className="ml-auto grow px-3 py-2">
-          <button className="flex gap-1 items-center" onClick={resetArchitecture}>
+          <div className="flex gap-1 items-center cursor-pointer" onClick={resetArchitecture}>
             <SImage src="/refresh.svg" width={16} height={16} alt="refresh" />
             <p className="text-red-50 text-small">초기화</p>
-          </button>
+          </div>
         </div>
       </div>
     </div>
