@@ -1,3 +1,4 @@
+import { DEFAULT_TECH_VIEW } from '@/constants/project/techView';
 import ProjectQueryOptions from '@/service/project/queries';
 import { TechView } from '@/service/project/response';
 import { useQuery } from '@tanstack/react-query';
@@ -8,14 +9,6 @@ import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
-const DEFAULT_TECH_VIEW: TechView = {
-  techviewId: null,
-  techTitle: '',
-  gitRepositoryUrl: '',
-  techDesc: '',
-  techStackTypes: []
-};
-
 const TechViewForm: React.FC<{
   skill: TechView;
   index: number;
@@ -24,7 +17,7 @@ const TechViewForm: React.FC<{
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectTechStacks();
   const { data } = useQuery({ queryKey, queryFn });
   // skill의 속성을 기본값으로 보장
-  const normalizedSkill: TechView = { ...DEFAULT_TECH_VIEW, ...skill };
+  const normalizedSkill: TechView = { ...skill };
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     updateSkill(index, { ...normalizedSkill, [name]: value });

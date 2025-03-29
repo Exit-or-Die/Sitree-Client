@@ -15,6 +15,6 @@ export interface SignUpData {
 
 export interface SearchUserRequest {
   q: string;
-  page?: number;
+  pageNo?: number;
   size?: number;
 }

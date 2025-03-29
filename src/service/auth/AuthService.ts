@@ -16,10 +16,10 @@ class AuthService extends Service {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
   }
 
-  searchUsers({ q, page = 0, size = 10 }: SearchUserRequest) {
+  searchUsers({ q, pageNo = 0, size = 10 }: SearchUserRequest) {
     const params = new URLSearchParams({
       q,
-      page: page.toString(),
+      pageNo: pageNo.toString(),
       size: size.toString()
     }).toString();
 

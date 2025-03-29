@@ -80,6 +80,8 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   });
 
   const handleSubmitClick = () => {
+    console.log('Current Form Values:', formMethods.getValues());
+
     formMethods.handleSubmit(
       (formValues) => {
         projectId

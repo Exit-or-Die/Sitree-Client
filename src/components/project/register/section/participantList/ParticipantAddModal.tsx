@@ -1,7 +1,7 @@
 import useClickOutside from '@/hooks/useClickOutside';
 import AuthService from '@/service/auth/AuthService';
 import { UserResult } from '@/service/auth/response';
-import { ParticipantResponse } from '@/service/project/response';
+import { Participant } from '@/service/project/response';
 import { useEffect, useRef, useState } from 'react';
 
 import SButton from '@/components/common/Button';
@@ -12,14 +12,14 @@ const PAGE_SIZE = 10;
 const DEBOUNCE_DELAY = 500;
 
 interface ParticipantAddModalProps {
-  teamMembers: Array<ParticipantResponse>;
-  onClose: () => void;
+  teamMembers: Array<Participant>;
+  onClickClose: () => void;
   register: (members: Array<UserResult>) => void;
 }
 
 const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
   teamMembers,
-  onClose,
+  onClickClose,
   register
 }) => {
   const [inputQuery, setInputQuery] = useState('');
@@ -31,11 +31,11 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
   const pageRef = useRef(0);
   const searchResultRef = useClickOutside(() => setSearchResults([]));
 
-  const searchUsers = async (query: string, page: number) => {
+  const searchUsers = async (query: string, pageNo: number) => {
     if (!query) return;
     setLoading(true);
     try {
-      const data = await AuthService.searchUsers({ q: query, page, size: PAGE_SIZE });
+      const data = await AuthService.searchUsers({ q: query, pageNo, size: PAGE_SIZE });
 
       const selectedMemberIds = new Set([
         ...selectedMember.map((member) => member.memberId),
@@ -45,7 +45,7 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
         (result) => !selectedMemberIds.has(result.memberId)
       );
 
-      setSearchResults((prev) => (page === 0 ? filteredResults : [...prev, ...filteredResults]));
+      setSearchResults((prev) => (pageNo === 0 ? filteredResults : [...prev, ...filteredResults]));
       setSearchTotalCount(data.total);
       setHasNextResult(data.hasNext);
     } catch (error) {
@@ -170,7 +170,7 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
         )}
       </div>
       <div className="flex gap-2 ml-auto">
-        <SButton className="bg-slate-95" onClick={onClose}>
+        <SButton className="bg-slate-95" onClick={onClickClose}>
           닫기
         </SButton>
         <SButton className="bg-tree-50 text-white-100" onClick={handleRegister}>

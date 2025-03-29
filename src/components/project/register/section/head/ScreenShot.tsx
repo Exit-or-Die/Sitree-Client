@@ -25,6 +25,11 @@ const ProjectHeadScreenshot = () => {
     setScreenShotList((prev) => [...prev, imageObject]);
   };
 
+  const handleScreenshotRemove = (indexToRemove: number) => {
+    console.log('remove', indexToRemove);
+    setScreenShotList((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
   useEffect(() => {
     setValue('overview.images', screenShotList);
   }, [screenShotList, setValue]);
@@ -46,7 +51,7 @@ const ProjectHeadScreenshot = () => {
             <FileUploadButton
               className="border h-[36px]"
               text="파일 선택"
-              iconName="/fileUpload.svg"
+              iconName="/select.svg"
               onUpload={handleScreenshotUpload}
             />
           )}
@@ -55,11 +60,12 @@ const ProjectHeadScreenshot = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {screenShotList.map((screenShot, index) => (
           <ProjectScreenshotItem
-            key={`screenshot-${index}`}
+            key={screenShot.imageUrl + index}
             src={screenShot.imageUrl}
             alt={`Screenshot ${index + 1}`}
             className="w-full h-auto"
             isRepresentative={!index}
+            onRemove={() => handleScreenshotRemove(index)}
           />
         ))}
         {Array.from({ length: TOTAL_SCREENSHOT_ITEMS - screenShotList.length }, (_, index) => (

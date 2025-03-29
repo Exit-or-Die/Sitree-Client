@@ -92,16 +92,18 @@ const ProjectRegisterTechViewList = () => {
         <div className="flex items-center space-x-4">
           <div className="flex gap-1">
             {skills.map((_, index) => (
-              <button
+              //TODO: class 수정 필요
+              <SButton
                 type="button" // 기본 제출 동작 방지
                 key={index}
                 onClick={() => goToSkill(index)}
-                className={`w-[2.8rem] h-[2.8rem] rounded-base leading-5 text-small ${
+                size="none"
+                className={`w-[2.8rem] h-[2.8rem] rounded-base leading-5 text-small justify-center ${
                   currentIndex === index ? 'bg-tree-50 text-white-100' : 'bg-slate-98 text-slate-50'
                 }`}
               >
                 {index + 1}
-              </button>
+              </SButton>
             ))}
           </div>
           <SButton
