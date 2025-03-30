@@ -4,12 +4,13 @@ import withModal from '@/enhancers/WithModal';
 import { UserResult } from '@/service/auth/response';
 import ProjectQueryOptions from '@/service/project/queries';
 import { ProjectRegisterRequest } from '@/service/project/request';
-import { ParticipantResponse } from '@/service/project/response';
+import { Participant } from '@/service/project/response';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Nullable } from 'types';
 
 import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
@@ -25,7 +26,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
   const { projectId } = useParams();
   const { data: session, status } = useSession(); // status 추가
   const { setValue } = useFormContext<ProjectRegisterRequest>();
-  const [teamMembers, setTeamMembers] = useState<ParticipantResponse[]>([]);
+  const [teamMembers, setTeamMembers] = useState<Participant[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getDefaultQuery = () => ({
@@ -37,7 +38,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
           memberId: Number(session?.detail.memberId) || 0,
           nickname: String(session?.detail.nickname) || 'Unknown',
           isLeader: true,
-          focusPoint: '',
+          focusPoint: [] as Nullable<Array<string>>,
           imageUrl: String(session?.detail.profileImgUrl) || '',
           position: ''
         }
@@ -58,12 +59,12 @@ const ProjectRegisterParticipantList: React.FC = () => {
   const AddWithModal = withModal(ParticipantAddModal);
 
   const addTeamMember = (members: Array<UserResult>) => {
-    const newMemberArray: Array<ParticipantResponse> = members.map((member) => ({
+    const newMemberArray: Array<Participant> = members.map((member) => ({
       memberId: member.memberId,
       nickname: member.nickname,
       imageUrl: member.profileImgUrl,
       position: '',
-      focusPoint: '',
+      focusPoint: [],
       isLeader: false
     }));
     const updatedTeamMembers = [...teamMembers, ...newMemberArray];
@@ -98,11 +99,10 @@ const ProjectRegisterParticipantList: React.FC = () => {
         <AddWithModal
           isVisible={isModalOpen}
           hideClose
-          onClickClose={() => {}}
-          teamMembers={teamMembers}
-          onClose={() => {
+          onClickClose={() => {
             setIsModalOpen(false);
           }}
+          teamMembers={teamMembers}
           register={addTeamMember}
         />
       )}
@@ -125,7 +125,6 @@ const ProjectRegisterParticipantList: React.FC = () => {
               image={member.imageUrl}
               name={member.nickname}
               isOwner={member.isLeader}
-              description={member.position}
             />
             <SInput
               className="mt-2 text-center text-small"

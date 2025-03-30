@@ -27,12 +27,16 @@ const ProjectHeadBaseInfo = () => {
     {
       title: '프로젝트 이름',
       component: (
-        <SInput
-          register={register}
-          name="head.title"
-          placeholder="프로젝트 이름을 입력해주세요"
-          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
-        />
+        <div>
+          <SInput
+            register={register}
+            name="head.title"
+            placeholder="프로젝트 이름을 입력해주세요"
+            useLimit={true}
+            limitLength={24}
+            className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+          />
+        </div>
       ),
       required: true,
       errorKey: 'head.title'
@@ -56,6 +60,8 @@ const ProjectHeadBaseInfo = () => {
         <SInput
           register={register}
           name="head.shortDescription"
+          useLimit={true}
+          limitLength={80}
           placeholder="한 줄 소개를 작성해주세요"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />

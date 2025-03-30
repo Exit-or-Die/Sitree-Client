@@ -1,23 +1,17 @@
 'use client';
 
 import { ProjectRegisterRequest } from '@/service/project/request';
+import { isFilled } from '@/utils/misc';
 import { extractContentFromHtml } from '@/utils/stringUtil';
 import { useState, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import SImage from '@/components/common/Image';
 
-const calculateCompletionRate = (fields: unknown[]) => {
+const calculateCompletionRate = (fields: (string | boolean)[]) => {
   const filledFields = fields.filter(Boolean).length;
 
   return fields.length > 0 ? filledFields / fields.length : 0;
-};
-
-const isFilled = (value: unknown) => {
-  if (Array.isArray(value)) return value.length > 0;
-  if (typeof value === 'string') return value.length > 0;
-
-  return !!value;
 };
 
 const ProjectUploadProgress = () => {
@@ -28,10 +22,10 @@ const ProjectUploadProgress = () => {
 
   const basicInfo = useMemo(() => {
     const fields = [
-      head?.title,
-      head?.healthCheckUrl,
-      head?.shortDescription,
-      head?.thumbnailImageUrl,
+      head.title,
+      head.healthCheckUrl,
+      head.shortDescription,
+      head.thumbnailImageUrl,
       isFilled(categories)
     ];
 

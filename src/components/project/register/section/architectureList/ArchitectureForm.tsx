@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SImage from '@/components/common/Image';
-import FileUploadButton from '@/components/custom/FileUploadButton';
+import { ImageUploadSection } from '@/components/custom/ImageUploadSection';
 
 import { getInitialArchitecture } from '.';
 
@@ -63,33 +63,20 @@ const ArchitectureForm = ({
               <div className="relative w-[42.2rem] h-[18.4rem]">
                 <SImage key={imageUrl} src={imageUrl} defaultType="default" alt="아키텍쳐 이미지" />
               </div>
-              <div className="flex-1 flex flex-col justify-center items-center gap-2 px-5">
-                <div className="flex flex-col justify-center items-center">
-                  <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">
-                    png 또는 jpg를 첨부해 주세요
-                  </p>
-                  <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
-                </div>
-                <FileUploadButton
-                  text="이미지 변경"
-                  className="bg-white-100"
-                  iconName="/select.svg"
-                  onUpload={handleImageUpload}
-                />
-              </div>
+              <ImageUploadSection
+                limitSize={20}
+                recommendedSize={['1080', '1080']}
+                buttonText="이미지 변경"
+                onUpload={handleImageUpload}
+              />
             </div>
           ) : (
             <div className="bg-slate-98 rounded-large py-5 flex flex-col items-center gap-2">
               <SImage src="/EmptyImage.svg" width={48} height={48} alt="project icon" />
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-[1.5rem] pb-[0.6rem] tracking-[-0.15px] text-slate-30">
-                  png 또는 jpg를 첨부해 주세요
-                </p>
-                <p className="text-[1.2rem] text-slate-60">최대 20mb, 권장 사이즈 80*80</p>
-              </div>
-              <FileUploadButton
-                text="파일 선택"
-                iconName="/select.svg"
+              <ImageUploadSection
+                limitSize={20}
+                recommendedSize={['1080', '1080']}
+                buttonText="파일 선택"
                 onUpload={handleImageUpload}
               />
             </div>

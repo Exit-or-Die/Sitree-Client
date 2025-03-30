@@ -15,6 +15,8 @@ interface InputProps<T extends FieldValues> {
   name?: string;
   accept?: string;
   iconName?: string; // 아이콘 이름을 받는 props 추가
+  useLimit?: boolean; // 글자 수 제한을 사용할지 여부
+  limitLength?: number; // 글자 수 제한 길이
   onEnterPress?: (contents: string) => void; // 엔터 키 눌렀을 때 실행할 함수 추가
   onIconClick?: (contents: string) => void; // 아이콘 클릭 시 실행할 함수 추가
 }
@@ -32,6 +34,8 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       type = 'text',
       accept,
       iconName,
+      useLimit = false,
+      limitLength,
       onEnterPress,
       onIconClick
     },
@@ -43,9 +47,12 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       ...restRegister
     } = register && name ? register(name) : { ref: undefined, onChange: undefined };
 
-    const [text, setText] = useState<string>('');
+    const [text, setText] = useState<string>(value || '');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (useLimit && limitLength && e.target.value.length > limitLength) {
+        return;
+      }
       [registerOnChange, onChange].forEach((fn) => {
         if (fn) {
           fn(e);
@@ -69,18 +76,23 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
     };
 
     return (
-      <div className={`relative`}>
+      <div className="relative w-full">
         <input
           type={type}
           ref={registerRef || ref}
           className={`w-full p-3 border border-slate-300 rounded-base bg-white focus:outline-none focus:ring-2 focus:ring-tree-50 ${className}`}
           placeholder={placeholder}
-          value={value}
+          value={text}
           onChange={handleChange}
           onKeyDown={handleKeyDown} // 엔터 키 이벤트 추가
           accept={accept}
           {...restRegister}
         />
+        {useLimit && limitLength && (
+          <span className="absolute right-1 -bottom-5 text-slate-60 text-xsmall">
+            {text.length}/{limitLength}
+          </span>
+        )}
         {iconName && (
           <SImage
             src={`/${iconName}.svg`} // 아이콘 파일 경로 예시

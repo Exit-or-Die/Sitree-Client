@@ -4,13 +4,11 @@ import { ProjectRegisterRequest } from '@/service/project/request';
 import { Architecture } from '@/service/project/response';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { TabType } from 'types';
+
+import STab from '@/components/common/Tab';
 
 import ArchitectureForm from './ArchitectureForm';
-
-interface TabType {
-  id: number;
-  label: string;
-}
 
 const tabs: Array<TabType> = [
   { id: 1, label: '프론트엔드' },
@@ -47,8 +45,9 @@ const ArchitectureComponent = () => {
     });
   };
 
-  const handleTabClick = (tab: TabType, event: React.MouseEvent) => {
-    event.preventDefault(); // 페이지 리로드 방지
+  const handleTabClick = (item: string, index: number) => {
+    const tab = tabs[index];
+
     setActiveTab(tab);
   };
 
@@ -87,21 +86,14 @@ const ArchitectureComponent = () => {
       <div className="bg-white-100 rounded-t-2xlarge px-10 pt-10 pb-5">
         <p className="text-xlarge font-lb tracking-[-0.48px]">개발 아키텍쳐</p>
       </div>
-      <ul className="bg-white-100 flex gap-3 pt-4 px-10 border-b-[1px]">
-        {tabs.map((tab) => (
-          <li
-            key={tab.id}
-            onClick={(e) => handleTabClick(tab, e)}
-            className={`px-0.5 cursor-pointer hover:text-tree-50 text-small pb-3 tracking-[-0.14px] leading-5 text-slate-50 ${
-              activeTab.id === tab.id
-                ? 'font-bd text-tree-40 border-b-[1.6px] border-b-tree-50'
-                : ''
-            }`}
-          >
-            {tab.label}
-          </li>
-        ))}
-      </ul>
+      <div className="bg-white-100 text-small">
+        <STab
+          items={tabs.map((tab) => tab.label)}
+          activeItem={activeTab.label}
+          onChange={handleTabClick}
+          innerClassName="px-10"
+        />
+      </div>
       <ArchitectureForm
         label={tabContents.architectureType}
         description={tabContents.architectureDesc}
