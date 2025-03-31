@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Nullable } from 'types/common';
 
 import SImage from '../common/Image';
+import SvgIcon from '../common/SVGIcon';
 
 const SitreePick = () => {
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveSitreePick();
@@ -75,22 +76,22 @@ const SitreePick = () => {
                   <span className="text-base font-bd truncate">{project.name}</span>
                   <span className="text-xsmall text-gray-400 flex gap-2">
                     <div className="flex items-center">
-                      <SImage
-                        src="/comment.svg"
+                      <SvgIcon
+                        icon="comment"
+                        color="#778195"
+                        className="mr-[3px]"
                         width={12}
                         height={12}
-                        alt="comment"
-                        className="mr-[3px]"
                       />{' '}
                       <span className="text-slate-30">{project.commentCount}</span>
                     </div>
                     <div className="flex items-center">
-                      <SImage
-                        src="/like.svg"
+                      <SvgIcon
+                        icon="like"
+                        color="#778195"
+                        className="mr-[3px]"
                         width={12}
                         height={12}
-                        alt="like"
-                        className="mr-[3px]"
                       />
                       <span className="text-slate-30">{project.likesCount}</span>
                     </div>

@@ -1,7 +1,8 @@
 import { isBrowser } from '@/utils/misc';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+
+import SvgIcon from '@/components/common/SVGIcon';
 
 type Props = {
   isVisible: boolean;
@@ -46,7 +47,7 @@ const withModal =
               }`}
               onClick={onClickClose}
             >
-              <Image src="/close.svg" width={24} height={24} alt="close button" />
+              <SvgIcon icon="close" width={24} height={24} />
             </div>
             <Element {...props} />
           </div>
