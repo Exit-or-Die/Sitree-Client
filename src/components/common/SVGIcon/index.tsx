@@ -26,12 +26,7 @@ type Props = {
 } & React.SVGProps<SVGSVGElement>;
 
 const SvgIcon: React.FC<Props> = ({ icon, className, width, height, color, onClick, ...props }) => {
-  const [viewBox] = React.useMemo(() => {
-    const w = VIEWBOX_MAP[icon].width;
-    const h = VIEWBOX_MAP[icon].height;
-
-    return [`0 0 ${w} ${h}`];
-  }, [icon]);
+  const viewBox = `0 0 ${VIEWBOX_MAP[icon].width} ${VIEWBOX_MAP[icon].height}`;
 
   return (
     <svg
