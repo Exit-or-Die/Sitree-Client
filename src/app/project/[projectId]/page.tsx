@@ -6,6 +6,7 @@ import { IMAGE_TYPE, ProjectDetailResponse } from '@/service/project/response';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 import SwiperComponent from '@/components/common/Swiper';
 import RouterPush from '@/components/custom/RouterPush';
 import CommentComponent from '@/components/project/comment';
@@ -54,7 +55,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
       <Hydrate state={{ queries: [projectDetailQuery, projectCommentQuery] }}>
         <div className="w-[128rem]">
           <RouterPush className="px-2 py-1.5 flex items-center gap-1 cursor-pointer" path="/">
-            <SImage src="/leftArrow.svg" width={14} height={14} />
+            <SvgIcon icon="arrowLeft" color="#414752" width={14} height={14} />
             <p className="text-small text-slate-30">프로젝트 목록</p>
           </RouterPush>
           <div className="py-5">
