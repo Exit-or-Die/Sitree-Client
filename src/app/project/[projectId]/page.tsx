@@ -34,10 +34,22 @@ export async function generateMetadata({ params }: ProjectDetailPageProps) {
       title: '프로젝트를 찾을 수 없습니다',
       description: '요청한 프로젝트를 찾을 수 없습니다.',
       icons: {
-        icon: '/default-icon.ico'
-      }
+        icon: '/meta/sitree_favicon.ico'
+      },
+      images: [
+        {
+          url: '/meta/sitree_image.png',
+          width: 800,
+          height: 600,
+          alt: 'Sitree default image'
+        }
+      ]
     };
   }
+
+  const projectRepresentativeImage = projectDetail.overview.images.find(
+    (image) => image.imageType === IMAGE_TYPE.REPRESENT
+  );
 
   return {
     title: projectDetail.head?.title,
@@ -54,7 +66,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps) {
       locale: 'ko_KR',
       images: [
         {
-          url: projectDetail.head?.thumbnailImageUrl,
+          url: projectRepresentativeImage?.imageUrl || '/meta/sitree_image.png',
           width: 800,
           height: 600,
           alt: projectDetail.head?.title
