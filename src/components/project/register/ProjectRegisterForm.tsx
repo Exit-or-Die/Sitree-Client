@@ -5,8 +5,7 @@ import { ProjectRegisterRequest } from '@/service/project/request';
 import { ProjectDetailResponse } from '@/service/project/response';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
@@ -45,7 +44,6 @@ export const DEFAULT_DETAIL_DATA: Partial<ProjectDetailResponse> = {
 
 const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
   const { queryKey, queryFn } = projectId
     ? ProjectQueryOptions.retrieveProjectDetail(projectId)
     : { queryKey: [], queryFn: async () => DEFAULT_DETAIL_DATA };
@@ -92,14 +90,6 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
       }
     )();
   };
-
-  if (status === 'loading') {
-    return <></>;
-  }
-
-  if (status === 'unauthenticated') {
-    return redirect('/');
-  }
 
   return (
     <div className="flex justify-center gap-5">

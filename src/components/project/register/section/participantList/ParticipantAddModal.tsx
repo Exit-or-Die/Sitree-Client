@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
+import UserSearchResult from '@/components/custom/UserSearchResult';
 
 const PAGE_SIZE = 10;
 const DEBOUNCE_DELAY = 500;
@@ -131,41 +132,14 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
           ))}
         </div>
         {searchResults.length > 0 && inputQuery.length > 0 && (
-          <div
-            ref={searchResultRef}
-            className="fixed w-[34.6rem] left-[3.8rem] top-[13rem] bg-white-100 border rounded-md shadow-md mt-[1rem] z-10 p-4 overflow-hidden"
-          >
-            <div className="text-left">
-              <span className="text-xsmall text-slate-50">
-                검색 결과 <span className="font-bd text-slate-30">{searchTotalCount}</span>건
-              </span>
-            </div>
-            <div className="max-h-[32rem] overflow-y-auto scrollbar-hidden">
-              {searchResults.map((result) => (
-                <div
-                  key={result.memberId}
-                  className="flex gap-[1rem] p-3 rounded-large hover:bg-slate-95 cursor-pointer"
-                  onClick={() => handleClickMember(result)}
-                  onScroll={handleScroll}
-                >
-                  <SImage
-                    src={result.profileImgUrl}
-                    width={40}
-                    height={40}
-                    defaultType="user"
-                    className="rounded-full"
-                  />
-                  <div className="flex flex-col gap-1 items-start">
-                    <p className="text-small font-md">{result.nickname}</p>
-                    <p className="text-xsmall text-slate-50">{result.email}</p>
-                    {/* <div className="flex gap-1.5">
-                      <p className="text-xsmall font-bd">{result.belongingId}</p>
-                      <p className="text-xsmall text-slate-50">{result.email}</p>
-                    </div> */}
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="fixed w-[34.6rem] left-[3.8rem] top-[13rem]">
+            <UserSearchResult
+              searchResultRef={searchResultRef}
+              searchResults={searchResults}
+              searchTotalCount={searchTotalCount}
+              handleClickMember={handleClickMember}
+              handleScroll={handleScroll}
+            />
           </div>
         )}
       </div>
