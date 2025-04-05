@@ -1,5 +1,6 @@
 'use client';
 
+import withModal from '@/enhancers/WithModal';
 import { ProjectRegisterRequest } from '@/service/project/request';
 import { TechView } from '@/service/project/response';
 import { extractContentFromHtml } from '@/utils/stringUtil';
@@ -10,6 +11,7 @@ import { Nullable } from 'types/common';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
+import TechViewDeleteModal from './TechViewDeleteModal';
 import TechViewForm from './TechViewForm';
 
 export interface TechViewProps {
@@ -21,6 +23,8 @@ export interface TechViewProps {
 }
 
 const ProjectRegisterTechViewList = () => {
+  const TechViewDeleteWithModal = withModal(TechViewDeleteModal);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { setValue, getValues } = useFormContext<ProjectRegisterRequest>();
   const initialSkills = getValues('techviewList') || [
     { techTitle: '', gitRepositoryUrl: '', techStackTypes: [], techDesc: '' }
@@ -132,12 +136,18 @@ const ProjectRegisterTechViewList = () => {
       {canDeleteSkill() && (
         <div
           className="mt-5 flex items-center justify-end gap-1 cursor-pointer"
-          onClick={() => deleteSkill(currentIndex)}
+          onClick={() => setDeleteModalOpen(true)}
         >
           <SImage src="/redTrash.svg" width={16} height={16} />
-          <p className="text-red-50">삭제</p>
+          <p className="text-red-50 text-small">삭제</p>
         </div>
       )}
+      <TechViewDeleteWithModal
+        onClickClose={() => setDeleteModalOpen(false)}
+        deleteTechView={() => deleteSkill(currentIndex)}
+        isVisible={deleteModalOpen}
+        hideClose={true}
+      />
     </div>
   );
 };

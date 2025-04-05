@@ -80,7 +80,7 @@ const ProjectTagSelect = <T,>({
   }, [tags, selectedTags]);
 
   return (
-    <div className="relative w-full z-50" ref={tagSelectRef}>
+    <div className="relative w-full z-30" ref={tagSelectRef}>
       <div
         className={`w-full border border-slate-90 rounded-[1rem] flex gap-2 items-center justify-between pr-3 cursor-pointer ${isDropdownOpen ? 'border-none outline-none ring-1 ring-tree-50' : ''}`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -109,7 +109,7 @@ const ProjectTagSelect = <T,>({
             ))}
           </div>
         ) : (
-          <span className="text-gray-400 p-3 text-small">태그를 입력하세요</span>
+          <span className="text-slate-60 p-3 text-small">태그를 입력하세요</span>
         )}
         <div className="w-4 h-4 flex-shrink-0">
           <SvgIcon

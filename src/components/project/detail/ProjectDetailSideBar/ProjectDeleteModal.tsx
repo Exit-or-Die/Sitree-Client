@@ -35,7 +35,7 @@ const ProjectDeleteModal = ({ projectId, onClickClose }: ProjectDeleteModalProps
         <SButton className="border-none bg-slate-95" onClick={onClickClose}>
           아니요
         </SButton>
-        <SButton onClick={deleteProject} className="border-none bg-red-50 text-white-100">
+        <SButton onClick={() => deleteProject} className="border-none bg-red-50 text-white-100">
           삭제하기
         </SButton>
       </div>
