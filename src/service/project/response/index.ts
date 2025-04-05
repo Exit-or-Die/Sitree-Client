@@ -22,7 +22,7 @@ export interface ProjectDetailResponse {
   viewCount: number;
   createdAt: string;
   healthy: boolean;
-  likeCounts: number;
+  likeCount: number;
   isLiked: boolean;
 }
 
@@ -110,4 +110,10 @@ export interface Project {
 
 export interface ProjectTechStacks {
   techStacks: Array<string>;
+}
+export interface ProjectLeader {
+  memberId: number;
+  imageUrl: string;
+  nickname: string;
+  position: string;
 }

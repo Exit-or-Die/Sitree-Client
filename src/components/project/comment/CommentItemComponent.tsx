@@ -12,6 +12,7 @@ import { Nullable } from 'types/common';
 
 import { FormattedDate } from '@/components/common/Date';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import CommentInput from './CommentInput';
 
@@ -47,7 +48,7 @@ const CommentItemComponent = ({
   teamMember
 }: CommentItemComponentProps) => {
   const queryClient = useQueryClient();
-  const { projectId } = useParams();
+  const { projectId }: { projectId: string } = useParams();
   const { data: session } = useSession();
   const [commentInfo, setCommentInfo] = useState<CommentInfoProps>({
     commentId: null,
@@ -62,7 +63,7 @@ const CommentItemComponent = ({
   const leader = teamMember.find((member) => member.isLeader);
   const isOwner = leader ? leader.memberId === comment.createMember.memberId : false;
 
-  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId);
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: (commentId: number) => CommentsService.deleteComment(commentId),
@@ -103,26 +104,28 @@ const CommentItemComponent = ({
             </div>
             <div className="flex gap-1">
               {!comment.isChildComment && (
-                <SImage
-                  src="/commentReply.svg"
+                <SvgIcon
+                  icon="comment"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"
                   onClick={() => handleCommentInfo('parentCommentId', 1)}
+                  color="#778195"
                 />
               )}
               {isMyComment && (
-                <SImage
-                  src="/commentEdit.svg"
+                <SvgIcon
+                  icon="edit"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"
                   onClick={() => handleCommentInfo('commentId', comment.commentId)}
+                  color="#778195"
                 />
               )}
               {isMyComment && (
                 <SImage
-                  src="/commentDelete.svg"
+                  src="/trash.svg"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"

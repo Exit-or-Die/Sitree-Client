@@ -2,6 +2,7 @@ import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 interface ProjectMemberFocusedOnProps {
   contents: Nullable<Array<string>>;
@@ -19,7 +20,7 @@ const ProjectMemberFocusedOn = ({ contents, isMe }: ProjectMemberFocusedOnProps)
         <span className="text-base font-lb tracking-[-0.32px]">Focused On</span>
         <div className="flex gap-1 px-3 py-2 rounded-[1rem] bg-slate-95">
           <p>프로필 페이지</p>
-          <SImage src="/externalLink.svg" width={16} height={16} />
+          <SvgIcon icon="externalLink" color="#414752" width={16} height={16} />
         </div>
       </div>
       <div className="h-[36.8rem] p-5">

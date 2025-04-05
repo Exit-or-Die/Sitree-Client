@@ -5,6 +5,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 interface ProjectTagSelectProps<T = { [key: string]: unknown }> {
   useDelete?: boolean;
@@ -111,8 +112,8 @@ const ProjectTagSelect = <T,>({
           <span className="text-gray-400 p-3 text-small">태그를 입력하세요</span>
         )}
         <div className="w-4 h-4 flex-shrink-0">
-          <SImage
-            src="/arrow.svg"
+          <SvgIcon
+            icon="arrow"
             width={16}
             height={16}
             className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}

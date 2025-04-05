@@ -8,7 +8,8 @@ const queryKeys = {
     ['retrieveProjects', projectQuery] as const,
   retrieveProjectTechStacks: () => ['project', 'retrieveProjectTechStacks'] as const,
   checkProjectLikeStatus: (projectId: string, memberId: number) =>
-    ['project', 'like', projectId, memberId] as const
+    ['project', 'like', projectId, memberId] as const,
+  checkProjectLeader: (projectId: string) => ['project', 'leader', projectId] as const
 };
 
 const ProjectQueryOptions = {
@@ -21,6 +22,9 @@ const ProjectQueryOptions = {
   retrieveProjectDetail: (projectId: string) => ({
     queryKey: queryKeys.retrieveProjectDetail(projectId),
     queryFn: () => ProjectService.retrieveProjectDetail(projectId)
+  }),
+  deleteProject: (projectId: string) => ({
+    mutateFn: () => ProjectService.deleteProject(projectId)
   }),
   likeProject: (projectId: string) => ({
     mutateFn: () => ProjectService.likeProject(projectId)
@@ -40,6 +44,10 @@ const ProjectQueryOptions = {
   checkProjectLikeStatus: (projectId: string, memberId: number) => ({
     queryKey: queryKeys.checkProjectLikeStatus(projectId, memberId),
     queryFn: () => ProjectService.checkProjectLikeStatus(projectId, memberId)
+  }),
+  checkProjectLeader: (projectId: string) => ({
+    queryKey: queryKeys.checkProjectLeader(projectId),
+    queryFn: () => ProjectService.checkProjectLeader(projectId)
   })
 };
 

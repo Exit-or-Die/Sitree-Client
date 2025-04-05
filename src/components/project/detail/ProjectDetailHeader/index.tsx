@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormattedDate } from '@/components/common/Date';
 import HealthCheckState from '@/components/common/HealthState';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 interface ProjectDetailHeaderProps {
   head: Head;
@@ -23,7 +24,7 @@ const ProjectLinkItem = ({ text, url }: ProjectLinkProps) => {
   return (
     <Link href={url} target="_blank">
       <div className="px-[1rem] py-1.5 flex gap-1 items-center bg-slate-95 rounded-[999px]">
-        <SImage src="/linkUrl.svg" width={18} height={18} />
+        <SvgIcon icon="link" color="#778195" width={18} height={18} />
         <p className="text-slate-30">{text}</p>
       </div>
     </Link>
@@ -58,9 +59,11 @@ const ProjectDetailHeader = ({
           <div className="flex gap-2 items-center">
             <HealthCheckState health={healthy ?? false} />
             {clientUrl &&
-              Object.entries(clientUrl).map(([key, value]) => (
-                <ProjectLinkItem key={key} text={key} url={value} />
-              ))}
+              Object.entries(clientUrl).map(([key, value]) => {
+                if (value.trim().length) {
+                  return <ProjectLinkItem key={key} text={key} url={value} />;
+                }
+              })}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex gap-1.5 flex-wrap">

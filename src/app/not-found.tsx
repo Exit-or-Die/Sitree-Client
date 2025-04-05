@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import SButton from '@/components/common/Button';
-import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 const NotFound = () => {
   const router = useRouter();
@@ -12,10 +12,10 @@ const NotFound = () => {
     <div className="h-[calc(100vh*4/5)] rounded-xlarge shadow-lg border border-gray-200 mx-[80px] my-[24px] bg-white-100 flex flex-col justify-center items-center">
       <div className="relative">
         <div className="w-[80px] h-[80px] rounded-2xlarge bg-slate-95 flex items-center justify-center">
-          <SImage src="/error.svg" alt="Error Icon" width={60} height={60} />
+          <SvgIcon icon="errorLogo" color="#C8D0DD" width={60} height={60} />
         </div>
-        <div className="absolute top-[-10px] right-[-10px] w-[28px] h-[28px] rounded-full bg-[#F6424E] flex justify-center items-center">
-          <SImage src="/exclamation.svg" alt="Exclamation Icon" width={20} height={20} />
+        <div className="absolute top-[-10px] right-[-10px] w-[28px] h-[28px] rounded-full bg-red-50 flex justify-center items-center">
+          <SvgIcon icon="exclamation" color="white" width={20} height={20} />
         </div>
       </div>
       <div className="text-2xlarge font-lb text-slate-10 mt-[24px]">페이지를 찾을 수 없어요</div>
@@ -27,7 +27,7 @@ const NotFound = () => {
         className="bg-slate-95 mt-[24px] text-slate-30 border-0"
         onClick={() => router.back()}
       >
-        <SImage src="/left.svg" alt="Left Icon" width={16} height={16} className="mr-1" />
+        <SvgIcon icon="arrowLeft" color="#414752" width={16} height={16} className="mr-1" />
         이전 페이지
       </SButton>
     </div>

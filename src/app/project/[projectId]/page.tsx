@@ -6,6 +6,7 @@ import { IMAGE_TYPE, ProjectDetailResponse } from '@/service/project/response';
 import { redirect } from 'next/navigation';
 
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 import SwiperComponent from '@/components/common/Swiper';
 import RouterPush from '@/components/custom/RouterPush';
 import CommentComponent from '@/components/project/comment';
@@ -19,17 +20,19 @@ interface ProjectDetailPageProps {
 }
 
 const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
-  // memberId는 쿠키 저장해서 사용
   const { projectId } = params;
 
   const { queryKey: projectDetailKey, queryFn: projectDetailFn } =
     ProjectQueryOptions.retrieveProjectDetail(projectId);
   const { queryKey: projectCommentKey, queryFn: projectCommentFn } =
     CommentsQueryOptions.retrieveCommentList(projectId, 10);
+  const { queryKey: projectLedaerKey, queryFn: projectLeaderFn } =
+    ProjectQueryOptions.checkProjectLeader(projectId);
 
   const [projectDetailQuery, projectCommentQuery] = await getDehydratedQueries([
     { queryKey: projectDetailKey, queryFn: projectDetailFn },
-    { queryKey: projectCommentKey, queryFn: () => projectCommentFn({ pageParam: 0 }) }
+    { queryKey: projectCommentKey, queryFn: () => projectCommentFn({ pageParam: 0 }) },
+    { queryKey: projectLedaerKey, queryFn: projectLeaderFn }
   ]);
 
   const projectDetail = projectDetailQuery?.state.data as ProjectDetailResponse;
@@ -52,7 +55,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
       <Hydrate state={{ queries: [projectDetailQuery, projectCommentQuery] }}>
         <div className="w-[128rem]">
           <RouterPush className="px-2 py-1.5 flex items-center gap-1 cursor-pointer" path="/">
-            <SImage src="/leftArrow.svg" width={14} height={14} />
+            <SvgIcon icon="arrowLeft" color="#414752" width={14} height={14} />
             <p className="text-small text-slate-30">프로젝트 목록</p>
           </RouterPush>
           <div className="py-5">
@@ -68,12 +71,12 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
               />
             </div>
             <ProjectDetailSideBar
-              title={projectDetail.head?.title}
-              thumbnailImage={projectDetail.head?.thumbnailImageUrl}
-              likeCounts={projectDetail?.likeCounts}
-              teamMember={projectDetail?.participantList || []}
-              viewCount={projectDetail?.viewCount}
-              commentCount={projectComment?.total}
+              title={projectDetail.head.title}
+              thumbnailImage={projectDetail.head.thumbnailImageUrl}
+              likeCount={projectDetail.likeCount}
+              teamMember={projectDetail.participantList}
+              viewCount={projectDetail.viewCount}
+              commentCount={projectComment.total}
             />
           </div>
         </div>

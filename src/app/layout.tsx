@@ -21,6 +21,7 @@ const cls = (...classnames: string[]) => {
   return classnames.join(' ');
 };
 
+import { AuthProvider } from '@/components/providers/AuthProvider';
 import { ReactQueryProvider } from '@/components/providers/ReactQuery';
 import SessionWrapper from '@/components/SessionWrapper';
 import { MainLayout } from '@/components/templates/MainLayout';
@@ -34,14 +35,16 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionWrapper>
       <html lang="kr">
-        <body className={cls(pretendard.className, montserrat.variable)} suppressHydrationWarning>
-          <div id="modal" />
-          <ReactQueryProvider>
-            <MainLayout>
-              <main>{children}</main>
-            </MainLayout>
-          </ReactQueryProvider>
-        </body>
+        <AuthProvider>
+          <body className={cls(pretendard.className, montserrat.variable)} suppressHydrationWarning>
+            <div id="modal" />
+            <ReactQueryProvider>
+              <MainLayout>
+                <main>{children}</main>
+              </MainLayout>
+            </ReactQueryProvider>
+          </body>
+        </AuthProvider>
       </html>
     </SessionWrapper>
   );

@@ -49,9 +49,10 @@ export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
 
   const dehydratedQueries = dehydrate(queryClient).queries;
 
-  return dehydratedQueries.filter((q) =>
-    queries.some((input) => JSON.stringify(input.queryKey) === JSON.stringify(q.queryKey))
-  ) as DehydratedQueryExtended<UnwrapPromise<ReturnType<Q[number]['queryFn']>>>[];
+  // 원래 queries 배열 순서에 맞춰서 결과 매칭 (없으면 null)
+  return queries.map(
+    ({ queryKey }) => dehydratedQueries.find((q) => isEqual(q.queryKey, queryKey)) ?? null
+  ) as (DehydratedQueryExtended<UnwrapPromise<ReturnType<Q[number]['queryFn']>>> | null)[];
 }
 
 export async function getDehydratedQueryData<Q extends QueryProps>({ queryKey, queryFn }: Q) {

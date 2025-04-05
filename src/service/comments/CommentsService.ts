@@ -10,7 +10,7 @@ class CommentsService extends Service {
   }
   getCommentList(projectId: string, page: number, size: number) {
     return this.http.get<GetCommentListResponse>(
-      `comments/project/${projectId}?page=${page}&size=${size}`
+      `comments/project/${projectId}?pageNo=${page}&size=${size}`
     );
   }
   modifyComment({ commentId, contents }: EditCommentRequest) {

@@ -19,15 +19,14 @@ interface CommentInputProps {
 }
 
 const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputProps) => {
-  const { projectId } = useParams();
+  const { projectId }: { projectId: string } = useParams();
   const [commentText, setCommentText] = useState('');
 
   const queryClient = useQueryClient();
-  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId as string);
+  const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId);
 
   const { mutate: registerComment } = useMutation({
-    mutationFn: (params: CreateCommentRequest) =>
-      CommentsService.createComment(projectId as string, params),
+    mutationFn: (params: CreateCommentRequest) => CommentsService.createComment(projectId, params),
     onSuccess: () => {
       // retrieveCommentList 쿼리를 무효화하고 즉시 다시 호출
       queryClient.invalidateQueries({
@@ -82,7 +81,7 @@ const CommentInput = ({ commentInfo, handleCommentInfo, isReply }: CommentInputP
   return (
     <div className={`relative w-full ${isReply && 'pl-12 mt-2'}`}>
       <SInput
-        className={`flex items-start px-5 py-4 text-[1.5rem] text-slate-60 border border-2 border-slate-90 bg-slate-98 rounded-xlarge`}
+        className={`flex items-start px-5 py-4 text-[1.5rem] text-slate-60 border-2 border-slate-90 bg-slate-98 rounded-xlarge`}
         iconName="messageArrow"
         placeholder="댓글을 남겨보세요"
         value={commentText}
