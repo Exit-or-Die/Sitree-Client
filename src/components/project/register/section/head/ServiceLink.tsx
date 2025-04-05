@@ -112,12 +112,14 @@ const ProjectHeadServiceLink = () => {
               displayKey="key"
               selectClass="w-[15.6rem]"
             />
-            <SInput
-              className="!w-[43.4rem] text-small font-md leading-5 tracking-[-0.14px]"
-              placeholder="링크를 입력해주세요"
-              value={value.trim()}
-              onChange={(e) => updateServiceLinks(key, e.target.value)}
-            />
+            <div className="w-[43.4rem]">
+              <SInput
+                className="text-small font-md leading-5 tracking-[-0.14px]"
+                placeholder="링크를 입력해주세요"
+                value={value.trim()}
+                onChange={(e) => updateServiceLinks(key, e.target.value)}
+              />
+            </div>
             {getLinksToRender().length > 1 && (
               <span
                 className="flex items-center p-1 cursor-pointer"

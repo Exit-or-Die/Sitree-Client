@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 import { ImageUploadSection } from '@/components/custom/ImageUploadSection';
 
 import { getInitialArchitecture } from '.';
@@ -84,7 +85,7 @@ const ArchitectureForm = ({
         </div>
         <div className="ml-auto grow px-3 py-2">
           <div className="flex gap-1 items-center cursor-pointer" onClick={resetArchitecture}>
-            <SImage src="/refresh.svg" width={16} height={16} alt="refresh" />
+            <SvgIcon icon="refresh" width={16} height={16} color="#F6424E" />
             <p className="text-red-50 text-small">초기화</p>
           </div>
         </div>

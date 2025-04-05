@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Optional } from 'types/common';
 
-import SImage from '../Image';
+import SvgIcon from '../SVGIcon';
 
 interface SSelectProps<T = { [key: string]: unknown }> {
   value?: T;
@@ -64,8 +64,8 @@ const SSelect = <T,>({
       >
         <span>{value && getOptionDisplay(value) ? getOptionDisplay(value) : placeholder}</span>
         <div className="w-4 h-4 flex-shrink-0">
-          <SImage
-            src="/arrow.svg"
+          <SvgIcon
+            icon="arrow"
             width={16}
             height={16}
             className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}

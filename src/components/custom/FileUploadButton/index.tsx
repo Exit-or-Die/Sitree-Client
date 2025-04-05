@@ -4,12 +4,12 @@ import { uploadFile } from '@/utils/file';
 import React, { useRef } from 'react';
 
 import SButton from '@/components/common/Button';
-import SImage from '@/components/common/Image';
+import SvgIcon, { IconType } from '@/components/common/SVGIcon';
 
 type FileUploadButtonProps = {
   text: string;
   className?: string;
-  iconName?: string;
+  iconName?: IconType;
   limitSize?: number; // 파일 크기 제한 (MB 단위)
   onUpload: (fileUrl: string) => void;
   accept?: string; // 허용할 확장자
@@ -60,7 +60,7 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
         onClick={handleButtonClick}
       >
         {text}
-        {iconName && <SImage src={iconName} width={16} height={16} />}
+        {iconName && <SvgIcon icon={iconName} width={16} height={16} />}
       </SButton>
       <input
         type="file"

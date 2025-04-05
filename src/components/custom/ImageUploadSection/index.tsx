@@ -29,7 +29,7 @@ export const ImageUploadSection = ({
         text={buttonText}
         limitSize={limitSize}
         className="bg-white-100"
-        iconName="/select.svg"
+        iconName="select"
         onUpload={onUpload}
       />
     </div>

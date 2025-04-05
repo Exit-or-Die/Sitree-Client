@@ -51,7 +51,7 @@ const ProjectHeadScreenshot = () => {
             <FileUploadButton
               className="border h-[36px]"
               text="파일 선택"
-              iconName="/select.svg"
+              iconName="select"
               onUpload={handleScreenshotUpload}
             />
           )}
