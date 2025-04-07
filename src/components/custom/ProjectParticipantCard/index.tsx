@@ -6,20 +6,20 @@ import SImage from '@/components/common/Image';
 interface TeamMember {
   image: string;
   name: string;
-  isOwner: boolean;
+  isLeader: boolean;
 }
 
-const ProjectParticipantCard: React.FC<TeamMember> = ({ image, name, isOwner }) => {
+const ProjectParticipantCard: React.FC<TeamMember> = ({ image, name, isLeader }) => {
   return (
     <div
-      className={`relative bg-white rounded-large px-4 py-5 border-[1px] border-slate-90 flex flex-col items-center gap-4 ${!isOwner && 'hover:shadow-md'}`}
+      className={`relative bg-white rounded-large px-4 py-5 border-[1px] border-slate-90 flex flex-col items-center gap-4 ${!isLeader && 'hover:shadow-md'}`}
     >
-      {isOwner && (
+      {isLeader && (
         <SButton className="absolute left-[0.8rem] top-[0.8rem] px-1.5 py-1 rounded-small bg-tree-97 text-tree-40 text-center font-bd text-xsmall">
           Owner
         </SButton>
       )}
-      {!isOwner && (
+      {!isLeader && (
         <SImage
           src="/close.svg"
           width={19}

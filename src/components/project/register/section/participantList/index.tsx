@@ -124,7 +124,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
             <ProjectParticipantCard
               image={member.imageUrl}
               name={member.nickname}
-              isOwner={member.isLeader}
+              isLeader={member.isLeader}
             />
             <SInput
               className="mt-2 text-center text-small"
