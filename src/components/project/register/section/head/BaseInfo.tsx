@@ -9,6 +9,7 @@ import SInput from '@/components/common/Input';
 import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
+import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const ProjectHeadBaseInfo = () => {
@@ -51,7 +52,7 @@ const ProjectHeadBaseInfo = () => {
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true,
+      required: false,
       errorKey: 'head.healthCheckUrl'
     },
     {
@@ -91,9 +92,7 @@ const ProjectHeadBaseInfo = () => {
           <div key={index} className="mb-6">
             <label className="block text-small font-md leading-5 tracking-[-0.14px] text-gray-700 flex items-center mb-1.5">
               <span className="text-[1.4rem]">{input.title}</span>
-              {input.required && (
-                <span className="ml-1 mb-1 w-1.5 h-1.5 bg-tree-50 rounded-full"></span>
-              )}
+              {input.required && <RegisterRequiredMark />}
             </label>
             {input.component}
             <RegiseterErrorMessage errorKey={input.errorKey} />

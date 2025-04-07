@@ -7,6 +7,7 @@ import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
+import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const TechViewForm: React.FC<{
@@ -31,7 +32,12 @@ const TechViewForm: React.FC<{
     <div className="flex flex-col gap-5">
       <div className="flex gap-5">
         <div className="w-full">
-          <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">기술 이름</p>
+          <div className="flex items-center">
+            <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+              기술 이름
+            </p>
+            <RegisterRequiredMark />
+          </div>
           <SInput
             type="text"
             placeholder="이름 입력"
@@ -43,9 +49,12 @@ const TechViewForm: React.FC<{
           <RegiseterErrorMessage errorKey={`techviewList.${index}.techTitle`} />
         </div>
         <div className="w-full">
-          <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-            GitHub 링크
-          </label>
+          <div className="flex items-center">
+            <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+              GitHub 링크
+            </label>
+            <RegisterRequiredMark />
+          </div>
           <SInput
             type="text"
             placeholder="링크 입력"
@@ -58,9 +67,12 @@ const TechViewForm: React.FC<{
         </div>
       </div>
       <div>
-        <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-          기술 설명
-        </label>
+        <div className="flex items-center">
+          <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
+            기술 설명
+          </label>
+          <RegisterRequiredMark />
+        </div>
         <div className="mt-1.5">
           <DynamicSEditor
             placeholder="프로젝트를 진행하면서 활용한 기술 스택을 소개해 주세요"
@@ -70,9 +82,12 @@ const TechViewForm: React.FC<{
         </div>
       </div>
       <div>
-        <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mb-1.5">
-          기술 태그
-        </label>
+        <div className="flex items-center">
+          <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mb-1.5">
+            기술 태그
+          </label>
+          <RegisterRequiredMark />
+        </div>
         <ProjectTagSelect
           onChange={(tags: Array<string>) => {
             updateSkill(index, { ...normalizedSkill, techStackTypes: tags });

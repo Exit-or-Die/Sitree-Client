@@ -8,9 +8,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import SButton from '@/components/common/Button';
-import ProjectUploadProgress from '@/components/custom/ProjectUploadProgress';
-
+import ProjectRegisterSidebar from './components/ProjectRegisterSidebar';
 import { projectSchema } from './scheme';
 import {
   ProjectRegisterArchitectureList,
@@ -103,17 +101,7 @@ const ProjectRegisterForm = ({ projectId }: ProjectRegisterFormProps) => {
             <ProjectRegisterParticipantList />
           </form>
         </div>
-        <div className="w-[30.4rem] sticky top-5 self-start space-y-2">
-          <ProjectUploadProgress />
-          <SButton
-            type="button"
-            size="xl"
-            className="w-full leading-5 justify-center bg-tree-50 text-white-100"
-            onClick={handleSubmitClick}
-          >
-            {projectId ? '수정하기' : '등록하기'}
-          </SButton>
-        </div>
+        <ProjectRegisterSidebar projectId={projectId} handleSubmitClick={handleSubmitClick} />
       </FormProvider>
     </div>
   );

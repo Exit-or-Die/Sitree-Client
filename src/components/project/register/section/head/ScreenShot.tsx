@@ -7,6 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import FileUploadButton from '@/components/custom/FileUploadButton';
 import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
 
+import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const TOTAL_SCREENSHOT_ITEMS = 8;
@@ -39,7 +40,7 @@ const ProjectHeadScreenshot = () => {
       <div className="flex justify-between items-center">
         <span className="flex">
           <p className="text-slate-10 font-lb text-large leading-5">스크린샷 이미지</p>
-          <span className="ml-1 mt-1 w-1.5 h-1.5 bg-tree-50 rounded-full" />
+          <RegisterRequiredMark />
         </span>
         <div className="flex items-center gap-4">
           <span className="flex gap-0.5 text-small leading-5">

@@ -35,7 +35,7 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
     if (!file) return;
 
     // limitSize 체크 (바이트로 변환: MB * 1024 * 1024)
-    if (limitSize && file.size < limitSize * 1024 * 1024) {
+    if (limitSize && file.size > limitSize * 1024 * 1024) {
       console.warn(`파일 크기 제한 ${limitSize}MB를 초과했습니다.`);
       event.target.value = '';
 
