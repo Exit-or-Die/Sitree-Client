@@ -101,6 +101,7 @@ const ProjectRegisterSidebar = ({ projectId, handleSubmitClick }: ProjectRegiste
     if (
       basicInfo.completionRate === 1 &&
       overview.images.length > 0 &&
+      projectIntro.completionRate === 1 &&
       techInfo.completionRate === 1 &&
       participantsInfo.completionRate === 1
     ) {
