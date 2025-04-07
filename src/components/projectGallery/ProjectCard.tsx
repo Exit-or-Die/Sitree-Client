@@ -96,17 +96,11 @@ const ProjectCard = ({
           <div className="flex text-xsmall text-gray-400 mt-4 pl-2 justify-between">
             <div className="flex">
               <div className="flex items-center mr-2">
-                <SImage
-                  src="/comment.svg"
-                  width={12}
-                  height={12}
-                  alt="comment"
-                  className="mr-[3px]"
-                />{' '}
+                <SvgIcon icon="comment" color="#778195" className="mr-[3px]" width={12} height={12} />{' '}
                 <span className="text-slate-30">{commentCount}</span>
               </div>
               <div className="flex items-center mr-2">
-                <SImage src="/like.svg" width={12} height={12} alt="like" className="mr-[3px]" />
+                <SvgIcon icon="like" color="#778195" className="mr-[3px]" width={12} height={12} />{' '}
                 <span className="text-slate-30">{likesCount}</span>
               </div>
               <span className="text-slate-50">조회수 {viewCount}</span>
