@@ -7,8 +7,8 @@ import { FilterCategory } from '@/service/project/request';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
-import SImage from '../common/Image';
 import SInput from '../common/Input';
+import SvgIcon from '../common/SVGIcon';
 import ProjectCard from './ProjectCard';
 
 type Props = {
@@ -66,12 +66,12 @@ const ProjectList = ({ selectedCategory }: Props) => {
           ))}
         </div>
         <div className="flex items-center border-l pl-4 text-sm w-60 outline-none h-[52px] text-small">
-          <SImage
-            src="/magnifyGlass.svg"
-            alt="magnify-glass"
+          <SvgIcon
+            icon="magnifyGlass"
             width={18}
             height={18}
             className="w-[18px] h-[18px] text-slate-60"
+            color="#959EB2"
           />
           <SInput
             type="text"

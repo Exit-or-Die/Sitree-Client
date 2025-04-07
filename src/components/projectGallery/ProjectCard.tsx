@@ -9,6 +9,7 @@ import SImage from '../common/Image';
 import { FocusPoint } from '@/service/profile/response';
 import WithModal from '@/enhancers/WithModal';
 import ProjectFocusedOnModal from '../profile/ProjectFocusedOnModal';
+import SvgIcon from '../common/SVGIcon';
 
 type Props = {
   className: string;

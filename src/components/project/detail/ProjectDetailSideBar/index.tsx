@@ -14,6 +14,7 @@ import { useState } from 'react';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import ProjectDeleteModal from './ProjectDeleteModal';
 
@@ -91,11 +92,17 @@ const ProjectDetailSideBar = ({
               <span className="text-large font-lb leading-6 tracking-[-0.4px]">{title}</span>
               <div className="flex gap-1.5 items-center text-xsmall">
                 <div className="flex gap-0.5 leading-4 tracking-[-0.12px] items-center">
-                  <SImage src="/chat.svg" alt="project comment count" width={12} height={12} />
+                  <SvgIcon
+                    icon="comment"
+                    color="#778195"
+                    className="mr-[3px]"
+                    width={12}
+                    height={12}
+                  />
                   {commentCount}
                 </div>
                 <div className="flex gap-0.5 items-center">
-                  <SImage src="/like.svg" alt="projet like count" width={12} height={12} />
+                  <SvgIcon icon="like" color="#778195" width={12} height={12} />
                   {likeCount}
                 </div>
                 <div className="text-slate-50">조회수 {viewCount}</div>
@@ -108,10 +115,10 @@ const ProjectDetailSideBar = ({
             className={`w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
             onClick={likeProject}
           >
-            <SImage
-              src={isLiked ? '/likeFill.svg' : '/like.svg'}
+            <SvgIcon
+              icon={isLiked ? 'likeFill' : 'like'}
               key={isLiked ? 'liked' : 'not-liked'}
-              alt="heart image"
+              color={isLiked ? '#FE767D' : '#778195'}
               width={20}
               height={20}
             />
@@ -122,7 +129,7 @@ const ProjectDetailSideBar = ({
               onClick={() => handleCopyLink()}
               className="w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none active:bg-slate-90 hover:bg-slate-95"
             >
-              <SImage src="/share.svg" width={20} height={20} />
+              <SvgIcon icon="share" color="#778195" width={20} height={20} />
               <p className={`font-bd text-[1rem]`}>링크 복사</p>
             </SButton>
           </div>
@@ -186,7 +193,7 @@ const ProjectDetailSideBar = ({
                   className="w-full flex justify-center gap-1.5 text-tree-30 bg-tree-93 px-4 py-3 border-none"
                   size="md"
                 >
-                  <SImage src="/pencil.svg" alt="edit project" width={18} height={18} />
+                  <SvgIcon icon="edit" width={18} height={18} color="#03854E" />
                   수정하기
                 </SButton>
               </Link>

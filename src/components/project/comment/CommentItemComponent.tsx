@@ -12,6 +12,7 @@ import { Nullable } from 'types/common';
 
 import { FormattedDate } from '@/components/common/Date';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import CommentInput from './CommentInput';
 
@@ -103,26 +104,28 @@ const CommentItemComponent = ({
             </div>
             <div className="flex gap-1">
               {!comment.isChildComment && (
-                <SImage
-                  src="/commentReply.svg"
+                <SvgIcon
+                  icon="comment"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"
                   onClick={() => handleCommentInfo('parentCommentId', 1)}
+                  color="#778195"
                 />
               )}
               {isMyComment && (
-                <SImage
-                  src="/commentEdit.svg"
+                <SvgIcon
+                  icon="edit"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"
                   onClick={() => handleCommentInfo('commentId', comment.commentId)}
+                  color="#778195"
                 />
               )}
               {isMyComment && (
                 <SImage
-                  src="/commentDelete.svg"
+                  src="/trash.svg"
                   width={20}
                   height={20}
                   className="m-1 cursor-pointer"

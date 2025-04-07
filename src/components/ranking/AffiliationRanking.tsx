@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import SImage from '../common/Image';
+import SvgIcon from '../common/SVGIcon';
 
 const AffiliationRanking = () => {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
@@ -93,7 +94,7 @@ const AffiliationRanking = () => {
                       />
                     </div>
                   ) : (
-                    <SImage src="/trendIndicator.svg" width={16} height={16} />
+                    <SvgIcon icon="tick" color="#C8D0DD" width={16} height={16} />
                   )}
                 </div>
               </li>
