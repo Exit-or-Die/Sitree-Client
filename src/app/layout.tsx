@@ -23,6 +23,7 @@ const cls = (...classnames: string[]) => {
 
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { ReactQueryProvider } from '@/components/providers/ReactQuery';
+import { ToastProvider } from '@/components/providers/ToastProvider';
 import SessionWrapper from '@/components/SessionWrapper';
 import { MainLayout } from '@/components/templates/MainLayout';
 
@@ -40,7 +41,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             <div id="modal" />
             <ReactQueryProvider>
               <MainLayout>
-                <main>{children}</main>
+                <ToastProvider>
+                  <main>{children}</main>
+                </ToastProvider>
               </MainLayout>
             </ReactQueryProvider>
           </body>
