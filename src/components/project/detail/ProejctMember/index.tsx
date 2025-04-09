@@ -46,7 +46,7 @@ const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
           ))}
         </div>
         <ProjectMemberFocusedOn
-          contents={participantList[currentIndex].focusPoint}
+          contents={participantList[currentIndex].focusPoints}
           isMe={session?.detail.memberId === participantList[currentIndex].memberId}
           key={currentIndex}
         />
