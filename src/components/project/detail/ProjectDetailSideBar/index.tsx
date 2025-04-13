@@ -15,7 +15,7 @@ import { useState } from 'react';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
-import { TOAST_ICON, useToast } from '@/components/providers/ToastProvider';
+import { TOAST_ICON, useToast } from '@/components/providers/ComponentProvider';
 
 import ProjectDeleteModal from './ProjectDeleteModal';
 
