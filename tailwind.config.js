@@ -82,7 +82,7 @@ module.exports = {
         md: 400,
         sb: 500,
         bd: 600,
-        lg: 700
+        lb: 700
       },
       lineHeight: {
         3: '1.2rem',
@@ -114,6 +114,9 @@ module.exports = {
         xlarge: '1.6rem',
         '2xlarge': '2rem',
         full: '80%'
+      },
+      boxShadow: {
+        md: '0px 16px 28px 0px rgba(65, 71, 82, 0.12)'
       },
       borderWidth: {
         'border-1': '0.1rem',

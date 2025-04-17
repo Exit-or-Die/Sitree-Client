@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Nullable } from 'types/common';
 
-import SImage from '@/components/common/Image';
+import SvgIcon from '../SVGIcon';
 
 interface SDropdownProps<T = string> {
   options: T[];
@@ -38,8 +38,8 @@ const SDropdown = <T,>({
           {selectedOption ? String(selectedOption) : placeholder}
         </span>
         <div className="w-4 h-4 flex-shrink-0">
-          <SImage
-            src="/arrow.svg"
+          <SvgIcon
+            icon="arrow"
             width={16}
             height={16}
             className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}

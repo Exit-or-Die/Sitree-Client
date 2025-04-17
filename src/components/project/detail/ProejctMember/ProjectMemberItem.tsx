@@ -5,13 +5,13 @@ interface ProjectMemberItemProps {
   name: string;
   index: number;
   position: string;
-  isOwner: boolean;
+  isLeader: boolean;
   selected: boolean;
   onChangeMember: (index: number) => void;
 }
 
 const ProjectMemberItem = (props: ProjectMemberItemProps) => {
-  const { name, position, index, isOwner, selected, onChangeMember } = props;
+  const { name, position, index, isLeader, selected, onChangeMember } = props;
 
   return (
     <div
@@ -25,7 +25,7 @@ const ProjectMemberItem = (props: ProjectMemberItemProps) => {
         <p className="text-base font-lb leading-5 tracking-[-0.32px]">{name}</p>
         <p className="text-slate-50">{position}</p>
       </div>
-      {isOwner && (
+      {isLeader && (
         <div className="flex items-center">
           <span className="px-1.5 py-1 bg-tree-50 rounded-small text-xsmall font-bd text-white-100 leading-4">
             Owner

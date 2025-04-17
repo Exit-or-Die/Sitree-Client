@@ -1,0 +1,148 @@
+'use client';
+
+import { ClientUrl, ProjectRegisterRequest } from '@/service/project/request';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
+import SInput from '@/components/common/Input';
+import SSelect from '@/components/common/Select';
+
+type ServiceLink = { key: keyof ClientUrl; value: string };
+
+const CLIENT_URL_KEYS: (keyof ClientUrl)[] = ['WEB', 'IOS', 'WINDOWS', 'AOS', 'MAC_OS'];
+
+const DEFAULT_SERVICE_LINKS: ServiceLink[] = [
+  { key: 'WEB', value: '' },
+  { key: 'IOS', value: '' },
+  { key: 'WINDOWS', value: '' },
+  { key: 'AOS', value: '' },
+  { key: 'MAC_OS', value: '' }
+];
+
+const ProjectHeadServiceLink = () => {
+  const { getValues, setValue } = useFormContext<ProjectRegisterRequest>();
+  const [serviceLinks, setServiceLinks] = useState<ServiceLink[]>(DEFAULT_SERVICE_LINKS);
+
+  useEffect(() => {
+    const initialClientUrl = getValues('overview.clientUrl');
+    if (initialClientUrl && Object.keys(initialClientUrl).length > 0) {
+      const mappedLinks = (Object.entries(initialClientUrl) as [keyof ClientUrl, string][]).map(
+        ([key, value]) => ({
+          key,
+          value
+        })
+      );
+      setServiceLinks(mappedLinks);
+    } else {
+      setServiceLinks(DEFAULT_SERVICE_LINKS);
+    }
+  }, [getValues]);
+
+  const availableKeys = CLIENT_URL_KEYS.filter(
+    (key) => !serviceLinks.some((link) => link.key === key && link.value.length > 0)
+  );
+
+  const updateServiceLinks = (key: keyof ClientUrl, value: string) => {
+    setServiceLinks((prev) => prev.map((link) => (link.key === key ? { ...link, value } : link)));
+  };
+
+  const deleteServiceLink = (key: keyof ClientUrl) => {
+    if (availableKeys.length !== serviceLinks.length - 1) {
+      setServiceLinks((prev) =>
+        prev.map((link) => (link.key === key ? { ...link, value: '' } : link))
+      );
+    }
+  };
+
+  const handleKeyChange = (oldKey: keyof ClientUrl, newKey: keyof ClientUrl) => {
+    setServiceLinks((prev) =>
+      prev.map((link) =>
+        link.key === oldKey
+          ? { key: newKey, value: link.value }
+          : link.key === newKey
+            ? { key: oldKey, value: '' }
+            : link
+      )
+    );
+  };
+
+  const addServiceLink = () => {
+    if (availableKeys.length > 0) {
+      const newKey = availableKeys[0];
+      setServiceLinks((prev) => {
+        const filteredLinks = prev.filter((link) => link.key !== newKey);
+
+        return [...filteredLinks, { key: newKey, value: ' ' }];
+      });
+    }
+  };
+
+  // 실제 화면에 표시할 링크들을 계산하는 함수
+  const getLinksToRender = () => {
+    const filteredLinks = serviceLinks.filter(({ value }) => value.length > 0);
+    if (filteredLinks.length === 0) {
+      return [{ key: 'WEB' as keyof ClientUrl, value: '' }];
+    }
+
+    return filteredLinks;
+  };
+
+  useEffect(() => {
+    const newClientUrl: ClientUrl = serviceLinks.reduce(
+      (acc, { key, value }) => ({ ...acc, [key]: value }),
+      {} as ClientUrl
+    );
+
+    // clientUrl과 서비스 링크가 다를 때만 setValue 호출
+    setValue('overview.clientUrl', newClientUrl);
+  }, [serviceLinks, setValue]); // serviceLinks가 변경될 때만 실행
+
+  return (
+    <div className="p-10 flex flex-col gap-5 border-b border-1 border-slate-90">
+      <p className="text-large font-lb">서비스 링크</p>
+      <div className="flex flex-col gap-2">
+        {getLinksToRender().map(({ key, value }) => (
+          <div key={key} className="flex gap-1.5">
+            <SSelect
+              value={{ key }}
+              onChange={(newOption) => handleKeyChange(key, newOption.key as keyof ClientUrl)}
+              options={[{ key }, ...availableKeys.map((availableKey) => ({ key: availableKey }))]}
+              displayKey="key"
+              selectClass="w-[15.6rem]"
+            />
+            <div className="w-[43.4rem]">
+              <SInput
+                className="text-small font-md leading-5 tracking-[-0.14px]"
+                placeholder="링크를 입력해주세요"
+                value={value.trim()}
+                onChange={(e) => updateServiceLinks(key, e.target.value)}
+              />
+            </div>
+            {getLinksToRender().length > 1 && (
+              <span
+                className="flex items-center p-1 cursor-pointer"
+                onClick={() => deleteServiceLink(key)}
+              >
+                <SImage src="/trash.svg" width={20} height={20} />
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+      {!!availableKeys.length && (
+        <SButton
+          size="lg"
+          className="text-small bg-tree-93 text-tree-30 gap-1.5 h-[4.4rem] w-[10.8rem] cursor-pointer"
+          onClick={addServiceLink}
+        >
+          <p>+</p>
+          <p className="leading-5 tracking-[-1%]">링크 추가</p>
+        </SButton>
+      )}
+    </div>
+  );
+};
+
+export default ProjectHeadServiceLink;

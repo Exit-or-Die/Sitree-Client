@@ -39,7 +39,7 @@ const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
               name={member.nickname}
               index={index}
               position={member.position}
-              isOwner={member.isLeader}
+              isLeader={member.isLeader}
               selected={index === currentIndex}
               onChangeMember={onChangeMember}
             />

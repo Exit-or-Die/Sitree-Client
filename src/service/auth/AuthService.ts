@@ -1,7 +1,7 @@
 import Service from '@/service/service';
 
-import { SignInData, SignUpData } from './request';
-import { UserDetail, ValidateUsername } from './response';
+import { SearchUserRequest, SignInData, SignUpData } from './request';
+import { UserDetail, UserSearchResult, ValidateUsername } from './response';
 
 class AuthService extends Service {
   signIn(data: SignInData) {
@@ -14,6 +14,18 @@ class AuthService extends Service {
 
   validateUsername(nickname: string) {
     return this.http.get<ValidateUsername>(`members/nickname/exist?nickname=${nickname}`);
+  }
+
+  searchUsers({ q, pageNo = 0, size = 10 }: SearchUserRequest) {
+    const params = new URLSearchParams({
+      q,
+      pageNo: pageNo.toString(),
+      size: size.toString()
+    }).toString();
+
+    return this.http.get<UserSearchResult>(`members/search?${params}`, {
+      includeAuth: true
+    });
   }
 }
 

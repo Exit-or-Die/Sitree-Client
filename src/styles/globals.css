@@ -5,3 +5,12 @@
 html {
   font-size: 62.5%; /* 1rem = 10px (기본 16px * 0.625 = 10px) */
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari에서 스크롤바 숨김 */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE, Edge에서 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+}

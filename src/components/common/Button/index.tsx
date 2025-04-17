@@ -2,14 +2,15 @@
 
 interface ButtonProps {
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  size?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   disabled?: boolean;
 }
 
 const STYLE_BY_SIZE = {
+  none: '',
   sm: 'rounded-base px-2 py-1.5 text-[1.3rem] font-md',
   md: 'rounded-[1rem] px-3 py-2 text-small font-md',
   lg: 'rounded-large px-4 py-3 text-[1.5rem] font-md',

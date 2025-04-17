@@ -18,17 +18,6 @@ const withModal =
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
       setIsClient(true);
-
-      const handleClose = () => {
-        if (!isVisible) return;
-        onClickClose();
-      };
-
-      window.addEventListener('keyup', handleClose);
-
-      return () => {
-        window.removeEventListener('keyup', handleClose);
-      };
     }, [isVisible, onClickClose]);
 
     if (!isVisible) return null;
@@ -36,7 +25,7 @@ const withModal =
     const modalContent = (
       <div className="text-center">
         <div
-          className={`fixed left-0 top-0 w-full h-full z-10 bg-gray-800 bg-opacity-75 ${disableClose ? 'pointer-events-none' : ''}`}
+          className={`fixed left-0 top-0 w-full h-full z-50 bg-gray-800 bg-opacity-75 ${disableClose ? 'pointer-events-none' : ''}`}
           onClick={onClickClose}
         />
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 cursor-pointer">
