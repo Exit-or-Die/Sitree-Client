@@ -2,7 +2,7 @@ import { Nullable } from 'types/common';
 
 export interface ProjectRegisterRequest {
   head: Head;
-  tagList: Array<Tag>;
+  categories: Array<Tag>;
   overview: Overview;
   techviewList: Array<TechView>;
   architectureList: Array<Architecture>;
@@ -43,14 +43,14 @@ export interface TechView {
   techviewId: Nullable<number>;
   techTitle: string;
   gitRepositoryUrl: string;
-  techTagList: Array<string>;
-  description: string;
+  techStackTypes: Array<string>;
+  techDesc: string;
 }
 
 export interface Architecture {
   architectureType: string;
   architectureDesc: string;
-  architectureImage: string;
+  architectureImage: Image;
 }
 
 export interface Participant {

@@ -20,3 +20,11 @@ export interface RequestConfigWithResponse<T> extends RequestInitWithAuth {
   baseURL: string;
   response?: ApiResponse<T>;
 }
+
+export interface PaginationResponse {
+  page: number;
+  size: number;
+  total: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+}

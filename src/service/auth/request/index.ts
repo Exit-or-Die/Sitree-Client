@@ -12,3 +12,9 @@ export interface SignUpData {
   thirdPartyProfileUrl?: string;
   belonging?: string;
 }
+
+export interface SearchUserRequest {
+  q: string;
+  pageNo?: number;
+  size?: number;
+}
