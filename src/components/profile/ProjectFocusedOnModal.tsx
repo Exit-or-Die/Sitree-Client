@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SButton from '../common/Button';
 import SImage from '../common/Image';
 import { FocusPoint } from '@/service/profile/response';
+import SvgIcon from '../common/SVGIcon';
 
 type Props = {
   onClickClose: () => void;
@@ -62,7 +63,13 @@ const ProjectFocusedOnModal = ({ onClickClose, name, projectId, participantId, f
           onClick={handleAddField}
           disabled={fields.length >= MAX_FIELDS}
         >
-          <SImage src="/plus.svg" alt="plus" width={16} height={16} className="mr-1" />
+          <SvgIcon
+            icon="plus"
+            width={16}
+            height={16}
+            className="mr-1"
+            color="#03854E"
+          />
           항목 추가
         </SButton>
       </div>

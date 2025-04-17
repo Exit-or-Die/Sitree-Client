@@ -79,7 +79,13 @@ const ProjectCard = ({
                 className="text-tree-30 bg-tree-93 text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex"
                 onClick={openFocusedOnModal}
               >
-                <SImage src="/plus.svg" alt="add" width={16} height={16} />
+                <SvgIcon
+                  icon="plus"
+                  width={16}
+                  height={16}
+                  color="#03854E"
+                  className="self-center"
+                />
                 <div className="ml-1">focused on</div>
               </div>
             )}

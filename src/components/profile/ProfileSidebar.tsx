@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import SImage from '../common/Image';
 import PortfolioPDF from './PortfolioPDF';
+import SvgIcon from '../common/SVGIcon';
 
 interface Props {
   nickname: string;
@@ -63,7 +64,13 @@ const ProfileSidebar = ({
               className="bg-transparent w-full outline-none text-[13px] placeholder:text-slate-60 placeholder:font-md"
             />
             <button className="text-slate-30 flex items-center min-w-[65px] justify-center text-[10px]">
-              <SImage src="/pencil.svg" alt="pencil" width={14} height={14} className="mr-1" />
+              <SvgIcon
+                icon="edit"
+                width={14}
+                height={14}
+                className="mr-1 cursor-pointer"
+                color="#414752"
+              />
               입력하기
             </button>
             <div className="absolute top-1 left-5 -mt-2 w-3 h-3 bg-gray-100 rotate-45" />
@@ -84,7 +91,13 @@ const ProfileSidebar = ({
           )}
           {thirdPartyProfileUrl && (
             <div className="flex items-center text-slate-10 text-[13px]">
-              <SImage src="/link.svg" alt="link" width={18} height={18} className="mr-2" />
+              <SvgIcon
+                icon="link"
+                width={18}
+                height={18}
+                className="mr-2"
+                color="#778195"
+              />
               <a
                 href={thirdPartyProfileUrl}
                 target="_blank"
@@ -106,7 +119,13 @@ const ProfileSidebar = ({
       <div className="mt-6 w-full flex justify-around text-slate-30 text-small font-md">
         <button>로그아웃</button>
         <button className="flex items-center">
-          <SImage src="/setting.svg" alt="setting" width={18} height={18} className="mr-1" />
+          <SvgIcon
+            icon="setting"
+            width={18}
+            height={18}
+            className="mr-1"
+            color="#414752"
+          />
           프로필 편집
         </button>
       </div>

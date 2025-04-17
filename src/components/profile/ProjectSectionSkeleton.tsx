@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import SButton from '../common/Button';
 import SImage from '../common/Image';
 import { useParams } from 'next/navigation';
+import SvgIcon from '../common/SVGIcon';
 
 type Props = {
   type: string;
@@ -11,7 +12,13 @@ type Props = {
 
 const ProfileButton = () => (
   <SButton size="sm" className="bg-tree-50 text-white-100 border-0 font-md self-center mt-3">
-    <SImage src="/whiteSetting.svg" alt="setting" width={16} height={16} className="mr-1" />
+    <SvgIcon
+      icon="setting"
+      width={16}
+      height={16}
+      className="mr-1"
+      color="#FFFFFF"
+    />
     프로필 편집
   </SButton>
 );
