@@ -26,7 +26,7 @@ const ProjectDeleteModal = ({ projectId, onClickClose }: ProjectDeleteModalProps
 
   return (
     <div className="w-[36rem] bg-white-100 p-6 rounded-[2.4rem] text-small text-start">
-      <div className="text-large font-lg leading-6">프로젝트를 삭제하시겠어요?</div>
+      <div className="text-large font-lb leading-6">프로젝트를 삭제하시겠어요?</div>
       <div className="py-4 text-slate-50">
         <p>한 번 삭제한 프로젝트는 되돌릴 수 없어요.</p>
         <p>프로젝트를 함께한 팀원과 논의 후 결정해 주세요.</p>

@@ -76,7 +76,9 @@ const AffiliationRanking = () => {
                   />
                 </div>
                 <div className="ml-4 flex-grow">
-                  <span className="text-base font-bd truncate block max-w-[150px]">{affiliation.name}</span>
+                  <span className="text-base font-bd truncate block max-w-[150px]">
+                    {affiliation.name}
+                  </span>
                   <div className="text-xsmall text-slate-60 block">
                     <span className="text-slate-30 font-md">{affiliation.projectCount} </span>개
                     프로젝트

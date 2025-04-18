@@ -11,7 +11,7 @@ interface Props {
 const ProjectPortfolioSection = ({ projects }: Props) => {
   return (
     <div className="bg-white p-[40px] flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
-      <div className="text-xlarge font-lg text-slate-10">프로젝트 {projects.length}</div>
+      <div className="text-xlarge font-lb text-slate-10">프로젝트 {projects.length}</div>
       <div className="relative flex flex-wrap justify-between">
         {projects.map((project, index) => (
           <ProjectCard

@@ -4,8 +4,8 @@ import html2pdf from 'html2pdf.js';
 import { useState } from 'react';
 
 import SImage from '../common/Image';
-import PortfolioPDF from './PortfolioPDF';
 import SvgIcon from '../common/SVGIcon';
+import PortfolioPDF from './PortfolioPDF';
 
 interface Props {
   nickname: string;
@@ -53,7 +53,7 @@ const ProfileSidebar = ({
               defaultType="user"
             />
           </div>
-          <h2 className="text-large text-slate-10 mt-4 font-lg">{nickname}</h2>
+          <h2 className="text-large text-slate-10 mt-4 font-lb">{nickname}</h2>
           <div className="text-[13px] text-slate-50 font-md">{email}</div>
           <div className="h-[46px] relative flex items-center bg-slate-95 p-3 rounded-large w-full max-w-md mt-4">
             <input
@@ -91,13 +91,7 @@ const ProfileSidebar = ({
           )}
           {thirdPartyProfileUrl && (
             <div className="flex items-center text-slate-10 text-[13px]">
-              <SvgIcon
-                icon="link"
-                width={18}
-                height={18}
-                className="mr-2"
-                color="#778195"
-              />
+              <SvgIcon icon="link" width={18} height={18} className="mr-2" color="#778195" />
               <a
                 href={thirdPartyProfileUrl}
                 target="_blank"
@@ -119,13 +113,7 @@ const ProfileSidebar = ({
       <div className="mt-6 w-full flex justify-around text-slate-30 text-small font-md">
         <button>로그아웃</button>
         <button className="flex items-center">
-          <SvgIcon
-            icon="setting"
-            width={18}
-            height={18}
-            className="mr-1"
-            color="#414752"
-          />
+          <SvgIcon icon="setting" width={18} height={18} className="mr-1" color="#414752" />
           프로필 편집
         </button>
       </div>
