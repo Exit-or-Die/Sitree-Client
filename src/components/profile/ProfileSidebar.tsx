@@ -1,6 +1,5 @@
 'use client';
 
-import html2pdf from 'html2pdf.js';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -35,21 +34,21 @@ const ProfileSidebar = ({
   const isMe = String(session?.detail.memberId) === String(memberId);
   const [text, setText] = useState('');
 
-  const exportToPDF = () => {
-    const element = document.getElementById('pdf-template');
-    if (!element) return;
+  // const exportToPDF = () => {
+  //   const element = document.getElementById('pdf-template');
+  //   if (!element) return;
 
-    html2pdf()
-      .set({
-        margin: 0,
-        filename: '이력서.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      })
-      .from(element)
-      .save();
-  };
+  //   html2pdf()
+  //     .set({
+  //       margin: 0,
+  //       filename: '이력서.pdf',
+  //       image: { type: 'jpeg', quality: 1 },
+  //       html2canvas: { scale: 3, useCORS: true },
+  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  //     })
+  //     .from(element)
+  //     .save();
+  // };
 
   return (
     <div className="w-[300px] flex flex-col">
@@ -125,7 +124,7 @@ const ProfileSidebar = ({
         </div>
       </div>
       <button
-        onClick={exportToPDF}
+        // onClick={exportToPDF}
         className="mt-3 w-full py-2 text-slate-80 bg-slate-90 rounded-large text-center text-base font-bd h-[52px]"
       >
         PDF 이력서
