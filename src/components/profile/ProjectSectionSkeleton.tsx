@@ -38,14 +38,14 @@ const ProjectSectionSkeleton = ({ type }: Props) => {
   const { data: session } = useSession();
   const { memberId } = useParams();
 
-  const isMyProfile = String(session?.detail.memberId) === String(memberId);
+  const isMe = String(session?.detail.memberId) === String(memberId);
 
   return (
     <div className="bg-white p-[40px] flex flex-col items-center bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lb text-slate-60 self-start">{`등록된 ${type === 'project' ? '프로젝트' : '소개'}가 없어요`}</div>
       <SImage src="/emptyProject.svg" alt="empty" width={76} height={76} />
       <div className="text-[13px] text-slate-50 mt-5 font-md">표시할 내용이 없습니다.</div>
-      {isMyProfile && (type === 'project' ? <ProjectButton /> : <ProfileButton />)}
+      {isMe && (type === 'project' ? <ProjectButton /> : <ProfileButton />)}
     </div>
   );
 };

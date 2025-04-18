@@ -36,6 +36,8 @@ const Profile = async ({ params }: ProfilePageProps) => {
         email={profileDetail.email}
         thirdPartyProfileUrl={profileDetail.thirdPartyProfileUrl}
         affiliation={profileDetail.belongingName}
+        phoneNumber={profileDetail.phoneNumber}
+        position={profileDetail.position}
       />
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">

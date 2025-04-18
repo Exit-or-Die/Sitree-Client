@@ -1,7 +1,10 @@
 'use client';
 
 import html2pdf from 'html2pdf.js';
+import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { Nullable } from 'types';
 
 import SImage from '../common/Image';
 import SvgIcon from '../common/SVGIcon';
@@ -13,6 +16,8 @@ interface Props {
   email: string;
   thirdPartyProfileUrl: string;
   affiliation: string;
+  phoneNumber: Nullable<string>;
+  position: Nullable<string>;
 }
 
 const ProfileSidebar = ({
@@ -20,8 +25,14 @@ const ProfileSidebar = ({
   profileImgUrl,
   email,
   thirdPartyProfileUrl,
-  affiliation
+  affiliation,
+  phoneNumber,
+  position
 }: Props) => {
+  const { data: session } = useSession();
+  const { memberId } = useParams();
+
+  const isMe = String(session?.detail.memberId) === String(memberId);
   const [text, setText] = useState('');
 
   const exportToPDF = () => {
@@ -54,27 +65,30 @@ const ProfileSidebar = ({
             />
           </div>
           <h2 className="text-large text-slate-10 mt-4 font-lb">{nickname}</h2>
-          <div className="text-[13px] text-slate-50 font-md">{email}</div>
-          <div className="h-[46px] relative flex items-center bg-slate-95 p-3 rounded-large w-full max-w-md mt-4">
-            <input
-              type="text"
-              placeholder="한 줄 소개를 작성해 주세요"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="bg-transparent w-full outline-none text-[13px] placeholder:text-slate-60 placeholder:font-md"
-            />
-            <button className="text-slate-30 flex items-center min-w-[65px] justify-center text-[10px]">
-              <SvgIcon
-                icon="edit"
-                width={14}
-                height={14}
-                className="mr-1 cursor-pointer"
-                color="#414752"
+          <div className="text-[13px] text-slate-50 font-md mt-1">{email}</div>
+          <div className="text-[13px] text-tree-40 font-lb mt-1">{position}</div>
+          {isMe && (
+            <div className="h-[46px] relative flex items-center bg-slate-95 p-3 rounded-large w-full max-w-md mt-4">
+              <input
+                type="text"
+                placeholder="한 줄 소개를 작성해 주세요"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                className="bg-transparent w-full outline-none text-[13px] placeholder:text-slate-60 placeholder:font-md"
               />
-              입력하기
-            </button>
-            <div className="absolute top-1 left-5 -mt-2 w-3 h-3 bg-gray-100 rotate-45" />
-          </div>
+              <button className="text-slate-30 flex items-center min-w-[65px] justify-center text-[10px]">
+                <SvgIcon
+                  icon="edit"
+                  width={14}
+                  height={14}
+                  className="mr-1 cursor-pointer"
+                  color="#414752"
+                />
+                입력하기
+              </button>
+              <div className="absolute top-1 left-5 -mt-2 w-3 h-3 bg-gray-100 rotate-45" />
+            </div>
+          )}
         </div>
         <div className="border-slate-95 border-t-[1px] p-5 space-y-4">
           {affiliation && (
@@ -100,6 +114,12 @@ const ProfileSidebar = ({
               >
                 {thirdPartyProfileUrl}
               </a>
+            </div>
+          )}
+          {phoneNumber && (
+            <div className="flex items-center text-slate-10 text-[13px]">
+              <SImage src="/phone.svg" alt="phone" width={18} height={18} className="mr-2" />
+              {phoneNumber}
             </div>
           )}
         </div>
