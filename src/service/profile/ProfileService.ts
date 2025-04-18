@@ -1,6 +1,7 @@
 import Service from '@/service/service';
 
-import { UserProfileResponse, UserProject } from './response';
+import { FocusedPointParams } from './request';
+import { FocusPoints, UserProfileResponse, UserProject } from './response';
 
 class ProfileService extends Service {
   searchProfile(memberId: string) {
@@ -9,6 +10,12 @@ class ProfileService extends Service {
 
   searchUserProjects(memberId: string) {
     return this.http.get<Array<UserProject>>(`projects/participants/${memberId}`);
+  }
+
+  updateFocusedPoints(query: FocusedPointParams) {
+    return this.http.post<FocusPoints>('focused-points', query, {
+      includeAuth: true
+    });
   }
 }
 

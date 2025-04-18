@@ -1,19 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import WithModal from '@/enhancers/WithModal';
+import { FocusPoint } from '@/service/profile/response';
 import { getTimeDifferenceMessage } from '@/utils/time';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import HealthCheckState from '../common/HealthState';
 import SImage from '../common/Image';
-import { FocusPoint } from '@/service/profile/response';
-import WithModal from '@/enhancers/WithModal';
-import ProjectFocusedOnModal from '../profile/ProjectFocusedOnModal';
 import SvgIcon from '../common/SVGIcon';
+import ProjectFocusedOnModal from '../profile/ProjectFocusedOnModal';
 
 type Props = {
   className: string;
-  projectId: number;
+  projectId: string;
   thumbnail: string;
   name: string;
   shortDescription: string;
@@ -55,7 +55,7 @@ const ProjectCard = ({
     e.stopPropagation();
     e.preventDefault();
     setToggleModal(true);
-  }
+  };
 
   return (
     <>
@@ -75,15 +75,15 @@ const ProjectCard = ({
                 <div className="ml-1 text-xsmall text-tree-40">focused on</div>
               </div>
             ) : (
-              <div 
-                className="text-tree-30 bg-tree-93 text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex"
+              <div
+                className="text-white-100 bg-tree-50 text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex"
                 onClick={openFocusedOnModal}
               >
                 <SvgIcon
                   icon="plus"
                   width={16}
                   height={16}
-                  color="#03854E"
+                  color="#FFFFFF"
                   className="self-center"
                 />
                 <div className="ml-1">focused on</div>
@@ -102,7 +102,13 @@ const ProjectCard = ({
           <div className="flex text-xsmall text-gray-400 mt-4 pl-2 justify-between">
             <div className="flex">
               <div className="flex items-center mr-2">
-                <SvgIcon icon="comment" color="#778195" className="mr-[3px]" width={12} height={12} />{' '}
+                <SvgIcon
+                  icon="comment"
+                  color="#778195"
+                  className="mr-[3px]"
+                  width={12}
+                  height={12}
+                />{' '}
                 <span className="text-slate-30">{commentCount}</span>
               </div>
               <div className="flex items-center mr-2">
@@ -123,10 +129,10 @@ const ProjectCard = ({
           </div>
         </div>
       </Link>
-      <FocusedOnModal 
-        modalClassName="w-[40%]" 
-        isVisible={toggleModal} 
-        onClickClose={onClickCloseModal} 
+      <FocusedOnModal
+        modalClassName="w-[40%]"
+        isVisible={toggleModal}
+        onClickClose={onClickCloseModal}
         hideClose
         disableKeyClose
         projectId={projectId}

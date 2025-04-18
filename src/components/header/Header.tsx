@@ -20,7 +20,6 @@ export const Header = () => {
   const { queryKey } = AuthQueryOptions.validateUser();
   const queryClient = useQueryClient();
   const isLoggedIn = queryClient.getQueryData(queryKey);
-  console.log(session);
 
   return (
     <header className="flex items-center justify-between bg-white px-48 py-4 max-h-[56px] bg-white-100">
@@ -83,7 +82,10 @@ export const Header = () => {
             </SButton>
           </Link>
 
-          <Link href={`/profile/${session?.detail.memberId}`} className="flex items-center space-x-2">
+          <Link
+            href={`/profile/${session?.detail.memberId}`}
+            className="flex items-center space-x-2"
+          >
             <div className="w-8 h-8 rounded-full bg-slate-95 flex items-center justify-center">
               <SImage
                 src="/defaultUser.svg"

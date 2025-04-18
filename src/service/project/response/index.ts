@@ -96,7 +96,7 @@ export interface ProjectsResponse {
 }
 
 export interface Project {
-  projectId: number;
+  projectId: string;
   name: string;
   thumbnail: string;
   shortDescription: string;

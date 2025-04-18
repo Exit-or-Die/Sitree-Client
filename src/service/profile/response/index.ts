@@ -66,3 +66,7 @@ export interface FocusPoint {
   focusPointId: string;
   focusPoints: Array<string>;
 }
+
+export interface FocusPoints {
+  focusPoints: Array<string>;
+}
