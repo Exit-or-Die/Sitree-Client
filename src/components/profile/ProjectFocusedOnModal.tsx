@@ -23,6 +23,7 @@ type Props = {
   onClickClose: () => void;
   name: string;
   projectId: string;
+  isMe: boolean;
   participantId?: string;
   focusPoint?: FocusPoint;
 };
@@ -89,7 +90,8 @@ const ProjectFocusedOnModal = ({
   name,
   projectId,
   participantId,
-  focusPoint
+  focusPoint,
+  isMe
 }: Props) => {
   const router = useRouter();
 
@@ -253,12 +255,14 @@ const ProjectFocusedOnModal = ({
               >
                 닫기
               </SButton>
-              <SButton
-                onClick={onClickToggleType}
-                className="bg-white-100 text-slate-30 rounded-large text-small"
-              >
-                수정
-              </SButton>
+              {isMe && (
+                <SButton
+                  onClick={onClickToggleType}
+                  className="bg-white-100 text-slate-30 rounded-large text-small"
+                >
+                  수정
+                </SButton>
+              )}
             </>
           )}
         </div>

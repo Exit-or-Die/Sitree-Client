@@ -2,6 +2,7 @@
 
 import WithModal from '@/enhancers/WithModal';
 import { FocusPoint } from '@/service/profile/response';
+import { isEmpty } from '@/utils/array';
 import { getTimeDifferenceMessage } from '@/utils/time';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -23,9 +24,9 @@ type Props = {
   viewCount: number;
   isHealthy: boolean;
   latestUpdateTime: Date;
-  isProfile?: boolean;
   participantId?: string;
   focusPoint?: FocusPoint;
+  isMe?: boolean;
 };
 
 const ProjectCard = ({
@@ -41,8 +42,8 @@ const ProjectCard = ({
   isHealthy,
   latestUpdateTime,
   participantId,
-  focusPoint,
-  isProfile = false
+  focusPoint = { focusPointId: '', focusPoints: [] },
+  isMe = false
 }: Props) => {
   const [toggleModal, setToggleModal] = useState(false);
   const FocusedOnModal = WithModal(ProjectFocusedOnModal);
@@ -69,28 +70,32 @@ const ProjectCard = ({
               <h3 className="text-base font-bold max-w-[150px] truncate">{name}</h3>
               <p className="text-xsmall text-gray-400 max-w-[150px] truncate">{shortDescription}</p>
             </div>
-            {!isProfile ? (
-              <div className="flex ml-auto items-center">
-                <SImage src="/focused.svg" alt="focused on" width={16} height={16} />
-                <div className="ml-1 text-xsmall text-tree-40">focused on</div>
-              </div>
-            ) : (
+            {!isEmpty(focusPoint.focusPoints) ? (
               <div
-                className="text-white-100 bg-tree-50 text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex"
+                className="text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex text-tree-30 bg-tree-93"
                 onClick={openFocusedOnModal}
               >
-                <SvgIcon
-                  icon="plus"
-                  width={16}
-                  height={16}
-                  color="#FFFFFF"
-                  className="self-center"
-                />
+                <SImage src="/focused.svg" alt="focused on" width={16} height={16} />
                 <div className="ml-1">focused on</div>
               </div>
+            ) : (
+              isMe && (
+                <div
+                  className="text-small rounded-large border-0 ml-auto font-rg px-3 py-2 flex text-white-100 bg-tree-50"
+                  onClick={openFocusedOnModal}
+                >
+                  <SvgIcon
+                    icon="plus"
+                    width={16}
+                    height={16}
+                    color="#FFFFFF"
+                    className="self-center"
+                  />
+                  <div className="ml-1">focused on</div>
+                </div>
+              )
             )}
           </div>
-
           <div className="relative w-full h-[184px] overflow-hidden rounded-3xl border shadow-sm">
             <SImage
               src={backgroundImage}
@@ -139,6 +144,7 @@ const ProjectCard = ({
         name={name}
         focusPoint={focusPoint}
         participantId={participantId}
+        isMe={isMe}
       />
     </>
   );

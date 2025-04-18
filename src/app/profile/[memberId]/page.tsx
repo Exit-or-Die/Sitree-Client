@@ -51,7 +51,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
         {isEmpty(projects) ? (
           <ProjectSectionSkeleton type="project" />
         ) : (
-          <ProjectPortfolioSection projects={projects} />
+          <ProjectPortfolioSection projects={projects} memberId={memberId} />
         )}
 
         {profileDetail.myPage.careers && (
