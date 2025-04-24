@@ -1,16 +1,16 @@
-import { Editor } from '@toast-ui/react-editor';
+'use client';
+
+import { uploadFile } from '@/utils/file';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { useRef, useEffect, useCallback } from 'react';
+import '@/styles/editor.css';
+import { Editor } from '@toast-ui/react-editor';
+import { useRef, useCallback, useState } from 'react';
 
-/**
- * Markdown으로 작성된 뷰어를 사용하고 싶을 때 사용
- */
-// import { Viewer } from '@toast-ui/react-editor';
-
-interface EditorProps {
+export interface EditorProps {
   onChange: (e: string) => void;
   initialValue?: string;
   placeholder?: string;
+  maxLength?: number;
 }
 
 const DEFAULT_TOOLBAR = [
@@ -19,47 +19,56 @@ const DEFAULT_TOOLBAR = [
   ['ul', 'ol', 'task'],
   ['table', 'link'],
   ['image'],
-  ['code'],
-  ['scrollSync']
+  ['code']
 ];
 
-/**
- * @description SSR 환경에서 사용시 dynamic import 사용
- * @example dynamic(() => import("./SEditor"), { ssr: false });
- */
-const SEditor = ({ initialValue, onChange, placeholder }: EditorProps) => {
+const SEditor = ({ initialValue, onChange, placeholder, maxLength = 5000 }: EditorProps) => {
   const editorRef = useRef<Editor>(null);
+  const [currentLength, setCurrentLength] = useState(initialValue?.length ?? 0);
+
+  const effectiveInitialValue = initialValue ? initialValue : ' ';
 
   const handleChange = useCallback(() => {
     if (!editorRef.current) return;
 
     const instance = editorRef.current.getInstance();
-    onChange(instance.getHTML());
+    const newHTML = instance.getHTML();
+    const markdown = instance.getMarkdown();
+    const textLength = markdown.replace(/\n/g, ' ').length;
+    setCurrentLength(textLength);
+
+    onChange(newHTML);
   }, [onChange]);
 
-  useEffect(() => {
-    if (!editorRef.current) return;
-
-    const instance = editorRef.current.getInstance();
-
-    instance.setHTML(initialValue ?? '');
-  }, [initialValue]);
+  const handleImageUpload = useCallback((blob: Blob, callback: (url: string) => void) => {
+    uploadFile(blob as File)
+      .then((url) => callback(url))
+      .catch((error) => console.error('이미지 업로드 오류', error));
+  }, []);
 
   return (
-    <>
+    <div className="flex flex-col gap-1.5">
       <Editor
         ref={editorRef}
-        initialValue={initialValue} // 글 수정 시 사용
-        initialEditType="markdown" // wysiwyg or markdown
+        initialValue={effectiveInitialValue} // 빈 문자열일 경우 placeholder 표시
+        placeholder={placeholder}
+        initialEditType="wysiwyg"
         hideModeSwitch={true}
-        height="500px"
-        theme={''} // '' & 'dark'
+        height="480px"
+        theme={''}
+        autofocus={false} // 자동 포커스 비활성화
         usageStatistics={false}
         toolbarItems={DEFAULT_TOOLBAR}
-        placeholder={placeholder}
+        useCommandShortcut={true}
         onChange={handleChange}
+        hooks={{
+          addImageBlobHook: handleImageUpload
+        }}
       />
-    </>
+      <div className="text-xsmall text-right text-slate-60">
+        {currentLength} / {maxLength}
+      </div>
+    </div>
   );
 };
 

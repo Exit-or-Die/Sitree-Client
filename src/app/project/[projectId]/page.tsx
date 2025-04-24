@@ -1,4 +1,4 @@
-import { getDehydratedQueries, Hydrate } from '@/hooks/react-query/react-query';
+import { getDehydratedQueries, getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
 import CommentsQueryOptions from '@/service/comments/queries';
 import { GetCommentListResponse } from '@/service/comments/response';
 import ProjectQueryOptions from '@/service/project/queries';
@@ -16,6 +16,70 @@ import ProjectDetailSideBar from '@/components/project/detail/ProjectDetailSideB
 interface ProjectDetailPageProps {
   params: {
     projectId: string;
+  };
+}
+
+export async function generateMetadata({ params }: ProjectDetailPageProps) {
+  const { queryKey: projectDetailKey, queryFn: projectDetailFn } =
+    ProjectQueryOptions.retrieveProjectDetail(params.projectId);
+
+  const projectDetailQuery = await getDehydratedQuery({
+    queryKey: projectDetailKey,
+    queryFn: projectDetailFn
+  });
+
+  const projectDetail = projectDetailQuery?.state.data as ProjectDetailResponse;
+
+  if (!projectDetail) {
+    return {
+      title: '프로젝트를 찾을 수 없습니다',
+      description: '요청한 프로젝트를 찾을 수 없습니다.',
+      icons: {
+        icon: '/meta/sitree_favicon.ico'
+      },
+      images: [
+        {
+          url: '/meta/sitree_image.png',
+          width: 800,
+          height: 600,
+          alt: 'Sitree default image'
+        }
+      ]
+    };
+  }
+
+  const projectRepresentativeImage = projectDetail.overview.images.find(
+    (image) => image.imageType === IMAGE_TYPE.REPRESENT
+  );
+
+  return {
+    title: projectDetail.head?.title,
+    description: projectDetail.head?.shortDescription,
+    icons: {
+      icon: projectDetail.head?.thumbnailImageUrl
+    },
+    openGraph: {
+      title: projectDetail.head?.title,
+      description: projectDetail.head?.shortDescription,
+      type: 'website',
+      url: `https://si-tree.com/projects/${params.projectId}`,
+      site_name: 'Si-Tree',
+      locale: 'ko_KR',
+      images: [
+        {
+          url: projectRepresentativeImage?.imageUrl || '/meta/sitree_image.png',
+          width: 800,
+          height: 600,
+          alt: projectDetail.head?.title
+        },
+        ...projectDetail.overview.images.map((image) => ({
+          url: image.imageUrl,
+          width: 800,
+          height: 600,
+          alt: projectDetail.head?.title
+        }))
+      ]
+    }
   };
 }
 

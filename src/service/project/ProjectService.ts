@@ -5,12 +5,20 @@ import {
   ProjectLeader,
   ProjectRegisterResponse,
   ProjectsResponse,
+  ProjectTechStacks,
   SitreePickResponse
 } from './response';
 
 class ProjectService extends Service {
   registerProject(param: ProjectRegisterRequest) {
-    return this.http.post<ProjectRegisterResponse>('projects', param);
+    return this.http.post<ProjectRegisterResponse>('projects', param, {
+      includeAuth: true
+    });
+  }
+  modifyProject(projectId: string, param: ProjectRegisterRequest) {
+    return this.http.put<ProjectRegisterResponse>(`projects/${projectId}`, param, {
+      includeAuth: true
+    });
   }
   retrieveProjectDetail(projectId: string) {
     return this.http.get<ProjectDetailResponse>(`projects/${projectId}`);
@@ -38,6 +46,9 @@ class ProjectService extends Service {
     }
 
     return this.http.get<ProjectsResponse>(`projects?${params.toString()}`);
+  }
+  retrieveProjectTechStacks() {
+    return this.http.get<ProjectTechStacks>('projects/tech-stacks');
   }
   checkProjectLikeStatus(projectId: string, memberId: number) {
     if (!projectId || !memberId) {

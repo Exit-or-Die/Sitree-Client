@@ -6,6 +6,7 @@ const queryKeys = {
   retrieveSitreePick: () => ['project', 'retrieveSitreePick'] as const,
   retrieveProjects: (projectQuery: ProjectParamsRequest) =>
     ['retrieveProjects', projectQuery] as const,
+  retrieveProjectTechStacks: () => ['project', 'retrieveProjectTechStacks'] as const,
   checkProjectLikeStatus: (projectId: string, memberId: number) =>
     ['project', 'like', projectId, memberId] as const,
   checkProjectLeader: (projectId: string) => ['project', 'leader', projectId] as const
@@ -14,6 +15,9 @@ const queryKeys = {
 const ProjectQueryOptions = {
   registerProject: (param: ProjectRegisterRequest) => ({
     mutateFn: () => ProjectService.registerProject(param)
+  }),
+  modifyProject: (projectId: string, param: ProjectRegisterRequest) => ({
+    mutateFn: () => ProjectService.modifyProject(projectId, param)
   }),
   retrieveProjectDetail: (projectId: string) => ({
     queryKey: queryKeys.retrieveProjectDetail(projectId),
@@ -32,6 +36,10 @@ const ProjectQueryOptions = {
   retrieveProjects: (query: ProjectParamsRequest = { sortType: 'VIEWS' }) => ({
     queryKey: queryKeys.retrieveProjects(query),
     queryFn: () => ProjectService.retrieveProjects(query)
+  }),
+  retrieveProjectTechStacks: () => ({
+    queryKey: queryKeys.retrieveProjectTechStacks(),
+    queryFn: () => ProjectService.retrieveProjectTechStacks()
   }),
   checkProjectLikeStatus: (projectId: string, memberId: number) => ({
     queryKey: queryKeys.checkProjectLikeStatus(projectId, memberId),

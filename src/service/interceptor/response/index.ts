@@ -8,12 +8,10 @@ export const handleResponseByCode = async <T>(
   config: RequestConfigWithResponse<T>
 ): Promise<void> => {
   const { response } = config;
-
   // response가 undefined인지 확인
   if (!response) {
     throw new Error('API Error: Response is undefined');
   }
-
   // accessToken 만료되었을시
   if (response.code === 401) {
     console.log('Access token expired. Renewing token...');
@@ -29,7 +27,6 @@ export const handleResponseByCode = async <T>(
         },
         includeAuth: true
       };
-
       const { pathname, search } = new URL(updatedConfig.url);
       const fullPathURL = pathname + search;
       const json: T = await updatedConfig.request(
@@ -38,7 +35,6 @@ export const handleResponseByCode = async <T>(
         updatedConfig.body,
         updatedConfig
       );
-
       config.response = {
         code: 0,
         message: 'successfully fetched!',
@@ -51,7 +47,6 @@ export const handleResponseByCode = async <T>(
       throw new Error('Unauthorized: Failed to renew access token');
     }
   }
-
   // code 값에 따라 처리
   if (response.code !== 0) {
     throw new Error(`API Error: ${response.code}`);

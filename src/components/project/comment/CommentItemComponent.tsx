@@ -28,8 +28,8 @@ export interface CommentInfoProps {
   contents: string;
 }
 
-const MemberBadge = ({ isOwner }: { isOwner: boolean }) => {
-  const props = isOwner
+const MemberBadge = ({ isLeader }: { isLeader: boolean }) => {
+  const props = isLeader
     ? { text: 'Owner', style: 'bg-tree-50 text-white-100' }
     : { text: 'Member', style: 'bg-[#08C7671F] text-tree-40' };
 
@@ -61,7 +61,7 @@ const CommentItemComponent = ({
     .includes(comment.createMember.memberId);
 
   const leader = teamMember.find((member) => member.isLeader);
-  const isOwner = leader ? leader.memberId === comment.createMember.memberId : false;
+  const isLeader = leader ? leader.memberId === comment.createMember.memberId : false;
 
   const { queryKey } = CommentsQueryOptions.retrieveCommentList(projectId);
 
@@ -100,7 +100,7 @@ const CommentItemComponent = ({
               <p className="text-base font-lb leading-5 tracking-[-0.32px]">
                 {comment.createMember.nickname}
               </p>
-              {isTeamMember && <MemberBadge isOwner={isOwner} />}
+              {isTeamMember && <MemberBadge isLeader={isLeader} />}
             </div>
             <div className="flex gap-1">
               {!comment.isChildComment && (

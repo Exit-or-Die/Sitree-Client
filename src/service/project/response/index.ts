@@ -2,7 +2,8 @@ import { Nullable } from 'types/common';
 
 export const IMAGE_TYPE = {
   BACKGROUND: 'BACKGROUND',
-  REPRESENT: 'REPRESENT'
+  REPRESENT: 'REPRESENT',
+  ARCHITECTURE: 'ARCHITECTURE'
 } as const;
 
 export type ImageType = keyof typeof IMAGE_TYPE;
@@ -74,7 +75,7 @@ export interface Participant {
   nickname: string;
   imageUrl: string;
   position: string;
-  focusPoint: Nullable<Array<string>>;
+  focusPoints: Nullable<Array<string>>;
   isLeader: boolean;
 }
 
@@ -107,6 +108,9 @@ export interface Project {
   isHealthy: boolean;
 }
 
+export interface ProjectTechStacks {
+  techStacks: Array<string>;
+}
 export interface ProjectLeader {
   memberId: number;
   imageUrl: string;
