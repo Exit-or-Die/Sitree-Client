@@ -115,8 +115,8 @@ const ProjectDetailSideBar = ({
         </div>
         <div className="flex gap-3 justify-between">
           <SButton
-            className={`w-[12.7rem] h-[6.4rem] flex flex-col gap-1.5 px-12 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
-            onClick={likeProject}
+            className={`w-[160px] h-[6rem] flex flex-col gap-1 rounded-large border-none ${isLiked ? 'bg-red-95' : 'hover:bg-slate-95'} `}
+            onClick={() => likeProject()}
           >
             <SvgIcon
               icon={isLiked ? 'likeFill' : 'like'}

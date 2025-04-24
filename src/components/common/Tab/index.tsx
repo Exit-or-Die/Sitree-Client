@@ -8,9 +8,15 @@ interface TabProps {
   items: string[];
   onChange: (item: string, index: number) => void;
   activeItem?: string;
+  innerClassName?: string;
 }
 
-const STab: React.FC<TabProps> = ({ items, onChange, activeItem = items[0] }) => {
+const STab: React.FC<TabProps> = ({
+  items,
+  onChange,
+  activeItem = items[0],
+  innerClassName = ''
+}) => {
   const [selected, setSelected] = useState(activeItem);
 
   const handleClick = (item: string, index: number) => {
@@ -26,7 +32,7 @@ const STab: React.FC<TabProps> = ({ items, onChange, activeItem = items[0] }) =>
         grabCursor={true}
         loop={false}
         onSlideChange={({ activeIndex }) => setSelected(items[activeIndex])}
-        className="cursor-pointer border-b border-b-1 border-slate-90"
+        className={`cursor-pointer border-b border-b-1 border-slate-90 ${innerClassName}`}
         style={{
           overflow: 'hidden'
         }}

@@ -23,13 +23,13 @@ const STextarea = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentLength(e.target.value.length); // 현재 글자 수 업데이트
-    if (onChange) {
+    if (onChange && currentLength < maxLength) {
       onChange(e); // 외부 onChange 이벤트 호출
     }
   };
 
   return (
-    <div className="relative bg-white rounded-lg">
+    <div className="flex flex-col gap-1.5 bg-white rounded-lg">
       <textarea
         className={`px-4 py-2 border border-slate-300 text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-tree-300 resize-none w-full h-60 ${className}`}
         placeholder={placeholder}
@@ -39,7 +39,7 @@ const STextarea = ({
         name={name}
       />
       {maxLength && (
-        <div className="absolute bottom-3 right-2 text-xsmall text-slate-500">
+        <div className="text-xsmall text-right text-slate-60">
           {currentLength} / {maxLength}
         </div>
       )}

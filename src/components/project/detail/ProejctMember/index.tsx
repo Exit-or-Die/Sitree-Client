@@ -39,14 +39,14 @@ const ProjectMember = ({ id, participantList }: ProjectMemberProps) => {
               name={member.nickname}
               index={index}
               position={member.position}
-              isOwner={member.isLeader}
+              isLeader={member.isLeader}
               selected={index === currentIndex}
               onChangeMember={onChangeMember}
             />
           ))}
         </div>
         <ProjectMemberFocusedOn
-          contents={participantList[currentIndex].focusPoint}
+          contents={participantList[currentIndex].focusPoints}
           isMe={session?.detail.memberId === participantList[currentIndex].memberId}
           key={currentIndex}
         />
