@@ -80,6 +80,7 @@ const ProjectDetailSideBar = ({
       openToast(TOAST_ICON.success, '링크가 복사되었습니다.');
     } catch (error) {
       console.error('링크 복사 실패:', error);
+      openToast(TOAST_ICON.error, '링크 복사에 실패하였습니다.');
     }
   };
 
