@@ -38,7 +38,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
           memberId: Number(session?.detail.memberId) || 0,
           nickname: String(session?.detail.nickname) || 'Unknown',
           isLeader: true,
-          focusPoint: [] as Nullable<Array<string>>,
+          focusPoints: [] as Nullable<Array<string>>,
           imageUrl: String(session?.detail.profileImgUrl) || '',
           position: ''
         }
@@ -64,7 +64,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
       nickname: member.nickname,
       imageUrl: member.profileImgUrl,
       position: '',
-      focusPoint: [],
+      focusPoints: [],
       isLeader: false
     }));
     const updatedTeamMembers = [...teamMembers, ...newMemberArray];
