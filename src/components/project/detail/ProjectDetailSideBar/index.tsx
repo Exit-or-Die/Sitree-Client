@@ -15,6 +15,7 @@ import { useState } from 'react';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
+import { TOAST_ICON, useToast } from '@/components/providers/ComponentProvider';
 
 import ProjectDeleteModal from './ProjectDeleteModal';
 
@@ -39,6 +40,7 @@ const ProjectDetailSideBar = ({
   const { data: session } = useSession();
   const { projectId }: { projectId: string } = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const { openToast } = useToast();
   const ProjectDeleteWithModal = withModal(ProjectDeleteModal);
   const { queryKey: projectLikeKey, queryFn: projectLikeFn } =
     ProjectQueryOptions.checkProjectLikeStatus(projectId, session?.detail.memberId as number);
@@ -75,8 +77,10 @@ const ProjectDetailSideBar = ({
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
+      openToast(TOAST_ICON.success, '링크가 복사되었습니다.');
     } catch (error) {
       console.error('링크 복사 실패:', error);
+      openToast(TOAST_ICON.error, '링크 복사에 실패하였습니다.');
     }
   };
 

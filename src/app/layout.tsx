@@ -22,6 +22,7 @@ const cls = (...classnames: string[]) => {
 };
 
 import { AuthProvider } from '@/components/providers/AuthProvider';
+import { ComponentProvider } from '@/components/providers/ComponentProvider';
 import { ReactQueryProvider } from '@/components/providers/ReactQuery';
 import SessionWrapper from '@/components/SessionWrapper';
 import { MainLayout } from '@/components/templates/MainLayout';
@@ -86,7 +87,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             <div id="modal" />
             <ReactQueryProvider>
               <MainLayout>
-                <main>{children}</main>
+                <ComponentProvider>
+                  <main>{children}</main>
+                </ComponentProvider>
               </MainLayout>
             </ReactQueryProvider>
           </body>
