@@ -7,7 +7,8 @@ export async function middleware(request: NextRequest) {
 
   const homeUrl = new URL('/', request.url);
 
-  const authPaths = ['/api/auth', '/api/auth/signin', '/api/auth/callback'];
+  const authPaths = ['/api/auth', '/api/auth/signin', '/api/auth/callback', '/auth/signin'];
+  const protectedPaths = ['/project/register'];
 
   // _next 디렉터리에 있는 캐시된 데이터, 이미지 및 CSS 파일과 관련된 경로를 처리 방지
   // auth 관련 리퀘스트는 허용
@@ -16,6 +17,11 @@ export async function middleware(request: NextRequest) {
     authPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
     return NextResponse.next();
+  }
+
+  // 로그인 허용 path 설정
+  if (protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
+    return !accessToken ? NextResponse.redirect(homeUrl) : NextResponse.next();
   }
 
   if (request.nextUrl.pathname.startsWith('/onboarding')) {
