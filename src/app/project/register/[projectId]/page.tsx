@@ -24,12 +24,12 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     redirect('/404');
   }
 
-  const memberIds = query.state.data?.participantList?.map((p) => p.memberId) ?? [];
+  const teamLeader = query.state.data?.participantList?.find((p) => p.isLeader);
   const currentMemberId = session?.detail.memberId;
 
-  const isParticipant = memberIds.includes(currentMemberId ?? 0);
-
-  if (!isParticipant) redirect('/');
+  if (teamLeader?.memberId !== currentMemberId) {
+    redirect('/');
+  }
 
   return (
     <div className="p-10 bg-slate-95">
