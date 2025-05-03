@@ -3,12 +3,14 @@ import { ROUTES } from '@/constants/route';
 import AuthService from '@/service/auth/AuthService';
 import { UserDetail } from '@/service/auth/response';
 import { setCookie } from '@/utils/cookie';
+import { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { cookies } from 'next/headers';
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -71,6 +73,8 @@ const handler = NextAuth({
       return session;
     }
   }
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
