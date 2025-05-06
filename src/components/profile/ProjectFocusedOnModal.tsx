@@ -23,7 +23,7 @@ import STextarea from '../common/Textarea';
 type Props = {
   onClickClose: () => void;
   name: string;
-  projectId: string;
+  projectId: number;
   isMe: boolean;
   participantId?: string;
   focusPoint?: FocusPoint;
@@ -76,7 +76,7 @@ const SortableItemComponent = ({
             onChange={(e) => onTextChange(id, e.target.value)}
             placeholder="프로젝트 과정에서 집중했던 부분과 어필하고 싶은 점을 작성해 주세요."
             maxLength={250}
-            className="w-full border p-3 rounded-base text-small resize-none min-h-[184px] placeholder-slate-60 outline-tree-50"
+            className="w-full border p-3 rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50"
           />
         </div>
       </div>
@@ -119,6 +119,7 @@ const ProjectFocusedOnModal = ({
       focusPoints,
       focusPointId: focusPoint?.focusPointId
     };
+
     updateFocusedPoint(payload);
     setViewFields(editFields);
     setIsEdit(false);
@@ -244,7 +245,8 @@ const ProjectFocusedOnModal = ({
               </SButton>
               <SButton
                 onClick={onClickUpdate}
-                className="bg-tree-50 text-white-100 rounded-large text-small border-0"
+                className={`bg-tree-50 text-white-100 rounded-large text-small border-0 ${!editFields.length && 'opacity-40'}`}
+                disabled={!editFields.length}
               >
                 등록
               </SButton>

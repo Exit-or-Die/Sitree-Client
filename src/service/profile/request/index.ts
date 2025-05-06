@@ -1,5 +1,5 @@
 export interface FocusedPointParams {
-  projectId: string;
+  projectId: number;
   participantId: string;
   focusPoints: Array<string>;
   focusPointId?: string;

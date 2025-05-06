@@ -14,7 +14,7 @@ import ProjectFocusedOnModal from '../profile/ProjectFocusedOnModal';
 
 type Props = {
   className: string;
-  projectId: string;
+  projectId: number;
   thumbnail: string;
   name: string;
   shortDescription: string;

@@ -17,11 +17,11 @@ const ProjectPortfolioSection = ({ projects, memberId }: Props) => {
   return (
     <div className="bg-white p-[40px] flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
       <div className="text-xlarge font-lb text-slate-10">프로젝트 {projects.length}</div>
-      <div className="relative flex flex-wrap justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10">
         {projects.map((project, index) => (
           <ProjectCard
             key={index}
-            className="w-[375px]"
+            className="w-full"
             projectId={project.projectId}
             thumbnail={project.thumbnail}
             name={project.name}
