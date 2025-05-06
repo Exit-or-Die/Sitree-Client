@@ -16,16 +16,16 @@ export interface UserProfileResponse {
 }
 
 export interface UserDetailField {
-  selfIntroduction: Nullable<UserIntroField>;
-  careers: Nullable<UserCareerField>;
-  educationActivities: Nullable<Array<UserEducationField>>;
-  techStacks: Nullable<Array<string>>;
-  links: Nullable<Array<UserLinkField>>;
+  selfIntroduction: UserIntroField;
+  careers: UserCareerField;
+  educationActivities: Array<UserEducationField>;
+  techStacks: Array<string>;
+  links: Array<UserLinkField>;
 }
 
 export interface UserIntroField {
-  title: string;
-  contents: string;
+  title: Nullable<string>;
+  contents: Nullable<string>;
 }
 export interface UserCareerField {
   totalYears: number;

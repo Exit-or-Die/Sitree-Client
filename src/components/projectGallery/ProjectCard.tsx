@@ -135,7 +135,7 @@ const ProjectCard = ({
         </div>
       </Link>
       <FocusedOnModal
-        modalClassName="w-[40%]"
+        modalClassName="w-[64rem]"
         isVisible={toggleModal}
         onClickClose={onClickCloseModal}
         hideClose

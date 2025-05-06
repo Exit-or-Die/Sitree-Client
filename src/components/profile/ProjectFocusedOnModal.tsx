@@ -18,6 +18,7 @@ import { useState, memo } from 'react';
 import SButton from '../common/Button';
 import SImage from '../common/Image';
 import SvgIcon from '../common/SVGIcon';
+import STextarea from '../common/Textarea';
 
 type Props = {
   onClickClose: () => void;
@@ -69,15 +70,16 @@ const SortableItemComponent = ({
             onClick={() => onRemove(id)}
           />
         </div>
-        <textarea
-          value={field.text}
-          onChange={(e) => onTextChange(id, e.target.value)}
-          placeholder="프로젝트 과정에서 집중했던 부분과 어필하고 싶은 점을 작성해 주세요."
-          maxLength={250}
-          className="w-full border p-3 rounded-base text-small resize-none min-h-[184px] placeholder-slate-60 outline-tree-50"
-        />
+        <div className="w-full">
+          <STextarea
+            value={field.text}
+            onChange={(e) => onTextChange(id, e.target.value)}
+            placeholder="프로젝트 과정에서 집중했던 부분과 어필하고 싶은 점을 작성해 주세요."
+            maxLength={250}
+            className="w-full border p-3 rounded-base text-small resize-none min-h-[184px] placeholder-slate-60 outline-tree-50"
+          />
+        </div>
       </div>
-      <div className="text-right text-slate-60 text-xsmall mt-1 ml-2">{field.text.length}/250</div>
     </div>
   );
 };

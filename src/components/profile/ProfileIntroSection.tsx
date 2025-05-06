@@ -1,12 +1,10 @@
-'use client';
-
 import { UserIntroField, UserLinkField } from '@/service/profile/response';
 
 import SImage from '../common/Image';
 
 type Props = {
   content: UserIntroField;
-  techStacks: string[];
+  techStacks: Array<string>;
   links: Array<UserLinkField>;
 };
 

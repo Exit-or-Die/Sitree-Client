@@ -1,5 +1,3 @@
-'use client';
-
 import { UserCareerField } from '@/service/profile/response';
 import formatTimestamps from '@/utils/date';
 
@@ -11,8 +9,8 @@ type Props = {
 
 const ProfileCareerSection = ({ careers }: Props) => {
   return (
-    <div className="p-[40px] bg-white flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
-      <div className="text-xlarge font-lg text-slate-10">
+    <div className="p-[40px] flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">
+      <div className="text-xlarge font-lb text-slate-10">
         경력 {careers.totalYears}년 {careers.totalMonths}개월
       </div>
       {careers.careerList.map((career, index) => {

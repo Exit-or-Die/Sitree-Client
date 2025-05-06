@@ -26,6 +26,9 @@ const Profile = async ({ params }: ProfilePageProps) => {
 
   const [userProfileQuery, userProjectsQuery] = await getDehydratedQueries(queries);
   const profileDetail = userProfileQuery?.state.data as UserProfileResponse;
+  const { title, contents } = profileDetail.myPage.selfIntroduction;
+  const { techStacks, links } = profileDetail.myPage;
+  const showUserSkeleton = !title && !contents && isEmpty(techStacks) && isEmpty(links);
   const projects = userProjectsQuery?.state.data as Array<UserProject>;
 
   return (
@@ -41,13 +44,13 @@ const Profile = async ({ params }: ProfilePageProps) => {
       />
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">
-        {!profileDetail.myPage.selfIntroduction ? (
+        {showUserSkeleton ? (
           <ProjectSectionSkeleton type="profile" />
         ) : (
           <ProfileIntroSection
             content={profileDetail.myPage.selfIntroduction}
-            techStacks={profileDetail.myPage.techStacks ?? []}
-            links={profileDetail.myPage.links ?? []}
+            techStacks={techStacks}
+            links={links}
           />
         )}
         {isEmpty(projects) ? (
@@ -56,10 +59,10 @@ const Profile = async ({ params }: ProfilePageProps) => {
           <ProjectPortfolioSection projects={projects} memberId={memberId} />
         )}
 
-        {profileDetail.myPage.careers && (
+        {!isEmpty(profileDetail.myPage.careers.careerList) && (
           <ProfileCareerSection careers={profileDetail.myPage.careers} />
         )}
-        {profileDetail.myPage.educationActivities && (
+        {!isEmpty(profileDetail.myPage.educationActivities) && (
           <ProfileEducationSection education={profileDetail.myPage.educationActivities} />
         )}
       </div>
