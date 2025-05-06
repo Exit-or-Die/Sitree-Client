@@ -1,7 +1,7 @@
 import Service from '@/service/service';
 
-import { FocusedPointParams } from './request';
-import { FocusPoints, UserProfileResponse, UserProject } from './response';
+import { FocusedPointParams, ShortIntroParams } from './request';
+import { FocusPoints, ShortIntroResponse, UserProfileResponse, UserProject } from './response';
 
 class ProfileService extends Service {
   searchProfile(memberId: string) {
@@ -14,6 +14,12 @@ class ProfileService extends Service {
 
   updateFocusedPoints(query: FocusedPointParams) {
     return this.http.post<FocusPoints>('focused-points', query, {
+      includeAuth: true
+    });
+  }
+
+  updateShortIntroduction(memberId: string, query: ShortIntroParams) {
+    return this.http.put<ShortIntroResponse>(`members/${memberId}/short-introduction`, query, {
       includeAuth: true
     });
   }

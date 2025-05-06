@@ -41,6 +41,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
         affiliation={profileDetail.belongingName}
         phoneNumber={profileDetail.phoneNumber}
         position={profileDetail.position}
+        shortIntroduction={profileDetail.shortIntroduction}
       />
 
       <div className="flex-1 flex flex-col ml-6 space-y-8">

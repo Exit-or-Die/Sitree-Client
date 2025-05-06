@@ -4,3 +4,7 @@ export interface FocusedPointParams {
   focusPoints: Array<string>;
   focusPointId?: string;
 }
+
+export interface ShortIntroParams {
+  shortIntroduction: string;
+}

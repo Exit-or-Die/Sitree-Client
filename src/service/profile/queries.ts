@@ -1,9 +1,10 @@
 import ProfileService from './ProfileService';
-import { FocusedPointParams } from './request';
+import { FocusedPointParams, ShortIntroParams } from './request';
 
 const queryKeys = {
   searchProfile: (memberId: string) => ['searchProfile', memberId] as const,
-  searchUserProjects: (memberId: string) => ['searchUserProjects', memberId] as const
+  searchUserProjects: (memberId: string) => ['searchUserProjects', memberId] as const,
+  updateShortIntroduction: (memberId: string) => ['updateShortIntroduction', memberId] as const
 };
 
 const ProfileQueryOptions = {
@@ -17,6 +18,10 @@ const ProfileQueryOptions = {
   }),
   updateFocusedPoints: (param: FocusedPointParams) => ({
     mutateFn: () => ProfileService.updateFocusedPoints(param)
+  }),
+  updateShortIntroduction: (memberId: string) => ({
+    queryKey: queryKeys.updateShortIntroduction(memberId),
+    queryFn: (param: ShortIntroParams) => ProfileService.updateShortIntroduction(memberId, param)
   })
 };
 

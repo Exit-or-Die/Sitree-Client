@@ -9,7 +9,7 @@ export interface UserProfileResponse {
   phoneNumber: Nullable<string>;
   profileImgUrl: string;
   thirdPartyProfileUrl: string;
-  shortIntroduction: Nullable<string>;
+  shortIntroduction: string;
   belongingId: number;
   belongingName: string;
   myPage: UserDetailField;
@@ -78,4 +78,8 @@ export interface FocusPoint {
 
 export interface FocusPoints {
   focusPoints: Array<string>;
+}
+
+export interface ShortIntroResponse {
+  success: boolean;
 }
