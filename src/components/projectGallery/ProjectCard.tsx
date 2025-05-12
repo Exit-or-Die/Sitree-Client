@@ -47,6 +47,7 @@ const ProjectCard = ({
 }: Props) => {
   const [toggleModal, setToggleModal] = useState(false);
   const FocusedOnModal = WithModal(ProjectFocusedOnModal);
+  const startInEditMode = isEmpty(focusPoint.focusPoints);
 
   const onClickCloseModal = () => {
     setToggleModal(false);
@@ -122,9 +123,7 @@ const ProjectCard = ({
               </div>
               <span className="text-slate-50">조회수 {viewCount}</span>
             </div>
-            <div
-              className={`items-center text-[1.3rem] ${isHealthy ? 'text-slate-30' : 'text-slate-50'}`}
-            >
+            <div className={`text-[1.3rem] ${isHealthy ? 'text-slate-30' : 'text-slate-50'}`}>
               <HealthCheckState health={isHealthy} />
             </div>
           </div>
@@ -145,6 +144,7 @@ const ProjectCard = ({
         focusPoint={focusPoint}
         participantId={participantId}
         isMe={isMe}
+        startInEditMode={startInEditMode}
       />
     </>
   );

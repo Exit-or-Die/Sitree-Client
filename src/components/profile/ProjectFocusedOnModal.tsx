@@ -27,6 +27,7 @@ type Props = {
   isMe: boolean;
   participantId?: string;
   focusPoint?: FocusPoint;
+  startInEditMode?: boolean;
 };
 
 const MAX_FIELDS = 3;
@@ -93,7 +94,8 @@ const ProjectFocusedOnModal = ({
   projectId,
   participantId,
   focusPoint,
-  isMe
+  isMe,
+  startInEditMode
 }: Props) => {
   const router = useRouter();
 
@@ -103,7 +105,7 @@ const ProjectFocusedOnModal = ({
 
   const [viewFields, setViewFields] = useState(initialFields);
   const [editFields, setEditFields] = useState<typeof initialFields>([]);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(startInEditMode ?? false);
 
   const { mutate: updateFocusedPoint } = useMutation({
     mutationFn: (formValues: FocusedPointParams) =>
@@ -239,7 +241,8 @@ const ProjectFocusedOnModal = ({
             <>
               <SButton
                 onClick={onClickToggleType}
-                className="bg-slate-95 text-slate-30 rounded-large text-small border-0"
+                className={`bg-slate-95 text-slate-30 rounded-large text-small border-0 ${startInEditMode && 'opacity-40'}`}
+                disabled={startInEditMode}
               >
                 취소
               </SButton>
