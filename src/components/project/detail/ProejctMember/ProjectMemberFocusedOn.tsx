@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
@@ -10,15 +11,16 @@ interface ProjectMemberFocusedOnProps {
 }
 
 const ProjectMemberFocusedOn = ({ contents, isMe }: ProjectMemberFocusedOnProps) => {
-  if (!Array.isArray(contents)) {
-    return null;
-  }
+  const router = useRouter();
 
   return (
     <div className="border border-1 border-slate-90 rounded-2xlarge p-5 flex flex-col flex-grow gap-4">
       <div className="flex justify-between items-center">
         <span className="text-base font-lb tracking-[-0.32px]">Focused On</span>
-        <div className="flex gap-1 px-3 py-2 rounded-[1rem] bg-slate-95">
+        <div
+          className="flex gap-1 px-3 py-2 rounded-[1rem] bg-slate-95 cursor-pointer"
+          onClick={() => router.push('/profile')}
+        >
           <p>프로필 페이지</p>
           <SvgIcon icon="externalLink" color="#414752" width={16} height={16} />
         </div>
