@@ -16,3 +16,19 @@ export const formatToDate = (isoString: string) => {
 
   return koreaDate.replace(/(\d{4}\.\d{2}\.\d{2})\./, '$1 ');
 };
+
+const formatTimestamps = (startTimestamp: Date, endTimestamp: Date) => {
+  if (!startTimestamp || !endTimestamp) return '';
+
+  const formatDate = (timestamp: Date) => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    return `${year}.${month}`;
+  };
+
+  return `${formatDate(startTimestamp)} ~ ${formatDate(endTimestamp)}`;
+};
+
+export default formatTimestamps;

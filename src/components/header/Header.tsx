@@ -82,7 +82,10 @@ export const Header = () => {
             </SButton>
           </Link>
 
-          <Link href="/profile" className="flex items-center space-x-2">
+          <Link
+            href={`/profile/${session?.detail.memberId}`}
+            className="flex items-center space-x-2"
+          >
             <div className="w-8 h-8 rounded-full bg-slate-95 flex items-center justify-center">
               <SImage
                 src="/defaultUser.svg"
