@@ -19,6 +19,7 @@ const AffiliationRanking = () => {
     queryKey,
     queryFn
   });
+  const rankingData = data?.content ?? [];
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const AffiliationRanking = () => {
         </div>
 
         <ul className="space-y-4 mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 h-[320px]">
-          {data?.content.map((affiliation, index) => {
+          {rankingData.map((affiliation, index) => {
             const rankChange = affiliation.prevRanking - affiliation.currentRanking;
             const rankChangeColor =
               rankChange > 0 ? '#F6424E' : rankChange < 0 ? '#1271FF' : 'gray';
@@ -75,7 +76,9 @@ const AffiliationRanking = () => {
                   />
                 </div>
                 <div className="ml-4 flex-grow">
-                  <span className="text-base font-bd">{affiliation.name}</span>
+                  <span className="text-base font-bd truncate block max-w-[150px]">
+                    {affiliation.name}
+                  </span>
                   <div className="text-xsmall text-slate-60 block">
                     <span className="text-slate-30 font-md">{affiliation.projectCount} </span>개
                     프로젝트

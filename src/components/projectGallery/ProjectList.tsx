@@ -82,7 +82,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
         </div>
       </div>
 
-      <div className="pl-3 grid grid-cols-3 gap-0 min-h-[600px] relative">
+      <div className="px-3 grid grid-cols-3 gap-0 min-h-[600px] relative">
         {(isFetching || isTyping) && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80">
             <div className="w-10 h-10 border-4 border-gray-300 border-t-green-600 rounded-full animate-spin"></div>
@@ -93,6 +93,7 @@ const ProjectList = ({ selectedCategory }: Props) => {
           data?.projectList.map((project, index) => (
             <ProjectCard
               key={index}
+              className="px-3"
               projectId={project.projectId}
               thumbnail={project.thumbnail}
               name={project.name}
