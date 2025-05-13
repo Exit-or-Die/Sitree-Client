@@ -1,76 +1,7 @@
-import { COOKIE_KEY } from '@/constants/cookie';
-import { ROUTES } from '@/constants/route';
-import AuthService from '@/service/auth/AuthService';
-import { UserDetail } from '@/service/auth/response';
-import { setCookie } from '@/utils/cookie';
 import NextAuth from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
-import { cookies } from 'next/headers';
 
-const handler = NextAuth({
-  providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-    })
-  ],
-  session: {
-    strategy: 'jwt'
-  },
-  callbacks: {
-    async signIn({ user, account }) {
-      if (!account) return false;
+import { authOptions } from './auth.config';
 
-      const { email } = user;
-      const { provider, access_token: accessToken } = account;
-
-      if (!accessToken || !email) return false;
-
-      const body = {
-        provider: provider.toUpperCase(),
-        email,
-        oAuthToken: accessToken
-      };
-
-      try {
-        const response = await AuthService.signIn(body);
-
-        if (response.isNewMember) {
-          return ROUTES.ONBOARDING;
-        }
-
-        if (response.accessToken && response.refreshToken) {
-          setCookie(COOKIE_KEY.ACCESS_TOKEN, response.accessToken, { cookies });
-          setCookie(COOKIE_KEY.REFRESH_TOKEN, response.refreshToken, { cookies });
-        }
-
-        user.information = { ...response, oAuthToken: accessToken, provider };
-
-        return true;
-      } catch (error) {
-        console.error('Error checking user:', error);
-
-        return ROUTES.HOME;
-      }
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.detail = user.information;
-      }
-
-      return token;
-    },
-    async session({ session, token }) {
-      session.detail = (token as unknown as { detail: UserDetail }).detail;
-
-      return session;
-    }
-  }
-});
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

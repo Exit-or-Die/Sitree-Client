@@ -1,6 +1,8 @@
 import { getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
 import ProjectQueryOptions from '@/service/project/queries';
+import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
+import { authOptions } from 'src/app/api/auth/[...nextauth]/auth.config';
 
 import ProjectRegisterFromWrapper from '@/components/project/register/ProjectRegisterFormWrapper';
 
@@ -12,6 +14,7 @@ interface ProjectDetailPageProps {
 
 const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const { projectId } = params;
+  const session = await getServerSession(authOptions);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectDetail(projectId);
 
@@ -19,6 +22,13 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
 
   if (!query) {
     redirect('/404');
+  }
+
+  const teamLeader = query.state.data?.participantList?.find((p) => p.isLeader);
+  const currentMemberId = session?.detail.memberId;
+
+  if (teamLeader?.memberId !== currentMemberId) {
+    redirect('/');
   }
 
   return (
