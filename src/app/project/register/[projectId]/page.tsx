@@ -2,7 +2,7 @@ import { getDehydratedQuery, Hydrate } from '@/hooks/react-query/react-query';
 import ProjectQueryOptions from '@/service/project/queries';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
-import { authOptions } from 'src/app/api/auth/[...nextauth]/route';
+import { authOptions } from 'src/app/api/auth/[...nextauth]/auth.config';
 
 import ProjectRegisterFromWrapper from '@/components/project/register/ProjectRegisterFormWrapper';
 
