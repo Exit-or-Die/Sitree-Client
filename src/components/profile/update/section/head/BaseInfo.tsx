@@ -6,82 +6,84 @@ import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
-import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
+import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const ProjectHeadBaseInfo = () => {
-  const { register, setValue, getValues } = useFormContext<ProjectRegisterRequest>();
-
-  const { queryKey, queryFn } = CategoryQueryOptions.getCategories();
-  const { data: tagData } = useQuery({
-    queryKey,
-    queryFn
-  });
-
-  const currentCategories = getValues('categories');
-  const tags = (tagData ?? []).map((tag) => ({ name: tag.categoryName }));
+  const { register } = useFormContext<ProjectRegisterRequest>();
 
   const InputList = [
     {
-      title: '프로젝트 이름',
+      title: '닉네임',
       component: (
         <div>
           <SInput
             register={register}
-            name="head.title"
-            placeholder="프로젝트 이름을 입력해주세요"
+            name="head.nickname"
+            placeholder="닉네임 입력"
             useLimit={true}
-            limitLength={24}
+            limitLength={12}
             className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
           />
         </div>
       ),
       required: true,
-      errorKey: 'head.title'
+      errorKey: 'head.nickname'
     },
     {
-      title: 'Health Check API',
+      title: '포지션',
       component: (
         <SInput
           register={register}
-          name="head.healthCheckUrl"
-          placeholder="ex: https://sitree-api.com/healthcheck"
+          name="head.position"
+          placeholder="현재 직무(또는 희망 포지션) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: false,
-      errorKey: 'head.healthCheckUrl'
+      errorKey: 'head.position'
     },
     {
-      title: '한 줄 소개',
+      title: '소속',
       component: (
         <SInput
           register={register}
           name="head.shortDescription"
-          useLimit={true}
-          limitLength={80}
-          placeholder="한 줄 소개를 작성해주세요"
+          placeholder="현재 소속(학교, 회사) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true,
-      errorKey: 'head.shortDescription'
+      required: false,
+      errorKey: 'head.belonging'
     },
     {
-      title: '프로젝트 태그',
+      title: '링크',
       component: (
-        <ProjectTagSelect<Tag>
-          onChange={(tags: Tag[]) => setValue('categories', tags)}
-          displayKey="name"
-          tags={tags}
-          initialValue={currentCategories}
+        <SInput
+          register={register}
+          name="head.link"
+          placeholder="대표 웹 주소(GitHub, 블로그, 링크드인 등) 입력"
+          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
-      required: true,
-      errorKey: 'categories'
+      required: false,
+      errorKey: 'head.link'
+    },
+    {
+      title: '휴대폰 번호',
+      component: (
+        <SInput
+          register={register}
+          name="head.phoneNumber"
+          placeholder="휴대폰 번호 입력"
+          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+        />
+      ),
+      required: false,
+      errorKey: 'head.phoneNumber'
     }
   ];
 
@@ -90,7 +92,7 @@ const ProjectHeadBaseInfo = () => {
       <div className="w-full ">
         {InputList.map((input, index) => (
           <div key={index} className="mb-6">
-            <label className="block text-small font-md leading-5 tracking-[-0.14px] text-gray-700 flex items-center mb-1.5">
+            <label className="text-small font-md leading-5 tracking-[-0.14px] text-gray-700 flex items-center mb-1.5">
               <span className="text-[1.4rem]">{input.title}</span>
               {input.required && <RegisterRequiredMark />}
             </label>
@@ -100,7 +102,7 @@ const ProjectHeadBaseInfo = () => {
         ))}
       </div>
       <div className="text-center">
-        <ProjectIconUpload />
+        <ProfileImageUpload />
       </div>
     </div>
   );

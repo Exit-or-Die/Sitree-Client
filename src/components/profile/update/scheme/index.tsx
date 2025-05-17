@@ -1,77 +1,52 @@
 import { z } from 'zod';
 
-export const headSchema = z.object({
-  thumbnailImageUrl: z.string().min(1, { message: '썸네일 이미지를 업로드해주세요' }),
-  title: z.string().min(1, { message: '프로젝트 이름을 입력해주세요' }),
-  shortDescription: z.string().min(1, { message: '짧은 설명을 입력해주세요' }),
-  healthCheckUrl: z.string().optional()
+const nullableString = z.string().nullable();
+
+const careerListSchema = z.object({
+  companyName: z.string(),
+  position: z.string(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  isCurrent: z.boolean().optional()
 });
 
-export const tagListSchema = z
-  .array(
-    z.object({
-      name: z.string().optional()
-    })
-  )
-  .optional();
+const educationActivitySchema = z.object({
+  schoolName: z.string(),
+  major: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date().optional()
+});
 
-export const overviewSchema = z.object({
-  images: z
-    .array(
-      z.object({
-        imageUrl: z.string().optional(),
-        imageType: z.string().optional()
-      })
-    )
-    .min(1, { message: '이미지를 1개 이상 등록해주세요' }),
-  clientUrl: z.object({
-    WEB: z.string().optional(),
-    IOS: z.string().optional(),
-    WINDOWS: z.string().optional(),
-    AOS: z.string().optional(),
-    MAC_OS: z.string().optional()
+const linkSchema = z.object({
+  label: z.string(),
+  url: z.string().url({ message: '유효한 링크를 입력해주세요' })
+});
+
+export const myPageSchema = z.object({
+  selfIntroduction: z.object({
+    title: nullableString.optional(),
+    contents: nullableString.optional()
   }),
-  detailDescription: z.string().optional()
+  careers: z.object({
+    totalYears: z.number().nonnegative(),
+    totalMonths: z.number().nonnegative(),
+    careerList: z.array(careerListSchema)
+  }),
+  educationActivities: z.array(educationActivitySchema),
+  techStacks: z.array(z.string()),
+  links: z.array(linkSchema)
 });
 
-export const techviewListSchema = z
-  .array(
-    z.object({
-      techviewId: z.number().int().nullable().optional(),
-      techTitle: z.string().min(1, { message: '기술 이름을 작성해주세요' }),
-      gitRepositoryUrl: z.string().url({ message: 'URL 형식의 git 주소를 입력해주세요' }),
-      techStackTypes: z.array(z.string()).optional(),
-      techDesc: z.string().optional()
-    })
-  )
-  .min(1, { message: '프로젝트 기술을 1개 이상 입력해주세요' });
-
-export const architectureListSchema = z
-  .array(
-    z.object({
-      architectureType: z.string().optional(),
-      architectureDesc: z.string().optional(),
-      architectureImage: z.object({
-        imageUrl: z.string().optional(),
-        imageType: z.string().optional()
-      })
-    })
-  )
-  .optional();
-
-export const participantListSchema = z.array(
-  z.object({
-    memberId: z.number().int().optional(),
-    position: z.string().min(1, { message: '포지션을 입력해주세요' }),
-    isLeader: z.boolean().optional()
-  })
-);
-
-export const projectSchema = z.object({
-  head: headSchema,
-  categories: tagListSchema,
-  overview: overviewSchema,
-  techviewList: techviewListSchema,
-  architectureList: architectureListSchema,
-  participantList: participantListSchema
+export const profileSchema = z.object({
+  memberId: z.string().min(1, { message: '멤버 ID는 필수입니다' }),
+  nickname: z.string().min(1, { message: '닉네임은 필수입니다' }),
+  position: nullableString.optional(),
+  email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요' }),
+  phoneNumber: nullableString.optional(),
+  profileImgUrl: z.string().url({ message: '유효한 프로필 이미지 URL을 입력해주세요' }),
+  thirdPartyProfileUrl: z.string().url().optional(),
+  shortIntroduction: z.string().optional(),
+  belongingId: z.number().nonnegative(),
+  belongingName: z.string().optional(),
+  myPage: myPageSchema
 });

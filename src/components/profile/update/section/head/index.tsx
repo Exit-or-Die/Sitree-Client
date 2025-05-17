@@ -1,18 +1,14 @@
-import ProjectHeadBaseInfo from './BaseInfo';
-import ProjectHeadScreenshot from './ScreenShot';
-import ProjectHeadServiceLink from './ServiceLink';
+import ProfileBaseInfo from './BaseInfo';
 
-const ProjectRegisterHead = () => {
+const profileRegisterHead = () => {
   return (
     <div className="rounded-2xlarge border-[1px] border-slate-90 bg-white-100">
       <div className="px-10 pt-10">
         <p className="mb-5 text-slate-10 font-lb text-xlarge">기본 정보</p>
       </div>
-      <ProjectHeadBaseInfo />
-      <ProjectHeadServiceLink />
-      <ProjectHeadScreenshot />
+      <ProfileBaseInfo />
     </div>
   );
 };
 
-export default ProjectRegisterHead;
+export default profileRegisterHead;

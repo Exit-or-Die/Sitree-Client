@@ -36,7 +36,7 @@ const ProfileSidebar = ({
 
   const isMe = String(session?.detail.memberId) === String(memberId);
   const [text, setText] = useState('');
-  const { queryFn } = ProfileQueryOptions.updateShortIntroduction(String(memberId));
+  const { queryFn } = ProfileQueryOptions.updateShortIntroduction(Number(memberId));
 
   const onClickUpdateShortIntro = async () => {
     const payload = {

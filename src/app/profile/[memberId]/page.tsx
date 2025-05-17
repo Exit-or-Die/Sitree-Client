@@ -12,7 +12,7 @@ import ProjectSectionSkeleton from '@/components/profile/ProjectSectionSkeleton'
 
 interface ProfilePageProps {
   params: {
-    memberId: string;
+    memberId: number;
   };
 }
 
