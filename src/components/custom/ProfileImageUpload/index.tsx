@@ -45,9 +45,7 @@ const ProfileImageUpload = () => {
           />
         </div>
       </div>
-      {iconUrl && !getValues('profileImgUrl') && (
-        <RegiseterErrorMessage errorKey="profileImgUrl" />
-      )}
+      {iconUrl && !getValues('profileImgUrl') && <RegiseterErrorMessage errorKey="profileImgUrl" />}
     </>
   );
 };

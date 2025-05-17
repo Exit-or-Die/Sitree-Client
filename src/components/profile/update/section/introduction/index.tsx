@@ -42,9 +42,7 @@ const ProjectRegisterTechViewList = () => {
         <div className="flex gap-5">
           <div className="w-full">
             <div className="flex items-center">
-              <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-                제목
-              </p>
+              <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">제목</p>
               <RegisterRequiredMark />
             </div>
             <SInput

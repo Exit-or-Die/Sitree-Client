@@ -1,7 +1,6 @@
 import ProfileUpdateForm from './ProfileUpdateForm';
 
 const ProfileUpdateFormWrapper = async () => {
-
   return (
     <div>
       <ProfileUpdateForm />

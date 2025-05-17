@@ -153,10 +153,7 @@ const ProfileSidebar = ({
       </button>
       <div className="mt-6 w-full flex justify-around text-slate-30 text-small font-md">
         <button>로그아웃</button>
-        <button
-          onClick={() => router.push('/profile/update')}
-          className="flex items-center"
-        >
+        <button onClick={() => router.push('/profile/update')} className="flex items-center">
           <SvgIcon icon="setting" width={18} height={18} className="mr-1" color="#414752" />
           프로필 편집
         </button>
