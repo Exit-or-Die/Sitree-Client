@@ -1,0 +1,80 @@
+'use client';
+
+import { useFormContext, useFieldArray } from 'react-hook-form';
+import SButton from '@/components/common/Button';
+import SImage from '@/components/common/Image';
+import SInput from '@/components/common/Input';
+import SSelect from '@/components/common/Select';
+import { UserLinkField } from '@/service/profile/response';
+
+const LINK_PROVIDERS = ['LINK', 'BEHANCE', 'GITHUB', 'LINKEDIN', 'NOTION'];
+
+interface FormValues {
+  links: UserLinkField[];
+}
+
+const ProfileLinksForm = () => {
+  const { control, register, setValue, getValues } = useFormContext<FormValues>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'links'
+  });
+
+  const selectedProviders = fields.map((field) => field.linkProvider);
+  const availableProviders = LINK_PROVIDERS.filter(
+    (provider) => !selectedProviders.includes(provider)
+  );
+
+  const addLink = () => {
+    if (availableProviders.length === 0) return;
+    append({ linkProvider: availableProviders[0], link: '' });
+  };
+
+  return (
+    <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
+      <div className="flex justify-between items-center mb-5">
+        <p className="text-slate-10 font-lb text-xlarge">링크</p>
+      </div>
+      <div className="flex flex-col gap-2">
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex gap-1.5">
+            <SSelect
+              value={{ key: getValues(`links.${index}.linkProvider`) }}
+              onChange={(newOption) => setValue(`links.${index}.linkProvider`, newOption.key)}
+              options={[
+                { key: getValues(`links.${index}.linkProvider`) },
+                ...availableProviders.map((provider) => ({ key: provider }))
+              ]}
+              displayKey="key"
+              selectClass="w-[15.6rem]"
+            />
+            <div className="w-[43.4rem]">
+              <SInput
+                className="text-small font-md leading-5 tracking-[-0.14px]"
+                placeholder="링크를 입력해주세요"
+                {...register(`links.${index}.link`)}
+              />
+            </div>
+            {fields.length > 1 && (
+              <span className="flex items-center p-1 cursor-pointer" onClick={() => remove(index)}>
+                <SImage src="/trash.svg" width={20} height={20} />
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+      {availableProviders.length > 0 && (
+        <SButton
+          size="lg"
+          className="text-small bg-tree-93 text-tree-30 gap-1.5 h-[4.4rem] w-[10.8rem] cursor-pointer mt-[20px]"
+          onClick={addLink}
+        >
+          <p>+</p>
+          <p className="leading-5 tracking-[-1%]">링크 추가</p>
+        </SButton>
+      )}
+    </div>
+  );
+};
+
+export default ProfileLinksForm;

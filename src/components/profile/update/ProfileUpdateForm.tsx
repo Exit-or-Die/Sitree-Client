@@ -16,7 +16,8 @@ import {
   ProfileRegisterBase,
   ProjectRegisterOverview,
   ProjectRegisterParticipantList,
-  ProfileRegisterIntro
+  ProfileRegisterIntro,
+  ProjectRegisterThirdPartyLink
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
@@ -61,9 +62,9 @@ const ProfileUpdateForm = () => {
     resolver: zodResolver(profileSchema),
     mode: 'onSubmit', // 제출 시에만 validation
     shouldFocusError: true,
-    defaultValues: DEFAULT_PROFILE_DATA,
+    defaultValues: DEFAULT_PROFILE_DATA
   });
-  
+
   const { data: userData, isSuccess } = useQuery({
     queryKey,
     queryFn,
@@ -112,7 +113,8 @@ const ProfileUpdateForm = () => {
         <div className="w-[66rem] md:w-[95.6rem]">
           <form className="flex flex-col gap-10">
             <ProfileRegisterBase />
-            <ProfileRegisterIntro/>
+            <ProfileRegisterIntro />
+            <ProjectRegisterThirdPartyLink />
             {/* <ProjectRegisterOverview />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList /> */}
