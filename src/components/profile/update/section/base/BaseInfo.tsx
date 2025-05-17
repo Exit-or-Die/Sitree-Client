@@ -1,19 +1,16 @@
 'use cleint';
 
-import CategoryQueryOptions from '@/service/category/queries';
-import { ProjectRegisterRequest, Tag } from '@/service/project/request';
-import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
 import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
-import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
+import { UserProfileResponse } from '@/service/profile/response';
 
 const ProjectHeadBaseInfo = () => {
-  const { register } = useFormContext<ProjectRegisterRequest>();
+  const { register } = useFormContext<UserProfileResponse>();
 
   const InputList = [
     {
@@ -22,7 +19,7 @@ const ProjectHeadBaseInfo = () => {
         <div>
           <SInput
             register={register}
-            name="head.nickname"
+            name="nickname"
             placeholder="닉네임 입력"
             useLimit={true}
             limitLength={12}
@@ -31,59 +28,59 @@ const ProjectHeadBaseInfo = () => {
         </div>
       ),
       required: true,
-      errorKey: 'head.nickname'
+      errorKey: 'nickname'
     },
     {
       title: '포지션',
       component: (
         <SInput
           register={register}
-          name="head.position"
+          name="position"
           placeholder="현재 직무(또는 희망 포지션) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: false,
-      errorKey: 'head.position'
+      errorKey: 'position'
     },
     {
       title: '소속',
       component: (
         <SInput
           register={register}
-          name="head.shortDescription"
+          name="belongingName"
           placeholder="현재 소속(학교, 회사) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: false,
-      errorKey: 'head.belonging'
+      errorKey: 'belongingName'
     },
     {
       title: '링크',
       component: (
         <SInput
           register={register}
-          name="head.link"
+          name="thirdPartyProfileUrl"
           placeholder="대표 웹 주소(GitHub, 블로그, 링크드인 등) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: false,
-      errorKey: 'head.link'
+      errorKey: 'thirdPartyProfileUrl'
     },
     {
       title: '휴대폰 번호',
       component: (
         <SInput
           register={register}
-          name="head.phoneNumber"
+          name="phoneNumber"
           placeholder="휴대폰 번호 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
         />
       ),
       required: false,
-      errorKey: 'head.phoneNumber'
+      errorKey: 'phoneNumber'
     }
   ];
 

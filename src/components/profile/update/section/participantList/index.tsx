@@ -17,7 +17,7 @@ import SInput from '@/components/common/Input';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
 
 import { RegiseterErrorMessage } from '../../error/RegisterError';
-import { DEFAULT_DETAIL_DATA } from '../../ProfileUpdateForm';
+import { DEFAULT_PROFILE_DATA } from '../../ProfileUpdateForm';
 import ParticipantAddModal from './ParticipantAddModal';
 
 const TOTAL_MEMBER = 10;
@@ -32,7 +32,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
   const getDefaultQuery = () => ({
     queryKey: ['defaultProject'],
     queryFn: () => ({
-      ...DEFAULT_DETAIL_DATA,
+      ...DEFAULT_PROFILE_DATA,
       participantList: [
         {
           memberId: Number(session?.detail.memberId) || 0,

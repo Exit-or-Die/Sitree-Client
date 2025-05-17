@@ -13,14 +13,15 @@ import ProjectRegisterSidebar from './components/ProjectRegisterSidebar';
 import { profileSchema } from './scheme';
 import {
   ProjectRegisterArchitectureList,
-  ProfileRegisterHead,
+  ProfileRegisterBase,
   ProjectRegisterOverview,
   ProjectRegisterParticipantList,
-  ProjectRegisterTechViewList
+  ProfileRegisterIntro
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
 import { UserProfileResponse } from '@/service/profile/response';
+import { useEffect } from 'react';
 
 export const DEFAULT_PROFILE_DATA: Partial<UserProfileResponse> = {
   memberId: '',
@@ -56,19 +57,25 @@ const ProfileUpdateForm = () => {
     ? ProfileQueryOptions.searchProfile(session?.detail.memberId)
     : { queryKey: [], queryFn: async () => DEFAULT_PROFILE_DATA };
 
-  const { data } = useQuery({
+  const formMethods = useForm({
+    resolver: zodResolver(profileSchema),
+    mode: 'onSubmit', // 제출 시에만 validation
+    shouldFocusError: true,
+    defaultValues: DEFAULT_PROFILE_DATA,
+  });
+  
+  const { data: userData, isSuccess } = useQuery({
     queryKey,
     queryFn,
     enabled: !!session?.detail.memberId,
     placeholderData: DEFAULT_PROFILE_DATA
   });
-  
-  const formMethods = useForm({
-    resolver: zodResolver(profileSchema),
-    mode: 'onSubmit', // 제출 시에만 validation
-    shouldFocusError: true,
-    defaultValues: data || DEFAULT_PROFILE_DATA // 초기 값 제공
-  });
+
+  useEffect(() => {
+    if (isSuccess && userData) {
+      formMethods.reset(userData);
+    }
+  }, [isSuccess, userData, formMethods]);
 
   // const { mutate: modifyProject } = useMutation({
   //   mutationFn: (formValues: ProjectRegisterRequest) =>
@@ -104,9 +111,9 @@ const ProfileUpdateForm = () => {
       <FormProvider {...formMethods}>
         <div className="w-[66rem] md:w-[95.6rem]">
           <form className="flex flex-col gap-10">
-            <ProfileRegisterHead />
+            <ProfileRegisterBase />
+            <ProfileRegisterIntro/>
             {/* <ProjectRegisterOverview />
-            <ProjectRegisterTechViewList />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList /> */}
           </form>

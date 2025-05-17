@@ -1,6 +1,6 @@
 import ProfileBaseInfo from './BaseInfo';
 
-const profileRegisterHead = () => {
+const profileRegisterBaseInfo = () => {
   return (
     <div className="rounded-2xlarge border-[1px] border-slate-90 bg-white-100">
       <div className="px-10 pt-10">
@@ -11,4 +11,4 @@ const profileRegisterHead = () => {
   );
 };
 
-export default profileRegisterHead;
+export default profileRegisterBaseInfo;
