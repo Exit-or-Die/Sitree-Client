@@ -12,10 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ProjectRegisterSidebar from './components/ProjectRegisterSidebar';
 import { profileSchema } from './scheme';
 import {
-  ProjectRegisterArchitectureList,
   ProfileRegisterBase,
-  ProjectRegisterOverview,
-  ProjectRegisterParticipantList,
   ProfileRegisterIntro,
   ProfileRegisterThirdPartyLink,
   ProfileRegisterEducation
@@ -77,7 +74,7 @@ const ProfileUpdateForm = () => {
     if (isSuccess && userData) {
       formMethods.reset(userData);
     }
-    console.log(formMethods);
+    // console.log(formMethods);
   }, [isSuccess, userData, formMethods]);
 
   // const { mutate: modifyProject } = useMutation({

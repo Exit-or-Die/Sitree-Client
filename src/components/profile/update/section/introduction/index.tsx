@@ -48,7 +48,7 @@ const ProfileSelfIntroForm = () => {
             <SInput
               type="text"
               placeholder="나를 표현할 수 있는 한 줄을 입력해 주세요"
-              name="techTitle"
+              name="title"
               value={intro.title || ''}
               onChange={(e) => handleInputChange('title', e)}
               className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
