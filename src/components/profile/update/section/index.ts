@@ -3,4 +3,5 @@ export { default as ProjectRegisterOverview } from './overview';
 export { default as ProjectRegisterParticipantList } from './participantList';
 export { default as ProfileRegisterIntro } from './introduction';
 export { default as ProjectRegisterArchitectureList } from './architectureList';
-export { default as ProjectRegisterThirdPartyLink } from './thirdPartyLink';
+export { default as ProfileRegisterThirdPartyLink } from './thirdPartyLink';
+export { default as ProfileRegisterEducation } from './education';

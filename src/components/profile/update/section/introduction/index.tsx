@@ -8,7 +8,7 @@ import SInput from '@/components/common/Input';
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import { UserIntroField, UserProfileResponse } from '@/service/profile/response';
 
-const ProjectRegisterTechViewList = () => {
+const ProfileSelfIntroForm = () => {
   const { setValue, getValues } = useFormContext<UserProfileResponse>();
   const initialSkills = getValues('myPage.selfIntroduction') || {
     title: null,
@@ -76,4 +76,4 @@ const ProjectRegisterTechViewList = () => {
   );
 };
 
-export default ProjectRegisterTechViewList;
+export default ProfileSelfIntroForm;

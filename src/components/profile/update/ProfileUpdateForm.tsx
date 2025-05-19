@@ -17,7 +17,8 @@ import {
   ProjectRegisterOverview,
   ProjectRegisterParticipantList,
   ProfileRegisterIntro,
-  ProjectRegisterThirdPartyLink
+  ProfileRegisterThirdPartyLink,
+  ProfileRegisterEducation
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
@@ -76,6 +77,7 @@ const ProfileUpdateForm = () => {
     if (isSuccess && userData) {
       formMethods.reset(userData);
     }
+    console.log(formMethods);
   }, [isSuccess, userData, formMethods]);
 
   // const { mutate: modifyProject } = useMutation({
@@ -114,7 +116,8 @@ const ProfileUpdateForm = () => {
           <form className="flex flex-col gap-10">
             <ProfileRegisterBase />
             <ProfileRegisterIntro />
-            <ProjectRegisterThirdPartyLink />
+            <ProfileRegisterEducation />
+            <ProfileRegisterThirdPartyLink />
             {/* <ProjectRegisterOverview />
             <ProjectRegisterArchitectureList />
             <ProjectRegisterParticipantList /> */}

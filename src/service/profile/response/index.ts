@@ -1,5 +1,5 @@
 import { Project } from '@/service/project/response/index';
-import { Belonging, Nullable } from 'types/common';
+import { Nullable } from 'types/common';
 
 export interface UserProfileResponse {
   memberId: string;
@@ -53,13 +53,17 @@ export interface UserProjectField {
 
 export interface UserEducationField {
   educationActivityName: string;
-  startedAt: Date;
-  endedAt: Date;
-  educationStatus: 'COMPLETED' | 'GRADUATED' | 'WITHDREW';
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
+  educationStatus: Nullable<EducationStatus>;
   majorOrOrganization: string;
-  category: Belonging;
+  category: Nullable<EducationCategory>;
   contents: string;
 }
+
+export type EducationCategory = 'UNIVERSITY' | 'GRADUATE_SCHOOL' | 'CLUB' | 'License' | 'ETC';
+
+export type EducationStatus = 'COMPLETED' | 'GRADUATED' | 'WITHDREW';
 
 export interface UserLinkField {
   linkProvider: string;
