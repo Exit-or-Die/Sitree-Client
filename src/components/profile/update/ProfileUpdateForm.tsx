@@ -15,7 +15,8 @@ import {
   ProfileRegisterBase,
   ProfileRegisterIntro,
   ProfileRegisterThirdPartyLink,
-  ProfileRegisterEducation
+  ProfileRegisterEducation,
+  ProfileRegisterCareer
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
@@ -113,6 +114,7 @@ const ProfileUpdateForm = () => {
           <form className="flex flex-col gap-10">
             <ProfileRegisterBase />
             <ProfileRegisterIntro />
+            <ProfileRegisterCareer />
             <ProfileRegisterEducation />
             <ProfileRegisterThirdPartyLink />
             {/* <ProjectRegisterOverview />

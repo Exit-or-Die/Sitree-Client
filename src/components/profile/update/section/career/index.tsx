@@ -7,22 +7,14 @@ import { Nullable } from 'types/common';
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-import EducationForm from './EducationForm';
+import CareerForm from './CareerForm';
 import ProfileDeleteModal from './ProfileDeleteModal';
 import withModal from '@/enhancers/WithModal';
 import SvgIcon from '@/components/common/SVGIcon';
 import { UserEducationField, UserProfileResponse } from '@/service/profile/response';
 import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
 
-export interface TechViewProps {
-  techviewId: Nullable<number>;
-  techTitle: string;
-  gitRepositoryUrl: string;
-  techStackTypes: string[];
-  techDesc: string;
-}
-
-const ProfileRegisterEducationForm = () => {
+const ProfileRegisterCareerForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { setValue, getValues } = useFormContext<UserProfileResponse>();
@@ -92,7 +84,7 @@ const ProfileRegisterEducationForm = () => {
   return (
     <div className="bg-white-100 rounded-2xlarge p-10 border-[1px] border-slate-90">
       <div className="flex justify-between items-center mb-5">
-        <p className="text-slate-10 font-lb text-xlarge">교육 및 활동</p>
+        <p className="text-slate-10 font-lb text-xlarge">경력</p>
         <div className="flex items-center space-x-4">
           <div className="flex gap-1">
             {educationActivities.map((_, index) => (
@@ -120,7 +112,7 @@ const ProfileRegisterEducationForm = () => {
             }`}
             onClick={addEducation}
           >
-            <p className="leading-5 tracking-[-1%]">교육 및 활동 추가</p>
+            <p className="leading-5 tracking-[-1%]">경력 추가</p>
             <SvgIcon
               icon="plus"
               color={canAddEducation() ? '#03854E' : 'text-gray-400'}
@@ -132,7 +124,7 @@ const ProfileRegisterEducationForm = () => {
         </div>
       </div>
       <div>
-        <EducationForm
+        <CareerForm
           educationActivity={educationActivities[currentIndex]}
           index={currentIndex}
           updateEducation={updateEducation}
@@ -158,4 +150,4 @@ const ProfileRegisterEducationForm = () => {
   );
 };
 
-export default ProfileRegisterEducationForm;
+export default ProfileRegisterCareerForm;

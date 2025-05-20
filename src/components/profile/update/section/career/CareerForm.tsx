@@ -8,9 +8,11 @@ import { EducationCategory, UserEducationField } from '@/service/profile/respons
 import { DEFAULT_EDUCATION, EDUCATION_CATEGORY_LABEL_MAP } from '@/constants/profile/defaultData';
 import { Nullable } from 'types';
 import { useCallback } from 'react';
+import CareerExperienceSection from './CareerExperienceSection';
+import STooltip from '@/components/common/Tooltip';
 
 
-const EducationForm: React.FC<{
+const CareerForm: React.FC<{
   educationActivity: UserEducationField;
   index: number;
   updateEducation: (index: number, updatedEducation: UserEducationField) => void;
@@ -32,17 +34,21 @@ const EducationForm: React.FC<{
 
   return (
     <div className="flex flex-col gap-5">
+      <h3 className="text-small font-bd text-slate-10 leading-5 tracking-[-0.14px]">
+        회사 정보
+      </h3>
       <div className="flex gap-5">
+        
         <div className="w-full">
           <div className="flex items-center">
             <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-              교육 및 활동
+              회사명
             </p>
             <RegisterRequiredMark />
           </div>
           <SInput
             type="text"
-            placeholder="ex. OO대학교, OO외부 활동"
+            placeholder="회사 검색"
             name="educationActivityName"
             onChange={(e) => handleInputChange('educationActivityName', e)}
             value={educationActivity.educationActivityName}
@@ -61,7 +67,6 @@ const EducationForm: React.FC<{
             updateEducation={updateEducation}
             index={index}
             educationActivity={educationActivity}
-            showCategory
           />
         </div>
       </div>
@@ -69,13 +74,13 @@ const EducationForm: React.FC<{
         <div className="w-full">
           <div className="flex items-center">
             <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-              전공 및 기관명
+              직급/직책
             </p>
             <RegisterRequiredMark />
           </div>
           <SInput
             type="text"
-            placeholder="ex. 컴퓨터공학, OO동아리"
+            placeholder="ex. 팀원/프로덕트 디자이너"
             name="majorOrOrganization"
             value={educationActivity.majorOrOrganization}
             onChange={(e) => handleInputChange('majorOrOrganization', e)}
@@ -85,21 +90,21 @@ const EducationForm: React.FC<{
         <div className="w-full">
           <div className="flex items-center">
             <label className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-              카테고리
+              팀/부서
             </label>
             <RegisterRequiredMark />
           </div>
-          <SDropdown
-            options={Object.values(EDUCATION_CATEGORY_LABEL_MAP) as EducationCategory[]}
-            placeholder="카테고리 선택"
-            className="mt-1.5"
-            label="bold"
-            name="category"
-            onChange={handleDropDownChange}
+          <SInput
+            type="text"
+            placeholder="ex. OO팀, OO부서"
+            name="majorOrOrganization"
+            value={educationActivity.majorOrOrganization}
+            onChange={(e) => handleInputChange('majorOrOrganization', e)}
+            className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
         </div>
       </div>
-      <div className="w-full">
+      {/* <div className="w-full">
         <div className="flex items-center">
           <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mb-1.5">
             내용
@@ -113,9 +118,10 @@ const EducationForm: React.FC<{
           className="w-full border p-3 !rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50 focus:ring-tree-50"
           onChange={(e) => updateEducation(index, { ...educationActivity, ['contents']: e.target.value})}
         />
-      </div>
+      </div> */}
+      <CareerExperienceSection />
     </div>
   );
 };
 
-export default EducationForm;
+export default CareerForm;

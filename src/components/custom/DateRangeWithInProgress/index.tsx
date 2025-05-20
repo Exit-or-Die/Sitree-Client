@@ -11,9 +11,10 @@ interface Props {
   updateEducation: (index: number, updatedEducation: UserEducationField) => void;
   index: number;
   educationActivity: UserEducationField;
+  showCategory?: boolean;
 }
 
-const DateRangeWithInProgress = ({ className, updateEducation, index, educationActivity }: Props) => {
+const DateRangeWithInProgress = ({ className, updateEducation, index, educationActivity, showCategory }: Props) => {
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
   const [inProgress, setInProgress] = useState(false);
@@ -90,17 +91,20 @@ const DateRangeWithInProgress = ({ className, updateEducation, index, educationA
           />
         )}
 
-        <div className="w-full max-w-[100px]">
-          <SDropdown
-            options={Object.values(EDUCATION_STATUS_LABEL_MAP) as EducationStatus[]}
-            placeholder="구분"
-            className={`rounded-lg w-full ${
-              inProgress ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70' : ''
-            }`}
-            label={inProgress ? 'none' : 'bold'}
-            onChange={handleDropDownChange}
-          />
-        </div>
+        {showCategory && (
+            <div className="w-full max-w-[100px]">
+              <SDropdown
+                options={Object.values(EDUCATION_STATUS_LABEL_MAP) as EducationStatus[]}
+                placeholder="구분"
+                className={`rounded-lg w-full ${
+                  inProgress ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70' : ''
+                }`}
+                label={inProgress ? 'none' : 'bold'}
+                onChange={handleDropDownChange}
+              />
+            </div>
+          )
+        }
       </div>
 
       <label className="flex items-center gap-2 mt-1">
