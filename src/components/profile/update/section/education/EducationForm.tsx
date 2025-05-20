@@ -108,7 +108,7 @@ const EducationForm: React.FC<{
         <STextarea
           value={educationActivity.contents}
           name="contents"
-          placeholder="진행한 프로젝트와 업무 내용 및 성과를 작성해 주세요."
+          placeholder="교육 과정 또는 활동 내용을 작성해 주세요."
           maxLength={1000}
           className="w-full border p-3 !rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50 focus:ring-tree-50"
           onChange={(e) => updateEducation(index, { ...educationActivity, ['contents']: e.target.value})}

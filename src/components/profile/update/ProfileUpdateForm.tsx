@@ -16,7 +16,8 @@ import {
   ProfileRegisterIntro,
   ProfileRegisterThirdPartyLink,
   ProfileRegisterEducation,
-  ProfileRegisterCareer
+  ProfileRegisterCareer,
+  ProfileRegisterStackList
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
@@ -116,10 +117,8 @@ const ProfileUpdateForm = () => {
             <ProfileRegisterIntro />
             <ProfileRegisterCareer />
             <ProfileRegisterEducation />
+            <ProfileRegisterStackList />
             <ProfileRegisterThirdPartyLink />
-            {/* <ProjectRegisterOverview />
-            <ProjectRegisterArchitectureList />
-            <ProjectRegisterParticipantList /> */}
           </form>
         </div>
         {/* <ProjectRegisterSidebar projectId={projectId} handleSubmitClick={handleSubmitClick} /> */}
