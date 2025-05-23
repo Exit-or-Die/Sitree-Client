@@ -1,18 +1,18 @@
 'use client';
 
+import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
+import withModal from '@/enhancers/WithModal';
+import { ProfileUpdateRequest } from '@/service/profile/request';
+import { CareerField } from '@/service/profile/response';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import CareerForm from './CareerForm';
 import ProfileDeleteModal from './ProfileDeleteModal';
-import withModal from '@/enhancers/WithModal';
-import SvgIcon from '@/components/common/SVGIcon';
-import { CareerField } from '@/service/profile/response';
-import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
-import { ProfileUpdateRequest } from '@/service/profile/request';
 
 const ProfileRegisterCareerForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
@@ -56,10 +56,7 @@ const ProfileRegisterCareerForm = () => {
   const addCareer = useCallback(() => {
     if (!canAddCareer()) return;
 
-    setCareers((prev) => [
-      ...prev,
-      DEFAULT_CAREER
-    ]);
+    setCareers((prev) => [...prev, DEFAULT_CAREER]);
     setCurrentIndex(careers.length);
   }, [careers.length, canAddCareer]);
 

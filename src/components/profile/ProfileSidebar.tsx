@@ -3,9 +3,9 @@
 import ProfileQueryOptions from '@/service/profile/queries';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Nullable } from 'types';
-import { useRouter } from 'next/navigation';
 
 import SImage from '../common/Image';
 import SvgIcon from '../common/SVGIcon';

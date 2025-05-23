@@ -1,11 +1,11 @@
+import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
+import { CareerField } from '@/service/profile/response';
+
 import SInput from '@/components/common/Input';
+import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
-import { CareerField } from '@/service/profile/response';
-import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
 import CareerProjectSection from './CareerProjectSection';
-
 
 const CareerForm: React.FC<{
   career: CareerField;
@@ -19,16 +19,11 @@ const CareerForm: React.FC<{
 
   return (
     <div className="flex flex-col gap-5">
-      <h3 className="text-small font-bd text-slate-10 leading-5 tracking-[-0.14px]">
-        회사 정보
-      </h3>
+      <h3 className="text-small font-bd text-slate-10 leading-5 tracking-[-0.14px]">회사 정보</h3>
       <div className="flex gap-5">
-        
         <div className="w-full">
           <div className="flex items-center">
-            <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">
-              회사명
-            </p>
+            <p className="text-small font-md text-slate-30 leading-5 tracking-[-0.14px]">회사명</p>
             <RegisterRequiredMark />
           </div>
           <SInput
@@ -47,7 +42,7 @@ const CareerForm: React.FC<{
             </label>
             <RegisterRequiredMark />
           </div>
-          <DateRangeWithInProgress 
+          <DateRangeWithInProgress
             className="mt-1.5"
             updateField={updateCareer}
             index={index}

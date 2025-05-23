@@ -1,4 +1,4 @@
-import { Nullable } from "types";
+import { Nullable } from 'types';
 
 export const formatToDate = (isoString: string) => {
   const date = new Date(isoString);
@@ -37,5 +37,6 @@ export const formatToYearMonth = (value: string) => {
   const numeric = value.replace(/\D/g, '');
   const year = numeric.slice(0, 4);
   const month = numeric.slice(4, 6);
+
   return month ? `${year}.${month}` : year;
 };

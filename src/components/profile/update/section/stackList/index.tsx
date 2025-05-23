@@ -1,11 +1,11 @@
 'use client';
 
-import { useFormContext } from 'react-hook-form';
-import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import ProjectQueryOptions from '@/service/project/queries';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const ProfileRegisterStackList = () => {

@@ -6,7 +6,7 @@ import {
   Path,
   RegisterOptions,
   UseFormRegister,
-  UseFormRegisterReturn,
+  UseFormRegisterReturn
 } from 'react-hook-form';
 
 interface TextareaProps<T extends FieldValues = FieldValues> {
@@ -28,23 +28,22 @@ const STextarea = <T extends FieldValues = FieldValues>({
   onChange,
   maxLength = 1000,
   register,
-  registerOptions,
+  registerOptions
 }: TextareaProps<T>) => {
   const [currentLength, setCurrentLength] = useState(value?.length || 0);
 
-  // Safely get RHF registration
   const {
     onChange: registerOnChange,
     ref: registerRef,
     ...restRegister
-  }: UseFormRegisterReturn | { ref?: undefined; onChange?: undefined } =
-    register && name ? register(name, registerOptions) : {};
+  }: UseFormRegisterReturn | { ref?: undefined; onChange?: undefined } = register && name
+    ? register(name, registerOptions)
+    : {};
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
     setCurrentLength(val.length);
 
-    // Only trigger change events if under maxLength
     if (val.length <= maxLength) {
       [registerOnChange, onChange].forEach((fn) => {
         if (fn) fn(e);

@@ -1,8 +1,9 @@
+import { formatToYearMonth } from '@/utils/date';
 import { useCallback, useEffect, useState } from 'react';
+import { Nullable } from 'types';
+
 import SDropdown from '@/components/common/Dropdown/SDropdown';
 import SvgIcon from '@/components/common/SVGIcon';
-import { Nullable } from 'types';
-import { formatToYearMonth } from '@/utils/date';
 
 interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   className?: string;
@@ -10,11 +11,11 @@ interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   index: number;
   fieldData: T;
   showCategory?: boolean;
-  statusOptions?: string[]
+  statusOptions?: string[];
   statusKey?: keyof T;
 }
 
-const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknown },>({
+const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknown }>({
   className,
   updateField,
   index,
@@ -31,12 +32,7 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
   );
   const [inProgress, setInProgress] = useState(false);
 
-  
-
-  const handleDateInput = (
-    value: string,
-    setter: (formatted: string) => void
-  ) => {
+  const handleDateInput = (value: string, setter: (formatted: string) => void) => {
     const formatted = formatToYearMonth(value);
     setter(formatted);
   };
@@ -52,9 +48,14 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
     [index, updateField, fieldData, statusKey]
   );
 
-  const handleInputChange = (name: 'startedAt' | 'endedAt', e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    name: 'startedAt' | 'endedAt',
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value } = e.target;
-    name === 'startedAt' ? handleDateInput(value, setStartedAt) : handleDateInput(value, setEndedAt);
+    name === 'startedAt'
+      ? handleDateInput(value, setStartedAt)
+      : handleDateInput(value, setEndedAt);
     updateField(index, { ...fieldData, [name]: value });
   };
 
@@ -113,7 +114,9 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
               options={statusOptions}
               placeholder="구분"
               className={`rounded-lg w-full ${
-                inProgress ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70' : ''
+                inProgress
+                  ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70'
+                  : ''
               }`}
               label={inProgress ? 'none' : 'bold'}
               onChange={handleDropDownChange}

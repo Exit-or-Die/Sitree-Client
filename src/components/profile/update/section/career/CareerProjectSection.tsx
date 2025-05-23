@@ -1,16 +1,16 @@
 'use client';
 
+import { DEFAULT_PROJECT } from '@/constants/profile/defaultData';
+import withModal from '@/enhancers/WithModal';
+import { UserProjectField } from '@/service/profile/response';
 import React, { useCallback, useState } from 'react';
+
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
 
-import ProjectExperienceForm from './ProjectExperienceForm';
-import withModal from '@/enhancers/WithModal';
 import ProfileDeleteModal from './ProfileDeleteModal';
-
-import { UserProjectField } from '@/service/profile/response';
-import { DEFAULT_PROJECT } from '@/constants/profile/defaultData';
+import ProjectExperienceForm from './ProjectExperienceForm';
 
 interface Props {
   projects: UserProjectField[];
@@ -23,16 +23,11 @@ const CareerProjectSection = ({ projects, updateProjects }: Props) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const updateProject = (index: number, updateField: UserProjectField) => {
-    updateProjects(
-      projects.map((proj, i) => (i === index ? updateField : proj))
-    );
+    updateProjects(projects.map((proj, i) => (i === index ? updateField : proj)));
   };
 
   const canAddProject = useCallback(() => {
-    return projects.every(
-      (p) =>
-        p.projectName.trim() !== ''
-    );
+    return projects.every((p) => p.projectName.trim() !== '');
   }, [projects]);
 
   const addProject = () => {
@@ -44,9 +39,7 @@ const CareerProjectSection = ({ projects, updateProjects }: Props) => {
   const deleteProject = () => {
     const newList = projects.filter((_, i) => i !== currentIndex);
     updateProjects(newList);
-    setCurrentIndex((prev) =>
-      prev >= newList.length ? newList.length - 1 : prev
-    );
+    setCurrentIndex((prev) => (prev >= newList.length ? newList.length - 1 : prev));
   };
 
   return (

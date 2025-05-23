@@ -1,14 +1,18 @@
+import {
+  DEFAULT_EDUCATION,
+  EDUCATION_CATEGORY_LABEL_MAP,
+  EDUCATION_STATUS_LABEL_MAP
+} from '@/constants/profile/defaultData';
+import { EducationCategory, UserEducationField } from '@/service/profile/response';
+import { useCallback } from 'react';
+import { Nullable } from 'types';
+
+import SDropdown from '@/components/common/Dropdown/SDropdown';
 import SInput from '@/components/common/Input';
+import STextarea from '@/components/common/Textarea';
+import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import STextarea from '@/components/common/Textarea';
-import SDropdown from '@/components/common/Dropdown/SDropdown';
-import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
-import { EducationCategory, UserEducationField } from '@/service/profile/response';
-import { DEFAULT_EDUCATION, EDUCATION_CATEGORY_LABEL_MAP, EDUCATION_STATUS_LABEL_MAP } from '@/constants/profile/defaultData';
-import { Nullable } from 'types';
-import { useCallback } from 'react';
-
 
 const EducationForm: React.FC<{
   educationActivity: UserEducationField;
@@ -113,7 +117,9 @@ const EducationForm: React.FC<{
           placeholder="교육 과정 또는 활동 내용을 작성해 주세요."
           maxLength={1000}
           className="w-full border p-3 !rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50 focus:ring-tree-50"
-          onChange={(e) => updateEducation(index, { ...educationActivity, ['contents']: e.target.value})}
+          onChange={(e) =>
+            updateEducation(index, { ...educationActivity, ['contents']: e.target.value })
+          }
         />
       </div>
     </div>

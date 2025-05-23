@@ -1,5 +1,6 @@
 'use cleint';
 
+import { ProfileUpdateRequest } from '@/service/profile/request';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
@@ -7,7 +8,6 @@ import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
-import { ProfileUpdateRequest } from '@/service/profile/request';
 
 const ProjectHeadBaseInfo = () => {
   const { register } = useFormContext<ProfileUpdateRequest>();

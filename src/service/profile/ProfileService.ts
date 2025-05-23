@@ -25,7 +25,9 @@ class ProfileService extends Service {
   }
 
   updateProfile(memberId: number, query: ProfileUpdateRequest) {
-    return this.http.put<ShortIntroResponse>(`members/${memberId}`, query);
+    return this.http.put<ShortIntroResponse>(`members/${memberId}`, query, {
+      includeAuth: true
+    });
   }
 }
 

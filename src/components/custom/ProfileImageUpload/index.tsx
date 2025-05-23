@@ -1,5 +1,6 @@
 'use client';
 
+import { UserProfileResponse } from '@/service/profile/response';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Nullable } from 'types/common';
@@ -8,7 +9,6 @@ import SImage from '@/components/common/Image';
 import { RegiseterErrorMessage } from '@/components/project/register/error/RegisterError';
 
 import { ImageUploadSection } from '../ImageUploadSection';
-import { UserProfileResponse } from '@/service/profile/response';
 
 const ProfileImageUpload = () => {
   const { setValue, getValues } = useFormContext<UserProfileResponse>();
