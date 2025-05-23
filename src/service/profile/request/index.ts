@@ -1,4 +1,5 @@
 import { Nullable } from 'types/common';
+
 import { CareerField, UserEducationField, UserIntroField, UserLinkField } from '../response';
 export interface FocusedPointParams {
   projectId: number;
@@ -10,7 +11,6 @@ export interface FocusedPointParams {
 export interface ShortIntroParams {
   shortIntroduction: string;
 }
-
 
 export interface ProfileUpdateRequest {
   nickname: string;

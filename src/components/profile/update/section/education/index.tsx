@@ -1,19 +1,19 @@
 'use client';
 
+import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
+import withModal from '@/enhancers/WithModal';
+import { ProfileUpdateRequest } from '@/service/profile/request';
+import { UserEducationField } from '@/service/profile/response';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import EducationForm from './EducationForm';
 import ProfileDeleteModal from './ProfileDeleteModal';
-import withModal from '@/enhancers/WithModal';
-import SvgIcon from '@/components/common/SVGIcon';
-import { UserEducationField, UserProfileResponse } from '@/service/profile/response';
-import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
-import { ProfileUpdateRequest } from '@/service/profile/request';
 
 export interface TechViewProps {
   techviewId: Nullable<number>;
@@ -28,7 +28,8 @@ const ProfileRegisterEducationForm = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
   const initialEducationActivity = getValues('myPage.educationActivities') || [DEFAULT_EDUCATION];
-  const [educationActivities, setEducationActivities] = useState<Array<UserEducationField>>(initialEducationActivity);
+  const [educationActivities, setEducationActivities] =
+    useState<Array<UserEducationField>>(initialEducationActivity);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -65,10 +66,7 @@ const ProfileRegisterEducationForm = () => {
   const addEducation = useCallback(() => {
     if (!canAddEducation()) return;
 
-    setEducationActivities((prev) => [
-      ...prev,
-      DEFAULT_EDUCATION
-    ]);
+    setEducationActivities((prev) => [...prev, DEFAULT_EDUCATION]);
     setCurrentIndex(educationActivities.length);
   }, [educationActivities.length, canAddEducation]);
 

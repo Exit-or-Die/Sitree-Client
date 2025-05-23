@@ -1,94 +1,94 @@
-import { ProjectRegisterRequest } from '@/service/project/request';
-import { isFilled } from '@/utils/misc';
-import { extractContentFromHtml } from '@/utils/stringUtil';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { Nullable } from 'types';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 
-interface ProjectRegisterSidebarProps {
-  projectId?: string;
+interface ProfileUpdateSidebarProps {
   handleSubmitClick: () => void;
 }
 
-const calculateCompletionRate = (fields: (string | boolean)[]) => {
+const calculateCompletionRate = (fields: Nullable<string | boolean | Date>[]) => {
   const filledFields = fields.filter(Boolean).length;
 
   return fields.length > 0 ? filledFields / fields.length : 0;
 };
 
-const ProjectRegisterSidebar = ({ projectId, handleSubmitClick }: ProjectRegisterSidebarProps) => {
+const ProfileUpdateSidebar = ({ handleSubmitClick }: ProfileUpdateSidebarProps) => {
   const { control } = useFormContext();
   const [requiredFields, setRequiredFields] = useState(false);
   const [progress, setProgress] = useState(0);
-  const formData = useWatch({ control }) as ProjectRegisterRequest;
-  const { head, categories, overview, techviewList, architectureList, participantList } = formData;
+  const formData = useWatch({ control }) as ProfileUpdateRequest;
+  const { nickname, position, email, phoneNumber, profileImgUrl, thirdPartyProfileUrl, myPage } =
+    formData;
+  const { selfIntroduction, careers, educationActivities, techStacks, links } = myPage;
 
   const basicInfo = useMemo(() => {
-    const fields = [
-      head.title,
-      head.shortDescription,
-      head.thumbnailImageUrl,
-      isFilled(categories)
-    ];
+    const fields = [nickname, position, email, phoneNumber, profileImgUrl, thirdPartyProfileUrl];
 
     return {
       name: '기본 정보',
       completionRate: calculateCompletionRate(fields)
     };
-  }, [head, categories]);
+  }, [nickname, position, email, phoneNumber, profileImgUrl, thirdPartyProfileUrl]);
 
-  const projectIntro = useMemo(
-    () => ({
-      name: '프로젝트 소개',
-      completionRate: Number(isFilled(extractContentFromHtml(overview?.detailDescription)))
-    }),
-    [overview]
-  );
+  const selfIntro = useMemo(() => {
+    const fields = [selfIntroduction.title, selfIntroduction.contents];
 
-  const techInfo = useMemo(() => {
-    const allFields = techviewList
-      .map((item) => [
-        item.techTitle,
-        item.techDesc,
-        isFilled(item.techStackTypes),
-        isFilled(item.gitRepositoryUrl)
+    return {
+      name: '자기 소개',
+      completionRate: calculateCompletionRate(fields)
+    };
+  }, [selfIntroduction]);
+
+  const careersInfo = useMemo(() => {
+    const { careerList } = careers;
+    const allFields = careerList
+      .map((career) => [career.belongingName, career.department, career.startedAt, career.position])
+      .flat();
+
+    return {
+      name: '경력 소개',
+      completionRate: allFields.length > 0 ? calculateCompletionRate(allFields) : 0
+    };
+  }, [careers]);
+
+  const educationInfo = useMemo(() => {
+    const allFields = educationActivities
+      .map((education) => [
+        education.educationActivityName,
+        education.majorOrOrganization,
+        education.startedAt
       ])
       .flat();
 
     return {
-      name: '프로젝트 기술',
+      name: '교육 및 활동',
       completionRate: allFields.length > 0 ? calculateCompletionRate(allFields) : 0
     };
-  }, [techviewList]);
+  }, [educationActivities]);
 
-  const architectureInfo = useMemo(() => {
-    const allFields = architectureList
-      .map((item) => [
-        isFilled(extractContentFromHtml(item.architectureDesc)),
-        isFilled(item.architectureImage?.imageUrl)
-      ])
-      .flat();
+  const techStackInfo = useMemo(() => {
+    return {
+      name: '기술 스택',
+      completionRate: techStacks.length > 0 ? calculateCompletionRate(techStacks) : 0
+    };
+  }, [techStacks]);
+
+  const linkInfo = useMemo(() => {
+    const allFields = links.map((link) => [link.link, link.linkProvider]).flat();
 
     return {
-      name: '기술 아키텍쳐',
+      name: '링크',
       completionRate: allFields.length > 0 ? calculateCompletionRate(allFields) : 0
     };
-  }, [architectureList]);
-
-  const participantsInfo = useMemo(() => {
-    const allFields = participantList.map((item) => [isFilled(item.position)]).flat();
-
-    return {
-      name: '참여자 목록',
-      completionRate: allFields.length > 0 ? calculateCompletionRate(allFields) : 0
-    };
-  }, [participantList]);
+  }, [links]);
 
   const sections = useMemo(
-    () => [basicInfo, projectIntro, techInfo, architectureInfo, participantsInfo],
-    [basicInfo, projectIntro, techInfo, architectureInfo, participantsInfo]
+    () => [basicInfo, selfIntro, careersInfo, educationInfo, techStackInfo, linkInfo],
+    [basicInfo, selfIntro, careersInfo, educationInfo, techStackInfo, linkInfo]
   );
 
   useEffect(() => {
@@ -100,10 +100,11 @@ const ProjectRegisterSidebar = ({ projectId, handleSubmitClick }: ProjectRegiste
 
     if (
       basicInfo.completionRate === 1 &&
-      overview.images.length > 0 &&
-      projectIntro.completionRate === 1 &&
-      techInfo.completionRate === 1 &&
-      participantsInfo.completionRate === 1
+      selfIntro.completionRate === 1 &&
+      careersInfo.completionRate === 1 &&
+      educationInfo.completionRate === 1 &&
+      techStackInfo.completionRate === 1 &&
+      linkInfo.completionRate === 1
     ) {
       setRequiredFields(true);
     } else {
@@ -157,10 +158,10 @@ const ProjectRegisterSidebar = ({ projectId, handleSubmitClick }: ProjectRegiste
         onClick={handleSubmitClick}
         disabled={!requiredFields}
       >
-        {projectId ? '수정하기' : '등록하기'}
+        프로필 저장
       </SButton>
     </div>
   );
 };
 
-export default ProjectRegisterSidebar;
+export default ProfileUpdateSidebar;

@@ -1,15 +1,15 @@
 'use client';
 
-import ProjectQueryOptions from '@/service/project/queries';
 import ProfileQueryOptions from '@/service/profile/queries';
-import { ProjectRegisterRequest } from '@/service/project/request';
-import { ProjectDetailResponse } from '@/service/project/response';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import ProjectRegisterSidebar from './components/ProjectRegisterSidebar';
+import ProfileUpdateSidebar from './components/ProfileUpdateSidebar';
 import { profileSchema } from './scheme';
 import {
   ProfileRegisterBase,
@@ -19,10 +19,6 @@ import {
   ProfileRegisterCareer,
   ProfileRegisterStackList
 } from './section';
-import { useSession } from 'next-auth/react';
-import { UserDetail } from '@/service/auth/response';
-import { useEffect } from 'react';
-import { ProfileUpdateRequest } from '@/service/profile/request';
 
 export const DEFAULT_PROFILE_DATA: Partial<ProfileUpdateRequest> = {
   nickname: '',
@@ -55,7 +51,7 @@ const ProfileUpdateForm = () => {
 
   const formMethods = useForm({
     resolver: zodResolver(profileSchema),
-    mode: 'onSubmit', // 제출 시에만 validation
+    mode: 'onSubmit',
     shouldFocusError: true,
     defaultValues: DEFAULT_PROFILE_DATA
   });
@@ -73,34 +69,25 @@ const ProfileUpdateForm = () => {
     }
   }, [isSuccess, userData, formMethods]);
 
-  // const { mutate: modifyProject } = useMutation({
-  //   mutationFn: (formValues: ProjectRegisterRequest) =>
-  //     ProjectQueryOptions.modifyProject(projectId as string, formValues).mutateFn(),
-  //   onSuccess: ({ detailUrlPath }) => {
-  //     router.push(detailUrlPath);
-  //   }
-  // });
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: (formValues: ProfileUpdateRequest) =>
+      ProfileQueryOptions.updateProfile(session?.detail.memberId as number, formValues).mutateFn(),
+    onSuccess: () => {
+      router.push(`/profile/${session?.detail.memberId}`);
+    }
+  });
 
-  // const { mutate: registerProject } = useMutation({
-  //   mutationFn: (formValues: ProjectRegisterRequest) =>
-  //     ProjectQueryOptions.registerProject(formValues).mutateFn(),
-  //   onSuccess: ({ detailUrlPath }) => {
-  //     router.push(detailUrlPath);
-  //   }
-  // });
-
-  // const handleSubmitClick = () => {
-  //   formMethods.handleSubmit(
-  //     (formValues) => {
-  //       projectId
-  //         ? modifyProject(formValues as ProjectRegisterRequest)
-  //         : registerProject(formValues as ProjectRegisterRequest);
-  //     },
-  //     (errors) => {
-  //       console.error('Validation Errors:', errors);
-  //     }
-  //   )();
-  // };
+  const handleSubmitClick = () => {
+    formMethods.handleSubmit(
+      (formValues) => {
+        console.log(formValues);
+        updateProfile(formValues as ProfileUpdateRequest);
+      },
+      (errors) => {
+        console.error('Validation Errors:', errors);
+      }
+    )();
+  };
 
   return (
     <div className="flex justify-center gap-5">
@@ -115,7 +102,7 @@ const ProfileUpdateForm = () => {
             <ProfileRegisterThirdPartyLink />
           </form>
         </div>
-        {/* <ProjectRegisterSidebar projectId={projectId} handleSubmitClick={handleSubmitClick} /> */}
+        <ProfileUpdateSidebar handleSubmitClick={handleSubmitClick} />
       </FormProvider>
     </div>
   );

@@ -1,13 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import {
-  FieldValues,
-  Path,
-  RegisterOptions,
-  UseFormRegister,
-  UseFormRegisterReturn,
-} from 'react-hook-form';
+import React, { useState } from 'react';
+import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
 import SvgIcon from '../SVGIcon';
@@ -26,7 +20,7 @@ interface SDropdownProps<TOption = string, TForm extends FieldValues = FieldValu
 const BORDER_STYLE_BY_LABEL = {
   default: 'border border-slate-90 rounded-[1rem]',
   bold: 'border border-slate-300 rounded-base',
-  none: 'border-0 rounded-base',
+  none: 'border-0 rounded-base'
 };
 
 const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
@@ -37,7 +31,7 @@ const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
   label = 'default',
   register,
   name,
-  registerOptions,
+  registerOptions
 }: SDropdownProps<TOption, TForm>) => {
   const [selectedOption, setSelectedOption] = useState<Nullable<TOption>>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -65,7 +59,9 @@ const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
         }`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        <span className={`p-3 text-small font-md leading-5 tracking-[-0.14px] text-slate-${!selectedOption ? '50' : '10'}`}>
+        <span
+          className={`p-3 text-small font-md leading-5 tracking-[-0.14px] text-slate-${!selectedOption ? '50' : '10'}`}
+        >
           {selectedOption ? String(selectedOption) : placeholder}
         </span>
         <div className="w-4 h-4 flex-shrink-0">

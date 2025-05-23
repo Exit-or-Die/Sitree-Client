@@ -1,13 +1,14 @@
 'use client';
 
+import { ProfileUpdateRequest } from '@/service/profile/request';
+import { UserIntroField } from '@/service/profile/response';
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import SInput from '@/components/common/Input';
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
-import { UserIntroField, UserProfileResponse } from '@/service/profile/response';
-import { ProfileUpdateRequest } from '@/service/profile/request';
+import SInput from '@/components/common/Input';
+
+import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 
 const ProfileSelfIntroForm = () => {
   const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();

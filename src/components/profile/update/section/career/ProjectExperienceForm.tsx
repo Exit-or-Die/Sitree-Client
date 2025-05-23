@@ -1,14 +1,14 @@
-import SInput from '@/components/common/Input';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import STextarea from '@/components/common/Textarea';
-import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
-import { UserProjectField } from '@/service/profile/response';
 import { DEFAULT_PROJECT, PROJECT_ROLE } from '@/constants/profile/defaultData';
-import STooltip from '@/components/common/Tooltip';
-import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
+import { UserProjectField } from '@/service/profile/response';
 import { Tag } from '@/service/project/request';
 
+import SInput from '@/components/common/Input';
+import STextarea from '@/components/common/Textarea';
+import STooltip from '@/components/common/Tooltip';
+import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
+import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
+
+import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 
 const ProjectExperienceForm: React.FC<{
   project: UserProjectField;
@@ -22,10 +22,10 @@ const ProjectExperienceForm: React.FC<{
 
   const updateTags = (selectedTags: Tag[]) => {
     const updatedTags = selectedTags.map((tag) => tag.name);
-    updateProject(index, { ...project, ['roleTags']: updatedTags })
-  }
+    updateProject(index, { ...project, ['roleTags']: updatedTags });
+  };
 
-  const tags = (Object.keys(PROJECT_ROLE)).map((tag) => ({ name: tag }));
+  const tags = Object.keys(PROJECT_ROLE).map((tag) => ({ name: tag }));
 
   return (
     <div className="flex flex-col gap-5">
@@ -53,7 +53,7 @@ const ProjectExperienceForm: React.FC<{
             </label>
             <RegisterRequiredMark />
           </div>
-          <DateRangeWithInProgress 
+          <DateRangeWithInProgress
             className="mt-1.5"
             updateField={updateProject}
             index={index}
@@ -64,9 +64,9 @@ const ProjectExperienceForm: React.FC<{
       <div className="w-full">
         <div className="flex items-center mb-1.5">
           <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mr-1">
-            내용 
+            내용
           </label>
-          <STooltip children="hello" />
+          <STooltip>hello</STooltip>
         </div>
         <STextarea
           value={project.contents}
@@ -74,7 +74,7 @@ const ProjectExperienceForm: React.FC<{
           placeholder="진행한 프로젝트와 업무 내용 및 성과를 작성해 주세요."
           maxLength={1000}
           className="w-full border p-3 !rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50 focus:ring-tree-50"
-          onChange={(e) => updateProject(index, { ...project, ['contents']: e.target.value})}
+          onChange={(e) => updateProject(index, { ...project, ['contents']: e.target.value })}
         />
       </div>
       <div className="flex gap-5">
@@ -89,7 +89,7 @@ const ProjectExperienceForm: React.FC<{
             onChange={updateTags}
             displayKey="name"
             tags={tags}
-            initialValue={project.roleTags.map((role) => ({name: role}))}
+            initialValue={project.roleTags.map((role) => ({ name: role }))}
           />
         </div>
         <div className="w-full" />

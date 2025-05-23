@@ -1,23 +1,20 @@
 'use client';
 
+import { ProfileUpdateRequest } from '@/service/profile/request';
 import { useFormContext, useFieldArray } from 'react-hook-form';
+
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import SSelect from '@/components/common/Select';
-import { UserLinkField } from '@/service/profile/response';
 
 const LINK_PROVIDERS = ['LINK', 'BEHANCE', 'GITHUB', 'LINKEDIN', 'NOTION'];
 
-interface FormValues {
-  links: UserLinkField[];
-}
-
 const ProfileLinksForm = () => {
-  const { control, register, setValue, getValues } = useFormContext<FormValues>();
+  const { control, register, setValue, getValues } = useFormContext<ProfileUpdateRequest>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'links'
+    name: 'myPage.links'
   });
 
   const selectedProviders = fields.map((field) => field.linkProvider);
@@ -39,10 +36,12 @@ const ProfileLinksForm = () => {
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-1.5">
             <SSelect
-              value={{ key: getValues(`links.${index}.linkProvider`) }}
-              onChange={(newOption) => setValue(`links.${index}.linkProvider`, newOption.key)}
+              value={{ key: getValues(`myPage.links.${index}.linkProvider`) }}
+              onChange={(newOption) =>
+                setValue(`myPage.links.${index}.linkProvider`, newOption.key)
+              }
               options={[
-                { key: getValues(`links.${index}.linkProvider`) },
+                { key: getValues(`myPage.links.${index}.linkProvider`) },
                 ...availableProviders.map((provider) => ({ key: provider }))
               ]}
               displayKey="key"
@@ -52,7 +51,8 @@ const ProfileLinksForm = () => {
               <SInput
                 className="text-small font-md leading-5 tracking-[-0.14px]"
                 placeholder="링크를 입력해주세요"
-                {...register(`links.${index}.link`)}
+                register={register}
+                name={`myPage.links.${index}.link`}
               />
             </div>
             {fields.length > 1 && (
