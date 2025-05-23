@@ -1,36 +1,21 @@
 import SInput from '@/components/common/Input';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import STextarea from '@/components/common/Textarea';
-import SDropdown from '@/components/common/Dropdown/SDropdown';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
-import { EducationCategory, UserEducationField } from '@/service/profile/response';
-import { DEFAULT_EDUCATION, EDUCATION_CATEGORY_LABEL_MAP } from '@/constants/profile/defaultData';
-import { Nullable } from 'types';
-import { useCallback } from 'react';
-import CareerExperienceSection from './CareerExperienceSection';
-import STooltip from '@/components/common/Tooltip';
+import { CareerField } from '@/service/profile/response';
+import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
+import CareerProjectSection from './CareerProjectSection';
 
 
 const CareerForm: React.FC<{
-  educationActivity: UserEducationField;
+  career: CareerField;
   index: number;
-  updateEducation: (index: number, updatedEducation: UserEducationField) => void;
-}> = ({ educationActivity = DEFAULT_EDUCATION, index, updateEducation }) => {
+  updateCareer: (index: number, updatedEducation: CareerField) => void;
+}> = ({ career = DEFAULT_CAREER, index, updateCareer }) => {
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    updateEducation(index, { ...educationActivity, [name]: value });
+    updateCareer(index, { ...career, [name]: value });
   };
-  const handleDropDownChange = useCallback(
-    (category: Nullable<EducationCategory>) => {
-      if (!category) return;
-      updateEducation(index, {
-        ...educationActivity,
-        category
-      });
-    },
-    [index, updateEducation, educationActivity]
-  );
 
   return (
     <div className="flex flex-col gap-5">
@@ -49,9 +34,9 @@ const CareerForm: React.FC<{
           <SInput
             type="text"
             placeholder="회사 검색"
-            name="educationActivityName"
-            onChange={(e) => handleInputChange('educationActivityName', e)}
-            value={educationActivity.educationActivityName}
+            name="belongingName"
+            onChange={(e) => handleInputChange('belongingName', e)}
+            value={career.belongingName}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
         </div>
@@ -64,9 +49,9 @@ const CareerForm: React.FC<{
           </div>
           <DateRangeWithInProgress 
             className="mt-1.5"
-            updateEducation={updateEducation}
+            updateField={updateCareer}
             index={index}
-            educationActivity={educationActivity}
+            fieldData={career}
           />
         </div>
       </div>
@@ -81,9 +66,9 @@ const CareerForm: React.FC<{
           <SInput
             type="text"
             placeholder="ex. 팀원/프로덕트 디자이너"
-            name="majorOrOrganization"
-            value={educationActivity.majorOrOrganization}
-            onChange={(e) => handleInputChange('majorOrOrganization', e)}
+            name="position"
+            value={career.position}
+            onChange={(e) => handleInputChange('position', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
         </div>
@@ -97,29 +82,19 @@ const CareerForm: React.FC<{
           <SInput
             type="text"
             placeholder="ex. OO팀, OO부서"
-            name="majorOrOrganization"
-            value={educationActivity.majorOrOrganization}
-            onChange={(e) => handleInputChange('majorOrOrganization', e)}
+            name="department"
+            value={career.department}
+            onChange={(e) => handleInputChange('department', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
         </div>
       </div>
-      {/* <div className="w-full">
-        <div className="flex items-center">
-          <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mb-1.5">
-            내용
-          </label>
-        </div>
-        <STextarea
-          value={educationActivity.contents}
-          name="contents"
-          placeholder="진행한 프로젝트와 업무 내용 및 성과를 작성해 주세요."
-          maxLength={1000}
-          className="w-full border p-3 !rounded-base text-small resize-none h-[160px] placeholder-slate-60 outline-tree-50 focus:ring-tree-50"
-          onChange={(e) => updateEducation(index, { ...educationActivity, ['contents']: e.target.value})}
-        />
-      </div> */}
-      <CareerExperienceSection />
+      <CareerProjectSection
+        projects={career.projects}
+        updateProjects={(updatedProjects) =>
+          updateCareer(index, { ...career, projects: updatedProjects })
+        }
+      />
     </div>
   );
 };

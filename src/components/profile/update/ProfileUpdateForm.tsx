@@ -21,28 +21,23 @@ import {
 } from './section';
 import { useSession } from 'next-auth/react';
 import { UserDetail } from '@/service/auth/response';
-import { UserProfileResponse } from '@/service/profile/response';
 import { useEffect } from 'react';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 
-export const DEFAULT_PROFILE_DATA: Partial<UserProfileResponse> = {
-  memberId: '',
+export const DEFAULT_PROFILE_DATA: Partial<ProfileUpdateRequest> = {
   nickname: '',
   position: null,
   email: '',
   phoneNumber: null,
   profileImgUrl: '',
   thirdPartyProfileUrl: '',
-  shortIntroduction: '',
   belongingId: 0,
-  belongingName: '',
   myPage: {
     selfIntroduction: {
       title: null,
       contents: null
     },
     careers: {
-      totalYears: 0,
-      totalMonths: 0,
       careerList: []
     },
     educationActivities: [],
@@ -76,7 +71,6 @@ const ProfileUpdateForm = () => {
     if (isSuccess && userData) {
       formMethods.reset(userData);
     }
-    // console.log(formMethods);
   }, [isSuccess, userData, formMethods]);
 
   // const { mutate: modifyProject } = useMutation({

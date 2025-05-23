@@ -5,7 +5,7 @@ import STextarea from '@/components/common/Textarea';
 import SDropdown from '@/components/common/Dropdown/SDropdown';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 import { EducationCategory, UserEducationField } from '@/service/profile/response';
-import { DEFAULT_EDUCATION, EDUCATION_CATEGORY_LABEL_MAP } from '@/constants/profile/defaultData';
+import { DEFAULT_EDUCATION, EDUCATION_CATEGORY_LABEL_MAP, EDUCATION_STATUS_LABEL_MAP } from '@/constants/profile/defaultData';
 import { Nullable } from 'types';
 import { useCallback } from 'react';
 
@@ -13,7 +13,7 @@ import { useCallback } from 'react';
 const EducationForm: React.FC<{
   educationActivity: UserEducationField;
   index: number;
-  updateEducation: (index: number, updatedEducation: UserEducationField) => void;
+  updateEducation: (index: number, updateField: UserEducationField) => void;
 }> = ({ educationActivity = DEFAULT_EDUCATION, index, updateEducation }) => {
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -56,12 +56,14 @@ const EducationForm: React.FC<{
             </label>
             <RegisterRequiredMark />
           </div>
-          <DateRangeWithInProgress 
+          <DateRangeWithInProgress
             className="mt-1.5"
-            updateEducation={updateEducation}
+            updateField={updateEducation}
             index={index}
-            educationActivity={educationActivity}
+            fieldData={educationActivity}
             showCategory
+            statusOptions={Object.values(EDUCATION_STATUS_LABEL_MAP)}
+            statusKey="educationStatus"
           />
         </div>
       </div>

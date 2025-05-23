@@ -7,10 +7,10 @@ import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
 
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import { RegiseterErrorMessage } from '../../error/RegisterError';
-import { UserProfileResponse } from '@/service/profile/response';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 
 const ProjectHeadBaseInfo = () => {
-  const { register } = useFormContext<UserProfileResponse>();
+  const { register } = useFormContext<ProfileUpdateRequest>();
 
   const InputList = [
     {

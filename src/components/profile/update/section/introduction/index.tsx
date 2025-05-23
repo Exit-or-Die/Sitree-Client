@@ -7,9 +7,10 @@ import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import SInput from '@/components/common/Input';
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import { UserIntroField, UserProfileResponse } from '@/service/profile/response';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 
 const ProfileSelfIntroForm = () => {
-  const { setValue, getValues } = useFormContext<UserProfileResponse>();
+  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
   const initialSkills = getValues('myPage.selfIntroduction') || {
     title: null,
     contents: null

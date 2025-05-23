@@ -1,30 +1,37 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SDropdown from '@/components/common/Dropdown/SDropdown';
-import SInput from '@/components/common/Input';
 import SvgIcon from '@/components/common/SVGIcon';
-import { EducationStatus, UserEducationField } from '@/service/profile/response';
-import { EDUCATION_STATUS_LABEL_MAP } from '@/constants/profile/defaultData';
 import { Nullable } from 'types';
+import { formatToYearMonth } from '@/utils/date';
 
-interface Props {
+interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   className?: string;
-  updateEducation: (index: number, updatedEducation: UserEducationField) => void;
+  updateField: (index: number, updateField: T) => void;
   index: number;
-  educationActivity: UserEducationField;
+  fieldData: T;
   showCategory?: boolean;
+  statusOptions?: string[]
+  statusKey?: keyof T;
 }
 
-const DateRangeWithInProgress = ({ className, updateEducation, index, educationActivity, showCategory }: Props) => {
-  const [startedAt, setStartedAt] = useState('');
-  const [endedAt, setEndedAt] = useState('');
+const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknown },>({
+  className,
+  updateField,
+  index,
+  fieldData,
+  showCategory = false,
+  statusOptions = [],
+  statusKey = 'status' as keyof T
+}: Props<T>) => {
+  const [startedAt, setStartedAt] = useState(() =>
+    fieldData?.startedAt ? formatToYearMonth(String(fieldData.startedAt)) : ''
+  );
+  const [endedAt, setEndedAt] = useState(() =>
+    fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : ''
+  );
   const [inProgress, setInProgress] = useState(false);
 
-  const formatToYearMonth = (value: string) => {
-    const numeric = value.replace(/\D/g, '');
-    const year = numeric.slice(0, 4);
-    const month = numeric.slice(4, 6);
-    return month ? `${year}.${month}` : year;
-  };
+  
 
   const handleDateInput = (
     value: string,
@@ -35,30 +42,39 @@ const DateRangeWithInProgress = ({ className, updateEducation, index, educationA
   };
 
   const handleDropDownChange = useCallback(
-    (status: Nullable<EducationStatus>) => {
+    (status: Nullable<string>) => {
       if (!status) return;
-      updateEducation(index, {
-        ...educationActivity,
-        ['educationStatus']: status
+      updateField(index, {
+        ...fieldData,
+        [statusKey]: status
       });
     },
-    [index, updateEducation, educationActivity]
+    [index, updateField, fieldData, statusKey]
   );
 
-  const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (name: 'startedAt' | 'endedAt', e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    name === 'startedAt' ? handleDateInput(value, setStartedAt) : handleDateInput(e.target.value, setEndedAt);
-    updateEducation(index, { ...educationActivity, [name]: value });
+    name === 'startedAt' ? handleDateInput(value, setStartedAt) : handleDateInput(value, setEndedAt);
+    updateField(index, { ...fieldData, [name]: value });
   };
 
   const toggleProgressiveBox = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInProgress(e.target.checked);
     if (e.target.checked) {
-      updateEducation(index, { ...educationActivity, ['endedAt']: new Date() });
-      return;
-    } 
-    updateEducation(index, { ...educationActivity, ['endedAt']: null });
-  }
+      updateField(index, { ...fieldData, endedAt: new Date() });
+    } else {
+      updateField(index, { ...fieldData, endedAt: null });
+    }
+  };
+
+  useEffect(() => {
+    if (fieldData?.startedAt) {
+      setStartedAt(formatToYearMonth(String(fieldData.startedAt)));
+    }
+    if (fieldData?.endedAt) {
+      setEndedAt(formatToYearMonth(String(fieldData.endedAt)));
+    }
+  }, [fieldData.startedAt, fieldData.endedAt]);
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -92,19 +108,18 @@ const DateRangeWithInProgress = ({ className, updateEducation, index, educationA
         )}
 
         {showCategory && (
-            <div className="w-full max-w-[100px]">
-              <SDropdown
-                options={Object.values(EDUCATION_STATUS_LABEL_MAP) as EducationStatus[]}
-                placeholder="구분"
-                className={`rounded-lg w-full ${
-                  inProgress ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70' : ''
-                }`}
-                label={inProgress ? 'none' : 'bold'}
-                onChange={handleDropDownChange}
-              />
-            </div>
-          )
-        }
+          <div className="w-full max-w-[100px]">
+            <SDropdown
+              options={statusOptions}
+              placeholder="구분"
+              className={`rounded-lg w-full ${
+                inProgress ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70' : ''
+              }`}
+              label={inProgress ? 'none' : 'bold'}
+              onChange={handleDropDownChange}
+            />
+          </div>
+        )}
       </div>
 
       <label className="flex items-center gap-2 mt-1">

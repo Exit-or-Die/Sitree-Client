@@ -30,23 +30,23 @@ export interface UserIntroField {
 export interface UserCareerField {
   totalYears: number;
   totalMonths: number;
-  careerList: Array<CareerList>;
+  careerList: Array<CareerField>;
 }
 
-export interface CareerList {
+export interface CareerField {
   belongingId: number;
   belongingName: string;
   imageUrl: Nullable<string>;
-  startedAt: Date;
-  endedAt: Date;
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
   position: string;
   department: string;
   projects: Array<UserProjectField>;
 }
 export interface UserProjectField {
   projectName: string;
-  startedAt: Date;
-  endedAt: Date;
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
   contents: string;
   roleTags: Array<string>;
 }

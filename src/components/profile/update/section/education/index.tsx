@@ -13,6 +13,7 @@ import withModal from '@/enhancers/WithModal';
 import SvgIcon from '@/components/common/SVGIcon';
 import { UserEducationField, UserProfileResponse } from '@/service/profile/response';
 import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 
 export interface TechViewProps {
   techviewId: Nullable<number>;
@@ -25,7 +26,7 @@ export interface TechViewProps {
 const ProfileRegisterEducationForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { setValue, getValues } = useFormContext<UserProfileResponse>();
+  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
   const initialEducationActivity = getValues('myPage.educationActivities') || [DEFAULT_EDUCATION];
   const [educationActivities, setEducationActivities] = useState<Array<UserEducationField>>(initialEducationActivity);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,13 +35,13 @@ const ProfileRegisterEducationForm = () => {
     setValue('myPage.educationActivities', educationActivities);
   }, [educationActivities, setValue]);
 
-  const updateEducation = (index: number, updatedEducation: UserEducationField) => {
+  const updateEducation = (index: number, updateField: UserEducationField) => {
     setEducationActivities((prev) => {
       if (prev.length === 0) {
-        return [updatedEducation];
+        return [updateField];
       }
 
-      return prev.map((educationActivity, i) => (i === index ? updatedEducation : educationActivity));
+      return prev.map((educationActivity, i) => (i === index ? updateField : educationActivity));
     });
   };
 
@@ -96,9 +97,8 @@ const ProfileRegisterEducationForm = () => {
         <div className="flex items-center space-x-4">
           <div className="flex gap-1">
             {educationActivities.map((_, index) => (
-              //TODO: class 수정 필요
               <SButton
-                type="button" // 기본 제출 동작 방지
+                type="button"
                 key={index}
                 onClick={() => goToPage(index)}
                 size="none"

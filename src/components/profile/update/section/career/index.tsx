@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -11,70 +10,71 @@ import CareerForm from './CareerForm';
 import ProfileDeleteModal from './ProfileDeleteModal';
 import withModal from '@/enhancers/WithModal';
 import SvgIcon from '@/components/common/SVGIcon';
-import { UserEducationField, UserProfileResponse } from '@/service/profile/response';
-import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
+import { CareerField } from '@/service/profile/response';
+import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
+import { ProfileUpdateRequest } from '@/service/profile/request';
 
 const ProfileRegisterCareerForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { setValue, getValues } = useFormContext<UserProfileResponse>();
-  const initialEducationActivity = getValues('myPage.educationActivities') || [DEFAULT_EDUCATION];
-  const [educationActivities, setEducationActivities] = useState<Array<UserEducationField>>(initialEducationActivity);
+  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
+  const initialCareers = getValues('myPage.careers.careerList') || [DEFAULT_CAREER];
+  const [careers, setCareers] = useState<Array<CareerField>>(initialCareers);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setValue('myPage.educationActivities', educationActivities);
-  }, [educationActivities, setValue]);
+    setValue('myPage.careers', { careerList: careers });
+  }, [careers, setValue]);
 
-  const updateEducation = (index: number, updatedEducation: UserEducationField) => {
-    setEducationActivities((prev) => {
+  const updateCareer = (index: number, updatedCareer: CareerField) => {
+    setCareers((prev) => {
       if (prev.length === 0) {
-        return [updatedEducation];
+        return [updatedCareer];
       }
 
-      return prev.map((educationActivity, i) => (i === index ? updatedEducation : educationActivity));
+      return prev.map((careers, i) => (i === index ? updatedCareer : careers));
     });
   };
 
-  const canAddEducation = useCallback(() => {
-    if (!educationActivities.length) return true;
+  const canAddCareer = useCallback(() => {
+    if (!careers.length) return true;
 
-    return educationActivities.every(
-      (educationActivity) =>
-        educationActivity.educationActivityName.trim() !== '' &&
-        educationActivity.majorOrOrganization.trim() !== '' &&
-        educationActivity.category &&
-        educationActivity.startedAt &&
-        educationActivity.endedAt
+    return careers.every(
+      (career) =>
+        career.belongingName.trim() !== '' &&
+        career.position.trim() !== '' &&
+        career.department.trim() !== '' &&
+        career.startedAt &&
+        career.endedAt
     );
-  }, [educationActivities]);
+  }, [careers]);
 
-  const canDeleteEducation = useCallback(() => {
-    return educationActivities.length > 1;
-  }, [educationActivities]);
+  const canDeleteCareer = useCallback(() => {
+    return careers.length > 1;
+  }, [careers]);
 
-  const addEducation = useCallback(() => {
-    if (!canAddEducation()) return;
+  const addCareer = useCallback(() => {
+    if (!canAddCareer()) return;
 
-    setEducationActivities((prev) => [
+    setCareers((prev) => [
       ...prev,
-      DEFAULT_EDUCATION
+      DEFAULT_CAREER
     ]);
-    setCurrentIndex(educationActivities.length);
-  }, [educationActivities.length, canAddEducation]);
+    setCurrentIndex(careers.length);
+  }, [careers.length, canAddCareer]);
 
   const deleteEducation = useCallback(
     (index: number) => {
-      if (!canDeleteEducation()) return;
+      if (!canDeleteCareer()) return;
 
-      const newEducationActivities = educationActivities.filter((_, i) => i !== index);
-      setEducationActivities(newEducationActivities);
+      const newCareers = careers.filter((_, i) => i !== index);
+      setCareers(newCareers);
 
-      if (index === currentIndex && newEducationActivities.length > 0) {
-        setCurrentIndex(index === newEducationActivities.length ? index - 1 : index);
+      if (index === currentIndex && newCareers.length > 0) {
+        setCurrentIndex(index === newCareers.length ? index - 1 : index);
       }
     },
-    [educationActivities, currentIndex, canDeleteEducation]
+    [careers, currentIndex, canDeleteCareer]
   );
 
   const goToPage = useCallback((index: number) => {
@@ -87,10 +87,9 @@ const ProfileRegisterCareerForm = () => {
         <p className="text-slate-10 font-lb text-xlarge">경력</p>
         <div className="flex items-center space-x-4">
           <div className="flex gap-1">
-            {educationActivities.map((_, index) => (
-              //TODO: class 수정 필요
+            {careers.map((_, index) => (
               <SButton
-                type="button" // 기본 제출 동작 방지
+                type="button"
                 key={index}
                 onClick={() => goToPage(index)}
                 size="none"
@@ -104,18 +103,18 @@ const ProfileRegisterCareerForm = () => {
           </div>
           <SButton
             size="md"
-            disabled={!canAddEducation()}
+            disabled={!canAddCareer()}
             className={`${
-              canAddEducation()
-                ? 'bg-green-100 text-green-700'
+              canAddCareer()
+                ? 'bg-white-100 text-slate-40'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
-            onClick={addEducation}
+            onClick={addCareer}
           >
             <p className="leading-5 tracking-[-1%]">경력 추가</p>
             <SvgIcon
               icon="plus"
-              color={canAddEducation() ? '#03854E' : 'text-gray-400'}
+              color={canAddCareer() ? '#566070' : 'text-gray-400'}
               width={16}
               height={16}
               className="ml-1"
@@ -125,13 +124,13 @@ const ProfileRegisterCareerForm = () => {
       </div>
       <div>
         <CareerForm
-          educationActivity={educationActivities[currentIndex]}
+          career={careers[currentIndex]}
           index={currentIndex}
-          updateEducation={updateEducation}
+          updateCareer={updateCareer}
           key={currentIndex}
         />
       </div>
-      {canDeleteEducation() && (
+      {canDeleteCareer() && (
         <div
           className="mt-5 flex items-center justify-end gap-1 cursor-pointer"
           onClick={() => setDeleteModalOpen(true)}

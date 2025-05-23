@@ -1,5 +1,5 @@
 import { UserCareerField } from '@/service/profile/response';
-import formatTimestamps from '@/utils/date';
+import { formatTimestamps } from '@/utils/date';
 
 import SImage from '../common/Image';
 

@@ -1,6 +1,6 @@
 import { EDUCATION_STATUS } from '@/constants/profile';
 import { UserEducationField } from '@/service/profile/response';
-import formatTimestamps from '@/utils/date';
+import { formatTimestamps } from '@/utils/date';
 
 type Props = {
   education: Array<UserEducationField>;

@@ -28,8 +28,6 @@ export const myPageSchema = z.object({
     contents: nullableString.optional()
   }),
   careers: z.object({
-    totalYears: z.number().nonnegative(),
-    totalMonths: z.number().nonnegative(),
     careerList: z.array(careerListSchema)
   }),
   educationActivities: z.array(educationActivitySchema),
