@@ -2,6 +2,7 @@
 
 import ProfileQueryOptions from '@/service/profile/queries';
 import { ProfileUpdateRequest } from '@/service/profile/request';
+import { parseYearMonthToDate } from '@/utils/date';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -69,6 +70,42 @@ const ProfileUpdateForm = () => {
     }
   }, [isSuccess, userData, formMethods]);
 
+  const transformDates = (formValues: ProfileUpdateRequest): ProfileUpdateRequest => {
+    const cloned = structuredClone(formValues);
+
+    cloned.myPage.careers.careerList = cloned.myPage.careers.careerList.map((career) => ({
+      ...career,
+      startedAt:
+        typeof career.startedAt === 'string'
+          ? parseYearMonthToDate(career.startedAt)
+          : career.startedAt,
+      endedAt:
+        typeof career.endedAt === 'string' ? parseYearMonthToDate(career.endedAt) : career.endedAt,
+      projects: Array.isArray(career.projects)
+        ? career.projects.map((project) => ({
+            ...project,
+            startedAt:
+              typeof project.startedAt === 'string'
+                ? parseYearMonthToDate(project.startedAt)
+                : project.startedAt,
+            endedAt:
+              typeof project.endedAt === 'string'
+                ? parseYearMonthToDate(project.endedAt)
+                : project.endedAt
+          }))
+        : []
+    }));
+
+    cloned.myPage.educationActivities = cloned.myPage.educationActivities.map((edu) => ({
+      ...edu,
+      startedAt:
+        typeof edu.startedAt === 'string' ? parseYearMonthToDate(edu.startedAt) : edu.startedAt,
+      endedAt: typeof edu.endedAt === 'string' ? parseYearMonthToDate(edu.endedAt) : edu.endedAt
+    }));
+
+    return cloned;
+  };
+
   const { mutate: updateProfile } = useMutation({
     mutationFn: (formValues: ProfileUpdateRequest) =>
       ProfileQueryOptions.updateProfile(session?.detail.memberId as number, formValues).mutateFn(),
@@ -80,8 +117,8 @@ const ProfileUpdateForm = () => {
   const handleSubmitClick = () => {
     formMethods.handleSubmit(
       (formValues) => {
-        console.log(formValues);
-        updateProfile(formValues as ProfileUpdateRequest);
+        const parsed = transformDates(formValues as ProfileUpdateRequest);
+        updateProfile(parsed);
       },
       (errors) => {
         console.error('Validation Errors:', errors);

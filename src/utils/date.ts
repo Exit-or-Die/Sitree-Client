@@ -40,3 +40,13 @@ export const formatToYearMonth = (value: string) => {
 
   return month ? `${year}.${month}` : year;
 };
+
+export const parseYearMonthToDate = (value: string): Date | null => {
+  const [year, month] = value.split('.').map((v) => parseInt(v, 10));
+
+  if (!year || !month || month < 1 || month > 12) {
+    return null;
+  }
+
+  return new Date(year, month - 1);
+};

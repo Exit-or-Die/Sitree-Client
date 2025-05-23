@@ -2,19 +2,28 @@ import { z } from 'zod';
 
 const nullableString = z.string().nullable();
 
+const projectExperienceSchema = z.object({
+  projectName: z.string(),
+  contents: z.string(),
+  startedAt: z.string().optional(),
+  endedAt: z.string().optional(),
+  roleTags: z.array(z.string())
+});
+
 const careerListSchema = z.object({
   belongingName: z.string(),
   position: z.string(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
-  isCurrent: z.boolean().optional()
+  department: z.string(),
+  startedAt: z.string().optional(),
+  endedAt: z.string().optional(),
+  projects: z.array(projectExperienceSchema).optional()
 });
 
 const educationActivitySchema = z.object({
   educationActivityName: z.string(),
   majorOrOrganization: z.string(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional()
+  startedAt: z.string().optional(),
+  endedAt: z.string().optional()
 });
 
 const linkSchema = z.object({
