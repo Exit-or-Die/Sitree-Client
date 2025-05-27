@@ -99,11 +99,11 @@ const ProfileUpdateSidebar = ({ handleSubmitClick }: ProfileUpdateSidebarProps) 
     setProgress((totalCompletionRate / sections.length) * 100);
 
     if (
-      basicInfo.completionRate === 1 &&
-      selfIntro.completionRate === 1 &&
-      careersInfo.completionRate === 1 &&
-      educationInfo.completionRate === 1 &&
-      techStackInfo.completionRate === 1 &&
+      basicInfo.completionRate === 1 ||
+      selfIntro.completionRate === 1 ||
+      careersInfo.completionRate === 1 ||
+      educationInfo.completionRate === 1 ||
+      techStackInfo.completionRate === 1 ||
       linkInfo.completionRate === 1
     ) {
       setRequiredFields(true);

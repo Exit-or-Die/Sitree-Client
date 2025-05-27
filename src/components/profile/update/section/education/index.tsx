@@ -4,8 +4,9 @@ import { DEFAULT_EDUCATION } from '@/constants/profile/defaultData';
 import withModal from '@/enhancers/WithModal';
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { UserEducationField } from '@/service/profile/response';
+import { isEmpty } from '@/utils/array';
 import React, { useState, useEffect, useCallback } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
@@ -26,15 +27,18 @@ export interface TechViewProps {
 const ProfileRegisterEducationForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
-  const initialEducationActivity = getValues('myPage.educationActivities') || [DEFAULT_EDUCATION];
-  const [educationActivities, setEducationActivities] =
-    useState<Array<UserEducationField>>(initialEducationActivity);
+  const { setValue } = useFormContext<ProfileUpdateRequest>();
+  const educationForm = useWatch({ name: 'myPage.educationActivities' });
+  const [educationActivities, setEducationActivities] = useState<Array<UserEducationField>>(
+    isEmpty(educationForm) ? [DEFAULT_EDUCATION] : educationForm
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setValue('myPage.educationActivities', educationActivities);
-  }, [educationActivities, setValue]);
+    if (!isEmpty(educationForm)) {
+      setEducationActivities(educationForm);
+    }
+  }, [educationForm]);
 
   const updateEducation = (index: number, updateField: UserEducationField) => {
     setEducationActivities((prev) => {
@@ -44,6 +48,7 @@ const ProfileRegisterEducationForm = () => {
 
       return prev.map((educationActivity, i) => (i === index ? updateField : educationActivity));
     });
+    setValue('myPage.educationActivities', educationActivities);
   };
 
   const canAddEducation = useCallback(() => {

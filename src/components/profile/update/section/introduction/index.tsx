@@ -3,7 +3,7 @@
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { UserIntroField } from '@/service/profile/response';
 import React, { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
@@ -11,19 +11,23 @@ import SInput from '@/components/common/Input';
 import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 
 const ProfileSelfIntroForm = () => {
-  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
-  const initialSkills = getValues('myPage.selfIntroduction') || {
-    title: null,
-    contents: null
-  };
-  const [intro, setIntro] = useState<UserIntroField>(initialSkills);
+  const { setValue } = useFormContext<ProfileUpdateRequest>();
+  const introForm = useWatch({ name: 'myPage.selfIntroduction' });
+
+  const [intro, setIntro] = useState<UserIntroField>({
+    title: introForm?.title || '',
+    contents: introForm?.contents || ''
+  });
 
   useEffect(() => {
-    setValue('myPage.selfIntroduction', intro);
-  }, [intro, setValue]);
+    if (introForm?.title || introForm?.contents) {
+      setIntro(introForm);
+    }
+  }, [introForm]);
 
   const updateIntro = (updatedIntro: UserIntroField) => {
     setIntro(updatedIntro);
+    setValue('myPage.selfIntroduction', updatedIntro);
   };
 
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +52,7 @@ const ProfileSelfIntroForm = () => {
               <RegisterRequiredMark />
             </div>
             <SInput
+              key={intro.title}
               type="text"
               placeholder="나를 표현할 수 있는 한 줄을 입력해 주세요"
               name="title"

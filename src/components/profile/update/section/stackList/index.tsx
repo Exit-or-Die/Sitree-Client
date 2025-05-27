@@ -2,23 +2,31 @@
 
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import ProjectQueryOptions from '@/service/project/queries';
+import { isEmpty } from '@/utils/array';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
 const ProfileRegisterStackList = () => {
-  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
-  const initialTechStacks = getValues('myPage.techStacks') || [];
-  const [techStacks, setTechStacks] = useState(initialTechStacks);
+  const { setValue } = useFormContext<ProfileUpdateRequest>();
+  const stackForm = useWatch({ name: 'myPage.techStacks' });
+  const [techStacks, setTechStacks] = useState(isEmpty(stackForm) ? [] : stackForm);
 
   const { queryKey, queryFn } = ProjectQueryOptions.retrieveProjectTechStacks();
   const { data } = useQuery({ queryKey, queryFn });
 
   useEffect(() => {
+    if (!isEmpty(stackForm)) {
+      setTechStacks(stackForm);
+    }
+  }, [stackForm]);
+
+  const updateTechStacks = (tags: string[]) => {
+    setTechStacks(tags);
     setValue('myPage.techStacks', techStacks);
-  }, [techStacks, setValue]);
+  };
 
   const availableTags = useMemo(() => data?.techStacks || [], [data?.techStacks]);
 
@@ -30,9 +38,7 @@ const ProfileRegisterStackList = () => {
       <ProjectTagSelect
         tags={availableTags}
         initialValue={techStacks}
-        onChange={(tags: string[]) => {
-          setTechStacks(tags);
-        }}
+        onChange={updateTechStacks}
       />
     </div>
   );

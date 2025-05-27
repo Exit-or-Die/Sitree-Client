@@ -58,3 +58,5 @@ export const PROJECT_ROLE: Record<string, string> = {
   DATA: '데이터 개발자',
   INFRA: '인프라 개발자'
 };
+
+export const LINK_PROVIDERS = ['LINK', 'BEHANCE', 'GITHUB', 'LINKEDIN', 'NOTION'];

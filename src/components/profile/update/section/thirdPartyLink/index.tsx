@@ -1,5 +1,6 @@
 'use client';
 
+import { LINK_PROVIDERS } from '@/constants/profile/defaultData';
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 
@@ -7,8 +8,6 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import SSelect from '@/components/common/Select';
-
-const LINK_PROVIDERS = ['LINK', 'BEHANCE', 'GITHUB', 'LINKEDIN', 'NOTION'];
 
 const ProfileLinksForm = () => {
   const { control, register, setValue, getValues } = useFormContext<ProfileUpdateRequest>();
