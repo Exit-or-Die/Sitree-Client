@@ -52,7 +52,6 @@ const ProfileSelfIntroForm = () => {
               <RegisterRequiredMark />
             </div>
             <SInput
-              key={intro.title}
               type="text"
               placeholder="나를 표현할 수 있는 한 줄을 입력해 주세요"
               name="title"

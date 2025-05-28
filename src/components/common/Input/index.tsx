@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import SImage from '../Image';
@@ -19,6 +19,7 @@ interface InputProps<T extends FieldValues> {
   limitLength?: number; // 글자 수 제한 길이
   onEnterPress?: (contents: string) => void; // 엔터 키 눌렀을 때 실행할 함수 추가
   onIconClick?: (contents: string) => void; // 아이콘 클릭 시 실행할 함수 추가
+  renderDropdown?: () => React.ReactNode;
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -37,7 +38,8 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
       useLimit = false,
       limitLength,
       onEnterPress,
-      onIconClick
+      onIconClick,
+      renderDropdown
     },
     ref
   ) => {
@@ -48,6 +50,10 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
     } = register && name ? register(name) : { ref: undefined, onChange: undefined };
 
     const [text, setText] = useState<string>(value || '');
+
+    useEffect(() => {
+      setText(value || '');
+    }, [value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (useLimit && limitLength && e.target.value.length > limitLength) {
@@ -103,6 +109,7 @@ const SInput = React.forwardRef<HTMLInputElement, InputProps<any>>(
             onClick={handleIconClick} // 아이콘 클릭 이벤트 추가
           />
         )}
+        {renderDropdown && <div className="relative">{renderDropdown()}</div>}
       </div>
     );
   }

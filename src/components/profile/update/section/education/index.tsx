@@ -41,14 +41,11 @@ const ProfileRegisterEducationForm = () => {
   }, [educationForm]);
 
   const updateEducation = (index: number, updateField: UserEducationField) => {
-    setEducationActivities((prev) => {
-      if (prev.length === 0) {
-        return [updateField];
-      }
-
-      return prev.map((educationActivity, i) => (i === index ? updateField : educationActivity));
-    });
-    setValue('myPage.educationActivities', educationActivities);
+    const updated = educationActivities.map((activity, i) =>
+      i === index ? updateField : activity
+    );
+    setEducationActivities(updated);
+    setValue('myPage.educationActivities', updated);
   };
 
   const canAddEducation = useCallback(() => {

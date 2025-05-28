@@ -12,6 +12,7 @@ const projectExperienceSchema = z.object({
 
 const careerListSchema = z.object({
   belongingName: z.string(),
+  belongingId: z.number(),
   position: z.string(),
   department: z.string(),
   startedAt: z.string().optional(),
@@ -52,6 +53,6 @@ export const profileSchema = z.object({
   profileImgUrl: z.string().url({ message: '유효한 프로필 이미지 URL을 입력해주세요' }),
   thirdPartyProfileUrl: z.string().optional(),
   shortIntroduction: z.string().optional(),
-  belongingName: z.string().optional(),
+  // belongingName: z.string().optional(),
   myPage: myPageSchema
 });

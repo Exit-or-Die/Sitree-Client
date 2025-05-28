@@ -1,6 +1,12 @@
 import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
+import BelongingQueryOptions from '@/service/belonging/queries';
+import { BelongingData } from '@/service/belonging/response';
 import { CareerField } from '@/service/profile/response';
+import { isEmpty } from '@/utils/array';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
+import Dropdown from '@/components/common/Dropdown';
 import SInput from '@/components/common/Input';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 
@@ -12,9 +18,52 @@ const CareerForm: React.FC<{
   index: number;
   updateCareer: (index: number, updatedEducation: CareerField) => void;
 }> = ({ career = DEFAULT_CAREER, index, updateCareer }) => {
+  const [inputValue, setInputValue] = useState(career.belongingName || '');
+  const [debouncedAffiliation, setDebouncedAffiliation] = useState('');
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  console.log(career);
+
+  const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
+  const { data: belongingData } = useQuery({
+    queryKey,
+    queryFn,
+    enabled: !!debouncedAffiliation
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedAffiliation(inputValue);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [inputValue]);
+
+  useEffect(() => {
+    setInputValue(career.belongingName);
+  }, [career.belongingName]);
+
+  const handleInputTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    setIsDropdownVisible(true);
+  };
+
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     updateCareer(index, { ...career, [name]: value });
+  };
+
+  const onSelectDropdown = (selected: BelongingData) => {
+    setInputValue(selected.name);
+    updateCareer(index, {
+      ...career,
+      belongingName: selected.name,
+      belongingId: selected.belongingId
+    });
+    closeDropdown();
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownVisible(false);
   };
 
   return (
@@ -29,10 +78,19 @@ const CareerForm: React.FC<{
           <SInput
             type="text"
             placeholder="회사 검색"
-            name="belongingName"
-            onChange={(e) => handleInputChange('belongingName', e)}
-            value={career.belongingName}
+            value={inputValue}
+            onChange={handleInputTyping}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
+            renderDropdown={() =>
+              isDropdownVisible && belongingData && !isEmpty(belongingData.content) ? (
+                <Dropdown
+                  list={belongingData.content}
+                  searchCount={belongingData.total}
+                  onSelect={onSelectDropdown}
+                  closeDropdown={closeDropdown}
+                />
+              ) : null
+            }
           />
         </div>
         <div className="w-full">

@@ -1,11 +1,11 @@
 import Service from '../service';
-import { BelongingData } from './response';
+import { BelongingSearchResult } from './response';
 
 class BelongingService extends Service {
   search(belonging: string) {
     const params = new URLSearchParams({ name: belonging }).toString();
 
-    return this.http.get<BelongingData[]>(`belongings/search?${params}`);
+    return this.http.get<BelongingSearchResult>(`belongings/search?${params}`);
   }
 }
 

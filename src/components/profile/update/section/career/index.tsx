@@ -4,8 +4,9 @@ import { DEFAULT_CAREER } from '@/constants/profile/defaultData';
 import withModal from '@/enhancers/WithModal';
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { CareerField } from '@/service/profile/response';
+import { isEmpty } from '@/utils/array';
 import React, { useState, useEffect, useCallback } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -17,23 +18,21 @@ import ProfileDeleteModal from './ProfileDeleteModal';
 const ProfileRegisterCareerForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { setValue, getValues } = useFormContext<ProfileUpdateRequest>();
-  const initialCareers = getValues('myPage.careers.careerList') || [DEFAULT_CAREER];
-  const [careers, setCareers] = useState<Array<CareerField>>(initialCareers);
+  const { setValue } = useFormContext<ProfileUpdateRequest>();
+  const careerForm = useWatch({ name: 'myPage.careers.careerList' });
+  const [careers, setCareers] = useState<Array<CareerField>>(isEmpty(careerForm) ? [] : careerForm);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setValue('myPage.careers', { careerList: careers });
-  }, [careers, setValue]);
+    if (!isEmpty(careerForm)) {
+      setCareers(careerForm);
+    }
+  }, [careerForm]);
 
   const updateCareer = (index: number, updatedCareer: CareerField) => {
-    setCareers((prev) => {
-      if (prev.length === 0) {
-        return [updatedCareer];
-      }
-
-      return prev.map((careers, i) => (i === index ? updatedCareer : careers));
-    });
+    const updated = careers.map((career, i) => (i === index ? updatedCareer : career));
+    setCareers(updated);
+    setValue('myPage.careers', { careerList: updated });
   };
 
   const canAddCareer = useCallback(() => {

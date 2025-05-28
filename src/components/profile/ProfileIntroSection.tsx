@@ -37,7 +37,10 @@ const ProfileIntroSection = ({ content, techStacks, links }: Props) => {
       <div className="mt-[20px] bg-black-7 h-auto w-full flex relative">
         <div className="flex-1 pr-[32px] truncate">
           <div className="text-base font-lb">자기소개</div>
-          <p className="mt-[8px] whitespace-pre-line">{content.contents}</p>
+          <div
+            className="mt-[8px] whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: content.contents || '' }}
+          />
         </div>
         <div className="w-[1px] bg-slate-95"></div>
         <div className="flex-1 pl-[32px]">

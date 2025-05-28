@@ -43,19 +43,19 @@ const ProjectHeadBaseInfo = () => {
       required: false,
       errorKey: 'position'
     },
-    {
-      title: '소속',
-      component: (
-        <SInput
-          register={register}
-          name="belongingName"
-          placeholder="현재 소속(학교, 회사) 입력"
-          className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
-        />
-      ),
-      required: false,
-      errorKey: 'belongingName'
-    },
+    // {
+    //   title: '소속',
+    //   component: (
+    //     <SInput
+    //       register={register}
+    //       name="belongingName"
+    //       placeholder="현재 소속(학교, 회사) 입력"
+    //       className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+    //     />
+    //   ),
+    //   required: false,
+    //   errorKey: 'belongingName'
+    // },
     {
       title: '링크',
       component: (

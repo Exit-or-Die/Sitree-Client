@@ -45,7 +45,6 @@ const EducationForm: React.FC<{
             <RegisterRequiredMark />
           </div>
           <SInput
-            key={educationActivity.educationActivityName}
             type="text"
             placeholder="ex. OO대학교, OO외부 활동"
             name="educationActivityName"
@@ -81,7 +80,6 @@ const EducationForm: React.FC<{
             <RegisterRequiredMark />
           </div>
           <SInput
-            key={educationActivity.majorOrOrganization}
             type="text"
             placeholder="ex. 컴퓨터공학, OO동아리"
             name="majorOrOrganization"
@@ -114,8 +112,7 @@ const EducationForm: React.FC<{
           </label>
         </div>
         <STextarea
-          key={educationActivity.contents}
-          value={educationActivity.contents}
+          value={educationActivity.contents || ''}
           name="contents"
           placeholder="교육 과정 또는 활동 내용을 작성해 주세요."
           maxLength={1000}

@@ -1,3 +1,4 @@
+import { PaginationResponse } from '@/service/types';
 import { Belonging } from 'types/common';
 
 export interface BelongingData {
@@ -5,4 +6,8 @@ export interface BelongingData {
   belongingType: Belonging;
   name: string;
   imageUrl: string;
+}
+
+export interface BelongingSearchResult extends PaginationResponse {
+  content: Array<BelongingData>;
 }
