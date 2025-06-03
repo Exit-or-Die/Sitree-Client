@@ -2,7 +2,7 @@ import { UserResult } from '@/service/auth/response';
 
 import SImage from '@/components/common/Image';
 
-interface UserSearchResultProps {
+export interface UserSearchResultProps {
   searchResults: UserResult[];
   searchTotalCount: number;
   handleClickMember: (member: UserResult) => void;
@@ -20,7 +20,7 @@ const UserSearchResult = ({
   return (
     <div
       ref={searchResultRef}
-      className="w-full bg-white-100 border rounded-md shadow-md mt-[1rem] z-10 p-4 overflow-hidden"
+      className="w-full bg-white-100 border rounded-xlarge shadow-md mt-[1rem] z-10 p-4 overflow-hidden"
     >
       <div className="text-left">
         <span className="text-xsmall text-slate-50">
