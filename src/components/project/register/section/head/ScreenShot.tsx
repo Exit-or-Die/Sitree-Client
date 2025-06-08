@@ -27,7 +27,6 @@ const ProjectHeadScreenshot = () => {
   };
 
   const handleScreenshotRemove = (indexToRemove: number) => {
-    console.log('remove', indexToRemove);
     setScreenShotList((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
 

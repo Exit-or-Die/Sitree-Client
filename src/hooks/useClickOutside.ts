@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { Nullable } from 'types/common';
 
-function useClickOutside(callback: () => void) {
+function useClickOutside(callback: (event: MouseEvent) => void) {
   const ref = useRef<Nullable<HTMLDivElement>>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback();
+        callback(event);
       }
     };
 

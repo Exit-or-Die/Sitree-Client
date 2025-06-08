@@ -24,7 +24,7 @@ const TOTAL_MEMBER = 10;
 
 const ProjectRegisterParticipantList: React.FC = () => {
   const { projectId } = useParams();
-  const { data: session, status } = useSession(); // status 추가
+  const { data: session, status } = useSession();
   const { setValue } = useFormContext<ProjectRegisterRequest>();
   const [teamMembers, setTeamMembers] = useState<Participant[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +53,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
   const { data, isFetching } = useQuery({
     queryKey,
     queryFn,
-    enabled: !!projectId || status === 'authenticated' // projectId 없고 인증 완료 시에만 실행
+    enabled: !!projectId || status === 'authenticated'
   });
 
   const AddWithModal = withModal(ParticipantAddModal);
@@ -83,6 +83,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
       return updatedMembers;
     });
   };
+
   useEffect(() => {
     if (data?.participantList) {
       setTeamMembers(data.participantList);
@@ -99,6 +100,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
         <AddWithModal
           isVisible={isModalOpen}
           hideClose
+          disableKeyClose
           onClickClose={() => {
             setIsModalOpen(false);
           }}
