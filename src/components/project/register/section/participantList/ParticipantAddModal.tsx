@@ -48,6 +48,7 @@ const ParticipantAddModal: React.FC<ParticipantAddModalProps> = ({
           clickMember={handleClickMember}
           placeholder="팀원 검색"
           locationClass="left-[3.8rem] top-[13rem]"
+          inputClassName="border border-slate-90 rounded-2xlarge"
         />
         <div className="flex flex-col gap-1 mt-3">
           {selectedMember.map((member, index) => (

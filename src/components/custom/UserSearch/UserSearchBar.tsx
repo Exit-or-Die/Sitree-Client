@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
 import SInput from '@/components/common/Input';
+import SvgIcon from '@/components/common/SVGIcon';
 
 import UserSearchResult from './UserSearchResult';
 
 export interface UserSearchBarProps {
   placeholder: string;
   clickMember: (member: UserResult) => void;
+  inputClassName?: string;
   excludeMemberIds?: Array<number>;
   locationClass?: string;
 }
@@ -22,7 +24,8 @@ const UserSearchBar = ({
   excludeMemberIds = [],
   clickMember,
   placeholder,
-  locationClass
+  locationClass,
+  inputClassName = ''
 }: UserSearchBarProps) => {
   const [inputQuery, setInputQuery] = useState('');
   const [searchResults, setSearchResults] = useState<UserResult[]>([]);
@@ -84,12 +87,21 @@ const UserSearchBar = ({
 
   return (
     <div className="relative z-50">
-      <SInput
-        className="text-small w-[34.6rem]"
-        placeholder={placeholder}
-        value={inputQuery}
-        onChange={handleInputChange}
-      />
+      <div className="relative">
+        <SvgIcon
+          icon="magnifyGlass"
+          width={18}
+          height={18}
+          className="w-[18px] h-[18px] text-slate-60 absolute left-3 top-1/2 -translate-y-1/2 z-10"
+          color="#959EB2"
+        />
+        <SInput
+          className={`text-small pl-10 border border-slate-90 rounded-2xlarge ${inputClassName}`}
+          placeholder={placeholder}
+          value={inputQuery}
+          onChange={handleInputChange}
+        />
+      </div>
       {searchResults.length > 0 && inputQuery.length > 0 && (
         <div className={`fixed w-[34.6rem] ${locationClass}`}>
           <UserSearchResult

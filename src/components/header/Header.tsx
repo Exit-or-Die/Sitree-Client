@@ -99,6 +99,7 @@ const LoggedInContent = ({ session }: { session: Session | null }) => {
       <UserSearchBar
         placeholder="사용자 검색"
         clickMember={() => router.push(`/profile/${memberId}`)}
+        inputClassName="w-[20rem] h-[3.6rem] border-none rounded-base text-small bg-slate-98"
       />
       <NewProjectButton />
       {memberId && <UserProfile memberId={memberId} nickname={nickname} name={name} />}
