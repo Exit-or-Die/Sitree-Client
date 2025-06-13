@@ -11,10 +11,19 @@ const projectExperienceSchema = z.object({
 });
 
 const careerListSchema = z.object({
-  belongingName: z.string(),
+  belongingName: z
+    .string()
+    .nullable()
+    .transform((val) => val ?? ''),
   belongingId: z.number(),
-  position: z.string(),
-  department: z.string(),
+  position: z
+    .string()
+    .nullable()
+    .transform((val) => val ?? ''),
+  department: z
+    .string()
+    .nullable()
+    .transform((val) => val ?? ''),
   startedAt: z.string().optional(),
   endedAt: z.string().optional(),
   projects: z.array(projectExperienceSchema).optional()

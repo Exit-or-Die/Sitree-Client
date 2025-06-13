@@ -9,7 +9,7 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
 
-import ProfileDeleteModal from './ProfileDeleteModal';
+import ProfileDeleteModal from '../../common/ProfileDeleteModal';
 import ProjectExperienceForm from './ProjectExperienceForm';
 
 interface Props {
@@ -27,7 +27,7 @@ const CareerProjectSection = ({ projects, updateProjects }: Props) => {
   };
 
   const canAddProject = useCallback(() => {
-    return projects.every((p) => p.projectName.trim() !== '');
+    return projects.every((p) => (p.projectName ?? '').trim() !== '' && p.startedAt);
   }, [projects]);
 
   const addProject = () => {

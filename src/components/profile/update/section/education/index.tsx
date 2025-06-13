@@ -13,8 +13,8 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
 
+import ProfileDeleteModal from '../../common/ProfileDeleteModal';
 import EducationForm from './EducationForm';
-import ProfileDeleteModal from './ProfileDeleteModal';
 
 export interface TechViewProps {
   techviewId: Nullable<number>;

@@ -10,8 +10,8 @@ import SInput from '@/components/common/Input';
 import SSelect from '@/components/common/Select';
 
 const ProfileLinksForm = () => {
-  const { control, register, setValue, getValues } = useFormContext<ProfileUpdateRequest>();
-  const { fields, append, remove } = useFieldArray({
+  const { control, register } = useFormContext<ProfileUpdateRequest>();
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'myPage.links'
   });
@@ -35,12 +35,15 @@ const ProfileLinksForm = () => {
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-1.5">
             <SSelect
-              value={{ key: getValues(`myPage.links.${index}.linkProvider`) }}
-              onChange={(newOption) =>
-                setValue(`myPage.links.${index}.linkProvider`, newOption.key)
-              }
+              value={{ key: field.linkProvider }}
+              onChange={(newOption) => {
+                update(index, {
+                  ...field,
+                  linkProvider: newOption.key
+                });
+              }}
               options={[
-                { key: getValues(`myPage.links.${index}.linkProvider`) },
+                { key: field.linkProvider },
                 ...availableProviders.map((provider) => ({ key: provider }))
               ]}
               displayKey="key"

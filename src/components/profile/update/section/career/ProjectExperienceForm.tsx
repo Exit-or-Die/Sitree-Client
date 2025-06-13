@@ -5,7 +5,6 @@ import { Tag } from '@/service/project/request';
 import SInput from '@/components/common/Input';
 import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import STextarea from '@/components/common/Textarea';
-import STooltip from '@/components/common/Tooltip';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
 
@@ -65,7 +64,6 @@ const ProjectExperienceForm: React.FC<{
           <label className="inline-block text-small font-md text-slate-30 leading-5 tracking-[-0.14px] mr-1">
             내용
           </label>
-          <STooltip>hello</STooltip>
         </div>
         <STextarea
           value={project.contents}

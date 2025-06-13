@@ -12,8 +12,8 @@ import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
 
+import ProfileDeleteModal from '../../common/ProfileDeleteModal';
 import CareerForm from './CareerForm';
-import ProfileDeleteModal from './ProfileDeleteModal';
 
 const ProfileRegisterCareerForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);

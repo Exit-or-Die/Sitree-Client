@@ -4,6 +4,7 @@ import ProfileQueryOptions from '@/service/profile/queries';
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { parseYearMonthToDate } from '@/utils/date';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -44,6 +45,7 @@ export const DEFAULT_PROFILE_DATA: Partial<ProfileUpdateRequest> = {
 };
 
 const ProfileUpdateForm = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { data: session } = useSession();
   const { queryKey, queryFn } = session?.detail.memberId
@@ -110,6 +112,9 @@ const ProfileUpdateForm = () => {
     mutationFn: (formValues: ProfileUpdateRequest) =>
       ProfileQueryOptions.updateProfile(session?.detail.memberId as number, formValues).mutateFn(),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKey
+      });
       router.push(`/profile/${session?.detail.memberId}`);
     }
   });
