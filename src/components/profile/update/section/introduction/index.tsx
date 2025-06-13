@@ -7,8 +7,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 
 const ProfileSelfIntroForm = () => {
   const { setValue } = useFormContext<ProfileUpdateRequest>();

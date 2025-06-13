@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
 import SImage from '@/components/common/Image';
-import { RegiseterErrorMessage } from '@/components/project/register/error/RegisterError';
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
 
 import { ImageUploadSection } from '../ImageUploadSection';
 
@@ -46,7 +46,7 @@ const ProjectIconUpload = () => {
         </div>
       </div>
       {iconUrl && !getValues('head.thumbnailImageUrl') && (
-        <RegiseterErrorMessage errorKey="head.thumbnailImageUrl" />
+        <RegisterErrorMessage errorKey="head.thumbnailImageUrl" />
       )}
     </>
   );

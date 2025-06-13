@@ -3,12 +3,11 @@ import { UserProjectField } from '@/service/profile/response';
 import { Tag } from '@/service/project/request';
 
 import SInput from '@/components/common/Input';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import STextarea from '@/components/common/Textarea';
 import STooltip from '@/components/common/Tooltip';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 
 const ProjectExperienceForm: React.FC<{
   project: UserProjectField;

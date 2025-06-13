@@ -9,10 +9,9 @@ import { Nullable } from 'types';
 
 import SDropdown from '@/components/common/Dropdown/SDropdown';
 import SInput from '@/components/common/Input';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import STextarea from '@/components/common/Textarea';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 
 const EducationForm: React.FC<{
   educationActivity: UserEducationField;

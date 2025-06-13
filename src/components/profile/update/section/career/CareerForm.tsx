@@ -8,9 +8,9 @@ import { useEffect, useState } from 'react';
 
 import Dropdown from '@/components/common/Dropdown';
 import SInput from '@/components/common/Input';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
 import CareerProjectSection from './CareerProjectSection';
 
 const CareerForm: React.FC<{

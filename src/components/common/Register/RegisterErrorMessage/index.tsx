@@ -1,11 +1,15 @@
-import { ProjectRegisterRequest } from '@/service/project/request';
 import getErrorMessage from '@/utils/getErrorMessage';
 import { useFormContext } from 'react-hook-form';
 
-export const RegiseterErrorMessage = ({ errorKey }: { errorKey: string }) => {
+interface RegisterErrorMessageProps {
+  errorKey: string;
+}
+
+export const RegisterErrorMessage = ({ errorKey }: RegisterErrorMessageProps) => {
   const {
     formState: { errors }
-  } = useFormContext<ProjectRegisterRequest>();
+  } = useFormContext();
+
   const errorMessage = getErrorMessage(errors, errorKey);
 
   if (!errorMessage) {

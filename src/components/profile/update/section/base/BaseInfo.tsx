@@ -4,10 +4,9 @@ import { ProfileUpdateRequest } from '@/service/profile/request';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const ProjectHeadBaseInfo = () => {
   const { register } = useFormContext<ProfileUpdateRequest>();
@@ -94,7 +93,7 @@ const ProjectHeadBaseInfo = () => {
               {input.required && <RegisterRequiredMark />}
             </label>
             {input.component}
-            <RegiseterErrorMessage errorKey={input.errorKey} />
+            <RegisterErrorMessage errorKey={input.errorKey} />
           </div>
         ))}
       </div>
