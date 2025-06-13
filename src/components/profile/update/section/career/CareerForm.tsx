@@ -21,7 +21,6 @@ const CareerForm: React.FC<{
   const [inputValue, setInputValue] = useState(career.belongingName || '');
   const [debouncedAffiliation, setDebouncedAffiliation] = useState('');
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  console.log(career);
 
   const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
   const { data: belongingData } = useQuery({

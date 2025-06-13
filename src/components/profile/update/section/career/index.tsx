@@ -40,9 +40,9 @@ const ProfileRegisterCareerForm = () => {
 
     return careers.every(
       (career) =>
-        career.belongingName.trim() !== '' &&
-        career.position.trim() !== '' &&
-        career.department.trim() !== '' &&
+        (career.belongingName ?? '').trim() !== '' &&
+        (career.position ?? '').trim() !== '' &&
+        (career.department ?? '').trim() !== '' &&
         career.startedAt &&
         career.endedAt
     );

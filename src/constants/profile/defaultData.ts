@@ -44,9 +44,9 @@ export const EDUCATION_CATEGORY_LABEL_MAP: Record<EducationCategory, string> = {
 };
 
 export const EDUCATION_STATUS_LABEL_MAP: Record<EducationStatus, string> = {
-  GRADUATED: '대학교',
-  WITHDREW: '대학원',
-  COMPLETED: '동아리'
+  GRADUATED: '졸업',
+  WITHDREW: '중퇴',
+  COMPLETED: '수료'
 };
 
 export const PROJECT_ROLE: Record<string, string> = {

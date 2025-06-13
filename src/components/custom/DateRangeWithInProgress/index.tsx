@@ -24,17 +24,32 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
   statusOptions = [],
   statusKey = 'status' as keyof T
 }: Props<T>) => {
-  const [startedAt, setStartedAt] = useState(() =>
-    fieldData?.startedAt ? formatToYearMonth(String(fieldData.startedAt)) : ''
-  );
-  const [endedAt, setEndedAt] = useState(() =>
-    fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : ''
-  );
-  const [inProgress, setInProgress] = useState(false);
+  const [startedAt, setStartedAt] = useState('');
+  const [endedAt, setEndedAt] = useState('');
+  const [inProgress, setInProgress] = useState(!fieldData?.endedAt);
 
-  const handleDateInput = (value: string, setter: (formatted: string) => void) => {
+  useEffect(() => {
+    setStartedAt(fieldData?.startedAt ? formatToYearMonth(String(fieldData.startedAt)) : '');
+    setEndedAt(fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : '');
+    setInProgress(!fieldData?.endedAt);
+  }, [fieldData?.startedAt, fieldData?.endedAt]);
+
+  const handleInputChange = (
+    name: 'startedAt' | 'endedAt',
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = e.target;
     const formatted = formatToYearMonth(value);
-    setter(formatted);
+    name === 'startedAt' ? setStartedAt(formatted) : setEndedAt(formatted);
+    updateField(index, { ...fieldData, [name]: formatted });
+  };
+
+  const toggleProgressiveBox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setInProgress(checked);
+    if (checked) {
+      updateField(index, { ...fieldData, endedAt: null });
+    }
   };
 
   const handleDropDownChange = useCallback(
@@ -47,35 +62,6 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
     },
     [index, updateField, fieldData, statusKey]
   );
-
-  const handleInputChange = (
-    name: 'startedAt' | 'endedAt',
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { value } = e.target;
-    name === 'startedAt'
-      ? handleDateInput(value, setStartedAt)
-      : handleDateInput(value, setEndedAt);
-    updateField(index, { ...fieldData, [name]: value });
-  };
-
-  const toggleProgressiveBox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInProgress(e.target.checked);
-    if (e.target.checked) {
-      updateField(index, { ...fieldData, endedAt: new Date() });
-    } else {
-      updateField(index, { ...fieldData, endedAt: null });
-    }
-  };
-
-  useEffect(() => {
-    if (fieldData?.startedAt) {
-      setStartedAt(formatToYearMonth(String(fieldData.startedAt)));
-    }
-    if (fieldData?.endedAt) {
-      setEndedAt(formatToYearMonth(String(fieldData.endedAt)));
-    }
-  }, [fieldData.startedAt, fieldData.endedAt]);
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
