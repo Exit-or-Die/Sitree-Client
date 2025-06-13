@@ -33,7 +33,8 @@ const educationActivitySchema = z.object({
   educationActivityName: z.string(),
   majorOrOrganization: z.string(),
   startedAt: z.string().optional(),
-  endedAt: z.string().optional()
+  endedAt: z.string().optional(),
+  educationStatus: z.string().optional()
 });
 
 const linkSchema = z.object({

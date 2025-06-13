@@ -123,6 +123,7 @@ const ProfileUpdateForm = () => {
     formMethods.handleSubmit(
       (formValues) => {
         const parsed = transformDates(formValues as ProfileUpdateRequest);
+        console.log(parsed);
         updateProfile(parsed);
       },
       (errors) => {

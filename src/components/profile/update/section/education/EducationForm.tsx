@@ -67,6 +67,7 @@ const EducationForm: React.FC<{
             showCategory
             statusOptions={Object.values(EDUCATION_STATUS_LABEL_MAP)}
             statusKey="educationStatus"
+            referenceMap={EDUCATION_STATUS_LABEL_MAP}
           />
         </div>
       </div>

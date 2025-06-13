@@ -1,3 +1,5 @@
+import { EDUCATION_STATUS_LABEL_MAP } from '@/constants/profile/defaultData';
+import { EducationStatus } from '@/service/profile/response';
 import { formatToYearMonth } from '@/utils/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Nullable } from 'types';
@@ -5,6 +7,7 @@ import { Nullable } from 'types';
 import SDropdown from '@/components/common/Dropdown/SDropdown';
 import SvgIcon from '@/components/common/SVGIcon';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   className?: string;
   updateField: (index: number, updateField: T) => void;
@@ -13,6 +16,7 @@ interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   showCategory?: boolean;
   statusOptions?: string[];
   statusKey?: keyof T;
+  referenceMap?: any;
 }
 
 const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknown }>({
@@ -22,16 +26,23 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
   fieldData,
   showCategory = false,
   statusOptions = [],
-  statusKey = 'status' as keyof T
+  statusKey = 'status' as keyof T,
+  referenceMap
 }: Props<T>) => {
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
-  const [inProgress, setInProgress] = useState(!fieldData?.endedAt);
+  const [inProgress, setInProgress] = useState(false);
+  const selectedDropDown = referenceMap ? referenceMap[fieldData[statusKey]] : null;
 
   useEffect(() => {
-    setStartedAt(fieldData?.startedAt ? formatToYearMonth(String(fieldData.startedAt)) : '');
-    setEndedAt(fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : '');
+    const formattedStartedAt = fieldData?.startedAt
+      ? formatToYearMonth(String(fieldData.startedAt))
+      : '';
+    const formattedEndedAt = fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : '';
+    setStartedAt(formattedStartedAt);
+    setEndedAt(formattedEndedAt);
     setInProgress(!fieldData?.endedAt);
+    updateField(index, { ...fieldData, startedAt: formattedStartedAt, endedAt: formattedEndedAt });
   }, [fieldData?.startedAt, fieldData?.endedAt]);
 
   const handleInputChange = (
@@ -55,9 +66,12 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
   const handleDropDownChange = useCallback(
     (status: Nullable<string>) => {
       if (!status) return;
+      const savedStatus = (
+        Object.entries(EDUCATION_STATUS_LABEL_MAP) as [EducationStatus, string][]
+      ).find(([_, value]) => value === status)?.[0];
       updateField(index, {
         ...fieldData,
-        [statusKey]: status
+        [statusKey]: savedStatus
       });
     },
     [index, updateField, fieldData, statusKey]
@@ -106,6 +120,7 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
               }`}
               label={inProgress ? 'none' : 'bold'}
               onChange={handleDropDownChange}
+              value={selectedDropDown}
             />
           </div>
         )}

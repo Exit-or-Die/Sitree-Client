@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
@@ -8,6 +8,7 @@ import SvgIcon from '../SVGIcon';
 
 interface SDropdownProps<TOption = string, TForm extends FieldValues = FieldValues> {
   options: TOption[];
+  value?: Nullable<TOption>;
   onChange?: (selectedOption: Nullable<TOption>) => void;
   placeholder?: string;
   className?: string;
@@ -25,6 +26,7 @@ const BORDER_STYLE_BY_LABEL = {
 
 const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
   options,
+  value = null,
   onChange = () => {},
   placeholder = 'Select Option',
   className,
@@ -35,6 +37,10 @@ const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
 }: SDropdownProps<TOption, TForm>) => {
   const [selectedOption, setSelectedOption] = useState<Nullable<TOption>>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedOption(value);
+  }, [value]);
 
   const handleSelectOption = (option: TOption) => {
     setSelectedOption(option);
