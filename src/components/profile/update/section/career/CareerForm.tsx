@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import Dropdown from '@/components/common/Dropdown';
+import SImage from '@/components/common/Image';
 import SInput from '@/components/common/Input';
 import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
@@ -17,7 +18,9 @@ const CareerForm: React.FC<{
   career: CareerField;
   index: number;
   updateCareer: (index: number, updatedEducation: CareerField) => void;
-}> = ({ career = DEFAULT_CAREER, index, updateCareer }) => {
+  isDeletable: boolean;
+  showModalOnClick: () => void;
+}> = ({ career = DEFAULT_CAREER, index, updateCareer, isDeletable, showModalOnClick }) => {
   const [inputValue, setInputValue] = useState(career.belongingName || '');
   const [debouncedAffiliation, setDebouncedAffiliation] = useState('');
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -141,6 +144,15 @@ const CareerForm: React.FC<{
           />
         </div>
       </div>
+      {isDeletable && (
+        <div
+          className="mt-5 flex items-center justify-end gap-1 cursor-pointer"
+          onClick={showModalOnClick}
+        >
+          <SImage src="/redTrash.svg" width={16} height={16} />
+          <p className="text-red-50 text-small">경력 삭제</p>
+        </div>
+      )}
       <CareerProjectSection
         projects={career.projects}
         updateProjects={(updatedProjects) =>

@@ -9,7 +9,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import SButton from '@/components/common/Button';
-import SImage from '@/components/common/Image';
 import SvgIcon from '@/components/common/SVGIcon';
 
 import ProfileDeleteModal from '../../common/ProfileDeleteModal';
@@ -69,6 +68,7 @@ const ProfileRegisterCareerForm = () => {
       if (index === currentIndex && newCareers.length > 0) {
         setCurrentIndex(index === newCareers.length ? index - 1 : index);
       }
+      setDeleteModalOpen(false);
     },
     [careers, currentIndex, canDeleteCareer]
   );
@@ -124,17 +124,10 @@ const ProfileRegisterCareerForm = () => {
           index={currentIndex}
           updateCareer={updateCareer}
           key={currentIndex}
+          isDeletable={canDeleteCareer()}
+          showModalOnClick={() => setDeleteModalOpen(true)}
         />
       </div>
-      {canDeleteCareer() && (
-        <div
-          className="mt-5 flex items-center justify-end gap-1 cursor-pointer"
-          onClick={() => setDeleteModalOpen(true)}
-        >
-          <SImage src="/redTrash.svg" width={16} height={16} />
-          <p className="text-red-50 text-small">삭제</p>
-        </div>
-      )}
       <ProfileDeleteWithModal
         onClickClose={() => setDeleteModalOpen(false)}
         deleteProfilePage={() => deleteEducation(currentIndex)}
