@@ -42,6 +42,7 @@ export interface CareerField {
   position: string;
   department: string;
   projects: Array<UserProjectField>;
+  inProgress: boolean;
 }
 export interface UserProjectField {
   projectName: string;
@@ -49,6 +50,7 @@ export interface UserProjectField {
   endedAt: Nullable<Date>;
   contents: string;
   roleTags: Array<string>;
+  inProgress: boolean;
 }
 
 export interface UserEducationField {
@@ -59,6 +61,7 @@ export interface UserEducationField {
   majorOrOrganization: string;
   category: Nullable<EducationCategory>;
   contents: string;
+  inProgress: boolean;
 }
 
 export type EducationCategory = 'UNIVERSITY' | 'GRADUATE_SCHOOL' | 'CLUB' | 'License' | 'ETC';

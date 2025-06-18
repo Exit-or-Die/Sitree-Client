@@ -6,34 +6,27 @@ const projectExperienceSchema = z.object({
   projectName: z.string(),
   contents: z.string(),
   startedAt: z.string().optional(),
-  endedAt: z.string().optional(),
+  endedAt: nullableString.optional(),
   roleTags: z.array(z.string())
 });
 
 const careerListSchema = z.object({
-  belongingName: z
-    .string()
-    .nullable()
-    .transform((val) => val ?? ''),
+  belongingName: nullableString.transform((val) => val ?? ''),
   belongingId: z.number(),
-  position: z
-    .string()
-    .nullable()
-    .transform((val) => val ?? ''),
-  department: z
-    .string()
-    .nullable()
-    .transform((val) => val ?? ''),
+  position: nullableString.transform((val) => val ?? ''),
+  department: nullableString.transform((val) => val ?? ''),
   startedAt: z.string().optional(),
-  endedAt: z.string().optional(),
+  endedAt: nullableString.optional(),
   projects: z.array(projectExperienceSchema).optional()
 });
 
 const educationActivitySchema = z.object({
   educationActivityName: z.string(),
   majorOrOrganization: z.string(),
+  category: z.string(),
+  contents: nullableString.optional(),
   startedAt: z.string().optional(),
-  endedAt: z.string().optional(),
+  endedAt: nullableString.optional(),
   educationStatus: z.string().optional()
 });
 

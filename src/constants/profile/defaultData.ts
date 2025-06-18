@@ -13,7 +13,8 @@ export const DEFAULT_EDUCATION: UserEducationField = {
   educationStatus: null,
   majorOrOrganization: '',
   category: null,
-  contents: ''
+  contents: '',
+  inProgress: false
 };
 
 export const DEFAULT_PROJECT: UserProjectField = {
@@ -21,7 +22,8 @@ export const DEFAULT_PROJECT: UserProjectField = {
   startedAt: null,
   endedAt: null,
   contents: '',
-  roleTags: []
+  roleTags: [],
+  inProgress: false
 };
 
 export const DEFAULT_CAREER: CareerField = {
@@ -32,7 +34,8 @@ export const DEFAULT_CAREER: CareerField = {
   endedAt: null,
   position: '',
   department: '',
-  projects: [DEFAULT_PROJECT]
+  projects: [DEFAULT_PROJECT],
+  inProgress: false
 };
 
 export const EDUCATION_CATEGORY_LABEL_MAP: Record<EducationCategory, string> = {

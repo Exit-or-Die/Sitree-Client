@@ -13,11 +13,15 @@ import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredM
 import STextarea from '@/components/common/Textarea';
 import DateRangeWithInProgress from '@/components/custom/DateRangeWithInProgress';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 const EducationForm: React.FC<{
   educationActivity: UserEducationField;
   index: number;
   updateEducation: (index: number, updateField: UserEducationField) => void;
 }> = ({ educationActivity = DEFAULT_EDUCATION, index, updateEducation }) => {
+  const selectedCategory = educationActivity.category
+    ? EDUCATION_CATEGORY_LABEL_MAP[educationActivity.category]
+    : null;
   const handleInputChange = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     updateEducation(index, { ...educationActivity, [name]: value });
@@ -25,9 +29,13 @@ const EducationForm: React.FC<{
   const handleDropDownChange = useCallback(
     (category: Nullable<EducationCategory>) => {
       if (!category) return;
+      const savedCategory =
+        (Object.entries(EDUCATION_CATEGORY_LABEL_MAP) as [EducationCategory, string][]).find(
+          ([_, value]) => value === category
+        )?.[0] || null;
       updateEducation(index, {
         ...educationActivity,
-        category
+        category: savedCategory
       });
     },
     [index, updateEducation, educationActivity]
@@ -102,6 +110,7 @@ const EducationForm: React.FC<{
             label="bold"
             name="category"
             onChange={handleDropDownChange}
+            value={selectedCategory as any}
           />
         </div>
       </div>

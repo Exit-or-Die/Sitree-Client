@@ -27,7 +27,14 @@ const CareerProjectSection = ({ projects, updateProjects }: Props) => {
   };
 
   const canAddProject = useCallback(() => {
-    return projects.every((p) => (p.projectName ?? '').trim() !== '' && p.startedAt);
+    if (!projects.length) return true;
+
+    return projects.every(
+      (project) =>
+        (project.projectName ?? '').trim() !== '' &&
+        project.startedAt &&
+        (project.endedAt || project.inProgress)
+    );
   }, [projects]);
 
   const addProject = () => {

@@ -43,7 +43,7 @@ const ProfileRegisterCareerForm = () => {
         (career.position ?? '').trim() !== '' &&
         (career.department ?? '').trim() !== '' &&
         career.startedAt &&
-        career.endedAt
+        (career.endedAt || career.inProgress)
     );
   }, [careers]);
 

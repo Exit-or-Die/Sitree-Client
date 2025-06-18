@@ -57,7 +57,7 @@ const ProfileRegisterEducationForm = () => {
         educationActivity.majorOrOrganization.trim() !== '' &&
         educationActivity.category &&
         educationActivity.startedAt &&
-        educationActivity.endedAt
+        (educationActivity.inProgress || educationActivity.endedAt)
     );
   }, [educationActivities]);
 

@@ -8,7 +8,7 @@ import SDropdown from '@/components/common/Dropdown/SDropdown';
 import SvgIcon from '@/components/common/SVGIcon';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
+interface Props<T extends { startedAt: unknown; endedAt: unknown; inProgress: boolean }> {
   className?: string;
   updateField: (index: number, updateField: T) => void;
   index: number;
@@ -19,7 +19,9 @@ interface Props<T extends { startedAt: unknown; endedAt: unknown }> {
   referenceMap?: any;
 }
 
-const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknown }>({
+const DateRangeWithInProgress = <
+  T extends { startedAt: unknown; endedAt: unknown; inProgress: boolean }
+>({
   className,
   updateField,
   index,
@@ -31,7 +33,6 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
 }: Props<T>) => {
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
-  const [inProgress, setInProgress] = useState(false);
   const selectedDropDown = referenceMap ? referenceMap[fieldData[statusKey]] : null;
 
   useEffect(() => {
@@ -41,7 +42,6 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
     const formattedEndedAt = fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : '';
     setStartedAt(formattedStartedAt);
     setEndedAt(formattedEndedAt);
-    setInProgress(!fieldData?.endedAt);
     updateField(index, { ...fieldData, startedAt: formattedStartedAt, endedAt: formattedEndedAt });
   }, [fieldData?.startedAt, fieldData?.endedAt]);
 
@@ -57,10 +57,11 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
 
   const toggleProgressiveBox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    setInProgress(checked);
-    if (checked) {
-      updateField(index, { ...fieldData, endedAt: null });
-    }
+    updateField(index, {
+      ...fieldData,
+      inProgress: checked,
+      endedAt: checked ? null : fieldData.endedAt
+    });
   };
 
   const handleDropDownChange = useCallback(
@@ -92,7 +93,7 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
 
         <SvgIcon icon="minus" color="#959EB2" width={40} height={16} />
 
-        {inProgress ? (
+        {fieldData.inProgress ? (
           <div className="rounded-base w-full max-w-[145px] p-3 bg-slate-100 text-slate-400 text-small">
             진행 중
           </div>
@@ -114,11 +115,11 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
               options={statusOptions}
               placeholder="구분"
               className={`rounded-lg w-full ${
-                inProgress
+                fieldData.inProgress
                   ? 'pointer-events-none bg-slate-100 text-slate-80 rounded-base opacity-70'
                   : ''
               }`}
-              label={inProgress ? 'none' : 'bold'}
+              label={fieldData.inProgress ? 'none' : 'bold'}
               onChange={handleDropDownChange}
               value={selectedDropDown}
             />
@@ -129,7 +130,7 @@ const DateRangeWithInProgress = <T extends { startedAt: unknown; endedAt: unknow
       <label className="flex items-center gap-2 mt-1">
         <input
           type="checkbox"
-          checked={inProgress}
+          checked={fieldData.inProgress}
           onChange={toggleProgressiveBox}
           className="w-4 h-4 rounded-sm accent-tree-40"
         />
