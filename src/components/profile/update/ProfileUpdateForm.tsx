@@ -2,7 +2,7 @@
 
 import ProfileQueryOptions from '@/service/profile/queries';
 import { ProfileUpdateRequest } from '@/service/profile/request';
-import { parseYearMonthToDate } from '@/utils/date';
+import { parseFlexibleDate } from '@/utils/date';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -77,32 +77,19 @@ const ProfileUpdateForm = () => {
 
     cloned.myPage.careers.careerList = cloned.myPage.careers.careerList.map((career) => ({
       ...career,
-      startedAt:
-        typeof career.startedAt === 'string'
-          ? parseYearMonthToDate(career.startedAt)
-          : career.startedAt,
-      endedAt:
-        typeof career.endedAt === 'string' ? parseYearMonthToDate(career.endedAt) : career.endedAt,
-      projects: Array.isArray(career.projects)
-        ? career.projects.map((project) => ({
-            ...project,
-            startedAt:
-              typeof project.startedAt === 'string'
-                ? parseYearMonthToDate(project.startedAt)
-                : project.startedAt,
-            endedAt:
-              typeof project.endedAt === 'string'
-                ? parseYearMonthToDate(project.endedAt)
-                : project.endedAt
-          }))
-        : []
+      startedAt: parseFlexibleDate(career.startedAt),
+      endedAt: parseFlexibleDate(career.endedAt),
+      projects: career.projects.map((project) => ({
+        ...project,
+        startedAt: parseFlexibleDate(project.startedAt),
+        endedAt: parseFlexibleDate(project.endedAt)
+      }))
     }));
 
     cloned.myPage.educationActivities = cloned.myPage.educationActivities.map((edu) => ({
       ...edu,
-      startedAt:
-        typeof edu.startedAt === 'string' ? parseYearMonthToDate(edu.startedAt) : edu.startedAt,
-      endedAt: typeof edu.endedAt === 'string' ? parseYearMonthToDate(edu.endedAt) : edu.endedAt
+      startedAt: parseFlexibleDate(edu.startedAt),
+      endedAt: parseFlexibleDate(edu.endedAt)
     }));
 
     return cloned;

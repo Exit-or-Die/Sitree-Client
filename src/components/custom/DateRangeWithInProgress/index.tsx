@@ -40,9 +40,17 @@ const DateRangeWithInProgress = <
       ? formatToYearMonth(String(fieldData.startedAt))
       : '';
     const formattedEndedAt = fieldData?.endedAt ? formatToYearMonth(String(fieldData.endedAt)) : '';
+
     setStartedAt(formattedStartedAt);
     setEndedAt(formattedEndedAt);
-    updateField(index, { ...fieldData, startedAt: formattedStartedAt, endedAt: formattedEndedAt });
+
+    if (formattedStartedAt !== fieldData.startedAt || formattedEndedAt !== fieldData.endedAt) {
+      updateField(index, {
+        ...fieldData,
+        startedAt: formattedStartedAt,
+        endedAt: formattedEndedAt
+      });
+    }
   }, [fieldData?.startedAt, fieldData?.endedAt]);
 
   const handleInputChange = (

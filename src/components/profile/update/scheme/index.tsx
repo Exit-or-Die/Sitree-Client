@@ -7,7 +7,8 @@ const projectExperienceSchema = z.object({
   contents: z.string(),
   startedAt: z.string().optional(),
   endedAt: nullableString.optional(),
-  roleTags: z.array(z.string())
+  roleTags: z.array(z.string()),
+  inProgress: z.boolean()
 });
 
 const careerListSchema = z.object({
@@ -17,7 +18,8 @@ const careerListSchema = z.object({
   department: nullableString.transform((val) => val ?? ''),
   startedAt: z.string().optional(),
   endedAt: nullableString.optional(),
-  projects: z.array(projectExperienceSchema).optional()
+  projects: z.array(projectExperienceSchema).optional(),
+  inProgress: z.boolean()
 });
 
 const educationActivitySchema = z.object({
@@ -27,7 +29,8 @@ const educationActivitySchema = z.object({
   contents: nullableString.optional(),
   startedAt: z.string().optional(),
   endedAt: nullableString.optional(),
-  educationStatus: z.string().optional()
+  educationStatus: z.string().optional(),
+  inProgress: z.boolean()
 });
 
 const linkSchema = z.object({

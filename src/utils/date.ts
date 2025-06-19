@@ -41,12 +41,22 @@ export const formatToYearMonth = (value: string) => {
   return month ? `${year}.${month}` : year;
 };
 
-export const parseYearMonthToDate = (value: string): Date | null => {
-  const [year, month] = value.split('.').map((v) => parseInt(v, 10));
+export const parseFlexibleDate = (value: string | Date | null): Date | null => {
+  if (!value) return null;
+  if (typeof value === 'string') {
+    if (/^\d{4}\.\d{2}$/.test(value)) {
+      // Matches YYYY.MM
+      const [year, month] = value.split('.').map(Number);
 
-  if (!year || !month || month < 1 || month > 12) {
-    return null;
+      return new Date(Date.UTC(year, month - 1, 1));
+    } else {
+      const date = new Date(value);
+
+      return isNaN(date.getTime()) ? null : date;
+    }
+  } else if (value instanceof Date) {
+    return isNaN(value.getTime()) ? null : value;
   }
 
-  return new Date(year, month - 1);
+  return null;
 };

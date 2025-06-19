@@ -5,9 +5,8 @@ import withModal from '@/enhancers/WithModal';
 import { ProfileUpdateRequest } from '@/service/profile/request';
 import { UserEducationField } from '@/service/profile/response';
 import { isEmpty } from '@/utils/array';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Nullable } from 'types/common';
 
 import SButton from '@/components/common/Button';
 import SImage from '@/components/common/Image';
@@ -16,48 +15,33 @@ import SvgIcon from '@/components/common/SVGIcon';
 import ProfileDeleteModal from '../../common/ProfileDeleteModal';
 import EducationForm from './EducationForm';
 
-export interface TechViewProps {
-  techviewId: Nullable<number>;
-  techTitle: string;
-  gitRepositoryUrl: string;
-  techStackTypes: string[];
-  techDesc: string;
-}
-
 const ProfileRegisterEducationForm = () => {
   const ProfileDeleteWithModal = withModal(ProfileDeleteModal);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { setValue } = useFormContext<ProfileUpdateRequest>();
   const educationForm = useWatch({ name: 'myPage.educationActivities' });
-  const [educationActivities, setEducationActivities] = useState<Array<UserEducationField>>(
-    isEmpty(educationForm) ? [DEFAULT_EDUCATION] : educationForm
-  );
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    if (!isEmpty(educationForm)) {
-      setEducationActivities(educationForm);
-    }
-  }, [educationForm]);
+  const educationActivities: UserEducationField[] = isEmpty(educationForm)
+    ? [DEFAULT_EDUCATION]
+    : educationForm;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const updateEducation = (index: number, updateField: UserEducationField) => {
     const updated = educationActivities.map((activity, i) =>
       i === index ? updateField : activity
     );
-    setEducationActivities(updated);
     setValue('myPage.educationActivities', updated);
   };
 
   const canAddEducation = useCallback(() => {
-    if (!educationActivities.length) return true;
-
     return educationActivities.every(
       (educationActivity) =>
         educationActivity.educationActivityName.trim() !== '' &&
         educationActivity.majorOrOrganization.trim() !== '' &&
         educationActivity.category &&
         educationActivity.startedAt &&
-        (educationActivity.inProgress || educationActivity.endedAt)
+        educationActivity.endedAt
     );
   }, [educationActivities]);
 
@@ -67,24 +51,19 @@ const ProfileRegisterEducationForm = () => {
 
   const addEducation = useCallback(() => {
     if (!canAddEducation()) return;
+    const updated = [...educationActivities, DEFAULT_EDUCATION];
+    setValue('myPage.educationActivities', updated);
+    setCurrentIndex(updated.length - 1);
+  }, [educationActivities, canAddEducation, setValue]);
 
-    setEducationActivities((prev) => [...prev, DEFAULT_EDUCATION]);
-    setCurrentIndex(educationActivities.length);
-  }, [educationActivities.length, canAddEducation]);
+  const deleteEducation = useCallback(() => {
+    if (!canDeleteEducation()) return;
 
-  const deleteEducation = useCallback(
-    (index: number) => {
-      if (!canDeleteEducation()) return;
-
-      const newEducationActivities = educationActivities.filter((_, i) => i !== index);
-      setEducationActivities(newEducationActivities);
-
-      if (index === currentIndex && newEducationActivities.length > 0) {
-        setCurrentIndex(index === newEducationActivities.length ? index - 1 : index);
-      }
-    },
-    [educationActivities, currentIndex, canDeleteEducation]
-  );
+    const updated = educationActivities.filter((_, i) => i !== currentIndex);
+    setValue('myPage.educationActivities', updated);
+    setCurrentIndex((prev) => (currentIndex === educationActivities.length - 1 ? prev - 1 : prev));
+    setDeleteModalOpen(false);
+  }, [currentIndex, educationActivities, canDeleteEducation, setValue]);
 
   const goToPage = useCallback((index: number) => {
     setCurrentIndex(index);
@@ -150,7 +129,7 @@ const ProfileRegisterEducationForm = () => {
       )}
       <ProfileDeleteWithModal
         onClickClose={() => setDeleteModalOpen(false)}
-        deleteProfilePage={() => deleteEducation(currentIndex)}
+        deleteProfilePage={deleteEducation}
         isVisible={deleteModalOpen}
         hideClose={true}
       />
