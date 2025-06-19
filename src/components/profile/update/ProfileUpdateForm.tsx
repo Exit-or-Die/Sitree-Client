@@ -98,10 +98,9 @@ const ProfileUpdateForm = () => {
   const { mutate: updateProfile } = useMutation({
     mutationFn: (formValues: ProfileUpdateRequest) =>
       ProfileQueryOptions.updateProfile(session?.detail.memberId as number, formValues).mutateFn(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKey
-      });
+    onSuccess: async () => {
+      const freshData = await queryClient.fetchQuery({ queryKey, queryFn });
+      formMethods.reset(freshData);
       router.push(`/profile/${session?.detail.memberId}`);
     }
   });
