@@ -9,7 +9,7 @@ import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredM
 import ProfileImageUpload from '@/components/custom/ProfileImageUpload';
 
 const ProjectHeadBaseInfo = () => {
-  const { register } = useFormContext<ProfileUpdateRequest>();
+  const { register, getValues } = useFormContext<ProfileUpdateRequest>();
 
   const InputList = [
     {
@@ -23,6 +23,7 @@ const ProjectHeadBaseInfo = () => {
             useLimit={true}
             limitLength={12}
             className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+            value={getValues('nickname') ?? ''}
           />
         </div>
       ),
@@ -37,6 +38,7 @@ const ProjectHeadBaseInfo = () => {
           name="position"
           placeholder="현재 직무(또는 희망 포지션) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+          value={getValues('position') ?? ''}
         />
       ),
       required: false,
@@ -63,6 +65,7 @@ const ProjectHeadBaseInfo = () => {
           name="thirdPartyProfileUrl"
           placeholder="대표 웹 주소(GitHub, 블로그, 링크드인 등) 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+          value={getValues('thirdPartyProfileUrl') ?? ''}
         />
       ),
       required: false,
@@ -76,6 +79,7 @@ const ProjectHeadBaseInfo = () => {
           name="phoneNumber"
           placeholder="휴대폰 번호 입력"
           className="text-small font-md leading-5 tracking-[-0.14px] rounded-base"
+          value={getValues('phoneNumber') ?? ''}
         />
       ),
       required: false,

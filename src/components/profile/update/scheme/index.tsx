@@ -57,7 +57,7 @@ export const profileSchema = z.object({
   email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요' }),
   phoneNumber: nullableString.optional(),
   profileImgUrl: z.string().url({ message: '유효한 프로필 이미지 URL을 입력해주세요' }),
-  thirdPartyProfileUrl: z.string().optional(),
+  thirdPartyProfileUrl: nullableString.optional(),
   shortIntroduction: z.string().optional(),
   // belongingName: z.string().optional(),
   myPage: myPageSchema

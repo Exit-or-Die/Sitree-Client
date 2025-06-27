@@ -26,6 +26,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
 
   const [userProfileQuery, userProjectsQuery] = await getDehydratedQueries(queries);
   const profileDetail = userProfileQuery?.state.data as UserProfileResponse;
+  console.log(profileDetail.myPage.careers);
   const { title, contents } = profileDetail.myPage.selfIntroduction ?? { title: '', contents: '' };
   const { techStacks, links } = profileDetail.myPage;
   const showUserSkeleton = !title && !contents && isEmpty(techStacks) && isEmpty(links);
