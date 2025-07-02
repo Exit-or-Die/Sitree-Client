@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -46,7 +45,6 @@ export const DEFAULT_PROFILE_DATA: Partial<ProfileUpdateRequest> = {
 
 const ProfileUpdateForm = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
   const { data: session } = useSession();
   const { queryKey, queryFn } = session?.detail.memberId
     ? ProfileQueryOptions.searchProfile(session?.detail.memberId)
@@ -101,7 +99,7 @@ const ProfileUpdateForm = () => {
     onSuccess: async () => {
       const freshData = await queryClient.fetchQuery({ queryKey, queryFn });
       formMethods.reset(freshData);
-      router.push(`/profile/${session?.detail.memberId}`);
+      window.location.href = `/profile/${session?.detail.memberId}`;
     }
   });
 
