@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 interface DropdownProps<T extends { name: string }> {
   list: T[];
   searchCount: number;
-  onSelect: (item: string) => void;
+  onSelect: (item: T) => void;
   closeDropdown: () => void;
 }
 
@@ -43,7 +43,7 @@ const Dropdown = <T extends { name: string }>({
           <li
             key={index}
             className="px-4 py-2 text-[14px] text-gray-800 hover:bg-slate-95 hover:text-green-600 cursor-pointer"
-            onClick={() => onSelect(item.name)}
+            onClick={() => onSelect(item)}
           >
             {item.name}
           </li>

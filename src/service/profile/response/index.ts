@@ -1,5 +1,5 @@
 import { Project } from '@/service/project/response/index';
-import { Belonging, Nullable } from 'types/common';
+import { Nullable } from 'types/common';
 
 export interface UserProfileResponse {
   memberId: string;
@@ -30,36 +30,43 @@ export interface UserIntroField {
 export interface UserCareerField {
   totalYears: number;
   totalMonths: number;
-  careerList: Array<CareerList>;
+  careerList: Array<CareerField>;
 }
 
-export interface CareerList {
+export interface CareerField {
   belongingId: number;
   belongingName: string;
   imageUrl: Nullable<string>;
-  startedAt: Date;
-  endedAt: Date;
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
   position: string;
   department: string;
   projects: Array<UserProjectField>;
+  inProgress: boolean;
 }
 export interface UserProjectField {
   projectName: string;
-  startedAt: Date;
-  endedAt: Date;
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
   contents: string;
   roleTags: Array<string>;
+  inProgress: boolean;
 }
 
 export interface UserEducationField {
   educationActivityName: string;
-  startedAt: Date;
-  endedAt: Date;
-  educationStatus: 'COMPLETED' | 'GRADUATED' | 'WITHDREW';
+  startedAt: Nullable<Date>;
+  endedAt: Nullable<Date>;
+  educationStatus: Nullable<EducationStatus>;
   majorOrOrganization: string;
-  category: Belonging;
+  category: Nullable<EducationCategory>;
   contents: string;
+  inProgress: boolean;
 }
+
+export type EducationCategory = 'UNIVERSITY' | 'GRADUATE_SCHOOL' | 'CLUB' | 'License' | 'ETC';
+
+export type EducationStatus = 'COMPLETED' | 'GRADUATED' | 'WITHDREW';
 
 export interface UserLinkField {
   linkProvider: string;

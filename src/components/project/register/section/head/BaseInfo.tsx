@@ -6,11 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 
 import SInput from '@/components/common/Input';
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import ProjectIconUpload from '@/components/custom/ProjectIconUpload';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const ProjectHeadBaseInfo = () => {
   const { register, setValue, getValues } = useFormContext<ProjectRegisterRequest>();
@@ -95,7 +94,7 @@ const ProjectHeadBaseInfo = () => {
               {input.required && <RegisterRequiredMark />}
             </label>
             {input.component}
-            <RegiseterErrorMessage errorKey={input.errorKey} />
+            <RegisterErrorMessage errorKey={input.errorKey} />
           </div>
         ))}
       </div>

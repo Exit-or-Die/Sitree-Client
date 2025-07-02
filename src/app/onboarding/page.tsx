@@ -4,6 +4,7 @@ import { ERROR_MESSAGES } from '@/constants/error';
 import { useSignUp } from '@/service/auth/queries';
 import AuthQueryOptions from '@/service/auth/queries';
 import BelongingQueryOptions from '@/service/belonging/queries';
+import { isEmpty } from '@/utils/array';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -51,7 +52,7 @@ const Onboarding = () => {
   }, [affiliation]);
 
   const { queryKey, queryFn } = BelongingQueryOptions.search(debouncedAffiliation);
-  const { data: belongingData = [] } = useQuery({
+  const { data: belongingData } = useQuery({
     queryKey,
     queryFn,
     enabled: !!debouncedAffiliation
@@ -132,12 +133,12 @@ const Onboarding = () => {
             setValue={handleAffiliationChange}
             placeholder="학교, 회사 등 현재 소속을 입력해 주세요"
             renderDropdown={() =>
-              isDropdownVisible && belongingData.length > 0 ? (
+              isDropdownVisible && belongingData && !isEmpty(belongingData.content) ? (
                 <Dropdown
-                  list={belongingData}
-                  searchCount={belongingData.length}
+                  list={belongingData.content}
+                  searchCount={belongingData.total}
                   onSelect={(suggestion) => {
-                    setAffiliation(suggestion);
+                    setAffiliation(suggestion.name);
                     closeDropdown();
                   }}
                   closeDropdown={closeDropdown}

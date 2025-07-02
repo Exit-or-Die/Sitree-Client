@@ -5,10 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
 import SInput from '@/components/common/Input';
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import ProjectTagSelect from '@/components/custom/ProjectTagSelect';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const TechViewForm: React.FC<{
   skill: TechView;
@@ -46,7 +45,7 @@ const TechViewForm: React.FC<{
             onChange={(e) => handleInputChange('techTitle', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
-          <RegiseterErrorMessage errorKey={`techviewList.${index}.techTitle`} />
+          <RegisterErrorMessage errorKey={`techviewList.${index}.techTitle`} />
         </div>
         <div className="w-full">
           <div className="flex items-center">
@@ -63,7 +62,7 @@ const TechViewForm: React.FC<{
             onChange={(e) => handleInputChange('gitRepositoryUrl', e)}
             className="mt-1.5 text-small leading-5 tracking-[-0.14px]"
           />
-          <RegiseterErrorMessage errorKey={`techviewList.${index}.gitRepositoryUrl`} />
+          <RegisterErrorMessage errorKey={`techviewList.${index}.gitRepositoryUrl`} />
         </div>
       </div>
       <div>
@@ -96,7 +95,7 @@ const TechViewForm: React.FC<{
           initialValue={normalizedSkill.techStackTypes}
         />
       </div>
-      <RegiseterErrorMessage errorKey="techviewList" />
+      <RegisterErrorMessage errorKey="techviewList" />
     </div>
   );
 };

@@ -5,8 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useFormContext } from 'react-hook-form';
 
 import DynamicSEditor from '@/components/common/Editor/DynamicEditor';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 
 const ProjectRegisterOverview = () => {
   const { data: session } = useSession();

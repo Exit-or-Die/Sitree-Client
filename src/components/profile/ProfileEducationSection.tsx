@@ -1,6 +1,6 @@
 import { EDUCATION_STATUS } from '@/constants/profile';
 import { UserEducationField } from '@/service/profile/response';
-import formatTimestamps from '@/utils/date';
+import { formatTimestamps } from '@/utils/date';
 
 type Props = {
   education: Array<UserEducationField>;
@@ -20,7 +20,7 @@ const ProfileEducationSection = ({ education }: Props) => {
             <div className="border-l-[1px] mx-[10px] h-[14px]" />
             <div>{activity.category}</div>
             <div className="border-l-[1px] mx-[10px] h-[14px]" />
-            <div>{EDUCATION_STATUS[activity.educationStatus]}</div>
+            {activity.educationStatus && <div>{EDUCATION_STATUS[activity.educationStatus]}</div>}
           </div>
           <p className="text-xsmall text-slate-30 mt-[4px]">
             {formatTimestamps(activity.startedAt, activity.endedAt)}

@@ -1,14 +1,14 @@
 import Service from '@/service/service';
 
-import { FocusedPointParams, ShortIntroParams } from './request';
+import { FocusedPointParams, ProfileUpdateRequest, ShortIntroParams } from './request';
 import { FocusPoints, ShortIntroResponse, UserProfileResponse, UserProject } from './response';
 
 class ProfileService extends Service {
-  searchProfile(memberId: string) {
+  searchProfile(memberId: number) {
     return this.http.get<UserProfileResponse>(`members/${memberId}`);
   }
 
-  searchUserProjects(memberId: string) {
+  searchUserProjects(memberId: number) {
     return this.http.get<Array<UserProject>>(`projects/participants/${memberId}`);
   }
 
@@ -18,8 +18,14 @@ class ProfileService extends Service {
     });
   }
 
-  updateShortIntroduction(memberId: string, query: ShortIntroParams) {
+  updateShortIntroduction(memberId: number, query: ShortIntroParams) {
     return this.http.put<ShortIntroResponse>(`members/${memberId}/short-introduction`, query, {
+      includeAuth: true
+    });
+  }
+
+  updateProfile(memberId: number, query: ProfileUpdateRequest) {
+    return this.http.put<ShortIntroResponse>(`members/${memberId}`, query, {
       includeAuth: true
     });
   }

@@ -4,11 +4,10 @@ import { Image } from '@/service/project/response';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
+import RegisterRequiredMark from '@/components/common/Register/RegisterRequiredMark';
 import FileUploadButton from '@/components/custom/FileUploadButton';
 import ProjectScreenshotItem from '@/components/custom/ProjectScreenshotItem';
-
-import RegisterRequiredMark from '../../components/RegisterRequiredMark';
-import { RegiseterErrorMessage } from '../../error/RegisterError';
 
 const TOTAL_SCREENSHOT_ITEMS = 8;
 
@@ -76,7 +75,7 @@ const ProjectHeadScreenshot = () => {
           />
         ))}
       </div>
-      {!screenShotList.length && <RegiseterErrorMessage errorKey="overview.images" />}
+      {!screenShotList.length && <RegisterErrorMessage errorKey="overview.images" />}
     </div>
   );
 };

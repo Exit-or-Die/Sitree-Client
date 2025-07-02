@@ -1,40 +1,73 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
+import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { Nullable } from 'types/common';
 
 import SvgIcon from '../SVGIcon';
 
-interface SDropdownProps<T = string> {
-  options: T[];
-  onChange?: (selectedOption: Nullable<T>) => void;
+interface SDropdownProps<TOption = string, TForm extends FieldValues = FieldValues> {
+  options: TOption[];
+  value?: Nullable<TOption>;
+  onChange?: (selectedOption: Nullable<TOption>) => void;
   placeholder?: string;
   className?: string;
+  label?: 'default' | 'bold' | 'none';
+  name?: Path<TForm>;
+  register?: UseFormRegister<TForm>;
+  registerOptions?: RegisterOptions<TForm>;
 }
 
-const SDropdown = <T,>({
+const BORDER_STYLE_BY_LABEL = {
+  default: 'border border-slate-90 rounded-[1rem]',
+  bold: 'border border-slate-300 rounded-base',
+  none: 'border-0 rounded-base'
+};
+
+const SDropdown = <TOption, TForm extends FieldValues = FieldValues>({
   options,
+  value = null,
   onChange = () => {},
   placeholder = 'Select Option',
-  className
-}: SDropdownProps<T>) => {
-  const [selectedOption, setSelectedOption] = useState<Nullable<T>>(null);
+  className,
+  label = 'default',
+  register,
+  name,
+  registerOptions
+}: SDropdownProps<TOption, TForm>) => {
+  const [selectedOption, setSelectedOption] = useState<Nullable<TOption>>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSelectOption = (option: T) => {
+  useEffect(() => {
+    setSelectedOption(value);
+  }, [value]);
+
+  const handleSelectOption = (option: TOption) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
+    onChange(option);
   };
 
-  useEffect(() => {
-    onChange(selectedOption);
-  }, [selectedOption, onChange]);
+  const registration = register && name ? register(name, registerOptions) : undefined;
 
   return (
     <div className={`relative w-full ${className}`}>
+      {registration && (
+        <input
+          type="hidden"
+          value={selectedOption ? String(selectedOption) : ''}
+          {...registration}
+        />
+      )}
       <div
-        className={`w-full border border-slate-90 rounded-[1rem] flex items-center justify-between pr-3 cursor-pointer ${isDropdownOpen ? 'ring-1 ring-tree-50' : ''}`}
+        className={`w-full ${BORDER_STYLE_BY_LABEL[label]} flex items-center justify-between pr-3 cursor-pointer ${
+          isDropdownOpen ? 'ring-1 ring-tree-50' : ''
+        }`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        <span className="p-3 text-small font-md leading-5 tracking-[-0.14px] text-slate-50">
+        <span
+          className={`p-3 text-small font-md leading-5 tracking-[-0.14px] text-slate-${!selectedOption ? '50' : '10'}`}
+        >
           {selectedOption ? String(selectedOption) : placeholder}
         </span>
         <div className="w-4 h-4 flex-shrink-0">
@@ -42,10 +75,12 @@ const SDropdown = <T,>({
             icon="arrow"
             width={16}
             height={16}
+            color="#959EB2"
             className={isDropdownOpen ? 'transform scale-y-[-1]' : ''}
           />
         </div>
       </div>
+
       {options.length > 0 && isDropdownOpen && (
         <div className="absolute z-10 bg-white-100 border border-gray-300 rounded-lg w-full mt-2">
           <div className="flex flex-col gap-1 p-2">

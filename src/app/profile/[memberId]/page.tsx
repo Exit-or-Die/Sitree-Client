@@ -12,7 +12,7 @@ import ProjectSectionSkeleton from '@/components/profile/ProjectSectionSkeleton'
 
 interface ProfilePageProps {
   params: {
-    memberId: string;
+    memberId: number;
   };
 }
 
@@ -26,7 +26,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
 
   const [userProfileQuery, userProjectsQuery] = await getDehydratedQueries(queries);
   const profileDetail = userProfileQuery?.state.data as UserProfileResponse;
-  const { title, contents } = profileDetail.myPage.selfIntroduction;
+  const { title, contents } = profileDetail.myPage.selfIntroduction ?? { title: '', contents: '' };
   const { techStacks, links } = profileDetail.myPage;
   const showUserSkeleton = !title && !contents && isEmpty(techStacks) && isEmpty(links);
   const projects = userProjectsQuery?.state.data as Array<UserProject>;
@@ -60,9 +60,10 @@ const Profile = async ({ params }: ProfilePageProps) => {
           <ProjectPortfolioSection projects={projects} memberId={memberId} />
         )}
 
-        {!isEmpty(profileDetail.myPage.careers.careerList) && (
-          <ProfileCareerSection careers={profileDetail.myPage.careers} />
-        )}
+        {profileDetail?.myPage?.careers?.careerList &&
+          !isEmpty(profileDetail.myPage.careers.careerList) && (
+            <ProfileCareerSection careers={profileDetail.myPage.careers} />
+          )}
         {!isEmpty(profileDetail.myPage.educationActivities) && (
           <ProfileEducationSection education={profileDetail.myPage.educationActivities} />
         )}

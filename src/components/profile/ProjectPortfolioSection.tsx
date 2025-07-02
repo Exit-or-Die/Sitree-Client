@@ -7,12 +7,12 @@ import ProjectCard from '../projectGallery/ProjectCard';
 
 interface Props {
   projects: Array<UserProject>;
-  memberId: string;
+  memberId: number;
 }
 
 const ProjectPortfolioSection = ({ projects, memberId }: Props) => {
   const { data: session } = useSession();
-  const isMe = session?.detail.memberId === Number(memberId);
+  const isMe = session?.detail.memberId == memberId;
 
   return (
     <div className="bg-white p-[40px] flex flex-col bg-white-100 border border-slate-90 rounded-xlarge shadow-sm">

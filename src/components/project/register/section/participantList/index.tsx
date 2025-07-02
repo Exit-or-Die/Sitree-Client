@@ -14,9 +14,9 @@ import { Nullable } from 'types';
 
 import SButton from '@/components/common/Button';
 import SInput from '@/components/common/Input';
+import { RegisterErrorMessage } from '@/components/common/Register/RegisterErrorMessage';
 import ProjectParticipantCard from '@/components/custom/ProjectParticipantCard';
 
-import { RegiseterErrorMessage } from '../../error/RegisterError';
 import { DEFAULT_DETAIL_DATA } from '../../ProjectRegisterForm';
 import ParticipantAddModal from './ParticipantAddModal';
 
@@ -132,7 +132,7 @@ const ProjectRegisterParticipantList: React.FC = () => {
               onChange={(e) => handlePositionInput(e.target.value, index)}
               value={teamMembers[index].position}
             />
-            <RegiseterErrorMessage errorKey={`participantList.${index}.position`} />
+            <RegisterErrorMessage errorKey={`participantList.${index}.position`} />
           </div>
         ))}
       </div>

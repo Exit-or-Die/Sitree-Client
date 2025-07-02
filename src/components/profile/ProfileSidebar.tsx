@@ -3,6 +3,7 @@
 import ProfileQueryOptions from '@/service/profile/queries';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Nullable } from 'types';
 
@@ -33,10 +34,11 @@ const ProfileSidebar = ({
 }: Props) => {
   const { data: session } = useSession();
   const { memberId } = useParams();
+  const router = useRouter();
 
   const isMe = String(session?.detail.memberId) === String(memberId);
   const [text, setText] = useState('');
-  const { queryFn } = ProfileQueryOptions.updateShortIntroduction(String(memberId));
+  const { queryFn } = ProfileQueryOptions.updateShortIntroduction(Number(memberId));
 
   const onClickUpdateShortIntro = async () => {
     const payload = {
@@ -151,7 +153,7 @@ const ProfileSidebar = ({
       </button>
       <div className="mt-6 w-full flex justify-around text-slate-30 text-small font-md">
         <button>로그아웃</button>
-        <button className="flex items-center">
+        <button onClick={() => router.push('/profile/update')} className="flex items-center">
           <SvgIcon icon="setting" width={18} height={18} className="mr-1" color="#414752" />
           프로필 편집
         </button>
